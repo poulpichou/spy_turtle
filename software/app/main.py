@@ -1,29 +1,16 @@
-# Spy Turtle - Entry point
-
-VERSION = "0.1.0"
-
-
-def print_banner():
-    print("=" * 45)
-    print(f"🐢 Spy Turtle v{VERSION}")
-    print("")
-    print("Starting system...")
-    print("")
-
-
-def check_system():
-    print("✓ Python OK")
-    print("✓ Project structure OK")
-    print("✓ Simulation mode active")
+from software.app.robot import Robot
+import time
 
 
 def main():
-    print_banner()
-    check_system()
+    robot = Robot()
 
-    print("")
-    print("Robot is ready 🚀")
-    print("=" * 45)
+    print("FORWARD")
+    robot.forward()
+    time.sleep(2)
+
+    print("STOP")
+    robot.stop()
 
 
 if __name__ == "__main__":
