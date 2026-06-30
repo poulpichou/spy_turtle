@@ -1,0 +1,9 @@
+[project]
+name = "spy_turtle"
+version = "0.1.0"
+description = "Spy Turtle Robot Project"
+authors = [{ name = "Spy Turtle Team" }]
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 100
