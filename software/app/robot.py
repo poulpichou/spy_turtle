@@ -1,9 +1,11 @@
 from software.hardware.motor import MotorDriver
+from software.personality.emotion_engine import EmotionEngine
 
 
 class Robot:
     def __init__(self):
         self.motors = MotorDriver()
+        self.personality = EmotionEngine()
 
     def forward(self):
         self.motors.forward()
