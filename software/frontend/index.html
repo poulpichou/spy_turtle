@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Spy Turtle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+    #camera { flex: 1; background: black; display: flex; align-items: center; justify-content: center; color: white; }
+    #panel { flex: 1; display: flex; flex-direction: column; padding: 10px; gap: 10px; }
+    button { padding: 12px; font-size: 16px; }
+    .row { display: flex; gap: 10px; }
+  </style>
+</head>
+<body>
+
+<div id="camera">
+  <div>📷 CAMERA STREAM (placeholder)</div>
+</div>
+
+<div id="panel">
+
+  <div class="row">
+    <button onclick="cmd('/move/forward')">⬆️</button>
+  </div>
+
+  <div class="row">
+    <button onclick="cmd('/move/left')">⬅️</button>
+    <button onclick="cmd('/move/backward')">⬇️</button>
+    <button onclick="cmd('/move/right')">➡️</button>
+  </div>
+
+  <div class="row">
+    <button onclick="cmd('/emotion/happy')">😊</button>
+    <button onclick="cmd('/emotion/sleepy')">😴</button>
+    <button onclick="cmd('/emotion/angry')">😡</button>
+  </div>
+
+  <div class="row">
+    <button onclick="cmd('/led/rainbow')">🌈 LED</button>
+    <button onclick="cmd('/led/off')">OFF</button>
+  </div>
+
+  <pre id="state"></pre>
+
+</div>
+
+<script>
+async function cmd(path){
+  const r = await fetch("http://127.0.0.1:8000" + path, {method: "POST"});
+  const data = await r.json();
+  document.getElementById("state").innerText = JSON.stringify(data, null, 2);
+}
+
+async function refresh(){
+  const r = await fetch("http://127.0.0.1:8000/state");
+  const data = await r.json();
+  document.getElementById("state").innerText = JSON.stringify(data, null, 2);
+}
+
+setInterval(refresh, 1000);
+refresh();
+</script>
+
+</body>
+</html>
