@@ -1,159 +1,228 @@
-# 🔌 Spy Turtle — Wiring Manual
+# Spy Turtle - Wiring Guide
 
-## 🎯 Overview
+## Overview
 
-This document describes how to connect all electronic components of the Spy Turtle robot.
+This document describes the planned electrical connections for Spy Turtle Version 1.
 
-The system is based on:
-
-- Raspberry Pi 5 (main controller)
-- TB6612FNG motor driver
-- Waveshare GPIO Expansion HAT
-- Waveshare UPS HAT 2S (power supply)
-- Optional peripherals (camera, LEDs, audio, display)
+The goal is to keep wiring simple, modular and easy to maintain.
 
 ---
 
-## ⚠️ Safety Notes
+# Main Components
 
-- Always disconnect power before wiring
-- Double-check polarity (especially battery and motor power)
-- Do not power motors directly from Raspberry Pi
-- Use common GND between all modules
-
----
-
-## 🧠 System Layout
-
-            ┌──────────────────────┐
-            │   Raspberry Pi 5     │
-            └─────────┬────────────┘
-                      │ GPIO
-    ┌─────────────────┼─────────────────┐
-    │                 │                 │
-
-┌───────▼───────┐ ┌───────▼───────┐ ┌─────▼───────┐
-│ TB6612 Driver │ │ GPIO HAT │ │ Camera CSI │
-│ (Motors) │ │ (Expansion) │ │ Module 3 │
-└───────┬───────┘ └───────┬───────┘ └─────────────┘
-│ │
-Motors L/R LEDs / Servo / Fan
-
-            ↓
- ┌──────────────────────┐
- │ Waveshare UPS HAT 2S │
- │ (Battery + 5V rail)  │
- └──────────────────────┘
+* Raspberry Pi 5
+* Waveshare UPS HAT (4-cell version)
+* Raspberry Pi Camera Module 3
+* TB6612FNG Motor Driver
+* Two JGA25-370 DC Motors with Encoders
+* Two SSD1306 OLED Displays
+* WS2812B LED Strip
+* MAX98357A I²S Amplifier + Speaker
+* MG90S Servos
+* GPIO Breakout Board
 
 ---
 
-## 🚗 Motor Driver (TB6612FNG)
+# Power Architecture
 
-### Power
+```
+18650 Batteries
+        │
+        ▼
+Waveshare UPS HAT
+        │
+        ▼
+ Raspberry Pi 5
+        │
+        ├── GPIO
+        ├── USB
+        ├── Camera
+        └── I²C
+```
 
-| TB6612 Pin | Connection |
-|------------|-----------|
-| VM         | Battery (7.4V / 2S) |
-| VCC        | 3.3V (Raspberry Pi) |
-| GND        | Common GND |
-
----
-
-### Raspberry Pi GPIO Mapping
-
-#### Left Motor
-
-| TB6612 Pin | Raspberry Pi GPIO |
-|------------|------------------|
-| PWMA       | GPIO12 (PWM)     |
-| AIN1       | GPIO23           |
-| AIN2       | GPIO24           |
-
-#### Right Motor
-
-| TB6612 Pin | Raspberry Pi GPIO |
-|------------|------------------|
-| PWMB       | GPIO13 (PWM)     |
-| BIN1       | GPIO27           |
-| BIN2       | GPIO22           |
-
-#### Standby
-
-| TB6612 Pin | Raspberry Pi GPIO |
-|------------|------------------|
-| STBY       | GPIO17           |
+During software development, the Raspberry Pi can also be powered directly through the USB-C connector.
 
 ---
 
-## 🔋 Power System
+# Camera
 
-### Waveshare UPS HAT 2S
+Interface:
 
-- Battery: 2x 18650 (2S configuration)
-- Output: stable 5V to Raspberry Pi
-- Built-in charging via USB-C or DC input
+* CSI ribbon cable
 
-### Power Flow
+Connection:
 
+```
+Camera Module
+        │
+        ▼
+CSI Connector
+```
 
-Battery → UPS HAT → Raspberry Pi 5 → GPIO → Modules
-↓
-Motors (via TB6612 VM)
-
-
----
-
-## 🎥 Camera (future integration)
-
-| Component | Connection |
-|----------|-----------|
-| Camera Module 3 | CSI ribbon cable |
-
-- Connect directly to Raspberry Pi CSI port
-- No GPIO required
+No GPIO pins are required.
 
 ---
 
-## 💡 GPIO Expansion HAT
+# Motor Driver
 
-Used for easy prototyping:
+The TB6612FNG controls both drive motors.
 
-- LEDs
-- Servo motors
-- Fan control
-- OLED display (I2C/SPI)
+Connections:
 
-No strict mapping yet (depends on future modules)
+* Motor A
+* Motor B
+* VM (motor power)
+* VCC
+* GND
+* PWM pins
+* Direction pins
+* STBY
 
----
-
-## 💡 Recommended Wiring Rules
-
-- Always share **GND between all modules**
-- Keep motor power (VM) separate from logic power (3.3V/5V)
-- Use short wires for motor driver signals
-- Avoid routing motor wires near camera ribbon cable
+Encoder outputs connect directly to Raspberry Pi GPIO pins.
 
 ---
 
-## 🧪 Testing Checklist
+# OLED Displays
 
-Before first run:
+Two identical SSD1306 displays share the same I²C bus.
 
-- [ ] Raspberry Pi boots from UPS HAT
-- [ ] GPIO HAT is detected
-- [ ] TB6612 has correct power (VM + VCC)
-- [ ] Motors spin freely when tested
-- [ ] No overheating on regulator
-- [ ] Common ground confirmed
+Display 1
+
+* Face / Eyes
+
+Display 2
+
+* Messages / Status (future)
+
+Connections:
+
+* SDA
+* SCL
+* 3.3V
+* GND
+
+One display address may need to be changed depending on the module version.
 
 ---
 
-## 🚀 Future Expansion
+# WS2812 LED Strip
 
-This wiring layout supports:
+Purpose:
 
-- Encoders (odometry)
-- Pan/tilt camera
-- LIDAR sensor
-- AI modules (voice, vision)
+* Shell lighting
+* Status indication
+* Animations
+
+Connections:
+
+* 5V
+* GND
+* Data
+
+Initial testing will be performed directly from the Raspberry Pi GPIO.
+
+A logic level shifter may be added later if required.
+
+---
+
+# Audio
+
+The MAX98357A amplifier uses I²S.
+
+Connections:
+
+* BCLK
+* LRCLK
+* DIN
+* 5V
+* GND
+
+The speaker connects directly to the amplifier module.
+
+---
+
+# Servo Motors
+
+Planned uses:
+
+* Head movement
+* Future accessories
+
+Connections:
+
+* PWM
+* 5V
+* GND
+
+---
+
+# GPIO Breakout Board
+
+The breakout board serves as the central wiring hub.
+
+Advantages:
+
+* easier maintenance
+* cleaner wiring
+* easier troubleshooting
+* simpler upgrades
+
+Most modules should connect to the breakout board rather than directly to the Raspberry Pi.
+
+---
+
+# Cable Management
+
+Recommended practices:
+
+* Keep motor wires away from camera cables.
+* Secure cables with zip ties.
+* Leave enough slack for moving parts.
+* Label critical connectors whenever possible.
+
+---
+
+# Cooling
+
+The Raspberry Pi 5 uses an active cooler.
+
+Ensure adequate airflow inside the shell.
+
+Do not obstruct the fan.
+
+---
+
+# External Connectors
+
+The chassis exposes:
+
+* USB-C charging port (panel mount extension)
+
+Future versions may also expose:
+
+* Power switch
+* Maintenance USB port
+* Debug connector
+
+---
+
+# Assembly Strategy
+
+Recommended installation order:
+
+1. Raspberry Pi
+2. UPS HAT
+3. Active Cooler
+4. Camera
+5. Breakout Board
+6. OLED Displays
+7. Motor Driver
+8. Motors
+9. Speaker
+10. LED Strip
+11. Servos
+12. Cable Management
+
+Test each subsystem before installing the next one.
+
+This approach makes troubleshooting significantly easier.

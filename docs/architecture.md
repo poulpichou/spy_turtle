@@ -1,152 +1,273 @@
-🐢 Spy Turtle — System Architecture
-# 🐢 Spy Turtle — System Architecture
+# Spy Turtle - Software Architecture
 
-## 🎯 Project Goal
+## Overview
 
-Spy Turtle is a Raspberry Pi 5-based mobile robot designed for:
+Spy Turtle is designed as a modular robotics platform rather than a collection of scripts. Every subsystem has a single responsibility, making the project easy to maintain, extend and debug.
 
-- Remote control from a smartphone or browser
-- Live video streaming
-- Audio interaction (speech in/out)
-- LED lighting effects
-- Extendable AI / vision capabilities
+The robot is organized into four main layers:
 
-The project is designed as a **modular robotics platform for learning and experimentation**.
+```
+                +------------------+
+                |      Robot       |
+                +------------------+
+                         |
+      +------------------+------------------+
+      |                  |                  |
+      v                  v                  v
+ +------------+   +---------------+   +-------------+
+ |  Hardware  |   |  Personality  |   |    Brain    |
+ +------------+   +---------------+   +-------------+
+      \               /                    /
+       \             /                    /
+        +-----------+--------------------+
+                    |
+                    v
+             State Machine
+```
 
----
-
-## 🧱 High-Level Architecture
-
-
-[ Smartphone / Browser UI ]
-↓ WiFi
-[ Web API ]
-↓
-[ Robot Controller ]
-↓
-┌──────────────────────────┐
-│ Hardware Layer │
-│--------------------------│
-│ Motor Driver (TB6612) │
-│ Camera (CSI) │
-│ LEDs (WS2812) │
-│ Audio (I2S amplifier) │
-│ OLED Display (I2C) │
-│ Fan (GPIO / MOSFET) │
-└──────────────────────────┘
-↓
-Raspberry Pi 5
-↓
-Waveshare UPS HAT 2S
-↓
-2x18650 Battery Pack
-
+The `Robot` object acts as the central coordinator. It owns every subsystem and provides a single API for the application.
 
 ---
 
-## 🧠 Software Architecture
+# Project Structure
 
-### Entry Point
+```
+software/
 
-
-software/app/main.py
-
-
-Responsible for starting the robot system.
+├── app/
+│   ├── main.py
+│   └── robot.py
+│
+├── hardware/
+│   ├── battery.py
+│   ├── camera.py
+│   ├── leds.py
+│   ├── motors.py
+│   ├── oled.py
+│   ├── servo.py
+│   └── speaker.py
+│
+├── personality/
+│   ├── emotion_engine.py
+│   ├── emotions.py
+│   ├── moods.py
+│   └── events.py
+│
+├── brain/
+│   ├── planner.py
+│   └── state_machine.py
+│
+├── api/
+│
+└── config/
+    └── settings.py
+```
 
 ---
 
-### Robot Core API
+# Robot
 
+The `Robot` class owns every subsystem.
 
-software/app/robot.py
-
-
-Provides a simple high-level interface:
+Example:
 
 ```python
-robot.forward()
-robot.backward()
-robot.turn_left()
-robot.turn_right()
-robot.stop()
+robot.camera
+robot.motors
+robot.display
+robot.audio
+robot.emotions
+robot.brain
+```
 
-This is the ONLY interface used by higher layers.
+The rest of the application should interact with the robot through these high-level interfaces.
 
-Hardware Abstraction Layer
-software/hardware/
+---
 
-Responsibilities:
+# Hardware Layer
 
-GPIO control
-Motor driver (TB6612)
-LED control
-Display control
-Fan control
-Audio interface
+The hardware layer contains all Raspberry Pi specific code.
 
-👉 This layer MUST NOT contain web or UI logic.
+Responsibilities include:
 
-API Layer (future)
-software/api/
+* GPIO
+* PWM
+* I²C
+* SPI
+* Camera
+* Audio
+* Motors
+* Battery monitoring
 
-Planned REST + WebSocket interface:
+The hardware layer **must never contain application logic**.
 
-POST /api/motor
-POST /api/photo
-POST /api/led
-POST /api/speak
-POST /api/display
-Web Interface
-software/web/
+Its only responsibility is controlling physical devices.
 
-Features:
+---
 
-Mobile-friendly dashboard
-Live camera stream
-Joystick control
-Action buttons (LED, audio, fan, photo)
-🧪 Simulation Mode
+# Personality Layer
 
-The system supports a simulation mode for development without hardware:
+The personality layer gives Spy Turtle its character.
 
-SIMULATION = True
+It manages:
 
-Allows full software testing on a PC.
+* emotions
+* moods
+* reactions
+* future animations
+* future voice personality
 
-🔋 Power System
-Waveshare UPS HAT 2S (5V output)
-2×18650 Li-ion battery pack (2S configuration)
-Provides stable power for Raspberry Pi 5 and peripherals
-🔌 GPIO Strategy
-TB6612 motor driver for dual DC motors
-PWM control for speed
-Digital GPIO for direction
-Encoder inputs reserved for future odometry
-🧭 Development Philosophy
-Strict separation of layers
-Hardware isolated from application logic
-Simulation-first development
-Modular and testable components
-API-driven design for future expansion
+Examples of emotions:
 
-🚀 Roadmap
-v0.1 — Foundation
-Project structure
-Simulation motor system
-v0.2 — Mobility
-Real motor control (TB6612)
-Basic movement
-v0.3 — Vision
-Camera integration
-Live streaming
-v0.4 — Remote Control
-Web dashboard
-Mobile UI
-v0.5 — Interaction
-LEDs
-Audio system
-Display + fan
-v1.0 — Full Robot
-Stable mobile robot
-Fully remote controlled Spy Turtle
+* Happy
+* Curious
+* Thinking
+* Sleepy
+* Loving
+* Angry
+* Error
+
+The personality layer does not know how LEDs or displays work.
+
+It only describes the robot's internal emotional state.
+
+---
+
+# Brain Layer
+
+The brain is responsible for decision making.
+
+Future responsibilities include:
+
+* navigation
+* planning
+* target selection
+* exploration
+* interaction
+* AI integration
+
+The brain decides **what** the robot should do.
+
+It does not control hardware directly.
+
+---
+
+# State Machine
+
+Spy Turtle always operates in one high-level state.
+
+Initial planned states:
+
+```
+BOOT
+
+↓
+
+IDLE
+
+↓
+
+EXPLORE
+
+↓
+
+INTERACT
+
+↓
+
+FOLLOW
+
+↓
+
+SLEEP
+
+↓
+
+CHARGE
+
+↓
+
+ERROR
+```
+
+Each state defines:
+
+* allowed behaviours
+* active sensors
+* movement policy
+* default emotion
+
+---
+
+# Events
+
+The robot communicates internally using events.
+
+Examples:
+
+```
+BOOT
+
+PERSON_DETECTED
+
+PERSON_LOST
+
+BATTERY_LOW
+
+BATTERY_OK
+
+OBSTACLE_DETECTED
+
+VOICE_COMMAND
+
+TOUCH
+
+ERROR
+```
+
+Hardware generates events.
+
+The brain consumes events.
+
+The personality reacts to them.
+
+---
+
+# Design Principles
+
+Spy Turtle follows several simple rules.
+
+## Separation of responsibilities
+
+Each module has one job.
+
+## Hardware independence
+
+Application logic should not depend on GPIO details.
+
+## Extensibility
+
+Adding a new sensor or actuator should require minimal changes.
+
+## Readability
+
+The code should remain understandable for children and hobbyists.
+
+## Testability
+
+Whenever possible, hardware modules should be replaceable with simulated versions during development.
+
+---
+
+# Long-Term Vision
+
+Spy Turtle is intended to become a reusable robotics framework.
+
+Future robots (fox, dinosaur, bear, etc.) should be able to reuse most of the software by replacing only:
+
+* the 3D printed body
+* animations
+* behaviours
+* hardware configuration
+
+The architecture is designed to support this long-term goal.
