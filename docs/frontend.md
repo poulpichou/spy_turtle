@@ -64,22 +64,21 @@ The interface should never make autonomous decisions.
 # Screen Layout
 
 ```
+              
 +--------------------------------------------------------------------------------+
-| Battery | WiFi | Connection | FPS | Emotion | LED Mode | Robot Avatar | Status |
-+--------------------------------------------------------------------------------+
-|            |                                             |                     |
-| Movement   |                                             | Head                |
-| Controls   |                                             | Controls            |
-|            |                                             |                     |
-|            |                                             |                     |
-| Sound      |            Live Camera Stream               | Face                |
-| Selector   |                                             | Selector            |
-|            |                                             |                     |
-| Message    |                                             | LED                 |
-| __________ |                                             | Selector            |
-| |        | |                                             |                     |
-| |________| |                                             |                     |
-|  [Send]    |                                             | [Take Picture]      |
+|            |  Battery|WiFi|Connection|FPS|Emotion|LED Mode|etc. |              |
+| Movement   +----------------------------------------------------+ Head         |
+| Controls   |                                                    | Controls     |
+|            |                                                    |              |
+|            |                                                    |              |
+| Sound      |            Live Camera Stream                      | Face         |
+| Selector   |                                                    | Selector     |
+|            |                                                    |              |
+| Message    |                                                    | LED          |
+| __________ |                                                    | Selector     |
+| |        | |                                                    |              |
+| |________| |                                                    |              |
+|  [Send]    |                                                    | [Take Pict.] |
 +--------------------------------------------------------------------------------+
 ```
 

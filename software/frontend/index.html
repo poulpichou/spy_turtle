@@ -14,27 +14,6 @@
 
 <body>
 
-<header id="status-bar">
-
-    <div>
-        🔋 <span id="battery">--</span>%
-    </div>
-
-    <div>
-        📶 <span id="wifi">--</span>
-    </div>
-
-    <div>
-        🙂 <span id="emotion">neutral</span>
-    </div>
-
-    <div>
-        🌈 <span id="led-mode">off</span>
-    </div>
-
-</header>
-
-
 <main>
 
 
@@ -67,7 +46,15 @@
 
 
 <section id="camera">
-
+    <div id="status-bar">
+        <header id="status-bar">
+            <div>🔋 <span id="battery">--</span>%</div>
+            <div>📶 <span id="wifi">--</span></div>
+            <div>🙂 <span id="emotion">neutral</span></div>
+            <div>🌈 <span id="led-mode">off</span></div>
+            <div>🐢 <span id="motion">stop</span></div>
+        </header>
+    </div>
     <div id="camera-placeholder">
         <img src="/camera">
     </div>
@@ -126,6 +113,7 @@
 </main>
 
 
+<script src="js/simulator.js"></script>
 <script src="js/api.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/controls.js"></script>
