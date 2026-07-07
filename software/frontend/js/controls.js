@@ -8,22 +8,9 @@ function stopMove(){
 
 
 function setupMovementButton(id,direction){
-
     const button=document.getElementById(id);
-
-    button.addEventListener(
-        "mousedown",
-        ()=>{
-            startMove(direction);
-        }
-    );
-
-    button.addEventListener(
-        "mouseup",
-        ()=>{
-            stopMove();
-        }
-    );
+    button.addEventListener("mousedown",()=>{startMove(direction);});
+    button.addEventListener("mouseup",()=>{stopMove();};);
 
     button.addEventListener(
         "mouseleave",
@@ -52,29 +39,14 @@ function setupMovementButton(id,direction){
 }
 
 
-setupMovementButton(
-    "forward",
-    "forward"
-);
+setupMovementButton("forward","forward");
 
-setupMovementButton(
-    "backward",
-    "backward"
-);
+setupMovementButton("backward","backward");
 
-setupMovementButton(
-    "left",
-    "left"
-);
+setupMovementButton("left","left");
 
-setupMovementButton(
-    "right",
-    "right"
-);
+setupMovementButton("right","right");
 
-
-document
-.getElementById("stop")
-.onclick=function(){
+document.getElementById("stop").onclick=function(){
     stopMove();
 };
