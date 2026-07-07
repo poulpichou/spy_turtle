@@ -1,4 +1,4 @@
-from software.api.state import STATE
+from software.core.state import STATE
 
 def move_forward():
     STATE.x += 1

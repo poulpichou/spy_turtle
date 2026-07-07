@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from software.api.state import STATE
+from software.core.state import STATE
 from software.api import actions
 
 app = FastAPI()

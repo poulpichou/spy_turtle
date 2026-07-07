@@ -1,66 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Spy Turtle</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body { font-family: Arial; margin: 0; display: flex; flex-direction: column; height: 100vh; }
-    #camera { flex: 1; background: black; display: flex; align-items: center; justify-content: center; color: white; }
-    #panel { flex: 1; display: flex; flex-direction: column; padding: 10px; gap: 10px; }
-    button { padding: 12px; font-size: 16px; }
-    .row { display: flex; gap: 10px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Spy Turtle</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile.css">
 </head>
+
+
 <body>
 
-<div id="camera">
-  <div>📷 CAMERA STREAM (placeholder)</div>
+<header id="status-bar">
+
+    <div>
+        🔋 <span id="battery">--</span>%
+    </div>
+
+    <div>
+        📶 <span id="wifi">--</span>
+    </div>
+
+    <div>
+        🙂 <span id="emotion">neutral</span>
+    </div>
+
+    <div>
+        🌈 <span id="led-mode">off</span>
+    </div>
+
+</header>
+
+
+<main>
+
+
+<section id="left-panel">
+
+
+    <h3>Movement</h3>
+
+    <button id="forward">▲</button>
+
+    <div>
+        <button id="left">◀</button>
+        <button id="stop">■</button>
+        <button id="right">▶</button>
+    </div>
+
+    <button id="backward">▼</button>
+
+
+
+    <h3>Sounds</h3>
+
+    <button>
+        🔊 Startup
+    </button>
+
+
+</section>
+
+
+
+<section id="camera">
+
+    <div id="camera-placeholder">
+        <img src="/camera">
+    </div>
+
+</section>
+
+
+
+<section id="right-panel">
+
+
+<h3>Head</h3>
+
+
+<button>⬆</button>
+
+<div>
+<button>⬅</button>
+<button>⭕</button>
+<button>➡</button>
 </div>
 
-<div id="panel">
+<button>⬇</button>
 
-  <div class="row">
-    <button onclick="cmd('/move/forward')">⬆️</button>
-  </div>
 
-  <div class="row">
-    <button onclick="cmd('/move/left')">⬅️</button>
-    <button onclick="cmd('/move/backward')">⬇️</button>
-    <button onclick="cmd('/move/right')">➡️</button>
-  </div>
 
-  <div class="row">
-    <button onclick="cmd('/emotion/happy')">😊</button>
-    <button onclick="cmd('/emotion/sleepy')">😴</button>
-    <button onclick="cmd('/emotion/angry')">😡</button>
-  </div>
+<h3>Face</h3>
 
-  <div class="row">
-    <button onclick="cmd('/led/rainbow')">🌈 LED</button>
-    <button onclick="cmd('/led/off')">OFF</button>
-  </div>
+<select>
 
-  <pre id="state"></pre>
+<option>Neutral</option>
+<option>Happy</option>
+<option>Curious</option>
+<option>Sleepy</option>
+<option>Sad</option>
+<option>Angry</option>
 
-</div>
+</select>
 
-<script>
-async function cmd(path){
-  const r = await fetch("http://127.0.0.1:8000" + path, {method: "POST"});
-  const data = await r.json();
-  document.getElementById("state").innerText = JSON.stringify(data, null, 2);
-}
 
-async function refresh(){
-  const r = await fetch("http://127.0.0.1:8000/state");
-  const data = await r.json();
-  document.getElementById("state").innerText = JSON.stringify(data, null, 2);
-}
+<h3>LED</h3>
 
-setInterval(refresh, 1000);
-refresh();
-</script>
+<select>
+
+<option>Off</option>
+<option>Rainbow</option>
+<option>Breathing</option>
+<option>Fire</option>
+
+</select>
+
+
+</section>
+
+
+</main>
+
+
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/controls.js"></script>
+<script src="js/camera.js"></script>
+<script src="js/ui.js"></script>
+
 
 </body>
+
 </html>
