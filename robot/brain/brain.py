@@ -1,31 +1,33 @@
-import random
-import time
+from robot.brain.idle import IdleBehaviour
+from robot.brain.emotions import EmotionManager
+from robot.brain.commands import CommandManager
+from robot.brain.planner import Planner
 
 
 class Brain:
+    """
+    Main robot behaviour controller.
+
+    The Brain coordinates behaviour modules.
+    """
+
     def __init__(self, robot):
         self.robot = robot
-        self.last_action = time.time()
+
+        self.commands = CommandManager(robot)
+        self.emotions = EmotionManager(robot)
+        self.idle = IdleBehaviour(robot)
+
+        self.planner = Planner(robot)
+
+        print("[Brain] initialized")
 
     def update(self):
-        now = time.time()
 
-        if now - self.last_action > 3:
-            self.idle_behaviour()
-            self.last_action = now
+        self.commands.update()
+        self.emotions.update()
 
-    def idle_behaviour(self):
-        action = random.choice([
-            self.blink,
-            self.look_around
-        ])
+        priority = self.planner.get_priority()
 
-        action()
-
-    def blink(self):
-        print("[Brain] blink")
-        self.robot.face.blink()
-
-    def look_around(self):
-        print("[Brain] looking around")
-        self.robot.face.look_left()
+        if priority <= 10:
+            self.idle.update()

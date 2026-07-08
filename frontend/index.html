@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Spy Turtle</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<main>
+
+<section id="left-panel">
+
+<div class="card dpad-card">
+
+<h2>Movement</h2>
+
+<button id="forward">▲</button>
+
+<div class="button-row">
+<button id="left">◀</button>
+<button id="stop">■</button>
+<button id="right">▶</button>
+</div>
+
+<button id="backward">▼</button>
+
+</div>
+
+
+<div class="card control-card">
+
+<div class="control-line">
+
+<span class="control-icon">🔊</span>
+
+<select id="sound-select">
+<option>Startup</option>
+<option>Happy</option>
+<option>Curious</option>
+<option>Sleep</option>
+</select>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h2>Message</h2>
+
+<textarea id="message" placeholder="Message..."></textarea>
+
+<button id="send-message">
+Send
+</button>
+
+</div>
+
+</section>
+
+
+
+<section id="center-panel">
+
+<header id="status-bar">
+
+<div>🔋 <span id="battery">--</span>%</div>
+
+<div>📶 <span id="wifi">--</span></div>
+
+<div>🙂 <span id="emotion">neutral</span></div>
+
+<div>🌈 <span id="led-mode">off</span></div>
+
+<div>🐢 <span id="motion">stop</span></div>
+
+</header>
+
+
+<section id="camera-area">
+
+<div id="camera-placeholder">
+
+CAMERA STREAM
+
+</div>
+
+</section>
+
+</section>
+
+
+
+<section id="right-panel">
+
+<div class="card dpad-card">
+
+<h2>Head</h2>
+
+<button id="head-up">▲</button>
+
+<div class="button-row">
+<button id="head-left">◀</button>
+<button id="head-center">●</button>
+<button id="head-right">▶</button>
+</div>
+
+<button id="head-down">▼</button>
+
+</div>
+
+
+<div class="card control-card">
+
+<div class="control-line">
+
+<span class="control-icon">🐢</span>
+
+<select id="face-select">
+
+<option>Neutral</option>
+<option>Happy</option>
+<option>Curious</option>
+<option>Sleepy</option>
+<option>Angry</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="card control-card">
+
+<div class="control-line">
+
+<span class="control-icon">💡</span>
+
+<select id="led-select">
+
+<option>Off</option>
+<option>Rainbow</option>
+<option>Breathing</option>
+<option>Pulse</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="card photo-card">
+
+<button id="photo-button">
+📷
+</button>
+
+</div>
+
+</section>
+
+</main>
+
+
+<script src="js/simulator.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/controls.js"></script>
+
+</body>
+</html>

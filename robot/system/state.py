@@ -1,13 +1,16 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+
 
 @dataclass
 class TurtleState:
-    battery: float = 87.0
-    emotion: str = "happy"
+    battery: float = 100.0
+    emotion: str = "neutral"
     led_mode: str = "idle"
-    camera_on: bool = True
+    camera_on: bool = False
+
     x: float = 0.0
     y: float = 0.0
     angle: float = 0.0
 
-STATE = TurtleState()
+    connected: bool = True
+    moving: str = "stopped"

@@ -1,16 +1,26 @@
-from software.app.robot import Robot
 import time
+
+from robot.factory.robot_factory import RobotFactory
 
 
 def main():
-    robot = Robot()
 
-    print("FORWARD")
-    robot.forward()
-    time.sleep(2)
+    print("[Startup] Starting Spy Turtle")
 
-    print("STOP")
-    robot.stop()
+    robot = RobotFactory.create(
+        simulation=True
+    )
+
+    print("Spy Turtle online")
+
+    robot.set_emotion("happy")
+
+
+    while True:
+
+        robot.update()
+
+        time.sleep(0.1)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
-import random
+from robot.face.face import Face
+
 
 EYES = {
     "open": "o   o",
@@ -18,7 +19,8 @@ MOUTHS = {
     "sleepy": "  -  ",
 }
 
-class FakeFace:
+
+class FakeFace(Face):
     def __init__(self, oled):
         self.oled = oled
         self.eye_state = "open"
@@ -32,6 +34,43 @@ class FakeFace:
         self.mouth_state = state
         self.render()
 
+    def blink(self):
+        self.set_eyes("closed")
+        self.set_eyes("open")
+
+    def look_left(self):
+        self.set_eyes("open")
+        print("[Face] looking left")
+
+    def look_right(self):
+        self.set_eyes("open")
+        print("[Face] looking right")
+
+    def set_expression(self, expression):
+        if expression == "happy":
+            self.set_eyes("happy")
+            self.set_mouth("smile")
+
+        elif expression == "sad":
+            self.set_eyes("sad")
+            self.set_mouth("sad")
+
+        elif expression == "surprised":
+            self.set_eyes("surprised")
+            self.set_mouth("open")
+
+        elif expression == "sleepy":
+            self.set_eyes("sleepy")
+            self.set_mouth("sleepy")
+
+        elif expression == "angry":
+            self.set_eyes("angry")
+            self.set_mouth("sad")
+
+        else:
+            self.set_eyes("open")
+            self.set_mouth("neutral")
+
     def render(self):
         frame = [
             "              ",
@@ -39,4 +78,15 @@ class FakeFace:
             "     " + MOUTHS[self.mouth_state] + "     ",
             "              "
         ]
+
         self.oled.draw(frame)
+
+    def yawn(self):
+        self.set_eyes("sleepy")
+        self.set_mouth("open")
+
+        import time
+        time.sleep(0.8)
+
+        self.set_mouth("neutral")
+        self.set_eyes("open")

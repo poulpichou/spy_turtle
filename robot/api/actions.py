@@ -1,19 +1,26 @@
-from software.core.state import STATE
+def move_forward(robot):
+    robot.execute_command("forward")
 
-def move_forward():
-    STATE.x += 1
 
-def move_backward():
-    STATE.x -= 1
+def move_backward(robot):
+    robot.execute_command("backward")
 
-def turn_left():
-    STATE.angle -= 10
 
-def turn_right():
-    STATE.angle += 10
+def turn_left(robot):
+    robot.execute_command("left")
 
-def set_emotion(emotion: str):
-    STATE.emotion = emotion
 
-def set_led(mode: str):
-    STATE.led_mode = mode
+def turn_right(robot):
+    robot.execute_command("right")
+
+
+def stop(robot):
+    robot.execute_command("stop")
+
+
+def set_emotion(robot, emotion):
+    robot.set_emotion(emotion)
+
+
+def set_led(robot, mode):
+    robot.state.led_mode = mode
