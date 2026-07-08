@@ -22,13 +22,15 @@ All robot behaviour remains inside the Brain.
 The frontend follows a few simple principles.
 
 * Mobile first
-* Portrait orientation
+* Smartphone optimized
 * Thumb friendly
 * Fast loading
 * Minimalistic
 * Responsive
 * No installation required
 * Runs directly inside a browser
+
+The interface is designed primarily for smartphone usage but remains usable on tablets and desktop browsers for development and testing.
 
 ---
 
@@ -47,6 +49,13 @@ The frontend communicates with the robot using:
 * REST API
 * WebSocket (future)
 
+The mobile application is a Progressive Web App (PWA) served directly by the Raspberry Pi.
+
+Version 1 is developed as a responsive web application.
+
+The exact same codebase will later become an installable PWA without requiring a redesign.
+
+Version 2 will use a PWA to get better user experience (full screen on the telephone and app ready to launch)
 ---
 
 # General Philosophy
@@ -59,36 +68,91 @@ Robot intelligence always remains inside the Brain.
 
 The interface should never make autonomous decisions.
 
+The frontend only:
+
+* displays information
+* sends user commands
+* receives robot feedback
+
+---
+
+# UI Architecture
+
+The interface is built around reusable visual components.
+
+Main components:
+
+* Control cards
+* Direction controls
+* Status widgets
+* Camera view
+* Selector controls
+* Action buttons
+
+The goal is to keep the interface modular and easy to evolve.
+
+Future changes should be possible by modifying components rather than rewriting the whole interface.
+
 ---
 
 # Screen Layout
 
+The main screen uses a three-column layout.
+
+Current proportions:
+
 ```
-              
-+--------------------------------------------------------------------------------+
-|            |  Battery|WiFi|Connection|FPS|Emotion|LED Mode|etc. |              |
-| Movement   +----------------------------------------------------+ Head         |
-| Controls   |                                                    | Controls     |
-|            |                                                    |              |
-|            |                                                    |              |
-| Sound      |            Live Camera Stream                      | Face         |
-| Selector   |                                                    | Selector     |
-|            |                                                    |              |
-| Message    |                                                    | LED          |
-| __________ |                                                    | Selector     |
-| |        | |                                                    |              |
-| |________| |                                                    |              |
-|  [Send]    |                                                    | [Take Pict.] |
-+--------------------------------------------------------------------------------+
+LEFT PANEL       CENTER PANEL        RIGHT PANEL
+
+   18%              64%                 18%
 ```
 
-The live camera should occupy approximately **60–70%** of the available screen.
+Example:
 
-The movement and head controls remain permanently visible.
+```
++----------------------------------------------------------------+
+|         | Battery WiFi Emotion LED Status |                    |
+|         +---------------------------------+                    |
+|         |                                 |                    |
+| Control |                                 | Control            |
+| Cards   |        Camera Stream            | Cards              |
+|         |                                 |                    |
+|         |                                 |                    |
++----------------------------------------------------------------+
+```
 
-Secondary controls remain easily reachable without hiding the camera.
+The center panel contains:
 
-All controls should remain usable with both thumbs.
+* status bar
+* live camera stream
+
+The side panels contain:
+
+Left:
+
+* robot movement
+* sound selector
+* message panel
+
+Right:
+
+* camera/head movement
+* face selector
+* LED selector
+* photo button
+
+---
+
+# Layout Principles
+
+The interface follows these rules:
+
+* The camera remains the main visual element.
+* Side controls remain compact.
+* Controls must remain reachable with both thumbs.
+* Panels must never stretch vertically only to fill empty space.
+* The camera aspect ratio must remain fixed.
+* The interface must remain usable on small smartphone screens.
 
 ---
 
@@ -96,9 +160,13 @@ All controls should remain usable with both thumbs.
 
 These controls are always visible.
 
+---
+
 ## Status Bar
 
-Displays:
+The status bar is located above the camera.
+
+It displays:
 
 * battery percentage
 * charging status
@@ -108,21 +176,37 @@ Displays:
 * current LED mode
 * camera FPS (optional)
 
-A small avatar of the turtle may also display the current facial expression.
+The status bar is intentionally compact and occupies only a small part of the screen height.
+
+Example:
+
+```
+🔋92%   📶   🙂 Happy   🌈 Rainbow
+```
+
+A small turtle avatar may also display the current facial expression.
 
 Examples:
 
 ```
 (^_^)
+
 (-_-)
+
 (O_O)
 ```
 
 ---
 
-## Camera
+# Camera
 
 Displays the live stream from the Raspberry Pi Camera Module 3.
+
+The camera:
+
+* occupies approximately 60–70% of the available width
+* keeps a fixed aspect ratio
+* remains the main focus of the interface
 
 Future additions:
 
@@ -132,9 +216,11 @@ Future additions:
 
 ---
 
-## Movement Controls
+# Movement Controls
 
 Controlled by the left thumb.
+
+The movement control is displayed as a dedicated control card.
 
 Buttons:
 
@@ -144,13 +230,25 @@ Buttons:
 * Right
 * STOP
 
+The control will evolve toward a reusable D-Pad component.
+
+Future design:
+
+```
+       ▲
+
+    ◀  ●  ▶
+
+       ▼
+```
+
 Holding a button continuously sends movement commands.
 
 STOP immediately stops both motors.
 
 ---
 
-## Head Controls
+# Head Controls
 
 Controlled by the right thumb.
 
@@ -161,6 +259,8 @@ Buttons:
 * Left
 * Right
 * Center
+
+The head control uses the same design principles as the movement control.
 
 Future version:
 
@@ -174,11 +274,11 @@ These controls are used less frequently but remain accessible.
 
 ---
 
-## Face Selector
+# Face Selector
 
-Temporarily overrides the autonomous face.
+The face selector temporarily overrides the autonomous face behaviour.
 
-Examples:
+Available expressions:
 
 * Neutral
 * Happy
@@ -190,9 +290,15 @@ Examples:
 
 The selected face remains active for approximately one minute before the Brain returns to autonomous expressions.
 
+The selector is displayed as a compact control row:
+
+```
+🐢 [ Happy ▼ ]
+```
+
 ---
 
-## LED Selector
+# LED Selector
 
 Available modes:
 
@@ -208,9 +314,15 @@ Available modes:
 * Static Green
 * Static Blue
 
+The selector is displayed as a compact control row:
+
+```
+💡 [ Rainbow ▼ ]
+```
+
 ---
 
-## Sound Selector
+# Sound Selector
 
 Predefined sounds.
 
@@ -223,13 +335,19 @@ Examples:
 * Sleep
 * Curious
 
+The selector is displayed as a compact control row:
+
+```
+🔊 [ Startup ▼ ]
+```
+
 Future:
 
 * Text-to-speech
 
 ---
 
-## Message Panel
+# Message Panel
 
 Simple text box.
 
@@ -245,9 +363,16 @@ The Brain decides how long it remains visible.
 
 ---
 
-## Picture Button
+# Picture Button
 
 Captures a still image from the camera.
+
+The button uses a standard camera-style design:
+
+```
+  ◯
+  🔴
+```
 
 The picture is stored on the Raspberry Pi and may later be downloaded.
 
@@ -269,12 +394,12 @@ Returns:
 
 ```json
 {
-    "battery": 92,
-    "charging": false,
-    "emotion": "happy",
-    "led_mode": "rainbow",
-    "connection": "online",
-    "wifi": true
+    "battery":92,
+    "charging":false,
+    "emotion":"happy",
+    "led_mode":"rainbow",
+    "connection":"online",
+    "wifi":true
 }
 ```
 
@@ -288,7 +413,7 @@ Returns the MJPEG live stream.
 
 ## GET /faces
 
-Returns the available expressions.
+Returns available expressions.
 
 Example:
 
@@ -493,6 +618,7 @@ Handles:
 
 * movement controls
 * head controls
+* touch events
 * keyboard shortcuts (desktop)
 
 ---

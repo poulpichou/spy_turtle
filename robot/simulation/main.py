@@ -9,5 +9,5 @@ def main():
     print("Sim engine ready.")
     engine.idle_loop()
 
-if __name__ == "__main__":
+if __name__ == "__main__":  
     main()
