@@ -1,70 +1,46 @@
 from fastapi import FastAPI
-
-from robot.factory.robot_factory import RobotFactory
-
+from robot.system.runtime import get_robot
 from robot.api import actions
-
 
 app = FastAPI()
 
-
-robot = RobotFactory.create(
-    simulation=True
-)
-
-
 @app.get("/state")
 def get_state():
-    return robot.state.__dict__
-
+    print("[API] GET state")
+    robot = get_robot()
+    return robot.state.__dict__ if robot else {"error": "no robot"}
 
 @app.post("/move/forward")
 def forward():
-    actions.move_forward(robot)
-    return robot.state.__dict__
-
+    print("[API] POST forward")
+    actions.move_forward()
+    robot = get_robot()
+    return robot.state.__dict__ if robot else {"error": "no robot"}
 
 @app.post("/move/backward")
 def backward():
-    actions.move_backward(robot)
-    return robot.state.__dict__
-
+    print("[API] POST backward")
+    actions.move_backward()
+    robot = get_robot()
+    return robot.state.__dict__ if robot else {"error": "no robot"}
 
 @app.post("/move/left")
 def left():
-    actions.turn_left(robot)
-    return robot.state.__dict__
-
+    print("[API] POST left")
+    actions.turn_left()
+    robot = get_robot()
+    return robot.state.__dict__ if robot else {"error": "no robot"}
 
 @app.post("/move/right")
 def right():
-    actions.turn_right(robot)
-    return robot.state.__dict__
-
+    print("[API] POST right")
+    actions.turn_right()
+    robot = get_robot()
+    return robot.state.__dict__ if robot else {"error": "no robot"}
 
 @app.post("/move/stop")
 def stop():
-    actions.stop(robot)
-    return robot.state.__dict__
-
-
-@app.post("/emotion/{emotion}")
-def emotion(emotion: str):
-
-    actions.set_emotion(
-        robot,
-        emotion
-    )
-
-    return robot.state.__dict__
-
-
-@app.post("/led/{mode}")
-def led(mode: str):
-
-    actions.set_led(
-        robot,
-        mode
-    )
-
-    return robot.state.__dict__
+    print("[API] POST stop")
+    actions.stop()
+    robot = get_robot()
+    return robot.state.__dict__ if robot else {"error": "no robot"}

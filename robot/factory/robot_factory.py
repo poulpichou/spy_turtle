@@ -1,44 +1,30 @@
 from robot.system.robot import Robot
+from robot.brain.brain import Brain
 
 from robot.simulation.fake_motor import FakeMotor
-from robot.simulation.fake_oled import FakeOLED
+from robot.simulation.fake_leds import FakeLEDController
+from robot.simulation.fake_camera import FakeCamera
+from robot.simulation.fake_battery import FakeBattery
+from robot.simulation.fake_speaker import FakeSpeaker
+from robot.simulation.fake_servo import FakeServo
 from robot.simulation.fake_face import FakeFace
 
-
 class RobotFactory:
-    """
-    Creates a complete robot instance.
+    def __init__(self, simulation=True):
+        self.simulation = simulation
 
-    This is the only place that knows
-    which hardware implementation is used.
-    """
-
-    @staticmethod
-    def create(simulation=True):
-
-        if simulation:
-            print("[Factory] Creating simulation robot")
-
-            oled = FakeOLED()
-            face = FakeFace(oled)
+    def create(self):
+        if self.simulation:
             motors = FakeMotor()
-
+            leds = FakeLEDController()
+            camera = FakeCamera()
+            battery = FakeBattery()
+            speaker = FakeSpeaker()
+            servo = FakeServo()
+            face = FakeFace()
         else:
-            print("[Factory] Creating hardware robot")
+            raise NotImplementedError("Hardware mode not implemented yet")
 
-            from robot.hardware.motor import MotorDriver
-            from robot.face.eyes import Eyes
-            from robot.face.mouth import Mouth
-
-            motors = MotorDriver()
-
-            oled = None
-            face = None
-
-            # Hardware face implementation
-            # will be completed later
-
-        return Robot(
-            motors=motors,
-            face=face
-        )
+        robot = Robot(motors, face, leds, camera, battery, speaker, servo)
+        robot.brain = Brain(robot)
+        return robot

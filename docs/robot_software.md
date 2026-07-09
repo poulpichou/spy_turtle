@@ -2,20 +2,22 @@
 
 ## Purpose
 
-The `robot` package contains all software running on the Spy Turtle robot itself.
+This document describes the software architecture of Spy Turtle.
 
-It includes:
+The goal is to provide a clean separation between:
 
-* robot intelligence
-* behaviour management
-* hardware abstraction
-* simulation
-* communication services
-* system state management
+* robot logic
+* hardware drivers
+* simulation drivers
+* API control
+* future Raspberry Pi implementation
 
-The robot software is independent from the mobile frontend.
+The software must run identically in:
 
-The frontend only sends commands and displays information.
+* simulation mode on a development computer
+* hardware mode on the Raspberry Pi
+
+The robot behavior must never depend on the underlying hardware implementation.
 
 ---
 
@@ -23,450 +25,580 @@ The frontend only sends commands and displays information.
 
 Spy Turtle follows this architecture:
 
-    Mobile Frontend
-            |
-            | REST API / WebSocket
-            |
-           API
-            |
-          Robot
-            |
-          Brain
-            |
-       System Layer
-            |
-     Hardware Interfaces
-            |
-     Simulation / Real Hardware
-
-The robot software must run identically in simulation and on the physical Raspberry Pi.
+```
+Mobile Frontend
+        |
+        |
+     REST API
+        |
+        |
+  Robot Actions Layer
+        |
+        |
+      Robot
+        |
+        |
+      Brain
+        |
+        |
+  Hardware Abstraction Layer
+        |
+        |
+ Simulation / Real Hardware
+```
 
 ---
 
-# Design Principles
+# Main Principle
 
-## Simulation First
-
-Every hardware component must provide a simulation implementation.
-
-The same Brain must work with:
-
-* simulated hardware
-* real hardware
-
-The Brain must never know if it controls real or simulated components.
+The robot software must not directly access hardware.
 
 Example:
 
-Good:
+Wrong:
 
-    motor.move_forward()
+```python
+GPIO.output(pin, True)
+```
 
-Bad:
+Correct:
 
-    GPIO.output(pin, HIGH)
+```python
+robot.leds.on()
+```
 
-Hardware details remain isolated.
+The hardware implementation decides how the action is performed.
 
 ---
 
-## Modular Behaviour
+# Project Structure
 
-The Brain coordinates independent behaviour modules.
+```
+robot/
+|
+├── api/
+│   ├── app.py
+│   └── actions.py
+|
+├── brain/
+│   ├── brain.py
+│   ├── idle.py
+│   └── planner.py
+|
+├── factory/
+│   └── robot_factory.py
+|
+├── hardware/
+│   ├── motor.py
+│   ├── leds.py
+│   ├── camera.py
+│   ├── battery.py
+│   ├── speaker.py
+│   └── servo.py
+|
+├── simulation/
+│   ├── fake_motor.py
+│   ├── fake_leds.py
+│   ├── fake_camera.py
+│   ├── fake_battery.py
+│   ├── fake_speaker.py
+│   ├── fake_servo.py
+│   └── fake_face.py
+|
+├── system/
+│   ├── robot.py
+│   ├── runtime.py
+│   └── state.py
+|
+└── startup/
+    └── main.py
+```
+
+---
+
+# RobotFactory
+
+`RobotFactory` is the only place where robot components are created.
+
+Example:
+
+```python
+RobotFactory(simulation=True)
+```
+
+creates:
+
+```
+FakeMotor
+FakeLEDController
+FakeCamera
+FakeBattery
+FakeSpeaker
+FakeServo
+FakeFace
+```
+
+Later:
+
+```python
+RobotFactory(simulation=False)
+```
+
+will create:
+
+```
+GPIO Motor
+WS2812 LED Controller
+Raspberry Pi Camera
+UPS Battery Controller
+MAX98357 Speaker
+PWM Servo Controller
+OLED Face
+```
+
+The rest of the software remains unchanged.
+
+---
+
+# Robot Object
+
+The Robot object contains all physical components.
 
 Current structure:
 
-    robot/brain/
+```python
+Robot(
+    motors,
+    face,
+    leds,
+    camera,
+    battery,
+    speaker,
+    servo
+)
+```
 
-    brain.py
-    idle.py
-    commands.py
-    emotions.py
-    planner.py
+The Robot also contains:
 
-Responsibilities:
-
-### IdleBehaviour
-
-Handles autonomous behaviours:
-
-* blinking
-* looking around
-* yawning
-* small idle actions
-
-### CommandManager
-
-Handles user interaction:
-
-* movement commands
-* user priorities
-* temporary interaction state
-
-### EmotionManager
-
-Handles emotional state:
-
-* current emotion
-* expression requests
-
-### Planner
-
-Decides which behaviour currently has priority.
+* current state
+* Brain controller
 
 ---
 
-# Behaviour Priority
+# Brain System
 
-Behaviours must not compete directly.
+The Brain handles autonomous behavior.
 
-The Planner decides which behaviour is allowed to run.
+Current responsibilities:
 
-Current priority model:
-
-    100 : emergency / safety
-    50  : user interaction
-    30  : emotions
-    10  : idle behaviour
+* idle behaviors
+* future autonomous actions
+* priorities
 
 Examples:
 
-* user commands temporarily override idle behaviour
-* low battery can override normal behaviour
-* emergency stop overrides everything
+```
+Idle
+ |
+ +-- blink
+ +-- look around
+ +-- yawn
+```
+
+The Brain must never directly control hardware.
+
+Correct:
+
+```python
+self.robot.face.look_left()
+```
+
+Incorrect:
+
+```python
+GPIO.write(...)
+```
 
 ---
 
-# Separation of Responsibilities
+# Hardware Abstraction Layer
 
-## Robot
+Every hardware component has two implementations:
 
-Location:
+```
+Interface
+   |
+   +-- Simulation
+   |
+   +-- Real Hardware
+```
 
-    robot/system/
-
-The Robot object represents the complete robot.
-
-Responsibilities:
-
-* connect all modules
-* contain global state
-* expose high-level actions
-* run Brain updates
-
-Contains:
-
-    robot.py
-    state.py
-
-Example:
-
-    Robot
-     |
-     +-- State
-     |
-     +-- Brain
-     |
-     +-- Face
-     |
-     +-- Motors
-     |
-     +-- Camera
-     |
-     +-- LEDs
-     |
-     +-- Battery
+The interface remains identical.
 
 ---
 
-## Brain
+# Motors
 
-Location:
+Purpose:
 
-    robot/brain/
+Control robot movement.
 
-The Brain contains robot intelligence.
+Current API:
 
-Responsibilities:
+```python
+forward()
+backward()
+turn_left()
+turn_right()
+stop()
+```
 
-* autonomous behaviours
-* emotional decisions
-* reactions to user interaction
-* behaviour scheduling
-* decision making
+Simulation:
+
+```
+FakeMotor
+```
+
+Future hardware:
+
+```
+TB6612FNG driver
++
+JGA25-370 motors with encoders
+```
+
+---
+
+# LEDs
+
+Purpose:
+
+Shell lighting and status indication.
+
+Current implementation:
+
+```
+FakeLEDController
+```
+
+Functions:
+
+```python
+rainbow()
+breathing(color)
+static(color)
+off()
+```
+
+Future hardware:
+
+```
+WS2812B addressable LEDs
+```
+
+---
+
+# Camera
+
+Purpose:
+
+Provide video stream and photos.
+
+Current implementation:
+
+```
+FakeCamera
+```
+
+Functions:
+
+```python
+start()
+stop()
+get_frame()
+```
+
+Future hardware:
+
+```
+Raspberry Pi Camera Module 3
+```
+
+---
+
+# Face Display
+
+Purpose:
+
+Display turtle emotions.
+
+Current implementation:
+
+```
+FakeFace
+```
 
 Examples:
 
-* deciding when to blink
-* deciding when to look around
-* selecting expressions
-* reacting to commands
+```python
+blink()
+set_expression("sleepy")
+look_left()
+look_right()
+```
 
-The Brain never directly accesses hardware.
+Future hardware:
 
----
-
-## Hardware
-
-Location:
-
-    robot/hardware/
-
-Hardware modules provide interfaces to physical components.
-
-Examples:
-
-    motor.py
-    camera.py
-    oled.py
-    leds.py
-    speaker.py
-    battery.py
-    servo.py
-
-Hardware modules:
-
-* communicate with devices
-* hide implementation details
-* do not contain behaviour
-* do not make decisions
+```
+OLED display
+```
 
 ---
 
-## Face System
+# Battery
 
-Location:
+Purpose:
 
-    robot/face/
+Provide battery information.
 
-The Face system manages Spy Turtle expressions.
+Current implementation:
 
-Responsibilities:
+```
+FakeBattery
+```
 
-* eyes
-* mouth
-* animations
-* expressions
+Functions:
 
-The Face receives commands but does not decide when emotions happen.
+```python
+get_level()
+is_charging()
+```
+
+Future hardware:
+
+```
+Waveshare UPS HAT
+```
+
+---
+
+# Speaker
+
+Purpose:
+
+Play turtle sounds and voice.
+
+Current implementation:
+
+```
+FakeSpeaker
+```
+
+Functions:
+
+```python
+play(text)
+stop()
+set_volume(volume)
+```
+
+Future hardware:
+
+```
+MAX98357 amplifier
++
+speaker
+```
+
+---
+
+# Camera Servo System
+
+The camera uses two servo axes.
+
+Axis:
+
+```
+Pan  : left / right
+Tilt : up / down
+```
+
+Current implementation:
+
+```
+FakeServo
+```
+
+Functions:
+
+```python
+look_left()
+look_right()
+look_up()
+look_down()
+center()
+```
+
+Future hardware:
+
+```
+2x PWM servo motors
+```
+
+---
+
+# REST API
+
+The API allows remote control.
+
+## Movement
+
+```
+POST /move/forward
+POST /move/backward
+POST /move/left
+POST /move/right
+POST /move/stop
+```
+
+---
+
+## Camera
+
+```
+POST /camera/start
+POST /camera/stop
+
+POST /camera/left
+POST /camera/right
+POST /camera/up
+POST /camera/down
+POST /camera/center
+
+GET /camera/frame
+```
+
+---
+
+## LEDs
+
+```
+POST /led/{mode}
+```
+
+---
+
+## Face
+
+```
+POST /emotion/{emotion}
+```
+
+---
+
+## Speaker
+
+```
+POST /speak/{text}
+```
+
+---
+
+## Battery
+
+```
+GET /battery
+```
 
 Example:
 
-Brain decides:
-
-    show happy expression
-
-Face handles:
-
-    display happy expression
-
----
-
-## API
-
-Location:
-
-    robot/api/
-
-The API communicates with external clients.
-
-Responsibilities:
-
-* receiving user commands
-* sending robot status
-* exposing services such as camera streaming
-
-The API does not contain robot intelligence.
-
-Correct flow:
-
-    API
-     |
-     v
-    Robot
-     |
-     v
-    Brain
-     |
-     v
-    Hardware
-
----
-
-# Robot Factory
-
-Location:
-
-    robot/factory/
-
-The Factory creates complete robot instances.
-
-Responsibilities:
-
-* select simulation or hardware components
-* hide initialization details
-* allow the same software to run everywhere
-
-Example:
-
-    robot = RobotFactory.create(simulation=True)
-
-Simulation components:
-
-    FakeMotor
-    FakeFace
-    FakeOLED
-
-Hardware components:
-
-    MotorDriver
-    OLED
-    Camera
-    LEDs
-
-The rest of the software must not know which implementation is used.
-
----
-
-# Simulation
-
-Location:
-
-    robot/simulation/
-
-The simulation environment allows development without physical hardware.
-
-Simulation replaces real components:
-
-    Real Motor   -> Fake Motor
-    Real OLED    -> Fake OLED
-    Real LEDs    -> Fake LEDs
-    Real Camera  -> Fake Camera
-
-The goal is to develop most software before Raspberry Pi assembly.
+```json
+{
+    "level":100,
+    "charging":false
+}
+```
 
 ---
 
 # Startup
 
-Location:
+The official startup command is:
 
-    robot/startup/
+```
+python -m robot.startup.main
+```
 
-The startup module launches the robot software.
+Startup sequence:
 
-Responsibilities:
-
-* create robot using RobotFactory
-* initialize services
-* run the main loop
-
-Startup must not contain robot behaviour.
-
----
-
-# Configuration
-
-Location:
-
-    robot/config/
-
-Contains:
-
-* hardware settings
-* robot parameters
-* timing values
-* environment configuration
+```
+Create Robot
+      |
+Register Runtime
+      |
+Start API
+      |
+Start Robot Loop
+```
 
 ---
 
-# Development Rules
+# Coding Rules
 
-When adding a new feature:
+The project follows these rules:
 
-1. Add behaviour logic to the Brain.
-2. Add hardware access through an interface.
-3. Add simulation implementation.
-4. Test without physical hardware.
-5. Deploy to Raspberry Pi only after simulation works.
-
----
-
-# Code Style Rules
-
-The project prefers simple and compact code.
-
-Rules:
-
-* avoid unnecessary blank lines
-* avoid unnecessary line breaks
-* keep related instructions close together
-* prefer readable compact functions
-* avoid over-engineering
-* avoid excessive abstraction
-
-The objective is readability and maintainability.
-
-Preferred style:
-
-    self.robot.forward()
-    self.robot.set_emotion("happy")
-
-Avoid unnecessary splitting:
-
-    self.robot \
-        .forward()
-
-    self.robot \
-        .set_emotion(
-            "happy"
-        )
+* Keep code compact and readable.
+* Avoid unnecessary blank lines.
+* Prefer inline expressions when they remain readable.
+* Avoid splitting simple logic into many artificial blocks.
+* Always provide complete files when modifying project files.
+* Keep simulation and hardware APIs identical.
+* Never put hardware-specific code inside Brain or API logic.
 
 ---
 
-# Current Architecture
+# Development Workflow
 
-    robot/
+Development:
 
-    ├── api/
-    ├── brain/
-    ├── config/
-    ├── factory/
-    ├── face/
-    ├── hardware/
-    ├── simulation/
-    ├── startup/
-    ├── system/
-    └── tests/
+```
+RobotFactory(simulation=True)
+```
 
----
+Runs on:
 
-# Future Extensions
+* Windows
+* VS Code
+* Python virtual environment
 
-The architecture should allow adding:
+Production:
 
-* computer vision
-* autonomous navigation
-* speech recognition
-* speech synthesis
-* object recognition
-* emotional memory
-* advanced AI behaviours
+```
+RobotFactory(simulation=False)
+```
 
-without redesigning the core system.
+Runs on:
+
+* Raspberry Pi 5
+* real hardware components
 
 ---
 
-# Project Philosophy
+# Current Status
 
-Spy Turtle is not designed to be only a remote-controlled robot.
+Completed:
 
-The software architecture exists to create the feeling of a small living creature.
+✅ Robot architecture  
+✅ Simulation environment  
+✅ REST API  
+✅ Motor abstraction  
+✅ LED abstraction  
+✅ Camera abstraction  
+✅ Face abstraction  
+✅ Battery abstraction  
+✅ Speaker abstraction  
+✅ Pan/Tilt servo abstraction  
 
-The Brain provides personality.
+Next phase:
 
-The hardware provides senses and movement.
-
-The simulation provides freedom to experiment.
-
-Every technical decision should help Spy Turtle feel alive.
+Hardware implementation on Raspberry Pi.

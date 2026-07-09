@@ -1,24 +1,38 @@
 class FakeMotor:
     def __init__(self):
-        self.state = "stopped"
+        self.left_speed = 0
+        self.right_speed = 0
         print("[FakeMotor] ready")
 
+    def set_left_speed(self, speed):
+        self.left_speed = speed
+        print(f"[FakeMotor] left speed -> {speed}")
+
+    def set_right_speed(self, speed):
+        self.right_speed = speed
+        print(f"[FakeMotor] right speed -> {speed}")
+
     def forward(self, speed=0.6):
-        self.state = "forward"
-        print("[Motor] forward")
+        self.set_left_speed(speed)
+        self.set_right_speed(speed)
+        print("[FakeMotor] forward")
 
     def backward(self, speed=0.6):
-        self.state = "backward"
-        print("[Motor] backward")
+        self.set_left_speed(-speed)
+        self.set_right_speed(-speed)
+        print("[FakeMotor] backward")
 
     def turn_left(self, speed=0.6):
-        self.state = "left"
-        print("[Motor] left")
+        self.set_left_speed(-speed)
+        self.set_right_speed(speed)
+        print("[FakeMotor] turn left")
 
     def turn_right(self, speed=0.6):
-        self.state = "right"
-        print("[Motor] right")
+        self.set_left_speed(speed)
+        self.set_right_speed(-speed)
+        print("[FakeMotor] turn right")
 
     def stop(self):
-        self.state = "stopped"
-        print("[Motor] stop")
+        self.set_left_speed(0)
+        self.set_right_speed(0)
+        print("[FakeMotor] stop")

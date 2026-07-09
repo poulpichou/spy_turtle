@@ -1,11 +1,11 @@
-class LEDController:
+class FakeLEDController:
     def __init__(self):
         self.mode = "off"
-        print("[LED] hardware ready")
+        print("[FakeLED] ready")
 
     def set_mode(self, mode):
         self.mode = mode
-        print(f"[LED] mode -> {mode}")
+        print(f"[FakeLED] {mode}")
 
     def off(self): self.set_mode("off")
     def static(self, color): self.set_mode(f"static:{color}")

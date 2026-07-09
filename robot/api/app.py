@@ -1,0 +1,107 @@
+from fastapi import FastAPI
+from robot.system.runtime import get_robot
+from robot.api import actions
+
+app = FastAPI()
+
+def state():
+    robot = get_robot()
+    return robot.state.__dict__ if robot else {"error": "no robot"}
+
+@app.get("/state")
+def get_state():
+    return state()
+
+@app.get("/battery")
+def battery():
+    robot = get_robot()
+    if not robot:
+        return {"error": "no robot"}
+    return {
+        "level": robot.battery.get_level(),
+        "charging": robot.battery.is_charging()
+    }
+
+@app.post("/move/forward")
+def forward():
+    print("[API] POST forward")
+    actions.move_forward()
+    return state()
+
+@app.post("/move/backward")
+def backward():
+    print("[API] POST backward")
+    actions.move_backward()
+    return state()
+
+@app.post("/move/left")
+def left():
+    print("[API] POST left")
+    actions.turn_left()
+    return state()
+
+@app.post("/move/right")
+def right():
+    print("[API] POST right")
+    actions.turn_right()
+    return state()
+
+@app.post("/move/stop")
+def stop():
+    print("[API] POST stop")
+    actions.stop()
+    return state()
+
+@app.post("/emotion/{emotion}")
+def emotion(emotion: str):
+    actions.set_emotion(emotion)
+    return state()
+
+@app.post("/led/{mode}")
+def led(mode: str):
+    actions.set_led(mode)
+    return state()
+
+@app.post("/camera/start")
+def camera_start():
+    actions.camera_start()
+    return state()
+
+@app.post("/camera/stop")
+def camera_stop():
+    actions.camera_stop()
+    return state()
+
+@app.get("/camera/frame")
+def camera_frame():
+    return {"frame": actions.camera_frame()}
+
+@app.post("/camera/left")
+def camera_left():
+    actions.look_left()
+    return state()
+
+@app.post("/camera/right")
+def camera_right():
+    actions.look_right()
+    return state()
+
+@app.post("/camera/up")
+def camera_up():
+    actions.look_up()
+    return state()
+
+@app.post("/camera/down")
+def camera_down():
+    actions.look_down()
+    return state()
+
+@app.post("/camera/center")
+def camera_center():
+    actions.camera_center()
+    return state()
+
+@app.post("/speak/{text}")
+def speak(text: str):
+    actions.speak(text)
+    return {"message": text}

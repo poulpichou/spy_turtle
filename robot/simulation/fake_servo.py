@@ -1,13 +1,16 @@
-class Servo:
+class FakeServo:
     def __init__(self):
         self.pan = 90
         self.tilt = 90
+        print("[FakeServo] ready")
 
     def move_pan(self, angle):
         self.pan = angle
+        print(f"[FakeServo] pan:{angle}")
 
     def move_tilt(self, angle):
         self.tilt = angle
+        print(f"[FakeServo] tilt:{angle}")
 
     def look_left(self):
         self.move_pan(45)
@@ -24,3 +27,4 @@ class Servo:
     def center(self):
         self.pan = 90
         self.tilt = 90
+        print("[FakeServo] center")
