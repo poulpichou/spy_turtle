@@ -1,575 +1,568 @@
 # Wiring
 
 ## Purpose
-
 This document describes the complete hardware assembly of Spy Turtle.
 
 It is the reference for:
+- hardware architecture
+- electrical wiring
+- GPIO allocation
+- power distribution
+- mechanical integration
+- hardware configuration
 
-* the Bill Of Materials (BOM)
-* electrical wiring
-* GPIO allocation
-* power distribution
-* mechanical assembly
-* hardware configuration
-
-Any hardware modification should be reflected in this document.
+Any hardware modification must be reflected in this document.
 
 ---
 
 # Hardware Overview
 
-```
-                     +--------------------+
-                     |   Raspberry Pi 5   |
-                     +---------+----------+
-                               |
-                +--------------+--------------+
-                |                             |
-         Camera Module                 Breakout Board
-                |                             |
-      +---------+----------+---------+--------+
-      |         |          |         |        |
-   OLED L    OLED R    TB6612     Servo   MAX98357
-                              |
-                         DC Motors
-```
+Spy Turtle is built around a Raspberry Pi 5.
 
-The Raspberry Pi contains all software logic.
+The Raspberry Pi contains all software intelligence and communicates with all hardware subsystems.
 
-Every peripheral is connected either directly to the Raspberry Pi or through the GPIO breakout board.
+Main systems:
+- Computer System
+- Power System
+- Vision System
+- Display System
+- Mobility System
+- Head Articulation System
+- Audio System
+- Lighting System
 
 ---
 
 # Final Bill Of Materials
 
 ## Main Computer
-
 | Component | Quantity |
-|------------|---------:|
+|---|---:|
 | Raspberry Pi 5 | 1 |
-| 64 GB microSD (A2) | 1 |
-
----
-
-## Power
-
-| Component | Quantity |
-|------------|---------:|
-| Waveshare UPS HAT (4-cell version) | 1 |
-| Samsung 21700 Li-Ion cells | 4 |
-| USB-C Panel Mount | 1 |
-| Inline Fuse Holder | 1 |
-| 5 A Automotive Fuse | 1 |
-
----
-
-## Mobility
-
-| Component | Quantity |
-|------------|---------:|
-| JGA25-370 DC Motor (6 V / 280 RPM) | 2 |
-| Wheel Encoders | 2 |
-| TB6612FNG Motor Driver | 1 |
-| 2WD Chassis | 1 |
-
----
-
-## Vision
-
-| Component | Quantity |
-|------------|---------:|
-| Raspberry Pi Camera Module 3 | 1 |
-
----
-
-## User Feedback
-
-| Component | Quantity |
-|------------|---------:|
-| 0.96" OLED Display | 2 |
-| WS2812 RGB LED Strip | 1 |
-| MAX98357A I2S Amplifier | 1 |
-| Speaker | 1 |
-
----
-
-## Motion
-
-| Component | Quantity |
-|------------|---------:|
-| MG90S Servo | 2 |
-
----
-
-## Wiring
-
-| Component | Quantity |
-|------------|---------:|
-| GPIO Breakout Board | 1 |
-| Dupont Wires | 1 kit |
-| Nylon Spacers | 1 kit |
-| Zip Ties | 1 pack |
-
----
-
-## Cooling
-
-| Component | Quantity |
-|------------|---------:|
+| 64GB microSD A2 | 1 |
 | GeeekPi Active Cooler | 1 |
 
 ---
 
-## Future Hardware
+# Power System
+| Component | Quantity |
+|---|---:|
+| Waveshare UPS HAT | 1 |
+| 21700 Li-Ion batteries | 4 |
+| USB-C Panel Mount | 1 |
+| Inline Fuse Holder | 1 |
+| 5A Fuse | 1 |
 
-Not part of Version 1.
+The UPS HAT provides:
+- battery charging
+- battery protection
+- uninterrupted power
+- battery monitoring
 
-* Microphone
-* IMU
-* ToF sensor
-* GPS
-* Charging dock
-* Environmental sensors
+Power distribution:
+Battery pack  
+→ Waveshare UPS HAT  
+→ Raspberry Pi 5  
+→ Low power peripherals
 
-## Actual links
-role	model	Where?
-Brain	Raspberry Pi 5	amazon
-Brain	microSD 64GB 	amazon
-Power	Waveshare UPS HAT 2S ou 4S	https://www.amazon.de/-/en/Waveshare-UPS-HAT-Raspberry-Bi-Directional/dp/B0DBLMFX57/ref=sr_1_1?crid=77HVWKH9TXJV&dib=eyJ2IjoiMSJ9.RszjCpKxxzppFm-K5SSzrvGx-kQRNISWsHxnH_kMHlj_NntzzVRj10HX9jW9u4wb5wRVSVMKmtwcq1uc_kGnajQI32JNencTnJCm7VNZGiaJ7cGs3GbO_kr7wgggPFkH1wWYmxSd7cmY5sOiyT13kcCL5zuZLxdtgfIGsFPsUtShJC0L8PvaAtDLTtF6YGF5BwaihyJj0h-XsXwcb-PGngdZDmv39Ol9nU-IO_YV7Ys.U8DfBEBWhlPu7zdzaiz63IuChoV4iswKp3FHZrPzHSg&dib_tag=se&keywords=Waveshare+UPS+HAT&qid=1782936548&sprefix=waveshare+ups+hat%2Caps%2C111&sr=8-1
-Power	18650 batteries (x4)	https://www.galaxus.ch/fr/s1/product/everactive-2x-18650-li-ion-panasonic-ncr18650bschachtel-2-pcs-18650-3350-mah-batteries-piles-35785435?offertype=marketplace&offerid=8534185&utm_source=google&utm_medium=cpc&utm_campaign=PMax:+PROD_CH_SSC_Cluster_NoData&campaignid=20979242056&adtype=pla&adgroupid=&adid=&dgCidg=Cj0KCQjw9ZLSBhCcARIsAEhGKgPYJNxUgEJkxltl_OJ17pRRgGsp28AcpeFdXNvypTxdAJ6RorkwufkaArpyEALw_wcB&gclsrc=aw.ds&gad_source=1&gad_campaignid=20975944958&gbraid=0AAAAADmCc4NKzh2keIvl3SDiaNZc9Ll2u&gclid=Cj0KCQjw9ZLSBhCcARIsAEhGKgPYJNxUgEJkxltl_OJ17pRRgGsp28AcpeFdXNvypTxdAJ6RorkwufkaArpyEALw_wcB
-Power Alimentation	USB-C Panel Mount	https://www.amazon.de/-/en/gp/product/B0GDHZ3243/ref=sw_img_1?th=1
-Motion	Moteurs DC avec encodeurs	https://www.amazon.fr/-/en/OMVUMMHOB-209BF99F/dp/B0GXVKH8LZ/ref=sr_1_1?crid=214OQRH42UCER&dib=eyJ2IjoiMSJ9.fSC16qD1eeQkbw6PVKX5BvwKZKp9rJsYzj8WKjAuOIGVosRd7445XJz_twKFHpN1rb2F8UTFlegl8rdaNWYt8TNQb8h5puWNwixIFe26WMlTusLJFQX4WWxw5tjeXBJ-ug4l9yUJpw8wqjN28nzY6E7c_pj0lDmPlrkhH3eLzCeD_M2iRcWG4aSL7tSCWXgX8h7ThJQcxiomuOu8t-beDvYmWjXU__C9a9ACJg1F-E55dybPhJS5nZGPndThLsFtxWUfOBPPdx94D2G9FSI-1e5jS3cGADg3R7teW6vukfg.eXV_9tBosaGm5noJeaFLqrBptkiddublEzGr4N86NcQ&dib_tag=se&keywords=JGA25-370%2BDC%2BReduction%2BHall%2BMotor%2Bwith%2BEncoder%2BSpeedometer%2C%2BStrong%2BTorque%2B(280rpm%2C%2B6V)&qid=1782933883&sprefix=%2Caps%2C696&sr=8-1&th=1
-Motion	TB6612FNG motor driver	https://www.amazon.de/-/en/gp/product/B0CQCMPYXJ/ref=sw_img_1?smid=A3JF3T1CRN0KMB&psc=1
-Wheel	2WD Chassis	https://www.amazon.de/-/en/HpLive-Chassis-Platform-Encoder-Battery/dp/B0DKJ5FHHN/ref=sr_1_5?crid=NBVY1A9SRNGF&dib=eyJ2IjoiMSJ9.SCBHbetDuUk17vHGHN5KptkVh2TitmTYXuVDZAzra1aBWWl47gOx5_-UJm_Id8e3038sjBLqF0-V0YnGnJWR4dLeVqIy83IIIsJLz2QOtWql_jVTx3oltwaHHs5sGtO_kaYhf2YUgDaGVCne_JkIm0yt83-e90sL7-poDio8x-WzSVpElzew6YrfTE5vAIScWAMbfeHY2mW78IXtKw5khACY9vOUZrWg7014blRRqbI0vKMKG6ft1bvZf74BFjdeyABPvZrpQjz37MuarK1EABmbkYqVDY6atMVmc6mCeDo.lLIAueaH4eM5P-nqVvRp-UgJJywehZKMMhcAYbTViOU&dib_tag=se&keywords=2WD+chassis&qid=1783022235&s=toys&sprefix=2wd+chassis%2Ctoys%2C89&sr=1-5
-Camera	Raspberry Pi Camera Module 3	https://www.amazon.de/-/en/gp/product/B0BRY6MVXL/ref=ox_sc_act_title_9?smid=A1JDLVO3NW19TT&th=1
-Wiring	Breakout board	https://www.amazon.de/Ulegqin/dp/B0GY84DYR4/ref=sr_1_14_sspa?crid=BQGDJHJUCC86&dib=eyJ2IjoiMSJ9.ZQ5OiS-jzaBbHh2V1bWJHk4jCyDk4s_1qsmWTO3xvxqLtHY4qNMKQaXz_PTezsDxDyFdjHgWJi5zuJ8gCJdYZB06WZCpYB3sF46PGY3QK9BoSbfNlyJUJU0B-y_a1_f0_uulNeqTNt-P3KCIqP3ICaHeQkAPTS8P3FCW7C_rzZjQSwBiVcLpqtIBdfWmQ96VaEoraWJvbuFJjcexbJfHkMuNtRzkW_KWnUDfl3XSWVbPZvWZzbQQ3iNSIU_dpoG_ikTVUF6c70nSIPHpLv5Zt83IQobuwwylyqiTqfGd2fo.Xl8jL3xWmNiDj6DwWL2h1hyNjnDe3EcIrqJWINkpwx0&dib_tag=se&keywords=breakout+board&qid=1783020774&sprefix=breakout+board%2Caps%2C139&sr=8-14-spons&aref=BHM4vlILbg&sp_csd=d2lkZ2V0TmFtZT1zcF9tdGY&psc=1
-LED	WS2812 LED x60	https://www.amazon.de/LOAMLIN-WS2812B-Programmable-Individually-Addressable/dp/B0956C7KFR/ref=sr_1_2_sspa?crid=1WB7IFBYTM2EH&dib=eyJ2IjoiMSJ9.d6P5q8_ZIijEzWZabMfaSZIPRbjaOY0CURq2OdnKUE9_xki7__hBYvJWQqLeQjRzWRYC43CjaLCLTH0ByO-bmmnW3mUn8GT72j0D0vTprf534m-g6kl8cEFtiyzOBgITqhOBzGXWW-Cq4HQfcLlnOEL8cmLfcLViD0n1Qkol32N-mbaNWJ9Oqgms1tgL3Q261nNbbdupElhp8J-RgezBiwJxwK7a3g17kbhv442N_T6TlnJ76V7BA69F7svUJrmCO6ngUsIk_nyHbDRYV27GxusxQiaKvpEjDrblPVTQ6MQ.tXhvg0K6cu-d3fDps9pAzzl-WT_LctZUbeBpxZYeo3o&dib_tag=se&keywords=WS2812%2BLED&qid=1783020399&sprefix=ws2812%2Bled%2B%2Caps%2C111&sr=8-2-spons&aref=LnOLVcgHsp&sp_csd=d2lkZ2V0TmFtZT1zcF9hdGY&th=1
-Audio	MAX98357A amplifier + speaker	https://www.amazon.de/-/en/gp/product/B0H14TPFMV/ref=sw_img_1?smid=A3IN3R0HFAWJY8&th=1
-Servo	MG90S servo	https://www.amazon.de/-/en/gp/product/B0G7GKGJSY/ref=ox_sc_act_title_1?smid=A39HBTAU2IT6N7&th=1
-Wiring	Fils Dupont	https://www.amazon.de/-/en/Elegoo-120pcs-Multicolored-Breadboard-arduino/dp/B01EV70C78/ref=sr_1_5?dib=eyJ2IjoiMSJ9.smLJPjX1ALmjpddoGBMqvghNBt_K2hK0zNukzj0OYx7VFnsSY-s1sQ6mto-FYThPjB5wcJhRCMYk9QNjVwHXu8dDIiHl40UKBStlMi8rqljzZgYNXFF9BRTDGFjXKKdAttV-7W3ZDJPKrr5YkT-1CVmkjZQSdjVE99WGi8xvxhzKdUsiWu6bMsjHQOGV68qH04PLINzjm8VOx4QcWUb2-xZmGTXwOUQJqRGxytFz1BRhokvRr-o6i-3tJC-v3SESyx_4VNWFdHFvb9EsKEg26B7Yp4yoJgmLC-w5-4VZ_Ds.gpm_luUluZ8IoV5oTo64wxhAKtoXIwEBDllGB1fF8vc&dib_tag=se&keywords=dupont%2Bjumper%2Bwires%2Bkit&qid=1782935148&sr=8-5&th=1
-Wiring	Zip ties	https://www.amazon.de/-/en/gp/product/B08SNNSV12/ref=sw_img_1?smid=A3JWKAKR8XB7XF&psc=1
-Cooler	GeeekPi Active Cooler for Raspberry Pi 5	https://www.amazon.de/-/en/gp/product/B0CNVDF2MC/ref=ox_sc_act_title_8?smid=A187Y4UVM6ZA0X&th=1
-Screen	0.96' OLED Display Module I2C IIC 128x64 (x2)	https://www.amazon.de/-/en/gp/product/B0B7RPCZ4Z/ref=sw_img_1?smid=A187Y4UVM6ZA0X&psc=1
-
+Battery system  
+→ Motor driver  
+→ Motors
 
 ---
 
-# Mechanical Layout
+# Vision System
 
-Planned physical arrangement.
+## Camera
+Component: Raspberry Pi Camera Module 3
+Connection:  CSI interface directly connected to Raspberry Pi 5
+Power: Supplied by Raspberry Pi
+Software: camera.py
 
-```
- ______________________________
+# Display System
+Spy Turtle uses three displays:
+- Left OLED eye
+- Right OLED eye
+- Shell TFT display
 
-          Camera
+## Eye Displays
+Components:
+- 0.96 inch OLED
+- 128x64 resolution
+- SSD1306 driver
+- I2C interface
 
-      OLED      OLED
+Both displays share the same I2C bus.
 
-    Raspberry Pi 5
+GPIO allocation:
 
-    Waveshare UPS
+| Signal | Raspberry Pi GPIO |
+|---|---|
+| SDA | GPIO 2 |
+| SCL | GPIO 3 |
 
-   Breakout Board
+Typical addresses:
 
- Speaker       Servo
+| Display | Address |
+|---|---|
+| Left Eye | 0x3C |
+| Right Eye | 0x3D |
 
-______________________________
+Software: eyes.py
 
-     Motor     Motor
+Functions:
+- facial expressions
+- emotions
+- animations
+- status feedback
 
-      Wheels
-```
+---
+## Shell TFT Display
+The turtle shell uses a larger color display.
 
-The exact position may evolve during assembly.
+Components:
+- 3.5 inch IPS TFT
+- 320x480 resolution
+- ST7796U driver
+- SPI interface
 
-The objective is to keep wiring short and maintenance easy.
+Touch controller:
+- FT6336U
+- I2C interface
+
+Touch status:
+- Hardware available
+- Disabled in Version 1
+
+Purpose:
+- displaying messages
+- animations
+- robot status
+- user feedback
 
 ---
 
-# GPIO Allocation
+## TFT SPI Connection
 
-The exact GPIO allocation will be frozen during assembly.
+| Signal | Raspberry Pi GPIO |
+|---|---|
+| MOSI | GPIO 10 |
+| MISO | GPIO 9 |
+| SCLK | GPIO 11 |
+| CS | GPIO 8 |
+
+Additional signals:
+| Signal | Status |
+|---|---|
+| DC | Validate during assembly |
+| RESET | Validate during assembly |
+| Backlight | 5V |
+
+Software: shell_display.py
+
+---
+
+# Mobility System
+The mobility system controls the two wheels.
+
+Components:
+- TB6612FNG motor driver
+- 2 x JGA25-370 DC motors
+- Hall encoders
+
+The Raspberry Pi does not power the motors directly.
+
+The TB6612FNG receives control signals from the Raspberry Pi and provides the required current to the motors.
+
+---
+
+## Motor Control
+The TB6612FNG is a dual H-Bridge motor driver.
+
+It controls:
+- motor direction
+- motor speed through PWM
+- motor activation
+
+GPIO allocation:
+
+| Signal | Raspberry Pi GPIO |
+|---|---|
+| PWMA | GPIO 12 |
+| AIN1 | GPIO 5 |
+| AIN2 | GPIO 6 |
+| PWMB | GPIO 13 |
+| BIN1 | GPIO 16 |
+| BIN2 | GPIO 20 |
+| STBY | GPIO 4 optional |
+
+---
+
+## Encoder Feedback
+The JGA25-370 motors include Hall effect encoders.
+
+Each encoder provides:
+- Channel A
+- Channel B
+
+Used for:
+- speed measurement
+- future odometry
+- trajectory correction
+
+GPIO allocation:
+
+| Encoder | Raspberry Pi GPIO |
+|---|---|
+| Left Motor Encoder A | GPIO 23 |
+| Left Motor Encoder B | GPIO 24 |
+| Right Motor Encoder A | GPIO 25 |
+| Right Motor Encoder B | GPIO 26 |
+
+Encoder feedback can be enabled progressively.
+
+Version 1 can operate without closed-loop motor control.
+
+# Head Articulation System
+The turtle head uses two servos to control movement.
+
+Components:
+- 2 x MG90S servo
+
+The two degrees of freedom are:
+- Pan: left/right rotation
+- Tilt: up/down movement
+
+---
+## Pan Servo
+
+Function:
+- left/right head rotation
+
+Connection:
+| Signal | Raspberry Pi GPIO |
+|---|---|
+| PWM | GPIO 17 |
+
+---
+
+## Tilt Servo
+Function:
+- up/down head movement
+
+Connection:
+| Signal | Raspberry Pi GPIO |
+|---|---|
+| PWM | GPIO 27 |
+
+Software: servo.py
+
+---
+# Audio System
+
+## Speaker
+Components:
+- MAX98357A Class-D amplifier
+- Speaker
+
+Interface:
+- I2S
+
+GPIO allocation:
+| Signal | Raspberry Pi GPIO |
+|---|---|
+| BCLK | GPIO 18 |
+| LRCLK | GPIO 19 |
+| DIN | GPIO 21 |
+
+Software: audio.py
+
+Functions:
+- turtle voice
+- sound effects
+- notifications
+- feedback sounds
+
+---
+# Lighting System
+Spy Turtle uses two independent lighting systems.
+- Shell lighting
+- Status indicator
+
+---
+## Shell RGB LEDs
+Component:
+- WS2812B individually addressable RGB LED strip
+
+Purpose:
+- shell illumination
+- animations
+- effects
+
+Connection:
+| Signal | Connection |
+|---|---|
+| Data | GPIO 22 |
+| Power | 5V |
+| Ground | GND |
+
+Software: leds.py
+
+Functions:
+- color effects
+- brightness control
+- animations
+- robot states
+
+A level shifter may be added if communication reliability requires it.
+
+---
+
+## Status RGB LED
+
+Component:
+- RGB status LED
+
+Purpose:
+Provide quick robot state indication:
+
+Examples:
+- startup
+- connected
+- battery status
+- error state
+- charging state
+
+Connection:
+Controlled through GPIO.
+
+Final GPIO assignment will be validated during assembly.
+---
+# Raspberry Pi GPIO Allocation
+
+Current GPIO allocation target:
 
 | GPIO | Function |
-|------|----------|
+|---|---|
 | GPIO 2 | I2C SDA |
 | GPIO 3 | I2C SCL |
-| GPIO 12 | Servo PWM |
-| GPIO 18 | Motor PWM A |
-| GPIO 19 | Motor PWM B |
-| GPIO 20 | Motor Direction |
-| GPIO 21 | Motor Direction |
-| GPIO 23 | WS2812 LEDs (planned) |
-| GPIO 40 | Audio I2S |
+| GPIO 4 | TB6612 STBY optional |
+| GPIO 5 | Motor A direction |
+| GPIO 6 | Motor A direction |
+| GPIO 8 | TFT CS |
+| GPIO 9 | SPI MISO |
+| GPIO 10 | SPI MOSI |
+| GPIO 11 | SPI Clock |
+| GPIO 12 | Motor PWM A |
+| GPIO 13 | Motor PWM B |
+| GPIO 16 | Motor B direction |
+| GPIO 17 | Head Pan Servo |
+| GPIO 18 | I2S BCLK |
+| GPIO 19 | I2S LRCLK |
+| GPIO 20 | Motor B direction |
+| GPIO 21 | I2S DIN |
+| GPIO 22 | WS2812 LEDs |
+| GPIO 23 | Left Encoder A |
+| GPIO 24 | Left Encoder B |
+| GPIO 25 | Right Encoder A |
+| GPIO 26 | Right Encoder B |
+| GPIO 27 | Head Tilt Servo |
 
 Unused GPIOs remain available for future extensions.
 
 ---
 
-# Wiring
+# Power Distribution
+The UPS HAT powers the complete robot.
 
-## Raspberry Pi
+Power domains:
 
-The Raspberry Pi is the central controller.
+## Raspberry Pi Domain
+Powered by:
+- Waveshare UPS HAT
 
-All software executes on the Raspberry Pi.
+Devices:
+- Raspberry Pi 5
+- Camera
+- OLED displays
+- TFT display logic
+- Audio interface
+- Sensors
 
 ---
 
-## UPS HAT
-
-Connected directly on top of the Raspberry Pi.
-
-Provides:
-
-* battery charging
-* battery protection
-* uninterrupted power
-* battery monitoring
+## Motor Domain
 
 Powered by:
+- Battery system
 
-* 4 × Samsung 21700 cells
+Devices:
+- TB6612FNG motor driver
+- JGA25-370 motors
 
----
-
-## Camera
-
-Connection:
-
-CSI ribbon cable.
-
-Power:
-
-Directly from the Raspberry Pi.
-
-Software:
-
-camera.py
-
----
-
-## OLED Displays
-
-Connection:
-
-I2C
-
-Typical addresses:
-
-```
-0x3C
-0x3D
-```
-
-Software modules:
-
-* eyes.py
-* mouth.py
-
----
-
-## Motors
-
-Connection:
-
-TB6612FNG
-
-Controlled by:
-
-motors.py
-
-Power:
-
-UPS HAT
-
----
-
-## Servos
-
-Connection:
-
-PWM GPIO
-
-Controlled by:
-
-servo.py
-
-Power:
-
-5 V supply
-
----
-
-## LEDs
-
-Connection:
-
-Single GPIO data line.
-
-Powered from:
-
-5 V supply.
-
-Controlled by:
-
-leds.py
-
-A level shifter may be added if required for reliable communication.
-
----
-
-## Speaker
-
-Connection:
-
-MAX98357A
-
-Interface:
-
-I2S
-
-Controlled by:
-
-audio.py
-
----
-
-# Power Distribution
-
-```
-21700 Batteries
-
-        │
-
-        ▼
-
-Waveshare UPS HAT
-
-        │
-
-        ▼
-
- Raspberry Pi
-
-        │
-
-        ▼
-
-GPIO Devices
-
- • OLED
- • Servo
- • LEDs
- • Audio
- • Motor Driver
-```
-
-The UPS powers the complete robot.
-
-No external power distribution board is planned.
-
+The motor power ground and Raspberry Pi ground must be common.
 ---
 
 # Cable Management
 
-The project follows a few simple rules.
-
-* Use the GPIO breakout board whenever possible.
-* Prefer Dupont connectors.
-* Avoid soldering whenever practical.
-* Keep cables as short as possible.
-* Secure wiring using zip ties.
-* Leave enough slack for maintenance.
-* Keep wiring modular.
+Project rules:
+- Use GPIO breakout board whenever possible.
+- Prefer Dupont connectors.
+- Avoid soldering whenever practical.
+- Keep cables short and organized.
+- Secure wiring using zip ties.
+- Leave enough slack for maintenance.
+- Keep wiring modular.
 
 ---
 
 # Assembly Order
-
-Recommended assembly sequence.
-
-1. Assemble the chassis.
-2. Install both motors.
-3. Install the wheels.
-4. Install the servos.
-5. Mount the Raspberry Pi.
-6. Mount the UPS HAT.
-7. Install the breakout board.
-8. Connect the camera.
-9. Connect the OLED displays.
-10. Connect the motor driver.
-11. Connect the speaker.
-12. Connect the LEDs.
-13. Verify all wiring.
-14. Install batteries.
-15. First power-on.
+Recommended assembly sequence:
+1. Assemble chassis.
+2. Install motors.
+3. Install wheels.
+4. Install servos.
+5. Mount Raspberry Pi.
+6. Mount UPS HAT.
+7. Install GPIO breakout board.
+8. Connect camera.
+9. Connect OLED displays.
+10. Connect TFT display.
+11. Connect motor driver.
+12. Connect encoder signals.
+13. Connect servos.
+14. Connect speaker.
+15. Connect LEDs.
+16. Verify wiring.
+17. Install batteries.
+18. First power-on.
 
 ---
-
 # First Boot Checklist
-
 ## Raspberry Pi
-
-☐ Boots successfully
-
-☐ Raspberry Pi OS starts
-
-☐ SSH available
+- [ ] Raspberry Pi OS boots successfully
+- [ ] SSH available
+- [ ] Network connection works
 
 ---
 
 ## UPS
-
-☐ Battery detected
-
-☐ Charging works
-
-☐ Battery level readable
+- [ ] Battery detected
+- [ ] Charging works
+- [ ] Battery monitoring works
 
 ---
 
 ## Camera
-
-☐ Camera detected
-
-☐ Live stream available
+- [ ] Camera detected
+- [ ] Live stream available
 
 ---
 
-## OLED Displays
-
-☐ Left display detected
-
-☐ Right display detected
-
-☐ Face displayed correctly
+## Displays
+- [ ] Left OLED detected
+- [ ] Right OLED detected
+- [ ] TFT detected
+- [ ] Shell display works
 
 ---
 
-## Motors
-
-☐ Forward
-
-☐ Backward
-
-☐ Left
-
-☐ Right
-
-☐ Stop
+## Mobility
+- [ ] Forward movement
+- [ ] Backward movement
+- [ ] Left turn
+- [ ] Right turn
+- [ ] Encoder reading
 
 ---
 
-## Servo
-
-☐ Left
-
-☐ Right
-
-☐ Center
+## Head
+- [ ] Pan servo works
+- [ ] Tilt servo works
 
 ---
 
 ## LEDs
-
-☐ Power on
-
-☐ Rainbow animation
-
-☐ Brightness control
+- [ ] Shell LEDs power on
+- [ ] Animations work
+- [ ] Status LED works
 
 ---
 
 ## Audio
-
-☐ Speaker detected
-
-☐ Startup sound plays
+- [ ] Speaker detected
+- [ ] Sound playback works
 
 ---
 
 # Troubleshooting
 
-## OLED not detected
+## I2C Devices Not Detected
 
 Check:
-
-* SDA
-* SCL
-* I2C address
-
-Run:
-
-```bash
-i2cdetect -y 1
-```
+- SDA connection
+- SCL connection
+- Power
+- I2C addresses
 
 ---
 
-## Camera not detected
+## Camera Not Detected
 
-Run:
-
-```bash
-libcamera-hello
-```
+Check:
+- CSI cable orientation
+- Camera enabled in Raspberry Pi OS
 
 ---
 
-## Motors do not move
+## Motors Do Not Move
 
 Check:
-
-* VM power
-* STBY pin
-* PWM pins
-* Motor wiring
+- Motor power
+- Ground connection
+- TB6612 STBY
+- PWM signals
+- Motor wiring
 
 ---
 
-## Servo jitters
+## Servo Problems
 
 Check:
-
-* power supply
-* grounding
-* PWM configuration
+- 5V power supply
+- Ground connection
+- PWM GPIO assignment
 
 ---
 
-## LEDs do not respond
+## LEDs Do Not Respond
 
 Check:
-
-* data GPIO
-* power supply
-* ground
-* level shifter (if installed)
+- Data GPIO
+- 5V supply
+- Ground
+- Level shifter if required
 
 ---
 
 # Hardware Design Decisions
-
 | Decision | Reason |
-|----------|--------|
-| Raspberry Pi 5 | Enough computing power for computer vision and AI |
-| Waveshare UPS HAT | Integrated charging and battery monitoring |
-| Samsung 21700 cells | Higher capacity than 18650 |
-| GPIO Breakout Board | Cleaner wiring and easier maintenance |
-| TB6612FNG | Efficient and compact motor driver |
-| WS2812 LED Strip | Flexible enough to wrap around the shell |
-| Dupont connectors | Easy maintenance and replacement |
-| Minimal soldering | Faster assembly and easier repairs |
-| Simulation-first software | Hardware can be developed independently from software |
+|---|---|
+| Raspberry Pi 5 | Enough computing power for vision and AI |
+| Waveshare UPS HAT | Integrated power management |
+| 21700 batteries | Higher capacity |
+| GPIO breakout board | Easier wiring and maintenance |
+| TB6612FNG | Efficient dual motor control |
+| ST7796U TFT | Large color shell display |
+| SSD1306 OLED | Simple animated eyes |
+| WS2812B LEDs | Flexible RGB lighting |
+| Dupont connectors | Modular maintenance |
+| Minimal soldering | Easier assembly and repair |
+| Simulation-first software | Hardware independent development |
 
 ---
 
 # Version
-
 Current hardware target:
-
-**Spy Turtle Version 1.0**
-
+Spy Turtle Version 1.0
 This document represents the official hardware reference for the project.
