@@ -1,13 +1,16 @@
 from robot.system.robot import Robot
-from robot.brain.brain import Brain
 
-from robot.simulation.fake_motor import FakeMotor
-from robot.simulation.fake_leds import FakeLEDController
-from robot.simulation.fake_camera import FakeCamera
+from robot.face.face_controller import FaceController
+from robot.face.eyes_renderer import EyesRenderer
+
 from robot.simulation.fake_battery import FakeBattery
+from robot.simulation.fake_camera import FakeCamera
+from robot.simulation.fake_eyes_display import FakeEyesDisplay
+from robot.simulation.fake_leds import FakeLEDController
+from robot.simulation.fake_motor import FakeMotor
 from robot.simulation.fake_speaker import FakeSpeaker
 from robot.simulation.fake_servo import FakeServo
-from robot.simulation.fake_face import FakeFace
+
 
 class RobotFactory:
     def __init__(self, simulation=True):
@@ -15,16 +18,42 @@ class RobotFactory:
 
     def create(self):
         if self.simulation:
-            motors = FakeMotor()
-            leds = FakeLEDController()
-            camera = FakeCamera()
-            battery = FakeBattery()
-            speaker = FakeSpeaker()
-            servo = FakeServo()
-            face = FakeFace()
-        else:
-            raise NotImplementedError("Hardware mode not implemented yet")
+            return self.create_simulation()
 
-        robot = Robot(motors, face, leds, camera, battery, speaker, servo)
-        robot.brain = Brain(robot)
+        return self.create_hardware()
+
+    def create_simulation(self):
+        motors = FakeMotor()
+        leds = FakeLEDController()
+        camera = FakeCamera()
+        battery = FakeBattery()
+        speaker = FakeSpeaker()
+
+        servo = FakeServo()
+
+        left_display = FakeEyesDisplay("left")
+        right_display = FakeEyesDisplay("right")
+
+        eyes_renderer = EyesRenderer(
+            left_display,
+            right_display
+        )
+
+        face = FaceController(
+            eyes_renderer
+        )
+
+        robot = Robot(
+            motors=motors,
+            face=face,
+            leds=leds,
+            camera=camera,
+            battery=battery,
+            speaker=speaker,
+            servo=servo
+        )
+
         return robot
+
+    def create_hardware(self):
+        raise NotImplementedError("Hardware mode not implemented yet")

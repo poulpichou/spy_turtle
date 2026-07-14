@@ -6,7 +6,7 @@ class EmotionManager:
     Controls Spy Turtle emotional state.
 
     The emotion manager updates the robot state
-    and applies the corresponding face expression.
+    and triggers the corresponding eye sequence.
     """
 
     def __init__(self, robot):
@@ -19,7 +19,7 @@ class EmotionManager:
 
         print(f"[Emotion] {emotion}")
 
-        self.robot.face.set_expression(emotion)
+        self.robot.face.play(emotion)
 
     def update(self):
         """

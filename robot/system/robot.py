@@ -16,3 +16,6 @@ class Robot:
     def update(self):
         if self.brain:
             self.brain.update()
+
+        if self.face:
+            self.face.update()

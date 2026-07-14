@@ -1,19 +1,18 @@
-class Face:
+from abc import ABC, abstractmethod
+
+
+class Face(ABC):
     """
     Abstract face interface.
 
     The Brain interacts with this interface only.
-    The implementation can be a real OLED face or a simulation.
+    The implementation can be real OLED eyes or simulation.
     """
 
-    def blink(self):
+    @abstractmethod
+    def play(self, expression):
         pass
 
-    def look_left(self):
-        pass
-
-    def look_right(self):
-        pass
-
-    def set_expression(self, expression):
+    @abstractmethod
+    def update(self):
         pass

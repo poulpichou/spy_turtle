@@ -28,7 +28,7 @@ class IdleBehaviour:
 
     def blink(self):
         print("[Idle] blink")
-        self.robot.face.blink()
+        self.robot.face.play("blink")
 
     def look_around(self):
         print("[Idle] look around")
@@ -39,14 +39,10 @@ class IdleBehaviour:
         ])
 
         if direction == "left":
-            self.robot.face.look_left()
+            self.robot.face.play("look_left")
         else:
-            self.robot.face.look_right()
+            self.robot.face.play("look_right")
 
     def yawn(self):
         print("[Idle] yawn")
-
-        if hasattr(self.robot.face, "yawn"):
-            self.robot.face.yawn()
-        else:
-            self.robot.face.set_expression("sleepy")
+        self.robot.face.play("yawn")
