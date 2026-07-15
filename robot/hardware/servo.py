@@ -1,26 +1,29 @@
-class Servo:
-    def __init__(self):
-        self.pan = 90
-        self.tilt = 90
+from gpiozero import Servo
 
-    def move_pan(self, angle):
-        self.pan = angle
 
-    def move_tilt(self, angle):
-        self.tilt = angle
+class ServoController:
+    """
+    Real servo controller.
 
-    def look_left(self):
-        self.move_pan(45)
+    Controls the camera rotation servo.
+    """
 
-    def look_right(self):
-        self.move_pan(135)
+    def __init__(self, pin=18):
+        self.servo = Servo(pin)
 
-    def look_up(self):
-        self.move_tilt(45)
-
-    def look_down(self):
-        self.move_tilt(135)
+        print(f"[Servo] GPIO{pin} ready")
 
     def center(self):
-        self.pan = 90
-        self.tilt = 90
+        print("[Servo] center")
+        self.servo.mid()
+
+    def look_left(self):
+        print("[Servo] left")
+        self.servo.min()
+
+    def look_right(self):
+        print("[Servo] right")
+        self.servo.max()
+
+    def detach(self):
+        self.servo.detach()
