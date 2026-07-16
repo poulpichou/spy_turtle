@@ -11,6 +11,8 @@ from robot.simulation.fake_motor import FakeMotor
 from robot.simulation.fake_speaker import FakeSpeaker
 from robot.simulation.fake_servo import FakeServo
 
+from robot.hardware.servo import ServoController
+
 
 class RobotFactory:
     def __init__(self, simulation=True):

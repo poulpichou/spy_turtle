@@ -1,4 +1,5 @@
 from gpiozero import Servo
+from robot.config.settings import SERVO_CAMERA_PIN
 
 
 class ServoController:
