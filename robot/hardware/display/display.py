@@ -1,0 +1,106 @@
+from PIL import Image, ImageDraw, ImageFont
+
+from robot.hardware.display.st7796 import ST7796
+
+
+class Display:
+
+    BLACK = (0, 0, 0)
+    WHITE = (255, 255, 255)
+    RED = (255, 0, 0)
+    GREEN = (0, 255, 0)
+    BLUE = (0, 0, 255)
+
+    def __init__(self):
+
+        self.driver = ST7796()
+
+        self.image = Image.new(
+            "RGB",
+            (
+                self.driver.width,
+                self.driver.height
+            ),
+            self.BLACK
+        )
+
+        self.draw = ImageDraw.Draw(self.image)
+
+        try:
+            self.font = ImageFont.truetype(
+                "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+                32
+            )
+        except:
+            self.font = ImageFont.load_default()
+
+    def start(self):
+
+        self.driver.init()
+
+    def clear(self, color=BLACK):
+
+        self.image = Image.new(
+            "RGB",
+            (
+                self.driver.width,
+                self.driver.height
+            ),
+            color
+        )
+
+        self.draw = ImageDraw.Draw(self.image)
+
+    def text(self, x, y, message):
+
+        self.draw.text(
+            (x, y),
+            message,
+            font=self.font,
+            fill=self.WHITE
+        )
+
+    def rectangle(self, x, y, w, h, color):
+
+        self.draw.rectangle(
+            [
+                x,
+                y,
+                x+w,
+                y+h
+            ],
+            outline=color
+        )
+
+    def show(self):
+
+        pixels = []
+
+        for pixel in self.image.getdata():
+
+            r, g, b = pixel
+
+            # RGB888 -> RGB565
+            value = (
+                ((r & 0xf8) << 8)
+                |
+                ((g & 0xfc) << 3)
+                |
+                (b >> 3)
+            )
+
+            pixels.append(value >> 8)
+            pixels.append(value & 0xff)
+
+        self.driver.set_window(
+            0,
+            0,
+            self.driver.width-1,
+            self.driver.height-1
+        )
+
+        self.driver.push_pixels(pixels)
+
+    def close(self):
+
+        self.driver.close()
