@@ -1,0 +1,10 @@
+{
+    "open":"open.eye",
+    "closed":"closed.eye",
+    "half":"half.eye",
+    "happy":"happy.eye",
+    "sleepy":"sleepy.eye",
+    "surprised":"surprised.eye",
+    "look_left":"look_left.eye",
+    "look_right":"look_right.eye"
+}
