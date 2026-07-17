@@ -66,7 +66,7 @@ class RobotFactory:
         speaker=FakeSpeaker()
         servo=FakeServo()
         left_display=OLEDDisplay(0x3C,"left")
-        right_display=OLEDDisplay(0x3D,"right")
+        right_display=OLEDDisplay(0x3C,"right")
         eyes_renderer=EyesRenderer(left_display,right_display)
         face=FaceController(eyes_renderer)
         return Robot(motors,face,leds,camera,battery,speaker,servo)
