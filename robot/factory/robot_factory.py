@@ -2,6 +2,7 @@ from robot.system.robot import Robot
 
 from robot.face.face_controller import FaceController
 from robot.face.eyes_renderer import EyesRenderer
+from robot.hardware.oled_display import OLEDDisplay
 
 from robot.simulation.fake_battery import FakeBattery
 from robot.simulation.fake_camera import FakeCamera
@@ -58,4 +59,14 @@ class RobotFactory:
         return robot
 
     def create_hardware(self):
-        raise NotImplementedError("Hardware mode not implemented yet")
+        motors=FakeMotor()
+        leds=FakeLEDController()
+        camera=FakeCamera()
+        battery=FakeBattery()
+        speaker=FakeSpeaker()
+        servo=FakeServo()
+        left_display=OLEDDisplay(0x3C,"left")
+        right_display=OLEDDisplay(0x3D,"right")
+        eyes_renderer=EyesRenderer(left_display,right_display)
+        face=FaceController(eyes_renderer)
+        return Robot(motors,face,leds,camera,battery,speaker,servo)

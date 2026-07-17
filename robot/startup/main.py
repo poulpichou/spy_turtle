@@ -11,7 +11,7 @@ def start_api():
 
 def main():
     print("[Startup] Starting Spy Turtle")
-    robot = RobotFactory(simulation=True).create()
+    robot=RobotFactory(simulation=False).create()
     set_robot(robot)
     print("Spy Turtle online")
 
