@@ -3,16 +3,10 @@ function stopMove(){sendCommand("move","stop")}
 
 function setupMovementButton(id,direction){
     const b=document.getElementById(id);
-
     b.addEventListener("mousedown",()=>startMove(direction));
     b.addEventListener("mouseup",stopMove);
     b.addEventListener("mouseleave",stopMove);
-
-    b.addEventListener("touchstart",e=>{
-        e.preventDefault();
-        startMove(direction);
-    });
-
+    b.addEventListener("touchstart",e=>{e.preventDefault();startMove(direction)});
     b.addEventListener("touchend",stopMove);
 }
 
@@ -24,8 +18,7 @@ setupMovementButton("right","right");
 document.getElementById("stop").onclick=stopMove;
 
 function setupHeadButton(id,direction){
-    const b=document.getElementById(id);
-    b.onclick=()=>sendCommand("head",direction);
+    document.getElementById(id).onclick=()=>sendCommand("head",direction);
 }
 
 setupHeadButton("head-left","left");
@@ -35,11 +28,16 @@ setupHeadButton("head-down","down");
 setupHeadButton("head-center","center");
 
 document.getElementById("face-select").onchange=e=>{
-    console.log("FACE SELECT:",e.target.value);
+    console.log("FACE:",e.target.value);
     sendCommand("face",e.target.value);
 };
 
+document.getElementById("shell-select").onchange=e=>{
+    console.log("SHELL:",e.target.value);
+    sendCommand("shell",e.target.value);
+};
+
 document.getElementById("led-select").onchange=e=>{
-    console.log("LED SELECT:",e.target.value);
+    console.log("LED:",e.target.value);
     sendCommand("led",e.target.value);
 };
