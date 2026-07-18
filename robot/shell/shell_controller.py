@@ -1,12 +1,12 @@
 from pathlib import Path
 import time,subprocess
 
+
 class ShellController:
     def __init__(self,screen,robot=None):
         self.screen=screen
         self.robot=robot
         self.assets=Path(__file__).parent.parent/"assets"/"images"
-
         self.mode="status"
         self.previous_mode="status"
         self.event=None
@@ -53,8 +53,8 @@ class ShellController:
 
     def show_mode(self):
         modes={
-            "happy":"turtle_happy.png",
             "rocket":"turtle_rocket.png",
+            "happy":"turtle_happy.png",
             "walking":"turtle_walking.png",
             "sleep":"sleep.gif",
             "leds":"leds.gif",
@@ -65,20 +65,19 @@ class ShellController:
         if self.mode=="status":
             self.screen.text("SPY TURTLE",[
                 "Online",
-                "Battery: --",
-                "Mode: idle"
+                f"Battery:{self.robot.state.battery if self.robot else '--'}%",
+                "Mode:idle"
             ])
 
         elif self.mode=="log":
             self.show_log()
 
         elif self.mode in modes:
-            path=self.assets/modes[self.mode]
+            self.show_asset(modes[self.mode])
 
-            if path.suffix==".gif":
-                self.screen.animation(path,10)
-            else:
-                self.screen.image(path)
+        else:
+            print(f"[Shell] unknown mode:{self.mode}")
+            self.screen.text("ERROR",[self.mode])
 
     def show_event(self):
         events={
@@ -90,16 +89,29 @@ class ShellController:
         }
 
         if self.event in events:
-            path=self.assets/events[self.event]
+            self.show_asset(events[self.event])
 
-            if path.suffix==".gif":
-                self.screen.animation(path,10)
-            else:
-                self.screen.image(path)
+    def show_asset(self,name):
+        path=self.assets/name
+
+        print(f"[Shell] display:{path}")
+
+        if not path.exists():
+            print("[Shell] missing asset")
+            return
+
+        if path.suffix==".gif":
+            self.screen.animation(path,10)
+        else:
+            self.screen.image(path)
 
     def show_log(self):
         try:
-            logs=subprocess.check_output("dmesg | tail -50",shell=True,text=True)
+            logs=subprocess.check_output(
+                "dmesg | tail -50",
+                shell=True,
+                text=True
+            )
             lines=logs.splitlines()[-4:]
         except:
             lines=["No logs"]
