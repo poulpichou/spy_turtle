@@ -8,8 +8,6 @@ from robot.api import actions
 
 app=FastAPI()
 
-app.mount("/",StaticFiles(directory="frontend",html=True),name="frontend")
-
 def state():
     robot=get_robot()
     return robot.state.__dict__ if robot else {"error":"no robot"}
@@ -121,3 +119,6 @@ def shell_event(event:str):
 def speak(text:str):
     actions.speak(text)
     return {"message":text}
+
+
+app.mount("/",StaticFiles(directory="frontend",html=True),name="frontend")
