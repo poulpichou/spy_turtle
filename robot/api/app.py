@@ -1,18 +1,10 @@
-from fastapi import FastAPI,Request
-from fastapi.responses import Response,FileResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI
+from fastapi.responses import Response
 from pydantic import BaseModel
-from pathlib import Path
 from robot.api import actions
 from robot.system.runtime import get_robot
 
 app=FastAPI()
-
-FRONTEND=Path(__file__).resolve().parents[2]/"frontend"
-
-app.mount("/frontend",StaticFiles(directory=FRONTEND),name="frontend")
-app.mount("/css",StaticFiles(directory=FRONTEND/"css"),name="css")
-app.mount("/js",StaticFiles(directory=FRONTEND/"js"),name="js")
 
 
 class Command(BaseModel):
@@ -25,11 +17,6 @@ def state():
     return robot.state.__dict__ if robot else {"error":"no robot"}
 
 
-@app.get("/")
-def index():
-    return FileResponse(FRONTEND/"index.html")
-
-
 @app.get("/state")
 def get_state():
     print("[API] GET /state")
@@ -37,11 +24,8 @@ def get_state():
 
 
 @app.post("/command")
-def command(cmd:Command,request:Request):
-    print("==============================")
-    print(f"[API] COMMAND FROM {request.client.host}")
-    print(f"[API] type={cmd.type} value={cmd.value}")
-    print("==============================")
+def command(cmd:Command):
+    print(f"[API] COMMAND type={cmd.type} value={cmd.value}")
 
     try:
         if cmd.type=="move":
@@ -52,15 +36,14 @@ def command(cmd:Command,request:Request):
             elif cmd.value=="stop": actions.stop()
 
         elif cmd.type=="face":
-            print("[API] FACE command")
+            print("[API] face command")
             actions.set_emotion(cmd.value)
 
         elif cmd.type=="led":
-            print("[API] LED command")
+            print("[API] led command")
             actions.set_led(cmd.value)
 
         elif cmd.type=="head":
-            print("[API] HEAD command")
             if cmd.value=="left": actions.look_left()
             elif cmd.value=="right": actions.look_right()
             elif cmd.value=="up": actions.look_up()
@@ -68,14 +51,18 @@ def command(cmd:Command,request:Request):
             elif cmd.value=="center": actions.camera_center()
 
         elif cmd.type=="shell":
-            print("[API] SHELL command")
+            print("[API] shell command")
             actions.shell_mode(cmd.value)
+
+        elif cmd.type=="shell_event":
+            print("[API] shell event command")
+            actions.shell_event(cmd.value)
 
         else:
             print(f"[API] UNKNOWN COMMAND {cmd.type}")
 
     except Exception as e:
-        print(f"[API ERROR] {type(e).__name__}: {e}")
+        print(f"[API ERROR] {e}")
 
     return state()
 
@@ -83,7 +70,8 @@ def command(cmd:Command,request:Request):
 @app.get("/camera/frame")
 def camera_frame():
     print("[API] camera frame")
-    return Response(content=actions.camera_frame(),media_type="image/jpeg")
+    frame=actions.camera_frame()
+    return Response(content=frame,media_type="image/jpeg")
 
 
 @app.post("/camera/start")

@@ -33,12 +33,14 @@ def set_emotion(emotion):
     robot=get_robot()
     print(f"[API] emotion {emotion}")
     robot.state.emotion=emotion
-    robot.face.play(emotion)
+    if robot.face:
+        robot.face.play(emotion)
 
 def set_led(mode):
     robot=get_robot()
     print(f"[API] led {mode}")
-    robot.leds.set_mode(mode)
+    if robot.leds:
+        robot.leds.set_mode(mode)
     robot.state.led_mode=mode
 
 def camera_start():
@@ -58,7 +60,8 @@ def camera_frame():
 def speak(text):
     robot=get_robot()
     print(f"[API] speak:{text}")
-    robot.speaker.play(text)
+    if robot.speaker:
+        robot.speaker.play(text)
 
 def look_left():
     robot=get_robot()
@@ -85,20 +88,14 @@ def camera_center():
     print("[API] camera center")
     robot.servo.center()
 
-
-# Shell screen
-
 def shell_mode(mode):
     robot=get_robot()
-
+    print(f"[API] shell mode {mode}")
     if robot and robot.shell:
-        print(f"[API] shell mode {mode}")
         robot.shell.set_mode(mode)
-
 
 def shell_event(event):
     robot=get_robot()
-
+    print(f"[API] shell event {event}")
     if robot and robot.shell:
-        print(f"[API] shell event {event}")
         robot.shell.trigger(event)

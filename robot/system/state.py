@@ -10,3 +10,5 @@ class TurtleState:
     x:float=0.0
     y:float=0.0
     angle:float=0.0
+    shell_mode:str="status"
+    shell_event:str=None
