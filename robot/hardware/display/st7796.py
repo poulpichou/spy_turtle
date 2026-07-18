@@ -2,17 +2,14 @@ import time
 import spidev
 import lgpio
 
-
 class ST7796:
     def __init__(self,dc=25,rst=24):
         self.dc=dc
         self.rst=rst
-
         self.width=320
         self.height=480
 
         self.gpio=lgpio.gpiochip_open(4)
-
         lgpio.gpio_claim_output(self.gpio,self.dc)
         lgpio.gpio_claim_output(self.gpio,self.rst)
 
@@ -34,7 +31,6 @@ class ST7796:
     def reset(self):
         lgpio.gpio_write(self.gpio,self.rst,0)
         time.sleep(0.1)
-
         lgpio.gpio_write(self.gpio,self.rst,1)
         time.sleep(0.2)
 
@@ -54,48 +50,32 @@ class ST7796:
         self.data([0x48])
 
         self.command(0x21)
-
         self.command(0x29)
+
         time.sleep(0.1)
 
     def set_window(self,x0,y0,x1,y1):
         self.command(0x2A)
-        self.data([
-            x0>>8,
-            x0&0xff,
-            x1>>8,
-            x1&0xff
-        ])
+        self.data([x0>>8,x0&0xff,x1>>8,x1&0xff])
 
         self.command(0x2B)
-        self.data([
-            y0>>8,
-            y0&0xff,
-            y1>>8,
-            y1&0xff
-        ])
+        self.data([y0>>8,y0&0xff,y1>>8,y1&0xff])
 
         self.command(0x2C)
 
     def push_pixels(self,pixels):
-        chunk_size=4096
-
-        for i in range(0,len(pixels),chunk_size):
-            self.data(pixels[i:i+chunk_size])
+        for i in range(0,len(pixels),4096):
+            self.data(pixels[i:i+4096])
 
     def fill(self,color):
         self.set_window(0,0,self.width-1,self.height-1)
 
-        pixel=[
-            color>>8,
-            color&0xff
-        ]
-
-        buffer=pixel*256
+        pixel=[color>>8,color&0xff]
+        buffer=pixel*512
         total=self.width*self.height
 
         while total:
-            count=min(total,256)
+            count=min(total,512)
             self.push_pixels(buffer[:count*2])
             total-=count
 
