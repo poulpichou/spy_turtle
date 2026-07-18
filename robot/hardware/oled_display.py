@@ -12,13 +12,10 @@ class OLEDDisplay:
     def show(self,bitmap):
         image=Image.new("1",(128,64))
         pixels=image.load()
-
         for y,line in enumerate(bitmap):
             for x,value in enumerate(line):
-                if value=="1":
-                    pixels[x,y]=1
-
+                if value!=".":
+                    pixels[x,y]=255
         self.device.display(image)
 
-    def clear(self):
-        self.device.clear()
+    def clear(self): self.device.clear()
