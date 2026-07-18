@@ -1,23 +1,40 @@
 from fastapi import FastAPI,Request
-from fastapi.responses import Response
+from fastapi.responses import Response,FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+from pathlib import Path
 from robot.api import actions
 from robot.system.runtime import get_robot
 
 app=FastAPI()
 
+FRONTEND=Path(__file__).resolve().parents[2]/"frontend"
+
+app.mount("/frontend",StaticFiles(directory=FRONTEND),name="frontend")
+app.mount("/css",StaticFiles(directory=FRONTEND/"css"),name="css")
+app.mount("/js",StaticFiles(directory=FRONTEND/"js"),name="js")
+
+
 class Command(BaseModel):
     type:str
     value:str
+
 
 def state():
     robot=get_robot()
     return robot.state.__dict__ if robot else {"error":"no robot"}
 
+
+@app.get("/")
+def index():
+    return FileResponse(FRONTEND/"index.html")
+
+
 @app.get("/state")
 def get_state():
     print("[API] GET /state")
     return state()
+
 
 @app.post("/command")
 def command(cmd:Command,request:Request):
@@ -25,6 +42,7 @@ def command(cmd:Command,request:Request):
     print(f"[API] COMMAND FROM {request.client.host}")
     print(f"[API] type={cmd.type} value={cmd.value}")
     print("==============================")
+
     try:
         if cmd.type=="move":
             if cmd.value=="forward": actions.move_forward()
@@ -61,20 +79,24 @@ def command(cmd:Command,request:Request):
 
     return state()
 
+
 @app.get("/camera/frame")
 def camera_frame():
-    frame=actions.camera_frame()
-    return Response(content=frame,media_type="image/jpeg")
+    print("[API] camera frame")
+    return Response(content=actions.camera_frame(),media_type="image/jpeg")
+
 
 @app.post("/camera/start")
 def camera_start():
     actions.camera_start()
     return state()
 
+
 @app.post("/camera/stop")
 def camera_stop():
     actions.camera_stop()
     return state()
+
 
 @app.post("/speak/{text}")
 def speak(text:str):
