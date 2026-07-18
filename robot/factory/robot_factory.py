@@ -15,6 +15,8 @@ from robot.hardware.servo import ServoController
 from robot.hardware.oled_display import OLEDDisplay
 from robot.hardware.shell_screen_st7796 import ShellScreenST7796
 from robot.shell.shell_controller import ShellController
+from robot.hardware.battery import Battery
+from robot.hardware.camera import Camera
 
 
 class RobotFactory:
@@ -51,10 +53,10 @@ class RobotFactory:
     def create_hardware(self):
         motors=FakeMotor()
         leds=FakeLEDController()
-        camera=FakeCamera()
-        battery=FakeBattery()
+        camera=Camera()
         speaker=FakeSpeaker()
         servo=ServoController()
+        battery=Battery()
 
         left_display=OLEDDisplay(0x3C,"left")
         right_display=OLEDDisplay(0x3C,"right")
