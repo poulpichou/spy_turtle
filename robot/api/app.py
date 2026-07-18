@@ -10,10 +10,7 @@ app=FastAPI()
 
 FRONTEND=Path(__file__).parent.parent.parent/"frontend"
 
-app.mount("/static",StaticFiles(directory=FRONTEND),name="static")
-
-@app.get("/")
-def index(): return FileResponse(FRONTEND/"index.html")
+app.mount("/",StaticFiles(directory=FRONTEND,html=True),name="frontend")
 
 class Command(BaseModel):
     type:str
