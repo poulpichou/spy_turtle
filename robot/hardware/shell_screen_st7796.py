@@ -6,10 +6,14 @@ class ShellScreenST7796:
         self.display.start()
         print("[ShellScreen] ST7796 ready")
 
-    def image(self,path):
+    def show_image(self,path):
+        print(f"[ShellScreen] show_image {path}")
         self.display.clear()
-        self.display.image(path)
+        self.display.load_image(path)
         self.display.show()
+
+    def image(self,path):
+        self.show_image(path)
 
     def text(self,title,lines):
         self.display.clear()
