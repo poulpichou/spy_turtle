@@ -14,44 +14,46 @@ class Robot:
         self.state=TurtleState()
         self.brain=None
 
+        if self.face:
+            self.face.play("neutral")
+
         print("[Robot] initialized")
 
     def update(self):
-        if self.brain: self.brain.update()
-        if self.face: self.face.update()
-        if self.shell: self.shell.update()
+        if self.brain:
+            self.brain.update()
 
-    def forward(self): self.motors.forward()
+        if self.face:
+            self.face.update()
 
-    def backward(self): self.motors.backward()
+        if self.shell:
+            self.shell.update()
 
-    def turn_left(self): self.motors.left()
+    def forward(self):
+        self.motors.forward()
 
-    def turn_right(self): self.motors.right()
+    def backward(self):
+        self.motors.backward()
 
-    def stop(self): self.motors.stop()
+    def turn_left(self):
+        self.motors.left()
+
+    def turn_right(self):
+        self.motors.right()
+
+    def stop(self):
+        self.motors.stop()
 
     def set_emotion(self,emotion):
         self.state.emotion=emotion
-        self.face.play(emotion)
 
-    def event(self,event):
-        print(f"[Robot] event {event}")
-
-        if event=="smoke":
-            if self.shell: self.shell.trigger("smoke")
-
-        elif event=="fire":
-            if self.shell: self.shell.trigger("fire")
-
-        elif event=="dance":
-            if self.shell: self.shell.set_mode("video_2")
-
-        elif event=="rocket":
-            if self.shell: self.shell.set_mode("image_2")
+        if self.face:
+            self.face.play(emotion)
 
     def shell_mode(self,mode):
-        if self.shell: self.shell.set_mode(mode)
+        if self.shell:
+            self.shell.set_mode(mode)
 
     def shell_event(self,event):
-        if self.shell: self.shell.trigger(event)
+        if self.shell:
+            self.shell.trigger(event)
