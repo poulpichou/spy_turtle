@@ -1,1 +1,2 @@
 Juste un petit sur le style de programmation, je veux un code le plus compact possible. Ne saute pas de ligne pour rien, laisse un interligne de 1 ligne max quand tu es oblige d'en mettre un, et que lorsque c'est necessaire. Quand on a des definitions simples, en python par exemple def toto(a, b): return a+b -> mets tout sur une meme ligne pour gagner de la place avec juste un espace apres le ":", essaie de n'allez a la ligne apres un : que si c'est necessaire ou si la ligne devient trop grande.
+Donne moi les fichiers a modifier, et non des bouts.

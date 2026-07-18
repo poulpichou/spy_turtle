@@ -23,7 +23,6 @@ setupMovementButton("right","right");
 
 document.getElementById("stop").onclick=stopMove;
 
-
 function setupHeadButton(id,direction){
     const b=document.getElementById(id);
     b.onclick=()=>sendCommand("head",direction);
@@ -35,12 +34,12 @@ setupHeadButton("head-up","up");
 setupHeadButton("head-down","down");
 setupHeadButton("head-center","center");
 
-
 document.getElementById("face-select").onchange=e=>{
+    console.log("FACE SELECT:",e.target.value);
     sendCommand("face",e.target.value);
 };
 
-
 document.getElementById("led-select").onchange=e=>{
+    console.log("LED SELECT:",e.target.value);
     sendCommand("led",e.target.value);
 };
