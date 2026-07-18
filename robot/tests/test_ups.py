@@ -1,15 +1,8 @@
-from smbus2 import SMBus
-import time
+from robot.hardware.ups_hat import UPSHat
 
-bus=SMBus(1)
-addr=0x2d
+ups=UPSHat()
 
-while True:
-    values=[bus.read_byte_data(addr,i) for i in range(0x60)]
-
-    print("-"*60)
-
-    for i,v in enumerate(values):
-        print(f"{i:02X}: {v:02X}")
-
-    time.sleep(1)
+print("Cells:",ups.batteries())
+print("Pack :",ups.voltage(),"V")
+print("USB  :",ups.usb_present())
+print("Charge:",ups.charging())
