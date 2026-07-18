@@ -1,52 +1,65 @@
-import time
-from robot.shell.shell_modes import ShellMode
+import time,subprocess
 
 class ShellController:
     def __init__(self,screen):
         self.screen=screen
-        self.mode=ShellMode.STATUS
-        self.previous=None
-        self.event_until=0
+        self.mode="status"
+        self.previous_mode=None
+        self.event=None
+        self.event_end=0
 
     def set_mode(self,mode):
         self.mode=mode
-        self.previous=None
+        self.event=None
+        self.update()
+
+    def trigger(self,event,duration=10):
+        self.previous_mode=self.mode
+        self.event=event
+        self.event_end=time.time()+duration
         self.update()
 
     def update(self):
-        if self.event_until and time.time()>self.event_until:
-            self.mode=self.previous
-            self.previous=None
-            self.event_until=0
+        if self.event:
+            if time.time()<self.event_end:
+                self.show_event()
+                return
+            self.event=None
+            self.mode=self.previous_mode
 
-        if self.mode==ShellMode.IMAGE_1:
-            self.screen.show_image("robot/assets/images/turtle_happy.png")
-        elif self.mode==ShellMode.IMAGE_2:
-            self.screen.show_image("robot/assets/images/turtle_rocket.png")
-        elif self.mode==ShellMode.LOG:
-            self.show_log()
-        elif self.mode==ShellMode.STATUS:
-            self.show_status()
-        elif self.mode==ShellMode.VIDEO_1:
-            self.screen.show_image("robot/assets/images/smoke.gif.gif")
-        elif self.mode==ShellMode.VIDEO_2:
-            self.screen.show_image("robot/assets/images/turtle_walking.png")
+        self.show_mode()
 
-    def show_status(self):
-        self.screen.show_text("SPY TURTLE",[
-            "Battery: -- %",
-            "WiFi: OK",
-            "CPU: -- C",
-            "Mode: "+self.mode.value
-        ])
+    def show_mode(self):
+        if self.mode=="status":
+            self.screen.text("STATUS",[
+                "Battery: --",
+                "WiFi: OK",
+                "Robot: idle"
+            ])
 
-    def show_log(self):
-        import subprocess
-        log=subprocess.getoutput("dmesg | tail -5")
-        self.screen.show_text("SYSTEM LOG",log.split("\n"))
+        elif self.mode=="log":
+            try:
+                logs=subprocess.check_output(
+                    ["dmesg","|","tail","-50"],
+                    text=True
+                )
+            except:
+                logs="No logs"
 
-    def event(self,mode,duration=10):
-        self.previous=self.mode
-        self.mode=mode
-        self.event_until=time.time()+duration
-        self.update()
+            self.screen.text("LOG",logs.splitlines()[-4:])
+
+        elif self.mode=="image_1":
+            self.screen.image("robot/assets/images/turtle_happy.png")
+
+        elif self.mode=="image_2":
+            self.screen.image("robot/assets/images/turtle_rocket.png")
+
+        elif self.mode=="video_1":
+            self.screen.text("VIDEO 1",["not implemented"])
+
+        elif self.mode=="video_2":
+            self.screen.text("VIDEO 2",["not implemented"])
+
+    def show_event(self):
+        if self.event=="smoke":
+            self.screen.image("robot/assets/images/smoke.gif.gif")

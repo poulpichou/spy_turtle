@@ -1,16 +1,17 @@
 from robot.system.state import TurtleState
 
 class Robot:
-    def __init__(self, motors, face, leds, camera, battery, speaker, servo):
-        self.motors = motors
-        self.face = face
-        self.leds = leds
-        self.camera = camera
-        self.battery = battery
-        self.speaker = speaker
-        self.servo = servo
-        self.state = TurtleState()
-        self.brain = None
+    def __init__(self,motors,face,leds,camera,battery,speaker,servo,shell=None):
+        self.motors=motors
+        self.face=face
+        self.leds=leds
+        self.camera=camera
+        self.battery=battery
+        self.speaker=speaker
+        self.servo=servo
+        self.shell=shell
+        self.state=TurtleState()
+        self.brain=None
         print("[Robot] initialized")
 
     def update(self):
@@ -19,3 +20,6 @@ class Robot:
 
         if self.face:
             self.face.update()
+
+        if self.shell:
+            self.shell.update()

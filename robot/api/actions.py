@@ -83,3 +83,11 @@ def camera_center():
     robot = get_robot()
     print("[API] camera center")
     robot.servo.center()
+
+def shell_mode(mode):
+    from robot.system.runtime import get_robot
+    get_robot().shell.set_mode(mode)
+
+def shell_event(event):
+    from robot.system.runtime import get_robot
+    get_robot().shell.trigger(event)
