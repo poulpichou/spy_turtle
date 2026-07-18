@@ -2,11 +2,12 @@ from picamera2 import Picamera2
 from io import BytesIO
 from PIL import Image
 
+
 class Camera:
     def __init__(self):
         self.camera=Picamera2()
         self.running=False
-        self.camera.configure(self.camera.create_video_configuration(main={"size":(1280,720)}))
+        self.camera.configure(self.camera.create_video_configuration(main={"size":(1280,720),"format":"RGB888"}))
         print("[Camera] ready")
 
     def start(self):
@@ -21,15 +22,14 @@ class Camera:
             self.running=False
             print("[Camera] stopped")
 
-    def frame(self):
+    def get_frame(self):
         if not self.running:
             self.start()
 
         image=self.camera.capture_array()
-        img=Image.fromarray(image)
-        buffer=BytesIO()
-        img.save(buffer,format="JPEG")
-        return buffer.getvalue()
+        img=Image.fromarray(image).convert("RGB")
 
-    def get_frame(self):
-        return self.frame()
+        buffer=BytesIO()
+        img.save(buffer,format="JPEG",quality=85)
+
+        return buffer.getvalue()

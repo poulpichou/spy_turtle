@@ -1,15 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 <title>Spy Turtle</title>
-
 <link rel="stylesheet" href="css/style.css">
-
+<link rel="stylesheet" href="css/mobile.css">
 </head>
 
 <body>
@@ -19,7 +15,6 @@
 <section id="left-panel">
 
 <div class="card dpad-card">
-
 <h2>Movement</h2>
 
 <button id="forward">▲</button>
@@ -31,14 +26,11 @@
 </div>
 
 <button id="backward">▼</button>
-
 </div>
 
 
 <div class="card control-card">
-
 <div class="control-line">
-
 <span class="control-icon">🔊</span>
 
 <select id="sound-select">
@@ -49,24 +41,18 @@
 </select>
 
 </div>
-
 </div>
 
 
 <div class="card">
-
 <h2>Message</h2>
 
 <textarea id="message" placeholder="Message..."></textarea>
 
-<button id="send-message">
-Send
-</button>
-
+<button id="send-message">Send</button>
 </div>
 
 </section>
-
 
 
 <section id="center-panel">
@@ -74,13 +60,9 @@ Send
 <header id="status-bar">
 
 <div>🔋 <span id="battery">--</span>%</div>
-
 <div>📶 <span id="wifi">--</span></div>
-
 <div>🙂 <span id="emotion">neutral</span></div>
-
 <div>🌈 <span id="led-mode">off</span></div>
-
 <div>🐢 <span id="motion">stop</span></div>
 
 </header>
@@ -88,15 +70,16 @@ Send
 
 <section id="camera-area">
 
-<script src="js/camera.js"></script>
+<img id="camera-stream" src="" alt="Camera stream">
 
 </section>
 
-</section>
 
+</section>
 
 
 <section id="right-panel">
+
 
 <div class="card dpad-card">
 
@@ -123,11 +106,11 @@ Send
 
 <select id="face-select">
 
-<option>Neutral</option>
-<option>Happy</option>
-<option>Curious</option>
-<option>Sleepy</option>
-<option>Angry</option>
+<option value="neutral">Neutral</option>
+<option value="happy">Happy</option>
+<option value="curious">Curious</option>
+<option value="sleepy">Sleepy</option>
+<option value="angry">Angry</option>
 
 </select>
 
@@ -144,10 +127,10 @@ Send
 
 <select id="led-select">
 
-<option>Off</option>
-<option>Rainbow</option>
-<option>Breathing</option>
-<option>Pulse</option>
+<option value="off">Off</option>
+<option value="rainbow">Rainbow</option>
+<option value="breathing">Breathing</option>
+<option value="pulse">Pulse</option>
 
 </select>
 
@@ -158,21 +141,20 @@ Send
 
 <div class="card photo-card">
 
-<button id="photo-button">
-📷
-</button>
+<button id="photo-button">📷</button>
 
 </div>
+
 
 </section>
 
 </main>
 
 
-<script src="js/simulator.js"></script>
 <script src="js/api.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/controls.js"></script>
+<script src="js/camera.js"></script>
 
 </body>
 </html>
