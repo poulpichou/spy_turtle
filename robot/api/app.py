@@ -1,8 +1,20 @@
 from fastapi import FastAPI
 from robot.system.runtime import get_robot
 from robot.api import actions
+from fastapi.responses import StreamingResponse
+import time
 
 app=FastAPI()
+
+@app.get("/camera/stream")
+def camera_stream():
+    def generate():
+        while True:
+            frame=actions.camera_frame()
+            yield(b"--frame\r\nContent-Type: image/jpeg\r\n\r\n"+frame+b"\r\n")
+            time.sleep(0.05)
+
+    return StreamingResponse(generate(),media_type="multipart/x-mixed-replace; boundary=frame")
 
 def state():
     robot=get_robot()

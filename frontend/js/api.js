@@ -1,22 +1,20 @@
-const API_MODE="simulation";
+const API_BASE="http://spyturtle:8000";
 
 async function getStatus(){
-    if(API_MODE==="simulation"){
-        return {
-            battery:fakeRobot.battery,
-            wifi:true,
-            connection:"online",
-            emotion:fakeRobot.emotion,
-            led_mode:fakeRobot.led_mode,
-            motion:fakeRobot.motion,
-            head:fakeRobot.head
-        }
-    }
+    const r=await fetch(`${API_BASE}/state`);
+    return await r.json();
 }
 
 async function sendCommand(type,value){
     console.log("COMMAND:",type,value);
-    if(API_MODE==="simulation"){
-        fakeRobot.receiveCommand(type,value);
-    }
+
+    let url=null;
+
+    if(type==="move") url=`/move/${value}`;
+    if(type==="face") url=`/emotion/${value}`;
+    if(type==="led") url=`/led/${value}`;
+
+    if(!url) return;
+
+    await fetch(API_BASE+url,{method:"POST"});
 }

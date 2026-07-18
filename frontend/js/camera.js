@@ -1,0 +1,1 @@
+document.getElementById("camera-stream").src="http://spyturtle:8000/camera/stream";
