@@ -13,6 +13,7 @@ from robot.simulation.fake_speaker import FakeSpeaker
 from robot.simulation.fake_servo import FakeServo
 
 from robot.hardware.servo import ServoController
+from robot.brain.brain import Brain
 
 
 class RobotFactory:
@@ -20,9 +21,7 @@ class RobotFactory:
         self.simulation = simulation
 
     def create(self):
-        if self.simulation:
-            return self.create_simulation()
-
+        if self.simulation:return self.create_simulation()
         return self.create_hardware()
 
     def create_simulation(self):
@@ -31,20 +30,14 @@ class RobotFactory:
         camera = FakeCamera()
         battery = FakeBattery()
         speaker = FakeSpeaker()
-
         servo = FakeServo()
-
         left_display = FakeEyesDisplay("left")
         right_display = FakeEyesDisplay("right")
-
         eyes_renderer = EyesRenderer(
             left_display,
             right_display
         )
-
-        face = FaceController(
-            eyes_renderer
-        )
+        face = FaceController(eyes_renderer)
 
         robot = Robot(
             motors=motors,
@@ -55,6 +48,7 @@ class RobotFactory:
             speaker=speaker,
             servo=servo
         )
+        robot.brain=Brain(robot)
 
         return robot
 
@@ -69,4 +63,15 @@ class RobotFactory:
         right_display=OLEDDisplay(0x3C,"right")
         eyes_renderer=EyesRenderer(left_display,right_display)
         face=FaceController(eyes_renderer)
-        return Robot(motors,face,leds,camera,battery,speaker,servo)
+
+        robot = Robot(
+            motors=motors,
+            face=face,
+            leds=leds,
+            camera=camera,
+            battery=battery,
+            speaker=speaker,
+            servo=servo
+        )
+        robot.brain=Brain(robot)
+        return robot
