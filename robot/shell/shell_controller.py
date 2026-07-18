@@ -1,7 +1,6 @@
 from pathlib import Path
 import time,subprocess
 
-
 class ShellController:
     def __init__(self,screen,robot=None):
         self.screen=screen
@@ -16,46 +15,29 @@ class ShellController:
 
     def set_mode(self,mode):
         print(f"[Shell] mode:{mode}")
-
         self.event=None
         self.mode=mode
-
-        if self.robot:
-            self.robot.state.shell_mode=mode
-            self.robot.state.shell_event=None
-
         self.show_mode()
 
     def trigger(self,event,duration=5):
         print(f"[Shell] event:{event}")
-
         self.previous_mode=self.mode
         self.event=event
         self.event_end=time.time()+duration
-
-        if self.robot:
-            self.robot.state.shell_event=event
-
         self.show_event()
 
     def update(self):
         if self.event and time.time()>self.event_end:
-            print("[Shell] event finished")
-
             self.event=None
             self.mode=self.previous_mode
-
-            if self.robot:
-                self.robot.state.shell_event=None
-                self.robot.state.shell_mode=self.mode
-
             self.show_mode()
 
     def show_mode(self):
+
         modes={
             "rocket":"turtle_rocket.png",
-            "happy":"turtle_happy.png",
             "walking":"turtle_walking.png",
+            "happy":"turtle_happy.png",
             "sleep":"sleep.gif",
             "leds":"leds.gif",
             "fire":"fire.gif",
@@ -63,23 +45,40 @@ class ShellController:
         }
 
         if self.mode=="status":
-            self.screen.text("SPY TURTLE",[
-                "Online",
-                f"Battery:{self.robot.state.battery if self.robot else '--'}%",
-                "Mode:idle"
-            ])
-
+            self.show_status()
         elif self.mode=="log":
             self.show_log()
-
         elif self.mode in modes:
-            self.show_asset(modes[self.mode])
+            path=self.assets/modes[self.mode]
+            if path.suffix==".gif": self.screen.animation(path,10)
+            else: self.screen.image(path)
 
-        else:
-            print(f"[Shell] unknown mode:{self.mode}")
-            self.screen.text("ERROR",[self.mode])
+    def show_status(self):
+
+        state=self.robot.state if self.robot else None
+
+        battery=getattr(state,"battery","--")
+        emotion=getattr(state,"emotion","--")
+        led=getattr(state,"led_mode","--")
+        motion=getattr(state,"motion","--")
+        camera="ON" if self.robot and self.robot.camera else "OFF"
+
+        lines=[
+            "SPY TURTLE",
+            "",
+            f"🔋 Battery {battery}%",
+            "📡 WiFi OK",
+            f"🙂 Face {emotion}",
+            f"💡 LEDs {led}",
+            f"🐢 Move {motion}",
+            f"📷 Cam {camera}",
+            "SYSTEM READY"
+        ]
+
+        self.screen.text("STATUS",lines)
 
     def show_event(self):
+
         events={
             "smoke":"smoke.gif",
             "fire":"fire.gif",
@@ -89,31 +88,35 @@ class ShellController:
         }
 
         if self.event in events:
-            self.show_asset(events[self.event])
-
-    def show_asset(self,name):
-        path=self.assets/name
-
-        print(f"[Shell] display:{path}")
-
-        if not path.exists():
-            print("[Shell] missing asset")
-            return
-
-        if path.suffix==".gif":
-            self.screen.animation(path,10)
-        else:
-            self.screen.image(path)
+            path=self.assets/events[self.event]
+            if path.suffix==".gif": self.screen.animation(path,10)
+            else: self.screen.image(path)
 
     def show_log(self):
+
+        lines=self.get_logs()
+
+        self.screen.text(
+            "LOG",
+            lines
+        )
+
+    def get_logs(self):
+
+        files=[
+            Path("/home/spy/spy_turtle/logs/spy_turtle.log"),
+            Path("logs/spy_turtle.log")
+        ]
+
+        for f in files:
+            if f.exists():
+                return f.read_text().splitlines()[-10:]
+
         try:
-            logs=subprocess.check_output(
-                "dmesg | tail -50",
-                shell=True,
+            out=subprocess.check_output(
+                ["journalctl","-n","10","--no-pager"],
                 text=True
             )
-            lines=logs.splitlines()[-4:]
+            return out.splitlines()[-10:]
         except:
-            lines=["No logs"]
-
-        self.screen.text("LOG",lines)
+            return ["No logs"]
