@@ -3,8 +3,10 @@ from robot.system.runtime import get_robot
 from robot.api import actions
 from fastapi.responses import StreamingResponse
 import time
+from fastapi.staticfiles import StaticFiles
 
 app=FastAPI()
+app.mount("/",StaticFiles(directory="frontend",html=True),name="frontend")
 
 @app.get("/camera/stream")
 def camera_stream():
