@@ -8,7 +8,7 @@ if (!$Dir) {
 }
 
 $out="out.txt"
-$extensions=@("*.py","*.js","*.html","*.css")
+$extensions=@("*.py","*.js","*.html","*.css","*.json")
 
 "" | Out-File $out
 

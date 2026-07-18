@@ -7,7 +7,6 @@
             {"duration":1000,"left_eye":"open","right_eye":"open"}
         ]
     },
-
     "blink":{
         "loop":false,
         "interruptible":false,
@@ -17,7 +16,6 @@
             {"duration":120,"left_eye":"open","right_eye":"open"}
         ]
     },
-
     "look_left":{
         "loop":false,
         "interruptible":true,
@@ -26,7 +24,6 @@
             {"duration":500,"left_eye":"look_left","right_eye":"look_left"}
         ]
     },
-
     "look_right":{
         "loop":false,
         "interruptible":true,
@@ -35,7 +32,6 @@
             {"duration":500,"left_eye":"look_right","right_eye":"look_right"}
         ]
     },
-
     "look_up":{
         "loop":false,
         "interruptible":true,
@@ -44,7 +40,6 @@
             {"duration":500,"left_eye":"look_up","right_eye":"look_up"}
         ]
     },
-
     "look_down":{
         "loop":false,
         "interruptible":true,
@@ -53,7 +48,6 @@
             {"duration":500,"left_eye":"look_down","right_eye":"look_down"}
         ]
     },
-
     "happy":{
         "loop":true,
         "interruptible":true,
@@ -62,7 +56,6 @@
             {"duration":1000,"left_eye":"happy","right_eye":"happy"}
         ]
     },
-
     "sleepy":{
         "loop":true,
         "interruptible":true,
@@ -71,7 +64,6 @@
             {"duration":1000,"left_eye":"half","right_eye":"half"}
         ]
     },
-
     "sleep":{
         "loop":true,
         "interruptible":false,
@@ -80,7 +72,30 @@
             {"duration":1000,"left_eye":"closed","right_eye":"closed"}
         ]
     },
-
+    "curious":{
+        "loop":true,
+        "interruptible":true,
+        "next":null,
+        "frames":[
+            {"duration":1000,"left_eye":"surprised","right_eye":"open"}
+        ]
+    },
+    "surprised":{
+        "loop":true,
+        "interruptible":true,
+        "next":null,
+        "frames":[
+            {"duration":1000,"left_eye":"surprised","right_eye":"surprised"}
+        ]
+    },
+    "angry":{
+        "loop":true,
+        "interruptible":true,
+        "next":null,
+        "frames":[
+            {"duration":1000,"left_eye":"half","right_eye":"half"}
+        ]
+    },
     "yawn":{
         "loop":false,
         "interruptible":false,
@@ -91,7 +106,6 @@
             {"duration":500,"left_eye":"half","right_eye":"half"}
         ]
     },
-
     "wake_up":{
         "loop":false,
         "interruptible":false,
