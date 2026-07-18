@@ -1,12 +1,14 @@
-const API_BASE="http://spyturtle:8000";
+const API="http://spyturtle:8000";
 
 async function getStatus(){
-    const r=await fetch(`${API_BASE}/state`);
+    const r=await fetch(`${API}/state`);
     return await r.json();
 }
 
 async function sendCommand(type,value){
-    await fetch(`${API_BASE}/command`,{
+    console.log("COMMAND:",type,value);
+
+    await fetch(`${API}/command`,{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify({type,value})

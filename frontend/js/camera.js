@@ -1,7 +1,8 @@
 const camera=document.getElementById("camera-stream");
 
-if(camera){
-    setInterval(()=>{
-        camera.src="http://spyturtle:8000/camera/frame?"+Date.now();
-    },500);
+function updateCamera(){
+    camera.src="http://spyturtle:8000/camera/frame?t="+Date.now();
 }
+
+setInterval(updateCamera,200);
+updateCamera();
