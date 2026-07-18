@@ -14,6 +14,9 @@ from robot.simulation.fake_servo import FakeServo
 
 from robot.hardware.servo import ServoController
 from robot.brain.brain import Brain
+from robot.shell.shell_controller import ShellController
+from robot.simulation.fake_shell_screen import FakeShellScreen
+from robot.hardware.shell_screen_st7796 import ShellScreenST7796
 
 
 class RobotFactory:
@@ -37,6 +40,7 @@ class RobotFactory:
             left_display,
             right_display
         )
+        shell=ShellController(FakeShellScreen())
         face = FaceController(eyes_renderer)
 
         robot = Robot(
@@ -46,7 +50,8 @@ class RobotFactory:
             camera=camera,
             battery=battery,
             speaker=speaker,
-            servo=servo
+            servo=servo,
+            shell=shell
         )
         robot.brain=Brain(robot)
 
@@ -63,6 +68,7 @@ class RobotFactory:
         right_display=OLEDDisplay(0x3C,"right")
         eyes_renderer=EyesRenderer(left_display,right_display)
         face=FaceController(eyes_renderer)
+        shell=ShellController(ShellScreenST7796())
 
         robot = Robot(
             motors=motors,
@@ -71,7 +77,8 @@ class RobotFactory:
             camera=camera,
             battery=battery,
             speaker=speaker,
-            servo=servo
+            servo=servo,
+            shell=shell
         )
         robot.brain=Brain(robot)
         return robot
