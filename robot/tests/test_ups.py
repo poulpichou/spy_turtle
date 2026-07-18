@@ -1,17 +1,15 @@
 from smbus2 import SMBus
 import time
 
-ADDRESS = 0x2d
+bus=SMBus(1)
+addr=0x2d
 
-bus = SMBus(1)
+while True:
+    values=[bus.read_byte_data(addr,i) for i in range(0x60)]
 
-print("Reading UPS HAT...")
+    print("-"*60)
 
-for reg in range(0x00, 0x10):
-    try:
-        value = bus.read_byte_data(ADDRESS, reg)
-        print(f"Register {hex(reg)} : {hex(value)}")
-    except Exception as e:
-        print(f"Register {hex(reg)} error: {e}")
+    for i,v in enumerate(values):
+        print(f"{i:02X}: {v:02X}")
 
-bus.close()
+    time.sleep(1)
