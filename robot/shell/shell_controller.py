@@ -61,17 +61,21 @@ class ShellController:
         emotion=getattr(state,"emotion","--")
         led=getattr(state,"led_mode","--")
         motion=getattr(state,"motion","--")
+
         camera="ON" if self.robot and self.robot.camera else "OFF"
+        speaker="READY" if self.robot and self.robot.speaker else "OFF"
 
         lines=[
             "SPY TURTLE",
             "",
-            f"🔋 Battery {battery}%",
-            "📡 WiFi OK",
-            f"🙂 Face {emotion}",
-            f"💡 LEDs {led}",
-            f"🐢 Move {motion}",
-            f"📷 Cam {camera}",
+            f"[BAT] {battery}%",
+            "[WIFI] OK",
+            f"[FACE] {emotion}",
+            f"[LED] {led}",
+            f"[MOVE] {motion}",
+            f"[CAM] {camera}",
+            f"[SND] {speaker}",
+            "",
             "SYSTEM READY"
         ]
 
