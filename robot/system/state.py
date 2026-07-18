@@ -6,6 +6,8 @@ class TurtleState:
     emotion: str = "neutral"
     led_mode: str = "off"
     camera_on: bool = False
+    shell_mode: str = "status"
+    shell_event: str = None
     x: float = 0.0
     y: float = 0.0
     angle: float = 0.0

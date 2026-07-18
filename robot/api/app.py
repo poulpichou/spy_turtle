@@ -2,11 +2,11 @@ from fastapi import FastAPI
 from robot.system.runtime import get_robot
 from robot.api import actions
 
-app = FastAPI()
+app=FastAPI()
 
 def state():
-    robot = get_robot()
-    return robot.state.__dict__ if robot else {"error": "no robot"}
+    robot=get_robot()
+    return robot.state.__dict__ if robot else {"error":"no robot"}
 
 @app.get("/state")
 def get_state():
@@ -14,12 +14,12 @@ def get_state():
 
 @app.get("/battery")
 def battery():
-    robot = get_robot()
+    robot=get_robot()
     if not robot:
-        return {"error": "no robot"}
+        return {"error":"no robot"}
     return {
-        "level": robot.battery.get_level(),
-        "charging": robot.battery.is_charging()
+        "level":robot.battery.get_level(),
+        "charging":robot.battery.is_charging()
     }
 
 @app.post("/move/forward")
@@ -53,12 +53,12 @@ def stop():
     return state()
 
 @app.post("/emotion/{emotion}")
-def emotion(emotion: str):
+def emotion(emotion:str):
     actions.set_emotion(emotion)
     return state()
 
 @app.post("/led/{mode}")
-def led(mode: str):
+def led(mode:str):
     actions.set_led(mode)
     return state()
 
@@ -74,7 +74,7 @@ def camera_stop():
 
 @app.get("/camera/frame")
 def camera_frame():
-    return {"frame": actions.camera_frame()}
+    return {"frame":actions.camera_frame()}
 
 @app.post("/camera/left")
 def camera_left():
@@ -102,6 +102,22 @@ def camera_center():
     return state()
 
 @app.post("/speak/{text}")
-def speak(text: str):
+def speak(text:str):
     actions.speak(text)
-    return {"message": text}
+    return {"message":text}
+
+
+# Shell screen
+
+@app.post("/shell/{mode}")
+def shell(mode:str):
+    print(f"[API] POST shell {mode}")
+    actions.shell_mode(mode)
+    return state()
+
+
+@app.post("/shell/event/{event}")
+def shell_event(event:str):
+    print(f"[API] POST shell event {event}")
+    actions.shell_event(event)
+    return state()

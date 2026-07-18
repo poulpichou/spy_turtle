@@ -1,4 +1,7 @@
 from robot.hardware.display.display import Display
+from PIL import Image
+import time
+
 
 class ShellScreenST7796:
     def __init__(self):
@@ -7,21 +10,40 @@ class ShellScreenST7796:
         print("[ShellScreen] ST7796 ready")
 
     def show_image(self,path):
-        print(f"[ShellScreen] show_image {path}")
+        print(f"[ShellScreen] image:{path}")
         self.display.clear()
         self.display.load_image(path)
         self.display.show()
 
-    def image(self,path):
-        self.show_image(path)
+    def image(self,path): self.show_image(path)
+
+    def animation(self,path,fps=10):
+        print(f"[ShellScreen] animation:{path}")
+
+        gif=Image.open(path)
+
+        for frame in range(gif.n_frames):
+            gif.seek(frame)
+
+            image=gif.convert("RGB").resize(
+                (self.display.driver.width,self.display.driver.height)
+            )
+
+            self.display.buffer=image
+            self.display.show()
+
+            time.sleep(1/fps)
 
     def text(self,title,lines):
         self.display.clear()
+
         self.display.text(10,10,title)
+
         y=50
         for line in lines:
             self.display.text(10,y,line)
             y+=35
+
         self.display.show()
 
     def clear(self):

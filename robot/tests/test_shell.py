@@ -1,12 +1,29 @@
-from robot.hardware.shell_screen_st7796 import ShellScreenST7796
+from robot.factory.robot_factory import RobotFactory
 import time
 
-screen=ShellScreenST7796()
+robot=RobotFactory(simulation=False).create()
 
-screen.text("TEST",[
-    "SPI OK",
-    "ST7796",
-    "Spy Turtle"
-])
+print("[TEST] status")
+robot.shell.set_mode("status")
+time.sleep(3)
 
-time.sleep(10)
+print("[TEST] happy image")
+robot.shell.set_mode("happy")
+time.sleep(3)
+
+print("[TEST] rocket image")
+robot.shell.set_mode("rocket")
+time.sleep(3)
+
+print("[TEST] dance animation")
+robot.shell.set_mode("dance")
+time.sleep(5)
+
+print("[TEST] smoke event")
+robot.shell.trigger("smoke",5)
+
+for _ in range(60):
+    robot.update()
+    time.sleep(0.1)
+
+print("[TEST] finished")
