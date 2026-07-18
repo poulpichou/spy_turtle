@@ -1,10 +1,18 @@
 from fastapi import FastAPI
-from fastapi.responses import Response
+from fastapi.responses import Response,FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+from pathlib import Path
+
 from robot.system.runtime import get_robot
 from robot.api import actions
 
 app=FastAPI()
+
+frontend=Path(__file__).parent.parent.parent/"frontend"
+
+app.mount("/css",StaticFiles(directory=frontend/"css"),name="css")
+app.mount("/js",StaticFiles(directory=frontend/"js"),name="js")
 
 
 class Command(BaseModel):
@@ -17,6 +25,11 @@ def state():
     return robot.state.__dict__ if robot else {"error":"no robot"}
 
 
+@app.get("/")
+def index():
+    return FileResponse(frontend/"index.html")
+
+
 @app.get("/state")
 def get_state():
     return state()
@@ -25,14 +38,8 @@ def get_state():
 @app.get("/battery")
 def battery():
     robot=get_robot()
-
-    if not robot:
-        return {"error":"no robot"}
-
-    return {
-        "level":robot.battery.get_level(),
-        "charging":robot.battery.is_charging()
-    }
+    if not robot:return {"error":"no robot"}
+    return {"level":robot.battery.get_level(),"charging":robot.battery.is_charging()}
 
 
 @app.post("/command")
@@ -58,6 +65,15 @@ def command(cmd:Command):
         elif cmd.value=="up": actions.look_up()
         elif cmd.value=="down": actions.look_down()
         elif cmd.value=="center": actions.camera_center()
+
+    elif cmd.type=="shell":
+        actions.shell_mode(cmd.value)
+
+    elif cmd.type=="shell_event":
+        actions.shell_event(cmd.value)
+
+    elif cmd.type=="speak":
+        actions.speak(cmd.value)
 
     return state()
 
