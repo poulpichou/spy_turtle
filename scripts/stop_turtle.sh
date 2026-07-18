@@ -1,2 +1,4 @@
 #!/bin/bash
-pkill -f "uvicorn robot.api.server:app"
+
+pkill -f "robot.startup.main"
+pkill -f "uvicorn"

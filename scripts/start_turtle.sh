@@ -1,3 +1,7 @@
 #!/bin/bash
+
+cd "$(dirname "$0")/.."
+
 source .venv/bin/activate
-uvicorn robot.api.server:app --reload
+
+python -m robot.startup.main

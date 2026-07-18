@@ -1,27 +1,38 @@
 import time
 import threading
-import uvicorn
 
 from robot.factory.robot_factory import RobotFactory
 from robot.system.runtime import set_robot
-from robot.api.app import app
+from robot.config import settings
+from robot.utils.logger import log
+
 
 def start_api():
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    import uvicorn
+    from robot.api.app import app
+
+    log.info("Starting API")
+    uvicorn.run(app,host=settings.API_HOST,port=settings.API_PORT)
+
 
 def main():
-    print("[Startup] Starting Spy Turtle")
-    robot=RobotFactory(simulation=False).create()
-    set_robot(robot)
-    print("Spy Turtle online")
+    log.info("Starting Spy Turtle")
 
-    api_thread = threading.Thread(target=start_api, daemon=True)
-    api_thread.start()
-    print("[Startup] API started")
+    robot=RobotFactory(simulation=settings.SIMULATION).create()
+    set_robot(robot)
+
+    log.info("Robot ready")
+
+    threading.Thread(target=start_api,daemon=True).start()
+
+    delay=1/settings.UPDATE_RATE
+
+    log.info("Main loop started")
 
     while True:
         robot.update()
-        time.sleep(0.5)
+        time.sleep(delay)
 
-if __name__ == "__main__":
+
+if __name__=="__main__":
     main()
