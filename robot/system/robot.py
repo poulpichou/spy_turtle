@@ -1,5 +1,6 @@
 from robot.system.state import TurtleState
 
+
 class Robot:
     def __init__(self,motors,face,leds,camera,battery,speaker,servo,shell=None):
         self.motors=motors
@@ -28,6 +29,9 @@ class Robot:
 
         if self.shell:
             self.shell.update()
+
+            if hasattr(self.shell.screen,"update"):
+                self.shell.screen.update()
 
     def forward(self):
         self.motors.forward()
