@@ -1,12 +1,14 @@
-from robot.hardware.shell_screen_st7796 import ShellScreenST7796
-import time
+class FakeShellScreen:
+    def __init__(self):
+        print("[FakeShellScreen] ready")
 
-screen=ShellScreenST7796()
+    def show_image(self,path):
+        print(f"[Shell] image {path}")
 
-screen.text("TEST",[
-    "SPI OK",
-    "ST7796",
-    "Spy Turtle"
-])
+    def show_text(self,title,lines):
+        print(f"[Shell] {title}")
+        for line in lines:
+            print(line)
 
-time.sleep(10)
+    def clear(self):
+        print("[Shell] clear")
