@@ -7,88 +7,134 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/mobile.css">
 </head>
+
 <body>
+
 <main>
 
 <section id="left-panel">
 
 <div class="card dpad-card">
 <h2>Movement</h2>
+
 <button id="forward">▲</button>
+
 <div class="button-row">
 <button id="left">◀</button>
 <button id="stop">■</button>
 <button id="right">▶</button>
 </div>
+
 <button id="backward">▼</button>
 </div>
+
 
 <div class="card control-card">
 <div class="control-line">
 <span class="control-icon">🔊</span>
+
 <select id="sound-select">
-<option>Startup</option>
-<option>Happy</option>
-<option>Curious</option>
-<option>Sleep</option>
+<option value="startup">Startup</option>
+<option value="happy">Happy</option>
+<option value="curious">Curious</option>
+<option value="sleep">Sleep</option>
 </select>
+
 </div>
 </div>
 
+
 <div class="card">
 <h2>Message</h2>
+
 <textarea id="message" placeholder="Message..."></textarea>
+
 <button id="send-message">Send</button>
+
 </div>
 
 </section>
 
+
+
 <section id="center-panel">
 
 <header id="status-bar">
+
 <div>🔋 <span id="battery">--</span>%</div>
 <div>📶 <span id="wifi">--</span></div>
 <div>🙂 <span id="emotion">neutral</span></div>
 <div>🌈 <span id="led-mode">off</span></div>
 <div>🐢 <span id="motion">stop</span></div>
+
 </header>
 
+
 <section id="camera-area">
-<img id="camera-stream" src="/camera/frame" alt="Camera stream">
-</section>
+
+<img id="camera-stream"
+src="/camera/frame"
+alt="Camera">
 
 </section>
+
+
+</section>
+
+
+
 
 <section id="right-panel">
 
+
 <div class="card dpad-card">
+
 <h2>Head</h2>
+
 <button id="head-up">▲</button>
+
 <div class="button-row">
 <button id="head-left">◀</button>
 <button id="head-center">●</button>
 <button id="head-right">▶</button>
 </div>
+
 <button id="head-down">▼</button>
+
 </div>
 
+
+
 <div class="card control-card">
+
 <div class="control-line">
+
 <span class="control-icon">🐢</span>
+
 <select id="face-select">
+
 <option value="neutral">Neutral</option>
 <option value="happy">Happy</option>
-<option value="curious">Curious</option>
 <option value="sleepy">Sleepy</option>
 <option value="angry">Angry</option>
+<option value="surprised">Surprised</option>
+
 </select>
-</div>
+
 </div>
 
+</div>
+
+
+
 <div class="card control-card">
+
 <div class="control-line">
+
 <span class="control-icon">🖥️</span>
+
 <select id="shell-select">
+
 <option value="status">Status</option>
 <option value="log">Log</option>
 <option value="rocket">Rocket</option>
@@ -97,34 +143,54 @@
 <option value="fire">Fire</option>
 <option value="sleep">Sleep</option>
 <option value="leds">LEDs</option>
+
 </select>
-</div>
+
 </div>
 
+</div>
+
+
+
 <div class="card control-card">
+
 <div class="control-line">
+
 <span class="control-icon">💡</span>
+
 <select id="led-select">
+
 <option value="off">Off</option>
 <option value="rainbow">Rainbow</option>
 <option value="breathing">Breathing</option>
 <option value="pulse">Pulse</option>
+
 </select>
-</div>
+
 </div>
 
-<div class="card photo-card">
-<button id="photo-button">📷</button>
 </div>
+
+
+
+<div class="card photo-card">
+
+<button id="photo-button">📷</button>
+
+</div>
+
 
 </section>
 
+
 </main>
+
 
 <script src="js/api.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/controls.js"></script>
 <script src="js/camera.js"></script>
+
 
 </body>
 </html>
