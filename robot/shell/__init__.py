@@ -1,1 +1,1 @@
-from robot.shell.ui.display import ShellUI
+from robot.shell.ui.shell_ui import ShellUI
