@@ -3,12 +3,15 @@ from robot.utils.logger import log
 
 
 class ShellController:
-    def __init__(self,robot):
+    def __init__(self,robot=None):
         self.robot=robot
         self.mode=ShellMode.STATUS
         self.message=""
         self.message_color=(255,255,255)
         self.log_lines=[]
+
+    def set_robot(self,robot):
+        self.robot=robot
 
     def set_mode(self,mode):
         try:
@@ -47,19 +50,14 @@ class ShellController:
 
         if self.mode==ShellMode.STATUS:
             self.show_status()
-
         elif self.mode==ShellMode.MESSAGE:
             self.show_message()
-
         elif self.mode==ShellMode.LOG:
             self.show_log()
 
-    def state(self):
-        return self.robot.state.__dict__ if self.robot and self.robot.state else {}
-
     def show_status(self):
         self.robot.shell_screen.status(
-            self.state()
+            self.robot.state.__dict__
         )
 
     def show_message(self):
