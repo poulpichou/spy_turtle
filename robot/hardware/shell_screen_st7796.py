@@ -1,4 +1,5 @@
 from robot.hardware.display.display import Display
+from robot.shell.ui.shell_ui import ShellUI
 from PIL import Image
 import time
 
@@ -7,24 +8,18 @@ class ShellScreenST7796:
     def __init__(self):
         self.display=Display()
         self.display.start()
+        self.ui=ShellUI(self.display)
+
         self.current_animation=None
         self.animation_frames=[]
         self.animation_index=0
         self.animation_time=0
-        print("[ShellScreen] ST7796 ready")
 
-    def show_image(self,path):
-        print(f"[ShellScreen] image:{path}")
+    def image(self,path):
         self.stop_animation()
-        self.display.clear()
-        self.display.load_image(path)
-        self.display.show()
-
-    def image(self,path): self.show_image(path)
+        self.ui.image(path)
 
     def animation(self,path,fps=10):
-        print(f"[ShellScreen] animation:{path}")
-
         gif=Image.open(path)
 
         self.animation_frames=[]
@@ -32,15 +27,13 @@ class ShellScreenST7796:
         for i in range(gif.n_frames):
             gif.seek(i)
             self.animation_frames.append(
-                gif.convert("RGB").resize(
-                    (self.display.driver.width,self.display.driver.height)
-                )
+                gif.convert("RGB")
             )
 
         self.animation_index=0
         self.animation_time=time.time()
         self.animation_fps=fps
-        self.current_animation=path
+        self.current_animation=True
 
         self.show_animation_frame()
 
@@ -52,11 +45,7 @@ class ShellScreenST7796:
             return
 
         self.animation_time=time.time()
-        self.animation_index+=1
-
-        if self.animation_index>=len(self.animation_frames):
-            self.animation_index=0
-
+        self.animation_index=(self.animation_index+1)%len(self.animation_frames)
         self.show_animation_frame()
 
     def show_animation_frame(self):
@@ -67,21 +56,17 @@ class ShellScreenST7796:
         self.current_animation=None
         self.animation_frames=[]
 
-    def text(self,title,lines):
-        print(f"[ShellScreen] text:{title}")
-
+    def status(self,state):
         self.stop_animation()
+        self.ui.status(state)
 
-        self.display.clear()
-        self.display.text(10,10,title)
+    def message(self,text,color=(255,255,255)):
+        self.stop_animation()
+        self.ui.message(text,color)
 
-        y=50
-
-        for line in lines:
-            self.display.text(10,y,line)
-            y+=35
-
-        self.display.show()
+    def log(self,lines):
+        self.stop_animation()
+        self.ui.log(lines)
 
     def clear(self):
         self.stop_animation()
