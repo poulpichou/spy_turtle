@@ -89,19 +89,15 @@ class ShellScreenST7796:
             y+=22
         self.display.show()
 
-    def message(self,text,color=(255,255,255)):
-        self.display.clear()
-        self.display.text(8,40,"MESSAGE",(0,220,255),True)
-        y=100
-        for line in text.split("\n"):
-            self.display.text(8,y,line,color,True)
-            y+=22
+    def message(self,state,text,color=(255,255,255)):
+        draw=self.render(state,"MESSAGE")
+        draw_title(draw,"MESSAGE")
+        draw_lines(draw,text.split("\n"),theme.CONTENT_Y+55)
         self.display.show()
 
-    def log(self,lines):
-        self.display.clear()
-        y=40
-        for line in lines[-10:]:
-            self.display.text(8,y,line,(180,180,180),True)
-            y+=22
+
+    def log(self,state,lines):
+        draw=self.render(state,"LOG")
+        draw_title(draw,"LOG")
+        draw_lines(draw,lines,theme.CONTENT_Y+45)
         self.display.show()
