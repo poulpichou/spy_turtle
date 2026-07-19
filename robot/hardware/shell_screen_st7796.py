@@ -1,4 +1,6 @@
 from robot.hardware.display.display import Display
+from robot.shell.ui.widgets import draw_header,draw_footer,draw_title,draw_lines
+from robot.shell.ui import theme
 from robot.utils.logger import log
 from pathlib import Path
 from PIL import Image
@@ -18,10 +20,8 @@ class ShellScreenST7796:
         if not path.exists():
             log.warn(f"[SHELL SCREEN] missing {path}")
             return
-        if path.suffix.lower()==".gif":
-            self.animation(str(path),rotation,resize)
-        else:
-            self.show_image(str(path),rotation,resize)
+        if path.suffix.lower()==".gif": self.animation(str(path),rotation,resize)
+        else: self.show_image(str(path),rotation,resize)
 
     def show_image(self,path,rotation=0,resize=True):
         self.stop_animation()
@@ -54,14 +54,9 @@ class ShellScreenST7796:
 
     def prepare_image(self,image,rotation,resize):
         if rotation:image=image.rotate(rotation,expand=True)
-
-        if resize:
-            image.thumbnail((self.display.driver.width,self.display.driver.height))
-
+        if resize:image.thumbnail((self.display.driver.width,self.display.driver.height))
         canvas=Image.new("RGB",(self.display.driver.width,self.display.driver.height),(0,0,0))
-        x=(canvas.width-image.width)//2
-        y=(canvas.height-image.height)//2
-        canvas.paste(image,(x,y))
+        canvas.paste(image,((canvas.width-image.width)//2,(canvas.height-image.height)//2))
         return canvas
 
     def stop_animation(self):
@@ -73,20 +68,22 @@ class ShellScreenST7796:
         self.display.clear()
         self.display.show()
 
+    def render(self,state,footer):
+        self.display.clear(theme.CONTENT_BG)
+        draw=self.display.draw
+        draw_header(draw,state)
+        draw_footer(draw,footer)
+        return draw
+
     def status(self,state):
-        self.display.clear()
-        lines=[
-            "SPY TURTLE",
-            "",
-            f"BAT {state.get('battery','--')}%",
-            f"FACE {state.get('emotion','--')}",
+        draw=self.render(state,"STATUS")
+        draw_title(draw,"SPY TURTLE")
+        draw_lines(draw,[
+            f"Battery {state.get('battery','--')}%",
+            f"Camera {state.get('camera_on','--')}",
             f"LED {state.get('led_mode','--')}",
-            f"MOVE {state.get('motion','--')}"
-        ]
-        y=10
-        for line in lines:
-            self.display.text(8,y,line,(255,255,255),True)
-            y+=22
+            f"Motion {state.get('motion','--')}"
+        ],theme.CONTENT_Y+50)
         self.display.show()
 
     def message(self,state,text,color=(255,255,255)):
@@ -94,7 +91,6 @@ class ShellScreenST7796:
         draw_title(draw,"MESSAGE")
         draw_lines(draw,text.split("\n"),theme.CONTENT_Y+55)
         self.display.show()
-
 
     def log(self,state,lines):
         draw=self.render(state,"LOG")
