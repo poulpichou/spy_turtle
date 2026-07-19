@@ -59,7 +59,7 @@ class RobotFactory:
         battery=Battery()
 
         left_display=OLEDDisplay(0x3C,"left")
-        right_display=OLEDDisplay(0x3C,"right")
+        right_display=OLEDDisplay(0x3D,"right")
 
         eyes_renderer=EyesRenderer(left_display,right_display)
         face=FaceController(eyes_renderer)
