@@ -3,8 +3,9 @@ from robot.utils.logger import log
 
 
 class ShellController:
-    def __init__(self,robot=None):
-        self.robot=robot
+    def __init__(self,screen=None):
+        self.screen=screen
+        self.robot=None
         self.mode=ShellMode.STATUS
         self.message=""
         self.message_color=(255,255,255)
@@ -45,7 +46,7 @@ class ShellController:
             self.update()
 
     def update(self):
-        if not self.robot or not self.robot.shell_screen:
+        if not self.screen:
             return
 
         if self.mode==ShellMode.STATUS:
@@ -56,17 +57,17 @@ class ShellController:
             self.show_log()
 
     def show_status(self):
-        self.robot.shell_screen.status(
-            self.robot.state.__dict__
+        self.screen.status(
+            self.robot.state.__dict__ if self.robot else {}
         )
 
     def show_message(self):
-        self.robot.shell_screen.message(
+        self.screen.message(
             self.message,
             self.message_color
         )
 
     def show_log(self):
-        self.robot.shell_screen.log(
+        self.screen.log(
             self.log_lines
         )
