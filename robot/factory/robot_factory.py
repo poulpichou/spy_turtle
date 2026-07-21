@@ -15,7 +15,7 @@ from robot.hardware.battery import Battery
 from robot.hardware.camera import Camera
 from robot.shell.shell_controller import ShellController
 from robot.shell.ui.shell_ui import ShellUI
-from robot.brain import Brain
+from robot.brain.brain import Brain
 
 class RobotFactory:
     def __init__(self,simulation=True): self.simulation=simulation
