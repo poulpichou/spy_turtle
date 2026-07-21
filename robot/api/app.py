@@ -4,7 +4,7 @@ from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel,Field
 from robot.api import actions
-from robot.assets.assets import get_asset_names,get_assets
+from robot.assets.assets import get_assets
 from robot.system.runtime import get_robot
 from robot.utils.logger import log
 
@@ -17,27 +17,16 @@ class Command(BaseModel):
 
 def state():
     robot=get_robot()
-    return robot.state.__dict__ if robot else {"error":"no robot"}
+    return robot.state.to_dict() if robot else {"error":"no robot"}
 
 @app.get("/state")
 def get_state(): return state()
 
 @app.get("/assets")
-def get_available_assets():
-    return {
-        "shell":build_assets("shell"),
-        "eyes":build_assets("eyes"),
-        "leds":build_assets("leds"),
-        "audio":build_assets("audio")
-    }
+def get_available_assets(): return {section:build_assets(section) for section in ("shell","eyes","leds","audio")}
 
 def build_assets(section):
-    assets=get_assets(section)
-    return [
-        {"name":name,"label":asset.get("label",name)}
-        for name,asset in assets.items()
-        if asset.get("available",True)
-    ]
+    return [{"name":name,"label":asset.get("label",name)} for name,asset in get_assets(section).items() if asset.get("available",True)]
 
 @app.post("/command")
 def command(cmd:Command):
@@ -50,14 +39,10 @@ def command(cmd:Command):
             elif cmd.value=="right":actions.turn_right()
             elif cmd.value=="stop":actions.stop()
             else:raise ValueError(f"Unknown movement: {cmd.value}")
-        elif cmd.type=="face":
-            actions.set_emotion(cmd.value)
-        elif cmd.type=="led":
-            actions.set_led(cmd.value)
-        elif cmd.type=="shell":
-            actions.shell_show(cmd.value)
-        elif cmd.type=="shell_text":
-            actions.shell_text(cmd.value)
+        elif cmd.type=="face":actions.set_emotion(cmd.value)
+        elif cmd.type=="led":actions.set_led(cmd.value)
+        elif cmd.type=="shell":actions.shell_show(cmd.value)
+        elif cmd.type=="shell_text":actions.shell_text(cmd.value)
         elif cmd.type=="head":
             if cmd.value=="left":actions.look_left()
             elif cmd.value=="right":actions.look_right()
@@ -65,18 +50,15 @@ def command(cmd:Command):
             elif cmd.value=="down":actions.look_down()
             elif cmd.value=="center":actions.camera_center()
             else:raise ValueError(f"Unknown head command: {cmd.value}")
-        elif cmd.type=="sound":
-            actions.speak(cmd.value)
-        else:
-            raise ValueError(f"Unknown command type: {cmd.type}")
+        elif cmd.type=="sound":actions.speak(cmd.value)
+        else:raise ValueError(f"Unknown command type: {cmd.type}")
     except Exception as error:
         log.error(f"[API ERROR] {error}")
         raise HTTPException(status_code=400,detail=str(error)) from error
     return state()
 
 @app.get("/camera/frame")
-def camera_frame():
-    return Response(content=actions.camera_frame(),media_type="image/jpeg")
+def camera_frame(): return Response(content=actions.camera_frame(),media_type="image/jpeg")
 
 @app.post("/camera/start")
 def camera_start():

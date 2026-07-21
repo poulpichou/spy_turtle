@@ -11,13 +11,12 @@ class FaceEngine:
         self.frame_start=0
         self.playing=False
 
-    def play(self,name):
+    def play(self,name,force=False):
         sequence=self.library.get(name)
         if sequence is None:
             log.warn(f"[FACE] unknown sequence: {name}")
             return False
-        if self.playing and not self.current.get("interruptible",True):
-            return False
+        if self.playing and not force and not self.current.get("interruptible",True):return False
         self.current_name=name
         self.current=sequence
         self.frame_index=0
@@ -30,16 +29,14 @@ class FaceEngine:
     def update(self):
         if not self.playing or not self.current:return
         frame=self.current["frames"][self.frame_index]
-        elapsed=(time.monotonic()-self.frame_start)*1000
-        if elapsed<frame["duration"]:return
+        if (time.monotonic()-self.frame_start)*1000<frame["duration"]:return
         self.frame_index+=1
         if self.frame_index>=len(self.current["frames"]):
-            if self.current.get("loop",False):
-                self.frame_index=0
+            if self.current.get("loop",False):self.frame_index=0
             else:
                 next_sequence=self.current.get("next")
                 self.playing=False
-                if next_sequence:self.play(next_sequence)
+                if next_sequence:self.play(next_sequence,force=True)
                 return
         self.frame_start=time.monotonic()
         self._show_current_frame()

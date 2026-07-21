@@ -7,102 +7,119 @@ def robot():
     if instance is None:raise RuntimeError("Robot is not initialized")
     return instance
 
-def move_forward():
+def interact(kind):
     instance=robot()
+    instance.state.touch(kind)
+    if instance.state.sleeping_until:
+        instance.state.sleeping_until=0.0
+        instance.state.emotion="neutral"
+        if instance.face:instance.face.play("wake_up",force=True)
+    return instance
+
+def move_forward():
+    instance=interact("move_forward")
     log.info("[API] move forward")
     instance.motors.forward()
+    instance.state.motion="forward"
     instance.state.x+=1
 
 def move_backward():
-    instance=robot()
+    instance=interact("move_backward")
     log.info("[API] move backward")
     instance.motors.backward()
+    instance.state.motion="backward"
     instance.state.x-=1
 
 def turn_left():
-    instance=robot()
+    instance=interact("turn_left")
     log.info("[API] turn left")
     instance.motors.turn_left()
+    instance.state.motion="left"
     instance.state.angle-=10
 
 def turn_right():
-    instance=robot()
+    instance=interact("turn_right")
     log.info("[API] turn right")
     instance.motors.turn_right()
+    instance.state.motion="right"
     instance.state.angle+=10
 
 def stop():
-    instance=robot()
+    instance=interact("stop")
     log.info("[API] stop")
     instance.motors.stop()
+    instance.state.motion="stop"
 
 def set_emotion(emotion):
-    instance=robot()
+    instance=interact(f"face:{emotion}")
     log.info(f"[API] face {emotion}")
     if not instance.face:raise RuntimeError("Face controller is unavailable")
-    instance.face.play(emotion)
+    instance.face.user_event(emotion,10.0)
     instance.state.emotion=emotion
+    instance.state.face_event_until=instance.face.manual_until
 
 def set_led(mode):
-    instance=robot()
+    instance=interact(f"led:{mode}")
     log.info(f"[API] led {mode}")
     if not instance.leds:raise RuntimeError("LED controller is unavailable")
     instance.leds.set_mode(mode)
     instance.state.led_mode=mode
 
 def camera_start():
-    instance=robot()
+    instance=interact("camera_start")
     log.info("[API] camera start")
     instance.camera.start()
+    instance.state.camera_on=True
 
 def camera_stop():
-    instance=robot()
+    instance=interact("camera_stop")
     log.info("[API] camera stop")
     instance.camera.stop()
+    instance.state.camera_on=False
 
 def camera_frame(): return robot().camera.get_frame()
 
 def speak(text):
-    instance=robot()
+    instance=interact(f"sound:{text}")
     log.info(f"[API] speak {text}")
     if instance.speaker:instance.speaker.play(text)
 
 def look_left():
     log.info("[API] camera left")
-    robot().servo.look_left()
+    interact("head_left").servo.look_left()
 
 def look_right():
     log.info("[API] camera right")
-    robot().servo.look_right()
+    interact("head_right").servo.look_right()
 
 def look_up():
     log.info("[API] camera up")
-    robot().servo.look_up()
+    interact("head_up").servo.look_up()
 
 def look_down():
     log.info("[API] camera down")
-    robot().servo.look_down()
+    interact("head_down").servo.look_down()
 
 def camera_center():
     log.info("[API] camera center")
-    robot().servo.center()
+    interact("head_center").servo.center()
 
 def shell_show(value):
-    instance=robot()
+    instance=interact(f"shell:{value}")
     if not instance.shell:raise RuntimeError("Shell controller is unavailable")
     log.info(f"[API] shell {value}")
-    if value=="status":
-        instance.shell.show_status()
-    elif value=="log":
-        instance.shell.show_log()
+    if value=="status":instance.shell.show_status()
+    elif value=="log":instance.shell.show_log()
     else:
         get_asset("shell",value)
         instance.shell.show_image(value)
+    instance.state.shell_mode=value
 
 def shell_text(text):
-    instance=robot()
+    instance=interact("shell_text")
     if not instance.shell:raise RuntimeError("Shell controller is unavailable")
     text=str(text).strip()
     if not text:raise ValueError("Shell text cannot be empty")
     log.info(f"[API] shell text {text}")
     instance.shell.show_text(text)
+    instance.state.shell_mode="text"
