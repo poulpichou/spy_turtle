@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <link rel="icon" href="data:,">
@@ -7,6 +7,10 @@
 <title>Spy Turtle</title>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/mobile.css">
+<meta name="theme-color" content="#181818">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/turtle-192.png">
+<link rel="apple-touch-icon" href="/icons/turtle-192.png">
 </head>
 
 <body>
@@ -18,21 +22,21 @@
 <div class="card dpad-card">
 <h2>Movement</h2>
 
-<button id="forward">▲</button>
+<button id="forward">â–²</button>
 
 <div class="button-row">
-<button id="left">◀</button>
-<button id="stop">■</button>
-<button id="right">▶</button>
+<button id="left">â—€</button>
+<button id="stop">â– </button>
+<button id="right">â–¶</button>
 </div>
 
-<button id="backward">▼</button>
+<button id="backward">â–¼</button>
 </div>
 
 
 <div class="card control-card">
 <div class="control-line">
-<span class="control-icon">🔊</span>
+<span class="control-icon">ðŸ”Š</span>
 
 <select id="sound-select">
 <option value="startup">Startup</option>
@@ -62,11 +66,11 @@
 
 <header id="status-bar">
 
-<div>🔋 <span id="battery">--</span>%</div>
-<div>📶 <span id="wifi">--</span></div>
-<div>🙂 <span id="emotion">neutral</span></div>
-<div>🌈 <span id="led-mode">off</span></div>
-<div>🐢 <span id="motion">stop</span></div>
+<div>ðŸ”‹ <span id="battery">--</span>%</div>
+<div>ðŸ“¶ <span id="wifi">--</span></div>
+<div>ðŸ™‚ <span id="emotion">neutral</span></div>
+<div>ðŸŒˆ <span id="led-mode">off</span></div>
+<div>ðŸ¢ <span id="motion">stop</span></div>
 
 </header>
 
@@ -92,15 +96,15 @@ alt="Camera">
 
 <h2>Head</h2>
 
-<button id="head-up">▲</button>
+<button id="head-up">â–²</button>
 
 <div class="button-row">
-<button id="head-left">◀</button>
-<button id="head-center">●</button>
-<button id="head-right">▶</button>
+<button id="head-left">â—€</button>
+<button id="head-center">â—</button>
+<button id="head-right">â–¶</button>
 </div>
 
-<button id="head-down">▼</button>
+<button id="head-down">â–¼</button>
 
 </div>
 
@@ -110,7 +114,7 @@ alt="Camera">
 
 <div class="control-line">
 
-<span class="control-icon">🐢</span>
+<span class="control-icon">ðŸ¢</span>
 
 <select id="face-select">
 
@@ -142,7 +146,7 @@ alt="Camera">
 
 <div class="control-line">
 
-<span class="control-icon">🖥️</span>
+<span class="control-icon">ðŸ–¥ï¸</span>
 
 <select id="shell-select">
 
@@ -167,7 +171,7 @@ alt="Camera">
 
 <div class="control-line">
 
-<span class="control-icon">💡</span>
+<span class="control-icon">ðŸ’¡</span>
 
 <select id="led-select">
 
@@ -186,7 +190,7 @@ alt="Camera">
 
 <div class="card photo-card">
 
-<button id="photo-button">📷</button>
+<button id="photo-button">ðŸ“·</button>
 
 </div>
 
@@ -203,5 +207,6 @@ alt="Camera">
 <script src="js/camera.js?v=2"></script>
 
 
+<script src="/js/pwa.js?v=1"></script>
 </body>
 </html>
