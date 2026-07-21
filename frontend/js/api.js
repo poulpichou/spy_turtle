@@ -1,18 +1,30 @@
-const API=`http://${location.hostname}:8000`;
+const API="";
 
 async function getStatus(){
-    const r=await fetch(`${API}/state`);
-    return await r.json();
+    const response=await fetch(`${API}/state`);
+    if(!response.ok)throw new Error(`State request failed: ${response.status}`);
+    return response.json();
 }
 
-async function sendCommand(type,value){
-    console.log("[FRONTEND COMMAND]",type,value);
+async function getAssets(){
+    const response=await fetch(`${API}/assets`);
+    if(!response.ok)throw new Error(`Assets request failed: ${response.status}`);
+    return response.json();
+}
 
-    const r=await fetch(`${API}/command`,{
+async function sendCommand(type,value="",extra={}){
+    console.log("[FRONTEND COMMAND]",type,value,extra);
+    const response=await fetch(`${API}/command`,{
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({type,value})
+        body:JSON.stringify({type,value,extra})
     });
-
-    console.log("[FRONTEND RESPONSE]",await r.json());
+    const data=await response.json();
+    if(!response.ok){
+        const message=data.detail||`Command failed: ${response.status}`;
+        console.error("[FRONTEND ERROR]",message);
+        throw new Error(message);
+    }
+    console.log("[FRONTEND RESPONSE]",data);
+    return data;
 }

@@ -1,109 +1,108 @@
+from robot.assets.assets import get_asset
 from robot.system.runtime import get_robot
 from robot.utils.logger import log
 
+def robot():
+    instance=get_robot()
+    if instance is None:raise RuntimeError("Robot is not initialized")
+    return instance
 
 def move_forward():
-    robot=get_robot()
+    instance=robot()
     log.info("[API] move forward")
-    robot.motors.forward()
-    robot.state.x+=1
+    instance.motors.forward()
+    instance.state.x+=1
 
 def move_backward():
-    robot=get_robot()
+    instance=robot()
     log.info("[API] move backward")
-    robot.motors.backward()
-    robot.state.x-=1
+    instance.motors.backward()
+    instance.state.x-=1
 
 def turn_left():
-    robot=get_robot()
+    instance=robot()
     log.info("[API] turn left")
-    robot.motors.turn_left()
-    robot.state.angle-=10
+    instance.motors.turn_left()
+    instance.state.angle-=10
 
 def turn_right():
-    robot=get_robot()
+    instance=robot()
     log.info("[API] turn right")
-    robot.motors.turn_right()
-    robot.state.angle+=10
+    instance.motors.turn_right()
+    instance.state.angle+=10
 
 def stop():
-    robot=get_robot()
+    instance=robot()
     log.info("[API] stop")
-    robot.motors.stop()
+    instance.motors.stop()
 
 def set_emotion(emotion):
-    robot=get_robot()
-    log.info(f"[API] emotion {emotion}")
-    robot.state.emotion=emotion
-    if robot.face:
-        robot.face.play(emotion)
+    instance=robot()
+    log.info(f"[API] face {emotion}")
+    if not instance.face:raise RuntimeError("Face controller is unavailable")
+    instance.face.play(emotion)
+    instance.state.emotion=emotion
 
 def set_led(mode):
-    robot=get_robot()
+    instance=robot()
     log.info(f"[API] led {mode}")
-    if robot.leds:
-        robot.leds.set_mode(mode)
-    robot.state.led_mode=mode
+    if not instance.leds:raise RuntimeError("LED controller is unavailable")
+    instance.leds.set_mode(mode)
+    instance.state.led_mode=mode
 
 def camera_start():
-    robot=get_robot()
+    instance=robot()
     log.info("[API] camera start")
-    robot.camera.start()
+    instance.camera.start()
 
 def camera_stop():
-    robot=get_robot()
+    instance=robot()
     log.info("[API] camera stop")
-    robot.camera.stop()
+    instance.camera.stop()
 
-def camera_frame():
-    robot=get_robot()
-    return robot.camera.get_frame()
+def camera_frame(): return robot().camera.get_frame()
 
 def speak(text):
-    robot=get_robot()
+    instance=robot()
     log.info(f"[API] speak {text}")
-    if robot.speaker:
-        robot.speaker.play(text)
+    if instance.speaker:instance.speaker.play(text)
 
 def look_left():
-    robot=get_robot()
     log.info("[API] camera left")
-    robot.servo.look_left()
+    robot().servo.look_left()
 
 def look_right():
-    robot=get_robot()
     log.info("[API] camera right")
-    robot.servo.look_right()
+    robot().servo.look_right()
 
 def look_up():
-    robot=get_robot()
     log.info("[API] camera up")
-    robot.servo.look_up()
+    robot().servo.look_up()
 
 def look_down():
-    robot=get_robot()
     log.info("[API] camera down")
-    robot.servo.look_down()
+    robot().servo.look_down()
 
 def camera_center():
-    robot=get_robot()
     log.info("[API] camera center")
-    robot.servo.center()
+    robot().servo.center()
 
-def shell_mode(mode):
-    robot=get_robot()
-    log.info(f"[API] shell mode {mode}")
-    if robot and robot.shell:
-        robot.shell.set_mode(mode)
+def shell_show(value):
+    instance=robot()
+    if not instance.shell:raise RuntimeError("Shell controller is unavailable")
+    log.info(f"[API] shell {value}")
+    if value=="status":
+        instance.shell.show_status()
+    elif value=="log":
+        instance.shell.show_log()
+    else:
+        get_asset("shell",value)
+        instance.shell.show_image(value)
 
-def shell_event(event):
-    robot=get_robot()
-    log.info(f"[API] shell event {event}")
-    if robot and robot.shell:
-        robot.shell.trigger(event)
-
-def shell_text(text,color=None):
-    robot=get_robot()
+def shell_text(text):
+    instance=robot()
+    if not instance.shell:raise RuntimeError("Shell controller is unavailable")
+    text=str(text).strip()
+    if not text:raise ValueError("Shell text cannot be empty")
     log.info(f"[API] shell text {text}")
-    if robot and robot.shell:
-        robot.shell.send_text(text,color)
+    instance.shell.show_text(text)
