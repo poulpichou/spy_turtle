@@ -12,112 +12,69 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/icons/turtle-192.png">
 <link rel="apple-touch-icon" href="/icons/turtle-192.png">
 </head>
-
 <body>
-
 <main>
-
 <section id="left-panel">
-
 <div class="card dpad-card">
 <h2>Movement</h2>
-
-<button id="forward">â–²</button>
-
+<button id="forward">▲</button>
 <div class="button-row">
-<button id="left">â—€</button>
-<button id="stop">â– </button>
-<button id="right">â–¶</button>
+<button id="left">◀</button>
+<button id="stop">■</button>
+<button id="right">▶</button>
 </div>
-
-<button id="backward">â–¼</button>
+<button id="backward">▼</button>
 </div>
-
 
 <div class="card control-card">
 <div class="control-line">
-<span class="control-icon">ðŸ”Š</span>
-
+<span class="control-icon">🔊</span>
 <select id="sound-select">
 <option value="startup">Startup</option>
 <option value="happy">Happy</option>
 <option value="curious">Curious</option>
 <option value="sleep">Sleep</option>
 </select>
-
 </div>
 </div>
-
 
 <div class="card">
 <h2>Message</h2>
-
 <textarea id="message" placeholder="Message..."></textarea>
-
 <button id="send-message">Send</button>
-
 </div>
-
 </section>
-
-
 
 <section id="center-panel">
-
 <header id="status-bar">
-
-<div>ðŸ”‹ <span id="battery">--</span>%</div>
-<div>ðŸ“¶ <span id="wifi">--</span></div>
-<div>ðŸ™‚ <span id="emotion">neutral</span></div>
-<div>ðŸŒˆ <span id="led-mode">off</span></div>
-<div>ðŸ¢ <span id="motion">stop</span></div>
-
+<div>🔋 <span id="battery">--</span>%</div>
+<div>📶 <span id="wifi">--</span></div>
+<div>🙂 <span id="emotion">neutral</span></div>
+<div>🌈 <span id="led-mode">off</span></div>
+<div>🐢 <span id="motion">stop</span></div>
 </header>
 
-
 <section id="camera-area">
-
-<img id="camera-stream"
-src="/camera/frame"
-alt="Camera">
-
+<img id="camera-stream" src="/camera/frame" alt="Camera">
 </section>
-
-
 </section>
-
-
-
 
 <section id="right-panel">
-
-
 <div class="card dpad-card">
-
 <h2>Head</h2>
-
-<button id="head-up">â–²</button>
-
+<button id="head-up">▲</button>
 <div class="button-row">
-<button id="head-left">â—€</button>
-<button id="head-center">â—</button>
-<button id="head-right">â–¶</button>
+<button id="head-left">◀</button>
+<button id="head-center">●</button>
+<button id="head-right">▶</button>
 </div>
-
-<button id="head-down">â–¼</button>
-
+<button id="head-down">▼</button>
 </div>
-
-
 
 <div class="card control-card">
-
 <div class="control-line">
-
-<span class="control-icon">ðŸ¢</span>
-
+<span class="control-icon">🐢</span>
 <select id="face-select">
-
 <option value="neutral">Neutral</option>
 <option value="happy">Happy</option>
 <option value="sleepy">Sleepy</option>
@@ -133,23 +90,14 @@ alt="Camera">
 <option value="look_down">Look down</option>
 <option value="yawn">Yawn</option>
 <option value="wake_up">Wake up</option>
-
 </select>
-
 </div>
-
 </div>
-
-
 
 <div class="card control-card">
-
 <div class="control-line">
-
-<span class="control-icon">ðŸ–¥ï¸</span>
-
+<span class="control-icon">🖥️</span>
 <select id="shell-select">
-
 <option value="status">Status</option>
 <option value="log">Log</option>
 <option value="rocket">Rocket</option>
@@ -158,55 +106,32 @@ alt="Camera">
 <option value="fire">Fire</option>
 <option value="sleep">Sleep</option>
 <option value="leds">LEDs</option>
-
 </select>
-
 </div>
-
 </div>
-
-
 
 <div class="card control-card">
-
 <div class="control-line">
-
-<span class="control-icon">ðŸ’¡</span>
-
+<span class="control-icon">💡</span>
 <select id="led-select">
-
 <option value="off">Off</option>
 <option value="rainbow">Rainbow</option>
 <option value="breathing">Breathing</option>
 <option value="pulse">Pulse</option>
-
 </select>
-
 </div>
-
 </div>
-
-
 
 <div class="card photo-card">
-
-<button id="photo-button">ðŸ“·</button>
-
+<button id="photo-button">📷</button>
 </div>
-
-
 </section>
-
-
 </main>
-
 
 <script src="js/api.js?v=2"></script>
 <script src="js/dashboard.js?v=2"></script>
 <script src="js/controls.js?v=2"></script>
 <script src="js/camera.js?v=2"></script>
-
-
 <script src="/js/pwa.js?v=1"></script>
 </body>
 </html>
