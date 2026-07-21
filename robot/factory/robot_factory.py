@@ -15,6 +15,7 @@ from robot.hardware.battery import Battery
 from robot.hardware.camera import Camera
 from robot.shell.shell_controller import ShellController
 from robot.shell.ui.shell_ui import ShellUI
+from robot.brain import Brain
 
 class RobotFactory:
     def __init__(self,simulation=True): self.simulation=simulation
@@ -34,7 +35,7 @@ class RobotFactory:
         right_display=FakeEyesDisplay("right")
         eyes_renderer=EyesRenderer(left_display,right_display)
         face=FaceController(eyes_renderer)
-        return Robot(
+        robot=Robot(
             motors=motors,
             face=face,
             leds=leds,
@@ -43,6 +44,8 @@ class RobotFactory:
             speaker=speaker,
             servo=servo
         )
+        robot.brain=Brain(robot)
+        return robot
 
     def create_hardware(self):
         motors=FakeMotor()
@@ -69,4 +72,5 @@ class RobotFactory:
             shell=shell
         )
         shell.set_robot(robot)
+        robot.brain=Brain(robot)
         return robot
