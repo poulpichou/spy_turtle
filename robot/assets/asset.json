@@ -1,0 +1,226 @@
+{
+  "shell": {
+    "default": "loading",
+    "assets": {
+      "countdown": {
+        "label": "Countdown",
+        "type": "gif",
+        "file": "images/countdown.gif",
+        "rotation": 0,
+        "resize": true
+      },
+      "dance": {
+        "label": "Dance",
+        "type": "gif",
+        "file": "images/dance.gif",
+        "rotation": 0,
+        "resize": true
+      },
+      "fire": {
+        "label": "Fire",
+        "type": "gif",
+        "file": "images/fire.gif",
+        "rotation": 0,
+        "resize": true
+      },
+      "leds": {
+        "label": "LEDs",
+        "type": "gif",
+        "file": "images/leds.gif",
+        "rotation": 0,
+        "resize": true
+      },
+      "loading": {
+        "label": "Loading",
+        "type": "gif",
+        "file": "images/loading.gif",
+        "rotation": 0,
+        "resize": true
+      },
+      "rocket": {
+        "label": "Rocket",
+        "type": "gif",
+        "file": "images/rocket.gif",
+        "rotation": 0,
+        "resize": true
+      },
+      "sleep": {
+        "label": "Sleep",
+        "type": "gif",
+        "file": "images/sleep.gif",
+        "rotation": 0,
+        "resize": true
+      },
+      "smoke": {
+        "label": "Smoke",
+        "type": "gif",
+        "file": "images/smoke.gif",
+        "rotation": 0,
+        "resize": true
+      },
+      "glasses": {
+        "label": "Glasses",
+        "type": "image",
+        "file": "images/turtle_glasses.png",
+        "rotation": 0,
+        "resize": true
+      },
+      "glasses_large": {
+        "label": "Large glasses",
+        "type": "image",
+        "file": "images/turtle_glasses_large.png",
+        "rotation": 0,
+        "resize": true
+      },
+      "happy": {
+        "label": "Happy turtle",
+        "type": "image",
+        "file": "images/turtle_happy.png",
+        "rotation": 0,
+        "resize": true
+      },
+      "rocket_turtle": {
+        "label": "Rocket turtle",
+        "type": "image",
+        "file": "images/turtle_rocket.png",
+        "rotation": 0,
+        "resize": true
+      },
+      "walking": {
+        "label": "Walking turtle",
+        "type": "image",
+        "file": "images/turtle_walking.png",
+        "rotation": 0,
+        "resize": true
+      }
+    }
+  },
+  "eyes": {
+    "default": "open",
+    "assets": {
+      "closed": {
+        "label": "Closed",
+        "type": "eye",
+        "file": "eyes/closed.eye"
+      },
+      "half": {
+        "label": "Half open",
+        "type": "eye",
+        "file": "eyes/half.eye"
+      },
+      "happy": {
+        "label": "Happy",
+        "type": "eye",
+        "file": "eyes/happy.eye"
+      },
+      "look_left": {
+        "label": "Look left",
+        "type": "eye",
+        "file": "eyes/look_left.eye"
+      },
+      "look_right": {
+        "label": "Look right",
+        "type": "eye",
+        "file": "eyes/look_right.eye"
+      },
+      "open": {
+        "label": "Open",
+        "type": "eye",
+        "file": "eyes/open.eye"
+      },
+      "sleepy": {
+        "label": "Sleepy",
+        "type": "eye",
+        "file": "eyes/sleepy.eye"
+      },
+      "surprised": {
+        "label": "Surprised",
+        "type": "eye",
+        "file": "eyes/surprised.eye"
+      }
+    }
+  },
+  "leds": {
+    "default": "off",
+    "assets": {
+      "off": {
+        "label": "Off",
+        "type": "led_mode"
+      },
+      "solid": {
+        "label": "Solid",
+        "type": "led_mode",
+        "color": [255, 255, 255],
+        "brightness": 0.5
+      },
+      "pulse": {
+        "label": "Pulse",
+        "type": "led_mode",
+        "color": [0, 150, 255],
+        "brightness": 0.5,
+        "speed": 0.05
+      },
+      "rainbow": {
+        "label": "Rainbow",
+        "type": "led_mode",
+        "brightness": 0.5,
+        "speed": 0.05
+      }
+    }
+  },
+  "audio": {
+    "default": null,
+    "assets": {
+      "startup": {
+        "label": "Startup",
+        "type": "audio",
+        "file": "audio/startup.wav",
+        "available": false
+      },
+      "shutdown": {
+        "label": "Shutdown",
+        "type": "audio",
+        "file": "audio/shutdown.wav",
+        "available": false
+      },
+      "alert": {
+        "label": "Alert",
+        "type": "audio",
+        "file": "audio/alert.wav",
+        "available": false
+      },
+      "happy": {
+        "label": "Happy",
+        "type": "audio",
+        "file": "audio/happy.wav",
+        "available": false
+      },
+      "sad": {
+        "label": "Sad",
+        "type": "audio",
+        "file": "audio/sad.wav",
+        "available": false
+      }
+    }
+  },
+  "fonts": {
+    "default": "roboto_regular",
+    "assets": {
+      "font_awesome": {
+        "label": "Font Awesome Solid",
+        "type": "font",
+        "file": "fonts/Font Awesome 7 Free-Solid-900.otf"
+      },
+      "roboto_bold": {
+        "label": "Roboto Bold",
+        "type": "font",
+        "file": "fonts/Roboto-Bold.ttf"
+      },
+      "roboto_regular": {
+        "label": "Roboto Regular",
+        "type": "font",
+        "file": "fonts/Roboto-Regular.ttf"
+      }
+    }
+  }
+}
