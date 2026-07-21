@@ -22,15 +22,14 @@ class StatusView(BaseView):
 
     def draw(self,draw,display,data):
         draw_title(draw,"SPY TURTLE")
-        lines=[
+        draw_lines(draw,[
             f"Battery  {data.get('battery','--')}%",
-            f"Camera   {data.get('camera','--')}",
+            f"Camera   {data.get('camera_on','--')}",
             f"Audio    {data.get('sound','--')}",
             f"LED      {data.get('led_mode','--')}",
             f"Move     {data.get('motion','--')}",
             f"Face     {data.get('emotion','--')}"
-        ]
-        draw_lines(draw,lines,theme.CONTENT_Y+45)
+        ],theme.CONTENT_Y+45)
 
 class LogView(BaseView):
     title="LOG"
@@ -53,15 +52,11 @@ class ImageView(BaseView):
     def __init__(self,path,footer=None):
         super().__init__(footer or Path(path).name)
         self.path=Path(path)
-        self.image=self._load()
-
-    def _load(self):
         with Image.open(self.path) as image:
-            return image.convert("RGB")
+            self.image=image.convert("RGB").copy()
 
     def draw(self,draw,display,data):
-        image=fit_media(self.image)
-        display.buffer.paste(image,(0,theme.CONTENT_Y))
+        display.buffer.paste(fit_media(self.image),(0,theme.CONTENT_Y))
 
 class GifView(BaseView):
     title="GIF"
@@ -69,19 +64,27 @@ class GifView(BaseView):
     def __init__(self,path,footer=None):
         super().__init__(footer or Path(path).name)
         self.path=Path(path)
-        self.image=Image.open(self.path)
+        self.frames=[]
+        self.durations=[]
         self.frame_index=0
-        self.frame_count=getattr(self.image,"n_frames",1)
-        self.duration=100
+        with Image.open(self.path) as image:
+            frame_count=getattr(image,"n_frames",1)
+            for index in range(frame_count):
+                image.seek(index)
+                self.frames.append(image.convert("RGB").copy())
+                self.durations.append(max(20,image.info.get("duration",100)))
+        self.duration=self.durations[0] if self.durations else 100
 
     def draw(self,draw,display,data):
-        self.image.seek(self.frame_index)
-        frame=self.image.convert("RGB")
-        self.duration=max(20,self.image.info.get("duration",100))
+        if not self.frames:return
+        frame=self.frames[self.frame_index]
+        self.duration=self.durations[self.frame_index]
         display.buffer.paste(fit_media(frame),(0,theme.CONTENT_Y))
-        self.frame_index=(self.frame_index+1)%self.frame_count
+        self.frame_index=(self.frame_index+1)%len(self.frames)
 
-    def close(self): self.image.close()
+    def close(self):
+        self.frames.clear()
+        self.durations.clear()
 
 class TextView(BaseView):
     title="MESSAGE"
@@ -102,8 +105,12 @@ def media_view(path,footer=None):
     raise ValueError(f"Unsupported media format: {extension or 'none'}")
 
 def fit_media(image):
-    size=(theme.WIDTH,theme.CONTENT_H)
-    return ImageOps.contain(image,size).convert("RGB")
+    image=ImageOps.contain(image,(theme.WIDTH,theme.CONTENT_H)).convert("RGB")
+    canvas=Image.new("RGB",(theme.WIDTH,theme.CONTENT_H),theme.CONTENT_BG)
+    x=(theme.WIDTH-image.width)//2
+    y=(theme.CONTENT_H-image.height)//2
+    canvas.paste(image,(x,y))
+    return canvas
 
 def wrap_text(value,width):
     words=str(value).split()
