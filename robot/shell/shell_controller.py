@@ -1,3 +1,4 @@
+from robot.assets.assets import get_asset
 from robot.shell.ui.shell_views import StatusView,LogView,TextView,GifView,media_view
 
 class ShellController:
@@ -16,7 +17,14 @@ class ShellController:
     def show_status(self): self.set_view(StatusView())
     def show_log(self): self.set_view(LogView())
     def show_text(self,message): self.set_view(TextView(message))
-    def show_image(self,path): self.set_view(media_view(path))
+
+    def show_image(self,name):
+        asset=get_asset("shell",name)
+        self.set_view(media_view(asset["path"],asset.get("label")))
+
+    def show_default(self):
+        asset=get_asset("shell")
+        self.set_view(media_view(asset["path"],asset.get("label")))
 
     def update(self):
         if not self.screen or not self.robot:return
