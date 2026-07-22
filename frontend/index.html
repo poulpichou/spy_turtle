@@ -14,26 +14,154 @@
 <body>
 <main>
 <section id="left-panel">
-<div class="card dpad-card"><h2>Movement</h2><button id="forward">▲</button><div class="button-row"><button id="left">◀</button><button id="stop">■</button><button id="right">▶</button></div><button id="backward">▼</button></div>
-<div class="card control-card"><div class="control-line"><span class="control-icon">🔊</span><select id="sound-select"><option value="startup">Startup</option><option value="happy">Happy</option><option value="curious">Curious</option><option value="sleep">Sleep</option></select></div></div>
-<div class="card message-card"><h2>Message</h2><textarea id="message" placeholder="Message..."></textarea></div>
+<div class="card dpad-card">
+<h2>Movement</h2>
+<button id="forward">▲</button>
+<div class="button-row">
+<button id="left">◀</button>
+<button id="stop">■</button>
+<button id="right">▶</button>
+</div>
+<button id="backward">▼</button>
+</div>
+<div class="card control-card">
+<div class="control-line">
+<span class="control-icon">🔊</span>
+<select id="sound-select">
+<option value="startup">Startup</option>
+<option value="happy">Happy</option>
+<option value="curious">Curious</option>
+<option value="sleep">Sleep</option>
+</select>
+</div>
+</div>
+<div class="card message-card">
+<h2>Message</h2>
+<textarea id="message" placeholder="Message..."></textarea>
+</div>
 </section>
+
 <section id="center-panel">
-<header id="status-bar"><div>🔋 <span id="battery">--</span>%</div><div>📶 <span id="wifi">--</span></div><div>🙂 <span id="emotion">neutral</span></div><div>🌈 <span id="led-mode">off</span></div><div>🐢 <span id="motion">stop</span></div></header>
-<nav id="center-tabs" aria-label="Center view"><button class="center-tab active" data-view="camera">Camera</button><button class="center-tab" data-view="logs">Logs</button><button class="center-tab" data-view="photos">Photos</button></nav>
+<header id="status-bar">
+<div title="Connection"><span id="connection-icon" class="connection-dot connecting"></span><span id="connection">Connecting</span></div>
+<div>🔋 <span id="battery">--</span>%</div>
+<div>🐢 <span id="emotion">neutral</span></div>
+<div>🖥️ <span id="shell-mode">status</span></div>
+<div>💡 <span id="led-mode">off</span></div>
+<div>↔️ <span id="motion">stop</span></div>
+</header>
+<nav id="center-tabs" aria-label="Center view">
+<button class="center-tab active" data-view="camera">Camera</button>
+<button class="center-tab" data-view="logs">Logs</button>
+<button class="center-tab" data-view="photos">Photos</button>
+<button class="center-tab" data-view="status">Status</button>
+</nav>
 <section id="center-content">
-<div id="camera-view" class="center-view active"><img id="camera-stream" src="/camera/frame" alt="Camera"></div>
-<div id="logs-view" class="center-view"><pre id="robot-log">Loading logs...</pre></div>
-<div id="photos-view" class="center-view"><div id="photo-browser"><button id="photo-previous" class="photo-nav">◀</button><div id="photo-stage"><img id="photo-preview" alt="Captured photo"><div id="photo-empty">No photos yet</div><div id="photo-name"></div></div><button id="photo-next" class="photo-nav">▶</button></div></div>
+<div id="camera-view" class="center-view active">
+<img id="camera-stream" src="/camera/frame" alt="Camera">
+</div>
+<div id="logs-view" class="center-view">
+<pre id="robot-log">Loading logs...</pre>
+</div>
+<div id="photos-view" class="center-view">
+<div id="photo-browser">
+<button id="photo-previous" class="photo-nav" aria-label="Previous photo">◀</button>
+<div id="photo-stage">
+<img id="photo-preview" alt="Captured photo">
+<div id="photo-empty">No photos yet</div>
+<div id="photo-name"></div>
+</div>
+<button id="photo-next" class="photo-nav" aria-label="Next photo">▶</button>
+</div>
+</div>
+<div id="status-view" class="center-view">
+<div id="health-grid">
+<div class="health-card"><span>Connection</span><strong id="health-connection">--</strong></div>
+<div class="health-card"><span>Uptime</span><strong id="health-uptime">--</strong></div>
+<div class="health-card"><span>CPU temperature</span><strong id="health-temperature">--</strong></div>
+<div class="health-card"><span>System load</span><strong id="health-load">--</strong></div>
+<div class="health-card"><span>Disk free</span><strong id="health-disk">--</strong></div>
+<div class="health-card"><span>Battery voltage</span><strong id="health-voltage">--</strong></div>
+<div class="health-card"><span>Battery current</span><strong id="health-current">--</strong></div>
+<div class="health-card"><span>Battery cells</span><strong id="health-cells">--</strong></div>
+<div class="health-card"><span>Charging</span><strong id="health-charging">--</strong></div>
+<div class="health-card"><span>USB power</span><strong id="health-usb">--</strong></div>
+<div class="health-card"><span>Last interaction</span><strong id="health-idle">--</strong></div>
+<div class="health-card"><span>Robot mode</span><strong id="health-mode">--</strong></div>
+</div>
+</div>
 </section>
 </section>
+
 <section id="right-panel">
-<div class="card dpad-card"><h2>Head</h2><button id="head-up">▲</button><div class="button-row"><button id="head-left">◀</button><button id="head-center">●</button><button id="head-right">▶</button></div><button id="head-down">▼</button></div>
-<div class="card control-card"><div class="control-line"><span class="control-icon">🐢</span><select id="face-select"><option value="neutral">Neutral</option><option value="happy">Happy</option><option value="sleepy">Sleepy</option><option value="sleeping">Sleeping ZZZ</option><option value="angry">Angry</option><option value="surprised">Surprised</option><option value="curious">Curious</option><option value="blink">Blink</option><option value="double_blink">Double blink</option><option value="look_left">Look left</option><option value="look_right">Look right</option><option value="look_high">Look high</option><option value="look_down">Look down</option><option value="yawn">Yawn</option><option value="wake_up">Wake up</option></select></div></div>
-<div class="card control-card"><div class="control-line"><span class="control-icon">🖥️</span><select id="shell-select"><option value="status">Status</option><option value="log">Log</option><option value="rocket">Rocket</option><option value="dance">Dance</option><option value="smoke">Smoke</option><option value="fire">Fire</option><option value="sleep">Sleep</option><option value="leds">LEDs</option></select></div></div>
-<div class="card control-card"><div class="control-line"><span class="control-icon">💡</span><select id="led-select"><option value="off">Off</option><option value="rainbow">Rainbow</option><option value="breathing">Breathing</option><option value="pulse">Pulse</option></select></div></div>
-<div class="card photo-card"><button id="photo-button" aria-label="Take photo">📷</button></div>
+<div class="card dpad-card">
+<h2>Head</h2>
+<button id="head-up">▲</button>
+<div class="button-row">
+<button id="head-left">◀</button>
+<button id="head-center">●</button>
+<button id="head-right">▶</button>
+</div>
+<button id="head-down">▼</button>
+</div>
+<div class="card control-card">
+<div class="control-line">
+<span class="control-icon">🐢</span>
+<select id="face-select">
+<option value="neutral">Neutral</option>
+<option value="happy">Happy</option>
+<option value="sleepy">Sleepy</option>
+<option value="sleeping">Sleeping ZZZ</option>
+<option value="angry">Angry</option>
+<option value="surprised">Surprised</option>
+<option value="curious">Curious</option>
+<option value="blink">Blink</option>
+<option value="double_blink">Double blink</option>
+<option value="look_left">Look left</option>
+<option value="look_right">Look right</option>
+<option value="look_high">Look high</option>
+<option value="look_down">Look down</option>
+<option value="yawn">Yawn</option>
+<option value="wake_up">Wake up</option>
+</select>
+</div>
+</div>
+<div class="card control-card">
+<div class="control-line">
+<span class="control-icon">🖥️</span>
+<select id="shell-select">
+<option value="status">Status</option>
+<option value="log">Log</option>
+<option value="rocket">Rocket</option>
+<option value="dance">Dance</option>
+<option value="smoke">Smoke</option>
+<option value="fire">Fire</option>
+<option value="sleep">Sleep</option>
+<option value="leds">LEDs</option>
+</select>
+</div>
+</div>
+<div class="card control-card">
+<div class="control-line">
+<span class="control-icon">💡</span>
+<select id="led-select">
+<option value="off">Off</option>
+<option value="rainbow">Rainbow</option>
+<option value="breathing">Breathing</option>
+<option value="pulse">Pulse</option>
+</select>
+</div>
+</div>
+<div class="card photo-card">
+<button id="photo-button" aria-label="Take photo">📷</button>
+</div>
 </section>
 </main>
-<script src="js/api.js?v=3"></script><script src="js/dashboard.js?v=3"></script><script src="js/controls.js?v=3"></script><script src="js/camera.js?v=3"></script><script src="js/center.js?v=1"></script><script src="/js/pwa.js?v=1"></script>
-</body></html>
+<script src="js/api.js?v=4"></script>
+<script src="js/dashboard.js?v=4"></script>
+<script src="js/controls.js?v=4"></script>
+<script src="js/camera.js?v=4"></script>
+<script src="js/center.js?v=2"></script>
+<script src="/js/pwa.js?v=1"></script>
+</body>
+</html>

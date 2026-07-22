@@ -1,4 +1,4 @@
-const CACHE_NAME="spy-turtle-v3";
+const CACHE_NAME="spy-turtle-v4";
 const STATIC_ASSETS=[
     "/manifest.webmanifest",
     "/icons/turtle-192.png",
