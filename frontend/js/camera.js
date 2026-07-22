@@ -1,8 +1,1 @@
-const camera=document.getElementById("camera-stream");
-
-function updateCamera(){
-    camera.src="/camera/frame?t="+Date.now();
-}
-
-setInterval(updateCamera,500);
-updateCamera();
+const camera=document.getElementById("camera-stream");let cameraTimer=null;function updateCamera(){if(!document.getElementById("camera-view").classList.contains("active"))return;camera.src="/camera/frame?t="+Date.now()}function startCameraRefresh(){if(cameraTimer)return;updateCamera();cameraTimer=setInterval(updateCamera,500)}function stopCameraRefresh(){if(!cameraTimer)return;clearInterval(cameraTimer);cameraTimer=null}startCameraRefresh();
