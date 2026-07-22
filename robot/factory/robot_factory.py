@@ -34,16 +34,8 @@ class RobotFactory:
         left_display=FakeEyesDisplay("left")
         right_display=FakeEyesDisplay("right")
         eyes_renderer=EyesRenderer(left_display,right_display)
-        face=FaceController(eyes_renderer)
-        robot=Robot(
-            motors=motors,
-            face=face,
-            leds=leds,
-            camera=camera,
-            battery=battery,
-            speaker=speaker,
-            servo=servo
-        )
+        face=FaceController(eyes_renderer,leds)
+        robot=Robot(motors=motors,face=face,leds=leds,camera=camera,battery=battery,speaker=speaker,servo=servo)
         robot.brain=Brain(robot)
         return robot
 
@@ -57,20 +49,11 @@ class RobotFactory:
         left_display=OLEDDisplay(0x3C,"left")
         right_display=OLEDDisplay(0x3D,"right")
         eyes_renderer=EyesRenderer(left_display,right_display)
-        face=FaceController(eyes_renderer)
+        face=FaceController(eyes_renderer,leds)
         shell_screen=ShellScreenST7796()
         shell_ui=ShellUI(shell_screen.display)
         shell=ShellController(shell_ui)
-        robot=Robot(
-            motors=motors,
-            face=face,
-            leds=leds,
-            camera=camera,
-            battery=battery,
-            speaker=speaker,
-            servo=servo,
-            shell=shell
-        )
+        robot=Robot(motors=motors,face=face,leds=leds,camera=camera,battery=battery,speaker=speaker,servo=servo,shell=shell)
         shell.set_robot(robot)
         robot.brain=Brain(robot)
         return robot

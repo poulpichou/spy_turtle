@@ -3,6 +3,7 @@
         "loop": true,
         "interruptible": true,
         "next": null,
+        "led": "neutral",
         "frames": [
             {
                 "duration": 1000,
@@ -15,6 +16,7 @@
         "loop": false,
         "interruptible": false,
         "next": "neutral",
+        "led": null,
         "frames": [
             {
                 "duration": 55,
@@ -42,6 +44,7 @@
         "loop": false,
         "interruptible": false,
         "next": "neutral",
+        "led": null,
         "frames": [
             {
                 "duration": 55,
@@ -89,6 +92,7 @@
         "loop": false,
         "interruptible": true,
         "next": "neutral",
+        "led": null,
         "frames": [
             {
                 "duration": 75,
@@ -126,6 +130,7 @@
         "loop": false,
         "interruptible": true,
         "next": "neutral",
+        "led": null,
         "frames": [
             {
                 "duration": 75,
@@ -163,6 +168,7 @@
         "loop": false,
         "interruptible": true,
         "next": "neutral",
+        "led": null,
         "frames": [
             {
                 "duration": 75,
@@ -200,6 +206,7 @@
         "loop": false,
         "interruptible": true,
         "next": "neutral",
+        "led": null,
         "frames": [
             {
                 "duration": 75,
@@ -237,6 +244,7 @@
         "loop": false,
         "interruptible": true,
         "next": "neutral",
+        "led": null,
         "frames": [
             {
                 "duration": 75,
@@ -274,11 +282,55 @@
         "loop": true,
         "interruptible": true,
         "next": null,
+        "led": "happy",
         "frames": [
             {
-                "duration": 1000,
-                "left_eye": "happy",
-                "right_eye": "happy"
+                "duration": 180,
+                "left_eye": "happy_small",
+                "right_eye": "happy_small"
+            },
+            {
+                "duration": 180,
+                "left_eye": "happy_medium",
+                "right_eye": "happy_medium"
+            },
+            {
+                "duration": 220,
+                "left_eye": "happy_large",
+                "right_eye": "happy_large"
+            },
+            {
+                "duration": 180,
+                "left_eye": "happy_medium",
+                "right_eye": "happy_medium"
+            }
+        ]
+    },
+    "love": {
+        "loop": true,
+        "interruptible": true,
+        "next": null,
+        "led": "love",
+        "frames": [
+            {
+                "duration": 180,
+                "left_eye": "heart_small",
+                "right_eye": "heart_small"
+            },
+            {
+                "duration": 180,
+                "left_eye": "heart_medium",
+                "right_eye": "heart_medium"
+            },
+            {
+                "duration": 220,
+                "left_eye": "heart_large",
+                "right_eye": "heart_large"
+            },
+            {
+                "duration": 180,
+                "left_eye": "heart_medium",
+                "right_eye": "heart_medium"
             }
         ]
     },
@@ -286,11 +338,27 @@
         "loop": true,
         "interruptible": true,
         "next": null,
+        "led": "surprised",
         "frames": [
             {
-                "duration": 1000,
-                "left_eye": "surprised",
-                "right_eye": "surprised"
+                "duration": 160,
+                "left_eye": "surprised_small",
+                "right_eye": "surprised_small"
+            },
+            {
+                "duration": 180,
+                "left_eye": "surprised_medium",
+                "right_eye": "surprised_medium"
+            },
+            {
+                "duration": 220,
+                "left_eye": "surprised_large",
+                "right_eye": "surprised_large"
+            },
+            {
+                "duration": 180,
+                "left_eye": "surprised_medium",
+                "right_eye": "surprised_medium"
             }
         ]
     },
@@ -298,11 +366,27 @@
         "loop": true,
         "interruptible": true,
         "next": null,
+        "led": "angry",
         "frames": [
             {
-                "duration": 1000,
-                "left_eye": "angry_left",
-                "right_eye": "angry_right"
+                "duration": 180,
+                "left_eye": "angry_left_soft",
+                "right_eye": "angry_right_soft"
+            },
+            {
+                "duration": 180,
+                "left_eye": "angry_left_medium",
+                "right_eye": "angry_right_medium"
+            },
+            {
+                "duration": 220,
+                "left_eye": "angry_left_strong",
+                "right_eye": "angry_right_strong"
+            },
+            {
+                "duration": 180,
+                "left_eye": "angry_left_medium",
+                "right_eye": "angry_right_medium"
             }
         ]
     },
@@ -310,11 +394,27 @@
         "loop": true,
         "interruptible": true,
         "next": null,
+        "led": "sleepy",
         "frames": [
             {
-                "duration": 1000,
-                "left_eye": "sleepy",
-                "right_eye": "sleepy"
+                "duration": 280,
+                "left_eye": "sleepy_1",
+                "right_eye": "sleepy_1"
+            },
+            {
+                "duration": 320,
+                "left_eye": "sleepy_2",
+                "right_eye": "sleepy_2"
+            },
+            {
+                "duration": 400,
+                "left_eye": "sleepy_3",
+                "right_eye": "sleepy_3"
+            },
+            {
+                "duration": 320,
+                "left_eye": "sleepy_2",
+                "right_eye": "sleepy_2"
             }
         ]
     },
@@ -322,11 +422,27 @@
         "loop": true,
         "interruptible": false,
         "next": null,
+        "led": "sleeping",
         "frames": [
             {
-                "duration": 1000,
-                "left_eye": "sleeping",
-                "right_eye": "sleeping"
+                "duration": 350,
+                "left_eye": "sleep_z_1",
+                "right_eye": "sleep_z_1"
+            },
+            {
+                "duration": 350,
+                "left_eye": "sleep_z_2",
+                "right_eye": "sleep_z_2"
+            },
+            {
+                "duration": 350,
+                "left_eye": "sleep_z_3",
+                "right_eye": "sleep_z_3"
+            },
+            {
+                "duration": 350,
+                "left_eye": "sleep_z_4",
+                "right_eye": "sleep_z_4"
             }
         ]
     },
@@ -334,11 +450,111 @@
         "loop": true,
         "interruptible": false,
         "next": null,
+        "led": "sleeping",
         "frames": [
             {
-                "duration": 1000,
-                "left_eye": "sleeping",
-                "right_eye": "sleeping"
+                "duration": 350,
+                "left_eye": "sleep_z_1",
+                "right_eye": "sleep_z_1"
+            },
+            {
+                "duration": 350,
+                "left_eye": "sleep_z_2",
+                "right_eye": "sleep_z_2"
+            },
+            {
+                "duration": 350,
+                "left_eye": "sleep_z_3",
+                "right_eye": "sleep_z_3"
+            },
+            {
+                "duration": 350,
+                "left_eye": "sleep_z_4",
+                "right_eye": "sleep_z_4"
+            }
+        ]
+    },
+    "curious": {
+        "loop": true,
+        "interruptible": true,
+        "next": null,
+        "led": "curious",
+        "frames": [
+            {
+                "duration": 260,
+                "left_eye": "curious_large_left",
+                "right_eye": "curious_small_left"
+            },
+            {
+                "duration": 260,
+                "left_eye": "curious_large_center",
+                "right_eye": "curious_small_center"
+            },
+            {
+                "duration": 260,
+                "left_eye": "curious_large_right",
+                "right_eye": "curious_small_right"
+            },
+            {
+                "duration": 260,
+                "left_eye": "curious_large_center",
+                "right_eye": "curious_small_center"
+            }
+        ]
+    },
+    "dizzy": {
+        "loop": true,
+        "interruptible": true,
+        "next": null,
+        "led": "dizzy",
+        "frames": [
+            {
+                "duration": 140,
+                "left_eye": "dizzy_1",
+                "right_eye": "dizzy_1"
+            },
+            {
+                "duration": 140,
+                "left_eye": "dizzy_2",
+                "right_eye": "dizzy_2"
+            },
+            {
+                "duration": 140,
+                "left_eye": "dizzy_3",
+                "right_eye": "dizzy_3"
+            },
+            {
+                "duration": 140,
+                "left_eye": "dizzy_4",
+                "right_eye": "dizzy_4"
+            }
+        ]
+    },
+    "thinking": {
+        "loop": true,
+        "interruptible": true,
+        "next": null,
+        "led": "thinking",
+        "frames": [
+            {
+                "duration": 350,
+                "left_eye": "thinking_1",
+                "right_eye": "thinking_1"
+            },
+            {
+                "duration": 350,
+                "left_eye": "thinking_2",
+                "right_eye": "thinking_2"
+            },
+            {
+                "duration": 350,
+                "left_eye": "thinking_3",
+                "right_eye": "thinking_3"
+            },
+            {
+                "duration": 350,
+                "left_eye": "thinking_4",
+                "right_eye": "thinking_4"
             }
         ]
     },
@@ -346,6 +562,7 @@
         "loop": false,
         "interruptible": false,
         "next": "neutral",
+        "led": null,
         "frames": [
             {
                 "duration": 180,
@@ -388,6 +605,7 @@
         "loop": false,
         "interruptible": false,
         "next": "neutral",
+        "led": null,
         "frames": [
             {
                 "duration": 450,

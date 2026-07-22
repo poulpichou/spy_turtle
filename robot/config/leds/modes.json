@@ -1,0 +1,147 @@
+{
+    "settings": {
+        "count": 24,
+        "pin": 18,
+        "brightness": 0.35,
+        "reversed": false
+    },
+    "modes": {
+        "off": {
+            "animation": "off"
+        },
+        "neutral": {
+            "animation": "breathing",
+            "color": [
+                40,
+                120,
+                80
+            ],
+            "speed": 0.05,
+            "brightness": 0.18
+        },
+        "happy": {
+            "animation": "rainbow",
+            "speed": 0.05,
+            "brightness": 0.4
+        },
+        "love": {
+            "animation": "pulse",
+            "color": [
+                255,
+                30,
+                110
+            ],
+            "speed": 0.08,
+            "brightness": 0.45
+        },
+        "surprised": {
+            "animation": "flash",
+            "color": [
+                255,
+                255,
+                255
+            ],
+            "speed": 0.1,
+            "brightness": 0.55
+        },
+        "angry": {
+            "animation": "pulse",
+            "color": [
+                255,
+                0,
+                0
+            ],
+            "speed": 0.04,
+            "brightness": 0.55
+        },
+        "sleepy": {
+            "animation": "breathing",
+            "color": [
+                35,
+                50,
+                150
+            ],
+            "speed": 0.12,
+            "brightness": 0.12
+        },
+        "sleeping": {
+            "animation": "off"
+        },
+        "curious": {
+            "animation": "spinner",
+            "color": [
+                0,
+                170,
+                255
+            ],
+            "speed": 0.08,
+            "brightness": 0.35
+        },
+        "dizzy": {
+            "animation": "spinner",
+            "color": [
+                170,
+                50,
+                255
+            ],
+            "speed": 0.04,
+            "brightness": 0.4
+        },
+        "thinking": {
+            "animation": "spinner",
+            "color": [
+                255,
+                170,
+                0
+            ],
+            "speed": 0.15,
+            "brightness": 0.25
+        },
+        "rainbow": {
+            "animation": "rainbow",
+            "speed": 0.05,
+            "brightness": 0.4
+        },
+        "breathing": {
+            "animation": "breathing",
+            "color": [
+                0,
+                150,
+                255
+            ],
+            "speed": 0.08,
+            "brightness": 0.3
+        },
+        "pulse": {
+            "animation": "pulse",
+            "color": [
+                255,
+                255,
+                255
+            ],
+            "speed": 0.08,
+            "brightness": 0.4
+        },
+        "spinner": {
+            "animation": "spinner",
+            "color": [
+                0,
+                200,
+                120
+            ],
+            "speed": 0.06,
+            "brightness": 0.4
+        },
+        "wave": {
+            "animation": "wave",
+            "color": [
+                0,
+                150,
+                255
+            ],
+            "tail": 6,
+            "speed": 0.06,
+            "brightness": 0.4
+        }
+    }
+}

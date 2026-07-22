@@ -202,6 +202,186 @@
         "label": "Look down",
         "type": "eye",
         "file": "eyes/look_down.eye"
+      },
+      "happy_small": {
+        "label": "Happy Small",
+        "type": "eye",
+        "file": "eyes/happy_small.eye"
+      },
+      "happy_medium": {
+        "label": "Happy Medium",
+        "type": "eye",
+        "file": "eyes/happy_medium.eye"
+      },
+      "happy_large": {
+        "label": "Happy Large",
+        "type": "eye",
+        "file": "eyes/happy_large.eye"
+      },
+      "heart_small": {
+        "label": "Heart Small",
+        "type": "eye",
+        "file": "eyes/heart_small.eye"
+      },
+      "heart_medium": {
+        "label": "Heart Medium",
+        "type": "eye",
+        "file": "eyes/heart_medium.eye"
+      },
+      "heart_large": {
+        "label": "Heart Large",
+        "type": "eye",
+        "file": "eyes/heart_large.eye"
+      },
+      "sleepy_1": {
+        "label": "Sleepy 1",
+        "type": "eye",
+        "file": "eyes/sleepy_1.eye"
+      },
+      "sleepy_2": {
+        "label": "Sleepy 2",
+        "type": "eye",
+        "file": "eyes/sleepy_2.eye"
+      },
+      "sleepy_3": {
+        "label": "Sleepy 3",
+        "type": "eye",
+        "file": "eyes/sleepy_3.eye"
+      },
+      "sleep_z_1": {
+        "label": "Sleep Z 1",
+        "type": "eye",
+        "file": "eyes/sleep_z_1.eye"
+      },
+      "sleep_z_2": {
+        "label": "Sleep Z 2",
+        "type": "eye",
+        "file": "eyes/sleep_z_2.eye"
+      },
+      "sleep_z_3": {
+        "label": "Sleep Z 3",
+        "type": "eye",
+        "file": "eyes/sleep_z_3.eye"
+      },
+      "sleep_z_4": {
+        "label": "Sleep Z 4",
+        "type": "eye",
+        "file": "eyes/sleep_z_4.eye"
+      },
+      "angry_left_soft": {
+        "label": "Angry Left Soft",
+        "type": "eye",
+        "file": "eyes/angry_left_soft.eye"
+      },
+      "angry_left_medium": {
+        "label": "Angry Left Medium",
+        "type": "eye",
+        "file": "eyes/angry_left_medium.eye"
+      },
+      "angry_left_strong": {
+        "label": "Angry Left Strong",
+        "type": "eye",
+        "file": "eyes/angry_left_strong.eye"
+      },
+      "angry_right_soft": {
+        "label": "Angry Right Soft",
+        "type": "eye",
+        "file": "eyes/angry_right_soft.eye"
+      },
+      "angry_right_medium": {
+        "label": "Angry Right Medium",
+        "type": "eye",
+        "file": "eyes/angry_right_medium.eye"
+      },
+      "angry_right_strong": {
+        "label": "Angry Right Strong",
+        "type": "eye",
+        "file": "eyes/angry_right_strong.eye"
+      },
+      "surprised_small": {
+        "label": "Surprised Small",
+        "type": "eye",
+        "file": "eyes/surprised_small.eye"
+      },
+      "surprised_medium": {
+        "label": "Surprised Medium",
+        "type": "eye",
+        "file": "eyes/surprised_medium.eye"
+      },
+      "surprised_large": {
+        "label": "Surprised Large",
+        "type": "eye",
+        "file": "eyes/surprised_large.eye"
+      },
+      "curious_large_left": {
+        "label": "Curious Large Left",
+        "type": "eye",
+        "file": "eyes/curious_large_left.eye"
+      },
+      "curious_large_center": {
+        "label": "Curious Large Center",
+        "type": "eye",
+        "file": "eyes/curious_large_center.eye"
+      },
+      "curious_large_right": {
+        "label": "Curious Large Right",
+        "type": "eye",
+        "file": "eyes/curious_large_right.eye"
+      },
+      "curious_small_left": {
+        "label": "Curious Small Left",
+        "type": "eye",
+        "file": "eyes/curious_small_left.eye"
+      },
+      "curious_small_center": {
+        "label": "Curious Small Center",
+        "type": "eye",
+        "file": "eyes/curious_small_center.eye"
+      },
+      "curious_small_right": {
+        "label": "Curious Small Right",
+        "type": "eye",
+        "file": "eyes/curious_small_right.eye"
+      },
+      "dizzy_1": {
+        "label": "Dizzy 1",
+        "type": "eye",
+        "file": "eyes/dizzy_1.eye"
+      },
+      "dizzy_2": {
+        "label": "Dizzy 2",
+        "type": "eye",
+        "file": "eyes/dizzy_2.eye"
+      },
+      "dizzy_3": {
+        "label": "Dizzy 3",
+        "type": "eye",
+        "file": "eyes/dizzy_3.eye"
+      },
+      "dizzy_4": {
+        "label": "Dizzy 4",
+        "type": "eye",
+        "file": "eyes/dizzy_4.eye"
+      },
+      "thinking_1": {
+        "label": "Thinking 1",
+        "type": "eye",
+        "file": "eyes/thinking_1.eye"
+      },
+      "thinking_2": {
+        "label": "Thinking 2",
+        "type": "eye",
+        "file": "eyes/thinking_2.eye"
+      },
+      "thinking_3": {
+        "label": "Thinking 3",
+        "type": "eye",
+        "file": "eyes/thinking_3.eye"
+      },
+      "thinking_4": {
+        "label": "Thinking 4",
+        "type": "eye",
+        "file": "eyes/thinking_4.eye"
       }
     }
   },
