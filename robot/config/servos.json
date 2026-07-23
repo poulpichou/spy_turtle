@@ -1,0 +1,26 @@
+{
+    "update_rate_hz": 50,
+    "detach_after_seconds": 0.8,
+    "pan": {
+        "gpio": 17,
+        "center": 0.0,
+        "minimum": -60.0,
+        "maximum": 60.0,
+        "step": 10.0,
+        "speed": 35.0,
+        "min_pulse_us": 1000,
+        "max_pulse_us": 2000,
+        "inverted": false
+    },
+    "tilt": {
+        "gpio": 27,
+        "center": 0.0,
+        "minimum": -30.0,
+        "maximum": 35.0,
+        "step": 8.0,
+        "speed": 25.0,
+        "min_pulse_us": 1000,
+        "max_pulse_us": 2000,
+        "inverted": false
+    }
+}

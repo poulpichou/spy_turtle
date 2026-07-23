@@ -17,6 +17,7 @@ class Robot:
 
     def update(self):
         if self.brain:self.brain.update()
+        if self.servo:self.servo.update()
         if self.face and self.face.update():
             self.state.emotion="neutral"
             self.state.face_event_until=0.0
