@@ -10,7 +10,7 @@
         "center_pulse_us": 1500,
         "minimum_pulse_us": 1000,
         "maximum_pulse_us": 2000,
-        "inverted": false
+        "inverted": true
     },
     "tilt": {
         "gpio": 27,
