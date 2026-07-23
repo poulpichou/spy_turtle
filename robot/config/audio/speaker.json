@@ -1,0 +1,4 @@
+{
+    "device": "plughw:CARD=MAX98357A,DEV=0",
+    "volume": 100
+}

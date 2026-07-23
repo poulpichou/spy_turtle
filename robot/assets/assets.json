@@ -422,37 +422,114 @@
     }
   },
   "audio": {
-    "default": null,
+    "default": "applause",
     "assets": {
-      "startup": {
-        "label": "Startup",
-        "type": "audio",
-        "file": "audio/startup.wav",
-        "available": false
+      "applause": {
+        "label": "Applause",
+        "type": "sound",
+        "file": "sounds/applause.wav",
+        "tags": [
+          "funny"
+        ]
       },
-      "shutdown": {
-        "label": "Shutdown",
-        "type": "audio",
-        "file": "audio/shutdown.wav",
-        "available": false
+      "beep": {
+        "label": "Beep",
+        "type": "sound",
+        "file": "sounds/beep.wav",
+        "tags": [
+          "funny"
+        ]
       },
-      "alert": {
-        "label": "Alert",
-        "type": "audio",
-        "file": "audio/alert.wav",
-        "available": false
+      "boing": {
+        "label": "Boing",
+        "type": "sound",
+        "file": "sounds/boing.wav",
+        "tags": [
+          "funny"
+        ]
       },
-      "happy": {
-        "label": "Happy",
-        "type": "audio",
-        "file": "audio/happy.wav",
-        "available": false
+      "cat": {
+        "label": "Cat",
+        "type": "sound",
+        "file": "sounds/cat.wav",
+        "tags": [
+          "animal"
+        ]
       },
-      "sad": {
-        "label": "Sad",
-        "type": "audio",
-        "file": "audio/sad.wav",
-        "available": false
+      "dog": {
+        "label": "Dog",
+        "type": "sound",
+        "file": "sounds/dog.wav",
+        "tags": [
+          "animal"
+        ]
+      },
+      "duck": {
+        "label": "Duck",
+        "type": "sound",
+        "file": "sounds/duck.wav",
+        "tags": [
+          "animal"
+        ]
+      },
+      "fart1": {
+        "label": "Fart1",
+        "type": "sound",
+        "file": "sounds/fart1.mp3",
+        "tags": [
+          "fart",
+          "funny"
+        ]
+      },
+      "fart2": {
+        "label": "Fart2",
+        "type": "sound",
+        "file": "sounds/fart2.mp3",
+        "tags": [
+          "fart",
+          "funny"
+        ]
+      },
+      "fart3": {
+        "label": "Fart3",
+        "type": "sound",
+        "file": "sounds/fart3.mp3",
+        "tags": [
+          "fart",
+          "funny"
+        ]
+      },
+      "frog": {
+        "label": "Frog",
+        "type": "sound",
+        "file": "sounds/frog.wav",
+        "tags": [
+          "animal"
+        ]
+      },
+      "ghost": {
+        "label": "Ghost",
+        "type": "sound",
+        "file": "sounds/ghost.wav",
+        "tags": [
+          "funny"
+        ]
+      },
+      "laugh": {
+        "label": "Laugh",
+        "type": "sound",
+        "file": "sounds/laugh.wav",
+        "tags": [
+          "funny"
+        ]
+      },
+      "rocket": {
+        "label": "Rocket",
+        "type": "sound",
+        "file": "sounds/rocket.wav",
+        "tags": [
+          "funny"
+        ]
       }
     }
   },

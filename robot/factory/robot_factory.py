@@ -13,6 +13,7 @@ from robot.hardware.oled_display import OLEDDisplay
 from robot.hardware.shell_screen_st7796 import ShellScreenST7796
 from robot.hardware.battery import Battery
 from robot.hardware.camera import Camera
+from robot.hardware.speaker import Speaker
 from robot.shell.shell_controller import ShellController
 from robot.shell.ui.shell_ui import ShellUI
 from robot.brain.brain import Brain
@@ -43,7 +44,7 @@ class RobotFactory:
         motors=FakeMotor()
         leds=FakeLEDController()
         camera=Camera()
-        speaker=FakeSpeaker()
+        speaker=Speaker()
         servo=ServoController()
         battery=Battery()
         left_display=OLEDDisplay(0x3C,"left")
