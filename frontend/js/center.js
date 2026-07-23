@@ -114,6 +114,13 @@ function valueOrDash(value,suffix=""){
     return value===null||value===undefined?"--":`${value}${suffix}`;
 }
 
+function formatServo(axis){
+    if(!axis)return "--";
+    const current=valueOrDash(axis.current,"°");
+    const target=valueOrDash(axis.target,"°");
+    return `${current} → ${target}`;
+}
+
 async function refreshHealth(){
     try{
         const response=await fetch("/health",{cache:"no-store"});
@@ -131,8 +138,12 @@ async function refreshHealth(){
         document.getElementById("health-usb").innerText=data.battery.usb_connected===null?"--":data.battery.usb_connected?"Connected":"No";
         document.getElementById("health-idle").innerText=formatDuration(data.robot.idle_seconds);
         document.getElementById("health-mode").innerText=`${data.robot.motion} / ${data.robot.emotion}`;
+        document.getElementById("health-pan").innerText=formatServo(data.robot.servo?.pan);
+        document.getElementById("health-tilt").innerText=formatServo(data.robot.servo?.tilt);
     }catch(error){
         document.getElementById("health-connection").innerText="Offline";
+        document.getElementById("health-pan").innerText="--";
+        document.getElementById("health-tilt").innerText="--";
     }
 }
 

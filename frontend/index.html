@@ -30,9 +30,6 @@
 <select id="sound-select">
 <option value="startup">Startup</option>
 <option value="happy">Happy</option>
-<option value="love">Love</option>
-<option value="dizzy">Dizzy</option>
-<option value="thinking">Thinking</option>
 <option value="curious">Curious</option>
 <option value="sleep">Sleep</option>
 </select>
@@ -91,6 +88,8 @@
 <div class="health-card"><span>USB power</span><strong id="health-usb">--</strong></div>
 <div class="health-card"><span>Last interaction</span><strong id="health-idle">--</strong></div>
 <div class="health-card"><span>Robot mode</span><strong id="health-mode">--</strong></div>
+<div class="health-card"><span>Head pan</span><strong id="health-pan">--</strong></div>
+<div class="health-card"><span>Head tilt</span><strong id="health-tilt">--</strong></div>
 </div>
 </div>
 </section>
@@ -113,9 +112,6 @@
 <select id="face-select">
 <option value="neutral">Neutral</option>
 <option value="happy">Happy</option>
-<option value="love">Love</option>
-<option value="dizzy">Dizzy</option>
-<option value="thinking">Thinking</option>
 <option value="sleepy">Sleepy</option>
 <option value="sleeping">Sleeping ZZZ</option>
 <option value="angry">Angry</option>
@@ -164,11 +160,10 @@
 </section>
 </main>
 <script src="js/api.js?v=4"></script>
-<script src="js/dashboard.js?v=4"></script>
+<script src="js/dashboard.js?v=5"></script>
 <script src="js/controls.js?v=4"></script>
 <script src="js/camera.js?v=4"></script>
-<script src="js/center.js?v=2"></script>
-<script src="js/sounds.js?v=2"></script>
+<script src="js/center.js?v=3"></script>
 <script src="/js/pwa.js?v=1"></script>
 </body>
 </html>

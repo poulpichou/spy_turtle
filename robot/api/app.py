@@ -22,9 +22,16 @@ class Command(BaseModel):
     value:str=""
     extra:dict=Field(default_factory=dict)
 
+def servo_status(robot):
+    if robot is None or robot.servo is None or not hasattr(robot.servo,"status"):return None
+    return safe_call(robot.servo.status)
+
 def state():
     robot=get_robot()
-    return robot.state.to_dict() if robot else {"error":"no robot"}
+    if robot is None:return {"error":"no robot"}
+    data=robot.state.to_dict()
+    data["servo"]=servo_status(robot)
+    return data
 
 def safe_call(function,default=None,digits=None):
     try:
@@ -81,6 +88,7 @@ def get_health():
             "idle_seconds":round(robot.state.idle_seconds(),1),
             "last_interaction_type":robot.state.last_interaction_type,
             "interaction_count":robot.state.interaction_count,
+            "servo":servo_status(robot),
             "components":{
                 "motors":robot.motors is not None,
                 "face":robot.face is not None,
