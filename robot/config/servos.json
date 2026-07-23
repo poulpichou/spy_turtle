@@ -24,6 +24,6 @@
         "microseconds_per_degree":8.0,
         "minimum_pulse_us":1350,
         "maximum_pulse_us":1650,
-        "inverted":false
+        "inverted":true
     }
 }
