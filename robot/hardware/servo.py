@@ -1,17 +1,9 @@
 from gpiozero import Servo
 from robot.config.settings import SERVO_CAMERA_PIN
 
-
 class ServoController:
-    """
-    Real servo controller.
-
-    Controls the camera rotation servo.
-    """
-
-    def __init__(self, pin=18):
-        self.servo = Servo(pin)
-
+    def __init__(self,pin=SERVO_CAMERA_PIN):
+        self.servo=Servo(pin)
         print(f"[Servo] GPIO{pin} ready")
 
     def center(self):

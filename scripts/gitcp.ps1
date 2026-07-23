@@ -5,7 +5,7 @@ param(
 if ([string]::IsNullOrWhiteSpace($Message)) {
     $Message = "fix"
 }
-git add .
+git add robot frontend scripts doc
 git commit -a -m $Message
 
 if ($LASTEXITCODE -ne 0) {
