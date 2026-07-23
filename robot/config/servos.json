@@ -1,26 +1,29 @@
 {
-    "update_rate_hz": 50,
-    "detach_after_seconds": 0.8,
-    "pan": {
-        "gpio": 17,
-        "center": 0.0,
-        "minimum": -60.0,
-        "maximum": 60.0,
-        "step": 8.0,
-        "speed": 35.0,
-        "min_pulse_us": 1000,
-        "max_pulse_us": 2000,
-        "inverted": false
+    "detach_after_seconds":0.8,
+    "pan":{
+        "gpio":17,
+        "center":0.0,
+        "minimum":-45.0,
+        "maximum":45.0,
+        "step":6.0,
+        "speed":30.0,
+        "center_pulse_us":1500,
+        "microseconds_per_degree":8.0,
+        "minimum_pulse_us":1150,
+        "maximum_pulse_us":1850,
+        "inverted":false
     },
-    "tilt": {
-        "gpio": 27,
-        "center": -30.0,
-        "minimum": -50.0,
-        "maximum": -16.0,
-        "step": 6.0,
-        "speed": 25.0,
-        "min_pulse_us": 1000,
-        "max_pulse_us": 2000,
-        "inverted": false
+    "tilt":{
+        "gpio":27,
+        "center":0.0,
+        "minimum":-15.0,
+        "maximum":15.0,
+        "step":4.0,
+        "speed":20.0,
+        "center_pulse_us":1500,
+        "microseconds_per_degree":8.0,
+        "minimum_pulse_us":1350,
+        "maximum_pulse_us":1650,
+        "inverted":false
     }
 }
