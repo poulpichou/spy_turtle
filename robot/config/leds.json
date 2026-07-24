@@ -2,10 +2,10 @@
     "settings": {
         "enabled": true,
         "gpio": 18,
-        "count": 24,
+        "count": 32,
         "frequency_hz": 800000,
         "dma": 10,
-        "brightness": 0.35,
+        "brightness": 0.2,
         "order": "GRB",
         "reversed": false,
         "invert_signal": false
@@ -96,6 +96,10 @@
         "rocket": {
             "label": "Rocket Ship",
             "animation": "rocket_launch"
+        },
+        "red": {
+            "label": "Red test",
+            "animation": "solid_red"
         }
     },
     "animations": {
@@ -347,6 +351,15 @@
                     "duration": 1.1
                 }
             ]
+        },
+        "solid_red": {
+            "type": "solid",
+            "color": [
+                255,
+                0,
+                0
+            ],
+            "brightness": 0.2
         }
     }
 }
