@@ -30,6 +30,7 @@ def display_value(value,suffix=""): return "--" if value is None else f"{value}{
 
 class BaseView:
     title=""
+
     def __init__(self,footer=None): self.footer=footer or self.title
     def get_data(self,robot): return {}
     def draw(self,draw,display,data): pass
@@ -82,34 +83,51 @@ class StatusView(BaseView):
         available=max(1,bottom-start_y)
         row_height=max(16,min(22,available//max(1,len(rows))))
         font_size=max(10,min(13,row_height-5))
+
         label_x=12
-        value_x=245
-        separator_x=228
+        separator_x=248
+        value_x=266
 
         for index,(label,current) in enumerate(rows):
             y=start_y+index*row_height
             if y+row_height>bottom:break
             text(draw,label_x,y,label,font_size,colors.GRAY)
-            draw.line((separator_x,y-1,separator_x,y+row_height-3),fill=colors.GRAY,width=1)
+            draw.line(
+                (separator_x,y-1,separator_x,y+row_height-3),
+                fill=colors.GRAY,
+                width=1
+            )
             text(draw,value_x,y,current,font_size,colors.WHITE,True)
 
 class LogView(BaseView):
     title="LOG"
+
     def get_data(self,robot): return log.tail(100)
+
     def draw(self,draw,display,lines):
         draw_title(draw,"LOG")
-        draw_lines(draw,lines,theme.CONTENT_Y+42,size=theme.SMALL_SIZE,line_height=18)
+        draw_lines(
+            draw,
+            lines,
+            theme.CONTENT_Y+42,
+            size=theme.SMALL_SIZE,
+            line_height=18
+        )
 
 class ImageView(BaseView):
     title="IMAGE"
+
     def __init__(self,path,footer=None):
         super().__init__(footer or Path(path).name)
         self.path=Path(path)
         with Image.open(self.path) as image:self.image=image.convert("RGB").copy()
-    def draw(self,draw,display,data): display.buffer.paste(fit_media(self.image),(0,theme.CONTENT_Y))
+
+    def draw(self,draw,display,data):
+        display.buffer.paste(fit_media(self.image),(0,theme.CONTENT_Y))
 
 class GifView(BaseView):
     title="GIF"
+
     def __init__(self,path,footer=None):
         super().__init__(footer or Path(path).name)
         self.path=Path(path)
@@ -122,24 +140,32 @@ class GifView(BaseView):
                 self.frames.append(image.convert("RGB").copy())
                 self.durations.append(max(20,image.info.get("duration",100)))
         self.duration=self.durations[0] if self.durations else 100
+
     def draw(self,draw,display,data):
         if not self.frames:return
         frame=self.frames[self.frame_index]
         self.duration=self.durations[self.frame_index]
         display.buffer.paste(fit_media(frame),(0,theme.CONTENT_Y))
         self.frame_index=(self.frame_index+1)%len(self.frames)
+
     def close(self):
         self.frames.clear()
         self.durations.clear()
 
 class TextView(BaseView):
     title="MESSAGE"
+
     def __init__(self,message,footer=None):
         super().__init__(footer or self.title)
         self.message=str(message)
+
     def draw(self,draw,display,data):
         draw_title(draw,"MESSAGE")
-        draw_lines(draw,wrap_text(self.message,28),theme.CONTENT_Y+45)
+        draw_lines(
+            draw,
+            wrap_text(self.message,28),
+            theme.CONTENT_Y+45
+        )
 
 def media_view(path,footer=None):
     path=Path(path)
@@ -149,9 +175,22 @@ def media_view(path,footer=None):
     raise ValueError(f"Unsupported media format: {extension or 'none'}")
 
 def fit_media(image):
-    image=ImageOps.contain(image,(theme.WIDTH,theme.CONTENT_H)).convert("RGB")
-    canvas=Image.new("RGB",(theme.WIDTH,theme.CONTENT_H),theme.CONTENT_BG)
-    canvas.paste(image,((theme.WIDTH-image.width)//2,(theme.CONTENT_H-image.height)//2))
+    image=ImageOps.contain(
+        image,
+        (theme.WIDTH,theme.CONTENT_H)
+    ).convert("RGB")
+    canvas=Image.new(
+        "RGB",
+        (theme.WIDTH,theme.CONTENT_H),
+        theme.CONTENT_BG
+    )
+    canvas.paste(
+        image,
+        (
+            (theme.WIDTH-image.width)//2,
+            (theme.CONTENT_H-image.height)//2
+        )
+    )
     return canvas
 
 def wrap_text(value,width):
@@ -160,7 +199,8 @@ def wrap_text(value,width):
     current=""
     for word in words:
         candidate=f"{current} {word}".strip()
-        if len(candidate)<=width:current=candidate
+        if len(candidate)<=width:
+            current=candidate
         else:
             if current:lines.append(current)
             current=word
