@@ -84,19 +84,21 @@ class StatusView(BaseView):
         row_height=max(16,min(22,available//max(1,len(rows))))
         font_size=max(10,min(13,row_height-5))
 
-        label_x=12
-        separator_x=248
-        value_x=266
+        margin=12
+        separator_x=theme.WIDTH//2
+        label_x=margin
+        value_x=separator_x+margin
+
+        draw.line(
+            (separator_x,start_y-4,separator_x,bottom),
+            fill=colors.GRAY,
+            width=1
+        )
 
         for index,(label,current) in enumerate(rows):
             y=start_y+index*row_height
             if y+row_height>bottom:break
             text(draw,label_x,y,label,font_size,colors.GRAY)
-            draw.line(
-                (separator_x,y-1,separator_x,y+row_height-3),
-                fill=colors.GRAY,
-                width=1
-            )
             text(draw,value_x,y,current,font_size,colors.WHITE,True)
 
 class LogView(BaseView):
