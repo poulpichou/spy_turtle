@@ -48,24 +48,22 @@ class StatusView(BaseView):
         uptime=None
         uptime_path=Path("/proc/uptime")
         if uptime_path.exists():uptime=float(uptime_path.read_text().split()[0])
-        return {
-            "left":[
-                ("CPU",display_value(temperature," C")),
-                ("Disk",display_value(round(disk.free/(1024**3),1)," GB")),
-                ("Voltage",display_value(safe_call(battery.get_voltage,digits=2)," V")),
-                ("Cells",display_value(safe_call(battery.get_cells))),
-                ("USB",self._yes_no(safe_call(battery.usb_connected))),
-                ("Pan",self._servo(servo.get("pan")))
-            ],
-            "right":[
-                ("Uptime",format_duration(uptime)),
-                ("Load",display_value(round(os.getloadavg()[0],2))),
-                ("Mode",f"{robot.state.motion}/{robot.state.emotion}"),
-                ("Current",display_value(safe_call(battery.get_current,digits=2)," A")),
-                ("Charge",self._yes_no(safe_call(battery.is_charging))),
-                ("Tilt",self._servo(servo.get("tilt")))
-            ]
-        }
+        return [
+            ("Uptime",format_duration(uptime)),
+            ("CPU temperature",display_value(temperature," C")),
+            ("System load",display_value(round(os.getloadavg()[0],2))),
+            ("Disk free",display_value(round(disk.free/(1024**3),1)," GB")),
+            ("Battery voltage",display_value(safe_call(battery.get_voltage,digits=2)," V")),
+            ("Battery current",display_value(safe_call(battery.get_current,digits=2)," A")),
+            ("Battery cells",display_value(safe_call(battery.get_cells))),
+            ("Charging",self._yes_no(safe_call(battery.is_charging))),
+            ("USB power",self._yes_no(safe_call(battery.usb_connected))),
+            ("Robot mode",f"{robot.state.motion} / {robot.state.emotion}"),
+            ("LED mode",robot.state.led_mode),
+            ("Shell mode",robot.state.shell_mode),
+            ("Head pan",self._servo(servo.get("pan"))),
+            ("Head tilt",self._servo(servo.get("tilt")))
+        ]
 
     @staticmethod
     def _yes_no(value): return "--" if value is None else "Yes" if value else "No"
@@ -73,17 +71,27 @@ class StatusView(BaseView):
     @staticmethod
     def _servo(axis):
         if not axis:return "--"
-        return f"{display_value(axis.get('current'),'°')}->{display_value(axis.get('target'),'°')}"
+        current=display_value(axis.get("current"),"°")
+        target=display_value(axis.get("target"),"°")
+        return f"{current} -> {target}"
 
-    def draw(self,draw,display,data):
+    def draw(self,draw,display,rows):
         draw_title(draw,"STATUS")
-        start=theme.CONTENT_Y+42
-        row_h=29
-        for column,x_label,x_value in ((data["left"],12,118),(data["right"],252,360)):
-            for index,(label,current) in enumerate(column):
-                y=start+index*row_h
-                text(draw,x_label,y,label,13,colors.GRAY)
-                text(draw,x_value,y,current,13,colors.WHITE,True)
+        start_y=theme.CONTENT_Y+40
+        bottom=theme.HEIGHT-theme.FOOTER_H-4
+        available=max(1,bottom-start_y)
+        row_height=max(16,min(22,available//max(1,len(rows))))
+        font_size=max(10,min(13,row_height-5))
+        label_x=12
+        value_x=245
+        separator_x=228
+
+        for index,(label,current) in enumerate(rows):
+            y=start_y+index*row_height
+            if y+row_height>bottom:break
+            text(draw,label_x,y,label,font_size,colors.GRAY)
+            draw.line((separator_x,y-1,separator_x,y+row_height-3),fill=colors.GRAY,width=1)
+            text(draw,value_x,y,current,font_size,colors.WHITE,True)
 
 class LogView(BaseView):
     title="LOG"
