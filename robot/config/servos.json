@@ -21,7 +21,7 @@
         "speed":25.0,
         "center_pulse_us":1550,
         "microseconds_per_degree":3.0,
-        "minimum_pulse_us":1250,
+        "minimum_pulse_us":1050,
         "maximum_pulse_us":1850,
         "write_interval_seconds":0.02,
         "minimum_pulse_change_us":4,
