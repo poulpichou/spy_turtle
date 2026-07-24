@@ -114,6 +114,11 @@ def shell_show(value):
         get_asset("shell",value)
         instance.shell.show_image(value)
     instance.state.shell_mode=value
+    if instance.leds and hasattr(instance.leds,"linked_mode"):
+        linked=instance.leds.linked_mode("shell",value)
+        if linked:
+            instance.leds.set_mode(linked)
+            instance.state.led_mode=linked
 
 def shell_text(text):
     instance=interact("shell_text")

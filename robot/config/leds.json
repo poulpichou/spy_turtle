@@ -1,0 +1,352 @@
+{
+    "settings": {
+        "enabled": true,
+        "gpio": 18,
+        "count": 24,
+        "frequency_hz": 800000,
+        "dma": 10,
+        "brightness": 0.35,
+        "order": "GRB",
+        "reversed": false,
+        "invert_signal": false
+    },
+    "links": {
+        "shell": {
+            "rocket": "rocket",
+            "fire": "fire",
+            "leds": "rainbow",
+            "sleep": "sleeping"
+        },
+        "emotion": {
+            "neutral": "neutral",
+            "happy": "happy",
+            "love": "love",
+            "angry": "angry",
+            "sleepy": "sleepy",
+            "sleeping": "sleeping",
+            "surprised": "surprised",
+            "curious": "curious"
+        }
+    },
+    "modes": {
+        "off": {
+            "label": "Off",
+            "animation": "off"
+        },
+        "neutral": {
+            "label": "Neutral",
+            "animation": "neutral"
+        },
+        "happy": {
+            "label": "Happy",
+            "animation": "happy"
+        },
+        "love": {
+            "label": "Love",
+            "animation": "love"
+        },
+        "angry": {
+            "label": "Angry",
+            "animation": "angry"
+        },
+        "sleepy": {
+            "label": "Sleepy",
+            "animation": "sleepy"
+        },
+        "sleeping": {
+            "label": "Sleeping",
+            "animation": "off"
+        },
+        "surprised": {
+            "label": "Surprised",
+            "animation": "surprised"
+        },
+        "curious": {
+            "label": "Curious",
+            "animation": "curious"
+        },
+        "rainbow": {
+            "label": "Rainbow",
+            "animation": "rainbow"
+        },
+        "breathing": {
+            "label": "Breathing",
+            "animation": "breathing"
+        },
+        "pulse": {
+            "label": "Pulse",
+            "animation": "pulse"
+        },
+        "spinner": {
+            "label": "Spinner",
+            "animation": "spinner"
+        },
+        "wave": {
+            "label": "Wave",
+            "animation": "wave"
+        },
+        "police": {
+            "label": "Police",
+            "animation": "police"
+        },
+        "fire": {
+            "label": "Fire",
+            "animation": "fire"
+        },
+        "rocket": {
+            "label": "Rocket Ship",
+            "animation": "rocket_launch"
+        }
+    },
+    "animations": {
+        "off": {
+            "type": "solid",
+            "color": [
+                0,
+                0,
+                0
+            ]
+        },
+        "neutral": {
+            "type": "breathing",
+            "color": [
+                40,
+                120,
+                80
+            ],
+            "period": 3.0,
+            "brightness": 0.18
+        },
+        "happy": {
+            "type": "rainbow",
+            "period": 2.2,
+            "brightness": 0.4
+        },
+        "love": {
+            "type": "pulse",
+            "color": [
+                255,
+                30,
+                110
+            ],
+            "period": 1.2,
+            "brightness": 0.45
+        },
+        "angry": {
+            "type": "pulse",
+            "color": [
+                255,
+                0,
+                0
+            ],
+            "period": 0.45,
+            "brightness": 0.55
+        },
+        "sleepy": {
+            "type": "breathing",
+            "color": [
+                35,
+                50,
+                150
+            ],
+            "period": 4.0,
+            "brightness": 0.12
+        },
+        "surprised": {
+            "type": "flash",
+            "color": [
+                255,
+                255,
+                255
+            ],
+            "period": 0.22,
+            "brightness": 0.55
+        },
+        "curious": {
+            "type": "spinner",
+            "color": [
+                0,
+                170,
+                255
+            ],
+            "tail": 5,
+            "period": 1.5,
+            "brightness": 0.35
+        },
+        "rainbow": {
+            "type": "rainbow",
+            "period": 2.0,
+            "brightness": 0.4
+        },
+        "breathing": {
+            "type": "breathing",
+            "color": [
+                0,
+                150,
+                255
+            ],
+            "period": 2.5,
+            "brightness": 0.3
+        },
+        "pulse": {
+            "type": "pulse",
+            "color": [
+                255,
+                255,
+                255
+            ],
+            "period": 1.0,
+            "brightness": 0.4
+        },
+        "spinner": {
+            "type": "spinner",
+            "color": [
+                0,
+                200,
+                120
+            ],
+            "tail": 5,
+            "period": 1.2,
+            "brightness": 0.4
+        },
+        "wave": {
+            "type": "wave",
+            "color": [
+                0,
+                150,
+                255
+            ],
+            "tail": 7,
+            "period": 1.8,
+            "brightness": 0.4
+        },
+        "police": {
+            "type": "sequence",
+            "loop": true,
+            "steps": [
+                {
+                    "effect": "solid",
+                    "color": [
+                        0,
+                        0,
+                        255
+                    ],
+                    "brightness": 0.5,
+                    "duration": 0.18
+                },
+                {
+                    "effect": "off",
+                    "duration": 0.05
+                },
+                {
+                    "effect": "solid",
+                    "color": [
+                        255,
+                        0,
+                        0
+                    ],
+                    "brightness": 0.5,
+                    "duration": 0.18
+                },
+                {
+                    "effect": "off",
+                    "duration": 0.05
+                }
+            ]
+        },
+        "fire": {
+            "type": "fire",
+            "colors": [
+                [
+                    255,
+                    0,
+                    0
+                ],
+                [
+                    255,
+                    70,
+                    0
+                ],
+                [
+                    255,
+                    180,
+                    0
+                ]
+            ],
+            "period": 0.12,
+            "brightness": 0.5
+        },
+        "rocket_fire": {
+            "type": "fire",
+            "colors": [
+                [
+                    255,
+                    0,
+                    0
+                ],
+                [
+                    255,
+                    90,
+                    0
+                ],
+                [
+                    255,
+                    230,
+                    40
+                ]
+            ],
+            "period": 0.09,
+            "brightness": 0.55
+        },
+        "rocket_fire_fast": {
+            "type": "fire",
+            "colors": [
+                [
+                    255,
+                    0,
+                    0
+                ],
+                [
+                    255,
+                    140,
+                    0
+                ],
+                [
+                    255,
+                    255,
+                    130
+                ]
+            ],
+            "period": 0.035,
+            "brightness": 0.75
+        },
+        "rocket_flash": {
+            "type": "flash",
+            "color": [
+                255,
+                255,
+                255
+            ],
+            "period": 0.06,
+            "brightness": 1.0
+        },
+        "rocket_launch": {
+            "type": "sequence",
+            "loop": true,
+            "steps": [
+                {
+                    "animation": "rocket_fire",
+                    "duration": 0.7
+                },
+                {
+                    "animation": "rocket_flash",
+                    "duration": 0.08
+                },
+                {
+                    "animation": "rocket_fire_fast",
+                    "duration": 1.1
+                }
+            ]
+        }
+    }
+}

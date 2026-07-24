@@ -8,6 +8,7 @@ from robot.simulation.fake_leds import FakeLEDController
 from robot.simulation.fake_motor import FakeMotor
 from robot.simulation.fake_speaker import FakeSpeaker
 from robot.simulation.fake_servo import FakeServo
+from robot.hardware.leds import LEDController
 from robot.hardware.servo import ServoController
 from robot.hardware.oled_display import OLEDDisplay
 from robot.hardware.shell_screen_st7796 import ShellScreenST7796
@@ -42,7 +43,7 @@ class RobotFactory:
 
     def create_hardware(self):
         motors=FakeMotor()
-        leds=FakeLEDController()
+        leds=LEDController()
         camera=Camera()
         speaker=Speaker()
         servo=ServoController()
