@@ -13,15 +13,18 @@
         "inverted": true
     },
     "tilt": {
-        "gpio": 27,
-        "center": 0.0,
-        "minimum": -35.0,
-        "maximum": 30.0,
-        "step": 6.0,
-        "speed": 25.0,
-        "center_pulse_us": 1450,
-        "minimum_pulse_us": 1450,
-        "maximum_pulse_us": 1650,
-        "inverted": true
+        "gpio":27,
+        "center":0.0,
+        "minimum":-35.0,
+        "maximum":30.0,
+        "step":6.0,
+        "speed":25.0,
+        "center_pulse_us":1550,
+        "microseconds_per_degree":3.0,
+        "minimum_pulse_us":1450,
+        "maximum_pulse_us":1650,
+        "write_interval_seconds":0.02,
+        "minimum_pulse_change_us":4,
+        "inverted":true
     }
 }
