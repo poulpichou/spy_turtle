@@ -25,7 +25,7 @@ class LEDController:
         self.started_at=time.monotonic()
         self.last_frame_at=0.0
         self.frame_interval=1/50
-        self.fd=self._open_device()
+        self.fd=None
         self._configure_device()
         self._show([(0,0,0)]*self.count)
         log.info(f"[LED] ready device={self.device} count={self.count}")
@@ -36,10 +36,12 @@ class LEDController:
         except FileNotFoundError as error:raise RuntimeError(f"LED device not found: {self.device}") from error
 
     def _configure_device(self):
-        os.lseek(self.fd,0,os.SEEK_SET)
-        written=os.write(self.fd,b"\x00")
-        if written!=1:raise RuntimeError("Unable to configure LED pass-through brightness")
-        os.lseek(self.fd,0,os.SEEK_SET)
+        fd=self._open_device()
+        try:
+            written=os.write(fd,b"\x00")
+            if written!=1:raise RuntimeError("Unable to configure LED pass-through brightness")
+        finally:
+            os.close(fd)
 
     def set_mode(self,name):
         if name not in self.modes:raise ValueError(f"Unknown LED mode: {name}")
@@ -140,20 +142,14 @@ class LEDController:
     def _show(self,frame):
         values=list(reversed(frame)) if self.reversed else frame
         payload=b"".join(struct.pack("<I",r|(g<<8)|(b<<16)) for r,g,b in values)
-        try:os.lseek(self.fd,0,os.SEEK_SET)
-        except OSError:
-            os.close(self.fd)
-            self.fd=self._open_device()
-            self._configure_device()
-        written=os.write(self.fd,payload)
-        if written!=len(payload):raise RuntimeError(f"Incomplete LED write: {written}/{len(payload)} bytes")
-
-    def close(self):
-        try:self._show([(0,0,0)]*self.count)
+        fd=self._open_device()
+        try:
+            written=os.write(fd,payload)
+            if written!=len(payload):raise RuntimeError(f"Incomplete LED write: {written}/{len(payload)} bytes")
         finally:
-            if self.fd is not None:
-                os.close(self.fd)
-                self.fd=None
+            os.close(fd)
+
+    def close(self): self._show([(0,0,0)]*self.count)
 
     @staticmethod
     def _color(value): return tuple(max(0,min(255,int(v))) for v in value[:3])
