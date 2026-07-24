@@ -1,12 +1,12 @@
 {
-    "detach_after_seconds":0.8,
+    "detach_after_seconds":0.25,
     "pan": {
         "gpio": 17,
         "center": 0.0,
         "minimum": -90.0,
         "maximum": 90.0,
-        "step": 10.0,
-        "speed": 35.0,
+        "step": 5.0,
+        "speed": 50.0,
         "center_pulse_us": 1500,
         "minimum_pulse_us": 1000,
         "maximum_pulse_us": 2000,
@@ -15,8 +15,8 @@
     "tilt": {
         "gpio": 27,
         "center": 0.0,
-        "minimum": -15.0,
-        "maximum": 22.0,
+        "minimum": -35.0,
+        "maximum": 30.0,
         "step": 6.0,
         "speed": 25.0,
         "center_pulse_us": 1450,
