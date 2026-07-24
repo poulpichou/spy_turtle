@@ -16,10 +16,11 @@
     .center-tab{font-size:.56rem;min-height:22px}
     .center-view{border-radius:10px}
     #robot-log{font-size:.62rem}
-    #health-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
-    .health-card{padding:5px}
+    #status-view{padding:5px}
+    #health-grid{gap:0 10px}
+    .health-card{padding:5px 2px;gap:4px}
     .health-card span{font-size:.52rem}
-    .health-card strong{font-size:.62rem}
+    .health-card strong{font-size:.58rem}
     #photo-button{width:38px;height:38px}
     #photo-browser{grid-template-columns:36px minmax(0,1fr) 36px}
     .photo-nav{width:30px;height:46px}
@@ -38,6 +39,10 @@
     textarea{height:54px;font-size:.56rem}
     #status-bar{font-size:.48rem}
     .center-tab{font-size:.50rem;min-height:20px}
+    #health-grid{gap:0 6px}
+    .health-card{padding:4px 1px;gap:3px}
+    .health-card span{font-size:.47rem}
+    .health-card strong{font-size:.52rem}
     #photo-button{width:34px;height:34px}
 }
 @media(max-height:370px) and (orientation:landscape){
@@ -47,5 +52,6 @@
     .card h2{font-size:.58rem}
     button{width:32px;height:32px}
     textarea{height:50px}
+    .health-card{padding:3px 1px}
     #photo-button{width:34px;height:34px}
 }
