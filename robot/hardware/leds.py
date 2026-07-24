@@ -1,7 +1,9 @@
 import colorsys
 import json
 import math
+import os
 import random
+import struct
 import time
 from pathlib import Path
 from robot.utils.logger import log
@@ -11,6 +13,7 @@ class LEDController:
         path=Path(config_path) if config_path else Path(__file__).resolve().parent.parent/"config"/"leds.json"
         with path.open(encoding="utf-8") as file:self.config=json.load(file)
         settings=self.config["settings"]
+        self.device=str(settings.get("device","/dev/leds0"))
         self.count=int(settings["count"])
         self.global_brightness=float(settings.get("brightness",1.0))
         self.reversed=bool(settings.get("reversed",False))
@@ -22,25 +25,14 @@ class LEDController:
         self.started_at=time.monotonic()
         self.last_frame_at=0.0
         self.frame_interval=1/50
-        self._pixels=self._create_pixels(settings)
+        self.fd=self._open_device()
         self._show([(0,0,0)]*self.count)
-        log.info(f"[LED] ready GPIO{settings['gpio']} count={self.count}")
+        log.info(f"[LED] ready device={self.device} count={self.count}")
 
-    def _create_pixels(self,settings):
-        try:
-            from rpi_ws281x import PixelStrip,ws
-        except ImportError as error:
-            raise RuntimeError("rpi_ws281x is not installed: pip install rpi-ws281x") from error
-        strip_types={
-            "RGB":ws.WS2811_STRIP_RGB,"RBG":ws.WS2811_STRIP_RBG,
-            "GRB":ws.WS2811_STRIP_GRB,"GBR":ws.WS2811_STRIP_GBR,
-            "BRG":ws.WS2811_STRIP_BRG,"BGR":ws.WS2811_STRIP_BGR
-        }
-        order=str(settings.get("order","GRB")).upper()
-        if order not in strip_types:raise ValueError(f"Unsupported LED order: {order}")
-        strip=PixelStrip(self.count,int(settings["gpio"]),int(settings.get("frequency_hz",800000)),int(settings.get("dma",10)),bool(settings.get("invert_signal",False)),255,0,strip_types[order])
-        strip.begin()
-        return strip
+    def _open_device(self):
+        try:return os.open(self.device,os.O_WRONLY)
+        except PermissionError as error:raise RuntimeError(f"No permission to write {self.device}") from error
+        except FileNotFoundError as error:raise RuntimeError(f"LED device not found: {self.device}") from error
 
     def set_mode(self,name):
         if name not in self.modes:raise ValueError(f"Unknown LED mode: {name}")
@@ -139,12 +131,21 @@ class LEDController:
         return [(0,0,0)]*self.count,1.0
 
     def _show(self,frame):
-        from rpi_ws281x import Color
         values=list(reversed(frame)) if self.reversed else frame
-        for i,(r,g,b) in enumerate(values):self._pixels.setPixelColor(i,Color(r,g,b))
-        self._pixels.show()
+        payload=b"".join(struct.pack("<I",r|(g<<8)|(b<<16)) for r,g,b in values)
+        try:os.lseek(self.fd,0,os.SEEK_SET)
+        except OSError:
+            os.close(self.fd)
+            self.fd=self._open_device()
+        written=os.write(self.fd,payload)
+        if written!=len(payload):raise RuntimeError(f"Incomplete LED write: {written}/{len(payload)} bytes")
 
-    def close(self): self._show([(0,0,0)]*self.count)
+    def close(self):
+        try:self._show([(0,0,0)]*self.count)
+        finally:
+            if self.fd is not None:
+                os.close(self.fd)
+                self.fd=None
 
     @staticmethod
     def _color(value): return tuple(max(0,min(255,int(v))) for v in value[:3])
