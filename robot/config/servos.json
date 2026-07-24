@@ -15,7 +15,7 @@
     "tilt": {
         "gpio":27,
         "center":0.0,
-        "minimum":-35.0,
+        "minimum":-80.0,
         "maximum":30.0,
         "step":6.0,
         "speed":25.0,
