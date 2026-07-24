@@ -22,10 +22,10 @@
         "maximum":45.0,
         "step":5.0,
         "speed":50.0,
-        "center_pulse_us":1350,
+        "center_pulse_us":1650,
         "microseconds_per_degree":7.0,
         "minimum_pulse_us":1000,
-        "maximum_pulse_us":10,
+        "maximum_pulse_us":2000,
         "write_interval_seconds":0.02,
         "minimum_pulse_change_us":4,
         "inverted":true
