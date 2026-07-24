@@ -8,7 +8,8 @@
         "brightness": 0.2,
         "order": "GRB",
         "reversed": false,
-        "invert_signal": false
+        "invert_signal": false,
+        "device": "/dev/leds0"
     },
     "links": {
         "shell": {
@@ -359,7 +360,7 @@
                 0,
                 0
             ],
-            "brightness": 0.2
+            "brightness": 1.0
         }
     }
 }

@@ -26,6 +26,7 @@ class LEDController:
         self.last_frame_at=0.0
         self.frame_interval=1/50
         self.fd=self._open_device()
+        self._configure_device()
         self._show([(0,0,0)]*self.count)
         log.info(f"[LED] ready device={self.device} count={self.count}")
 
@@ -33,6 +34,12 @@ class LEDController:
         try:return os.open(self.device,os.O_WRONLY)
         except PermissionError as error:raise RuntimeError(f"No permission to write {self.device}") from error
         except FileNotFoundError as error:raise RuntimeError(f"LED device not found: {self.device}") from error
+
+    def _configure_device(self):
+        os.lseek(self.fd,0,os.SEEK_SET)
+        written=os.write(self.fd,b"\x00")
+        if written!=1:raise RuntimeError("Unable to configure LED pass-through brightness")
+        os.lseek(self.fd,0,os.SEEK_SET)
 
     def set_mode(self,name):
         if name not in self.modes:raise ValueError(f"Unknown LED mode: {name}")
@@ -137,6 +144,7 @@ class LEDController:
         except OSError:
             os.close(self.fd)
             self.fd=self._open_device()
+            self._configure_device()
         written=os.write(self.fd,payload)
         if written!=len(payload):raise RuntimeError(f"Incomplete LED write: {written}/{len(payload)} bytes")
 
