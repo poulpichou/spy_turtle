@@ -22,7 +22,7 @@
         "maximum":45.0,
         "step":5.0,
         "speed":50.0,
-        "center_pulse_us":1550,
+        "center_pulse_us":1350,
         "microseconds_per_degree":7.0,
         "minimum_pulse_us":1000,
         "maximum_pulse_us":10,
