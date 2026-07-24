@@ -1,0 +1,71 @@
+{
+    "default_duration_seconds": 60,
+    "return_mode": "status",
+    "modes": {
+        "rocket": {
+            "duration_seconds": 60,
+            "face": "happy",
+            "led": "rocket"
+        },
+        "smoke": {
+            "duration_seconds": 60,
+            "face": "surprised",
+            "led": "fart"
+        },
+        "fire": {
+            "duration_seconds": 60,
+            "face": "angry",
+            "led": "fire"
+        },
+        "dance": {
+            "duration_seconds": 60,
+            "face": "happy",
+            "led": "dance"
+        },
+        "sleep": {
+            "duration_seconds": 60,
+            "face": "sleeping",
+            "led": "sleeping"
+        },
+        "leds": {
+            "duration_seconds": 60,
+            "face": "dizzy",
+            "led": "rainbow"
+        },
+        "countdown": {
+            "duration_seconds": 30,
+            "face": "curious",
+            "led": "countdown"
+        },
+        "loading": {
+            "duration_seconds": 30,
+            "face": "thinking",
+            "led": "loading"
+        },
+        "glasses": {
+            "duration_seconds": 60,
+            "face": "curious",
+            "led": "cool"
+        },
+        "glasses_large": {
+            "duration_seconds": 60,
+            "face": "curious",
+            "led": "cool"
+        },
+        "happy": {
+            "duration_seconds": 60,
+            "face": "happy",
+            "led": "happy"
+        },
+        "rocket_turtle": {
+            "duration_seconds": 60,
+            "face": "happy",
+            "led": "rocket"
+        },
+        "walking": {
+            "duration_seconds": 60,
+            "face": "neutral",
+            "led": "walking"
+        }
+    }
+}

@@ -1,15 +1,35 @@
+import os
+import shutil
 from pathlib import Path
 from PIL import Image,ImageOps
-from robot.shell.ui import theme
-from robot.shell.ui.widgets import draw_title,draw_lines
+from robot.shell.ui import theme,colors
+from robot.shell.ui.widgets import draw_title,draw_lines,text
 from robot.utils.logger import log
 
 IMAGE_EXTENSIONS={".png",".jpg",".jpeg",".bmp",".webp"}
 GIF_EXTENSION=".gif"
+ROOT=Path(__file__).resolve().parents[3]
+
+def safe_call(function,default=None,digits=None):
+    try:
+        value=function()
+        if digits is not None and isinstance(value,(int,float)):value=round(value,digits)
+        return value
+    except Exception:return default
+
+def format_duration(seconds):
+    seconds=max(0,int(seconds or 0))
+    days,remaining=divmod(seconds,86400)
+    hours,remaining=divmod(remaining,3600)
+    minutes,seconds=divmod(remaining,60)
+    if days:return f"{days}d {hours}h"
+    if hours:return f"{hours}h {minutes}m"
+    return f"{minutes}m {seconds}s"
+
+def display_value(value,suffix=""): return "--" if value is None else f"{value}{suffix}"
 
 class BaseView:
     title=""
-
     def __init__(self,footer=None): self.footer=footer or self.title
     def get_data(self,robot): return {}
     def draw(self,draw,display,data): pass
@@ -18,49 +38,70 @@ class BaseView:
 class StatusView(BaseView):
     title="STATUS"
 
-    def get_data(self,robot): return robot.state.__dict__
+    def get_data(self,robot):
+        disk=shutil.disk_usage(ROOT)
+        servo=safe_call(robot.servo.status,{}) if robot.servo and hasattr(robot.servo,"status") else {}
+        battery=robot.battery
+        temperature=None
+        temp_path=Path("/sys/class/thermal/thermal_zone0/temp")
+        if temp_path.exists():temperature=round(float(temp_path.read_text().strip())/1000,1)
+        uptime=None
+        uptime_path=Path("/proc/uptime")
+        if uptime_path.exists():uptime=float(uptime_path.read_text().split()[0])
+        return {
+            "left":[
+                ("CPU",display_value(temperature," C")),
+                ("Disk",display_value(round(disk.free/(1024**3),1)," GB")),
+                ("Voltage",display_value(safe_call(battery.get_voltage,digits=2)," V")),
+                ("Cells",display_value(safe_call(battery.get_cells))),
+                ("USB",self._yes_no(safe_call(battery.usb_connected))),
+                ("Pan",self._servo(servo.get("pan")))
+            ],
+            "right":[
+                ("Uptime",format_duration(uptime)),
+                ("Load",display_value(round(os.getloadavg()[0],2))),
+                ("Mode",f"{robot.state.motion}/{robot.state.emotion}"),
+                ("Current",display_value(safe_call(battery.get_current,digits=2)," A")),
+                ("Charge",self._yes_no(safe_call(battery.is_charging))),
+                ("Tilt",self._servo(servo.get("tilt")))
+            ]
+        }
+
+    @staticmethod
+    def _yes_no(value): return "--" if value is None else "Yes" if value else "No"
+
+    @staticmethod
+    def _servo(axis):
+        if not axis:return "--"
+        return f"{display_value(axis.get('current'),'°')}->{display_value(axis.get('target'),'°')}"
 
     def draw(self,draw,display,data):
-        draw_title(draw,"SPY TURTLE")
-        draw_lines(draw,[
-            f"Battery  {data.get('battery','--')}%",
-            f"Camera   {data.get('camera_on','--')}",
-            f"Audio    {data.get('sound','--')}",
-            f"LED      {data.get('led_mode','--')}",
-            f"Move     {data.get('motion','--')}",
-            f"Face     {data.get('emotion','--')}"
-        ],theme.CONTENT_Y+45)
+        draw_title(draw,"STATUS")
+        start=theme.CONTENT_Y+42
+        row_h=29
+        for column,x_label,x_value in ((data["left"],12,118),(data["right"],252,360)):
+            for index,(label,current) in enumerate(column):
+                y=start+index*row_h
+                text(draw,x_label,y,label,13,colors.GRAY)
+                text(draw,x_value,y,current,13,colors.WHITE,True)
 
 class LogView(BaseView):
     title="LOG"
-
     def get_data(self,robot): return log.tail(100)
-
     def draw(self,draw,display,lines):
         draw_title(draw,"LOG")
-        draw_lines(
-            draw,
-            lines,
-            theme.CONTENT_Y+42,
-            size=theme.SMALL_SIZE,
-            line_height=18
-        )
+        draw_lines(draw,lines,theme.CONTENT_Y+42,size=theme.SMALL_SIZE,line_height=18)
 
 class ImageView(BaseView):
     title="IMAGE"
-
     def __init__(self,path,footer=None):
         super().__init__(footer or Path(path).name)
         self.path=Path(path)
-        with Image.open(self.path) as image:
-            self.image=image.convert("RGB").copy()
-
-    def draw(self,draw,display,data):
-        display.buffer.paste(fit_media(self.image),(0,theme.CONTENT_Y))
+        with Image.open(self.path) as image:self.image=image.convert("RGB").copy()
+    def draw(self,draw,display,data): display.buffer.paste(fit_media(self.image),(0,theme.CONTENT_Y))
 
 class GifView(BaseView):
     title="GIF"
-
     def __init__(self,path,footer=None):
         super().__init__(footer or Path(path).name)
         self.path=Path(path)
@@ -68,31 +109,26 @@ class GifView(BaseView):
         self.durations=[]
         self.frame_index=0
         with Image.open(self.path) as image:
-            frame_count=getattr(image,"n_frames",1)
-            for index in range(frame_count):
+            for index in range(getattr(image,"n_frames",1)):
                 image.seek(index)
                 self.frames.append(image.convert("RGB").copy())
                 self.durations.append(max(20,image.info.get("duration",100)))
         self.duration=self.durations[0] if self.durations else 100
-
     def draw(self,draw,display,data):
         if not self.frames:return
         frame=self.frames[self.frame_index]
         self.duration=self.durations[self.frame_index]
         display.buffer.paste(fit_media(frame),(0,theme.CONTENT_Y))
         self.frame_index=(self.frame_index+1)%len(self.frames)
-
     def close(self):
         self.frames.clear()
         self.durations.clear()
 
 class TextView(BaseView):
     title="MESSAGE"
-
     def __init__(self,message,footer=None):
         super().__init__(footer or self.title)
         self.message=str(message)
-
     def draw(self,draw,display,data):
         draw_title(draw,"MESSAGE")
         draw_lines(draw,wrap_text(self.message,28),theme.CONTENT_Y+45)
@@ -107,9 +143,7 @@ def media_view(path,footer=None):
 def fit_media(image):
     image=ImageOps.contain(image,(theme.WIDTH,theme.CONTENT_H)).convert("RGB")
     canvas=Image.new("RGB",(theme.WIDTH,theme.CONTENT_H),theme.CONTENT_BG)
-    x=(theme.WIDTH-image.width)//2
-    y=(theme.CONTENT_H-image.height)//2
-    canvas.paste(image,(x,y))
+    canvas.paste(image,((theme.WIDTH-image.width)//2,(theme.CONTENT_H-image.height)//2))
     return canvas
 
 def wrap_text(value,width):
@@ -118,8 +152,7 @@ def wrap_text(value,width):
     current=""
     for word in words:
         candidate=f"{current} {word}".strip()
-        if len(candidate)<=width:
-            current=candidate
+        if len(candidate)<=width:current=candidate
         else:
             if current:lines.append(current)
             current=word

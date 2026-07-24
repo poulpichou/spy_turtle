@@ -2,32 +2,10 @@
     "settings": {
         "enabled": true,
         "gpio": 18,
+        "device": "/dev/leds0",
         "count": 32,
-        "frequency_hz": 800000,
-        "dma": 10,
-        "brightness": 0.2,
-        "order": "GRB",
-        "reversed": false,
-        "invert_signal": false,
-        "device": "/dev/leds0"
-    },
-    "links": {
-        "shell": {
-            "rocket": "rocket",
-            "fire": "fire",
-            "leds": "rainbow",
-            "sleep": "sleeping"
-        },
-        "emotion": {
-            "neutral": "neutral",
-            "happy": "happy",
-            "love": "love",
-            "angry": "angry",
-            "sleepy": "sleepy",
-            "sleeping": "sleeping",
-            "surprised": "surprised",
-            "curious": "curious"
-        }
+        "brightness": 0.22,
+        "reversed": false
     },
     "modes": {
         "off": {
@@ -98,6 +76,30 @@
             "label": "Rocket Ship",
             "animation": "rocket_launch"
         },
+        "fart": {
+            "label": "Fart Cloud",
+            "animation": "fart_cloud"
+        },
+        "dance": {
+            "label": "Dance Party",
+            "animation": "dance_party"
+        },
+        "countdown": {
+            "label": "Countdown",
+            "animation": "countdown"
+        },
+        "loading": {
+            "label": "Loading",
+            "animation": "loading"
+        },
+        "cool": {
+            "label": "Cool",
+            "animation": "cool"
+        },
+        "walking": {
+            "label": "Walking",
+            "animation": "walking"
+        },
         "red": {
             "label": "Red test",
             "animation": "solid_red"
@@ -112,6 +114,15 @@
                 0
             ]
         },
+        "solid_red": {
+            "type": "solid",
+            "color": [
+                255,
+                0,
+                0
+            ],
+            "brightness": 1.0
+        },
         "neutral": {
             "type": "breathing",
             "color": [
@@ -120,12 +131,12 @@
                 80
             ],
             "period": 3.0,
-            "brightness": 0.18
+            "brightness": 0.5
         },
         "happy": {
             "type": "rainbow",
             "period": 2.2,
-            "brightness": 0.4
+            "brightness": 0.8
         },
         "love": {
             "type": "pulse",
@@ -135,7 +146,7 @@
                 110
             ],
             "period": 1.2,
-            "brightness": 0.45
+            "brightness": 0.85
         },
         "angry": {
             "type": "pulse",
@@ -145,7 +156,7 @@
                 0
             ],
             "period": 0.45,
-            "brightness": 0.55
+            "brightness": 1.0
         },
         "sleepy": {
             "type": "breathing",
@@ -155,7 +166,7 @@
                 150
             ],
             "period": 4.0,
-            "brightness": 0.12
+            "brightness": 0.45
         },
         "surprised": {
             "type": "flash",
@@ -165,7 +176,7 @@
                 255
             ],
             "period": 0.22,
-            "brightness": 0.55
+            "brightness": 1.0
         },
         "curious": {
             "type": "spinner",
@@ -176,12 +187,12 @@
             ],
             "tail": 5,
             "period": 1.5,
-            "brightness": 0.35
+            "brightness": 0.8
         },
         "rainbow": {
             "type": "rainbow",
             "period": 2.0,
-            "brightness": 0.4
+            "brightness": 0.9
         },
         "breathing": {
             "type": "breathing",
@@ -191,7 +202,7 @@
                 255
             ],
             "period": 2.5,
-            "brightness": 0.3
+            "brightness": 0.75
         },
         "pulse": {
             "type": "pulse",
@@ -201,7 +212,7 @@
                 255
             ],
             "period": 1.0,
-            "brightness": 0.4
+            "brightness": 0.85
         },
         "spinner": {
             "type": "spinner",
@@ -212,7 +223,7 @@
             ],
             "tail": 5,
             "period": 1.2,
-            "brightness": 0.4
+            "brightness": 0.85
         },
         "wave": {
             "type": "wave",
@@ -223,7 +234,7 @@
             ],
             "tail": 7,
             "period": 1.8,
-            "brightness": 0.4
+            "brightness": 0.85
         },
         "police": {
             "type": "sequence",
@@ -236,7 +247,7 @@
                         0,
                         255
                     ],
-                    "brightness": 0.5,
+                    "brightness": 1.0,
                     "duration": 0.18
                 },
                 {
@@ -250,7 +261,7 @@
                         0,
                         0
                     ],
-                    "brightness": 0.5,
+                    "brightness": 1.0,
                     "duration": 0.18
                 },
                 {
@@ -279,7 +290,7 @@
                 ]
             ],
             "period": 0.12,
-            "brightness": 0.5
+            "brightness": 0.95
         },
         "rocket_fire": {
             "type": "fire",
@@ -301,7 +312,7 @@
                 ]
             ],
             "period": 0.09,
-            "brightness": 0.55
+            "brightness": 1.0
         },
         "rocket_fire_fast": {
             "type": "fire",
@@ -323,7 +334,7 @@
                 ]
             ],
             "period": 0.035,
-            "brightness": 0.75
+            "brightness": 1.0
         },
         "rocket_flash": {
             "type": "flash",
@@ -353,14 +364,147 @@
                 }
             ]
         },
-        "solid_red": {
-            "type": "solid",
+        "fart_green": {
+            "type": "wave",
+            "color": [
+                40,
+                255,
+                70
+            ],
+            "tail": 10,
+            "period": 1.4,
+            "brightness": 0.9
+        },
+        "fart_gray": {
+            "type": "wave",
+            "color": [
+                125,
+                135,
+                125
+            ],
+            "tail": 14,
+            "period": 2.2,
+            "brightness": 0.65
+        },
+        "fart_flash": {
+            "type": "pulse",
+            "color": [
+                150,
+                255,
+                80
+            ],
+            "period": 0.5,
+            "brightness": 0.85
+        },
+        "fart_cloud": {
+            "type": "sequence",
+            "loop": true,
+            "steps": [
+                {
+                    "animation": "fart_flash",
+                    "duration": 0.45
+                },
+                {
+                    "animation": "fart_green",
+                    "duration": 1.4
+                },
+                {
+                    "animation": "fart_gray",
+                    "duration": 2.0
+                }
+            ]
+        },
+        "dance_pink": {
+            "type": "spinner",
             "color": [
                 255,
+                20,
+                180
+            ],
+            "tail": 8,
+            "period": 0.65,
+            "brightness": 1.0
+        },
+        "dance_cyan": {
+            "type": "spinner",
+            "color": [
                 0,
+                220,
+                255
+            ],
+            "tail": 8,
+            "period": 0.55,
+            "brightness": 1.0
+        },
+        "dance_white": {
+            "type": "flash",
+            "color": [
+                255,
+                255,
+                255
+            ],
+            "period": 0.16,
+            "brightness": 1.0
+        },
+        "dance_party": {
+            "type": "sequence",
+            "loop": true,
+            "steps": [
+                {
+                    "animation": "dance_pink",
+                    "duration": 0.8
+                },
+                {
+                    "animation": "dance_cyan",
+                    "duration": 0.8
+                },
+                {
+                    "animation": "dance_white",
+                    "duration": 0.25
+                }
+            ]
+        },
+        "countdown": {
+            "type": "pulse",
+            "color": [
+                255,
+                80,
                 0
             ],
+            "period": 0.8,
             "brightness": 1.0
+        },
+        "loading": {
+            "type": "spinner",
+            "color": [
+                0,
+                160,
+                255
+            ],
+            "tail": 4,
+            "period": 1.0,
+            "brightness": 0.9
+        },
+        "cool": {
+            "type": "breathing",
+            "color": [
+                60,
+                80,
+                255
+            ],
+            "period": 2.0,
+            "brightness": 0.8
+        },
+        "walking": {
+            "type": "chase",
+            "color": [
+                80,
+                255,
+                120
+            ],
+            "tail": 3,
+            "period": 1.7,
+            "brightness": 0.85
         }
     }
 }
