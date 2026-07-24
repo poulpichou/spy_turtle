@@ -1,18 +1,21 @@
 {
     "detach_after_seconds":0.25,
-    "pan": {
-        "gpio": 17,
-        "center": 0.0,
-        "minimum": -90.0,
-        "maximum": 90.0,
-        "step": 5.0,
-        "speed": 50.0,
-        "center_pulse_us": 1500,
-        "minimum_pulse_us": 1000,
-        "maximum_pulse_us": 2000,
-        "inverted": true
+    "pan":{
+        "gpio":17,
+        "center":0.0,
+        "minimum":-60.0,
+        "maximum":60.0,
+        "step":5.0,
+        "speed":50.0,
+        "center_pulse_us":1500,
+        "microseconds_per_degree":6.0,
+        "minimum_pulse_us":1000,
+        "maximum_pulse_us":2000,
+        "write_interval_seconds":0.02,
+        "minimum_pulse_change_us":4,
+        "inverted":true
     },
-    "tilt": {
+    "tilt":{
         "gpio":27,
         "center":0.0,
         "minimum":-45.0,
@@ -20,9 +23,9 @@
         "step":5.0,
         "speed":50.0,
         "center_pulse_us":1550,
-        "microseconds_per_degree":3.0,
-        "minimum_pulse_us":1000,
-        "maximum_pulse_us":2000,
+        "microseconds_per_degree":7.0,
+        "minimum_pulse_us":1200,
+        "maximum_pulse_us":1800,
         "write_interval_seconds":0.02,
         "minimum_pulse_change_us":4,
         "inverted":true
