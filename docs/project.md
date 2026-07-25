@@ -141,7 +141,7 @@ The project intentionally follows a few engineering constraints.
 ## Power System
 
 * Waveshare UPS HAT (4-cell version)
-* 4 × Samsung 21700 Li-Ion cells
+* 4 × Panasonic NCR18650B 18650 Li-Ion cells (3350 mAh)
 * External USB-C panel mount charging connector
 
 ## Mobility
@@ -157,10 +157,10 @@ The project intentionally follows a few engineering constraints.
 
 ## User Feedback
 
-* 2 × 0.96" OLED displays
-* WS2812 addressable RGB LEDs
-* MAX98357A I2S amplifier
-* Speaker
+* 2 × 1.3" SH1106 128×64 OLED displays for the eyes
+* 3.5" ST7796U 480×320 SPI shell display
+* WS2812B addressable RGB LEDs driven through the Raspberry Pi 5 PIO LED device
+* Audio assets and software playback support; the previously planned MAX98357A amplifier is no longer part of the current V1 wiring
 
 ## Motion
 
@@ -353,18 +353,38 @@ Every feature should work inside the simulator before being deployed to the Rasp
 ---
 
 # Current Status
+The Raspberry Pi 5 platform is running and the project now includes both simulation and real-hardware implementations.
 
-The complete Version 1 hardware platform has been selected and ordered.
+Validated or implemented:
+- Raspberry Pi OS, SSH and automatic startup through `spyturtle.service`.
+- Camera Module 3 detection and live camera support.
+- UPS HAT communication and battery data access.
+- ST7796U shell display with status, logs, messages, images, GIFs and temporary display modes.
+- OLED eye architecture based on configurable animation sequences and idle/transient behaviors.
+- MG90S servo hardware tests plus smooth target-based movement and automatic detachment.
+- WS2812B hardware output on Raspberry Pi 5 through `dtoverlay=ws2812-pio` and `/dev/leds0`.
+- Mobile-first frontend packaged as a PWA and served over HTTPS through Caddy.
+- Shared asset catalog for eyes, fonts, images, GIFs and sounds.
+- Rotating startup logs with `turtle.log.1`, `.2`, `.3` and the `logs/log` symbolic link.
 
-Development currently focuses on:
+Still pending or incomplete:
+- Final motor, driver and encoder hardware integration.
+- Final dual-eye mechanical and electrical integration.
+- Final audio hardware decision and validation.
+- Full coordination of shell modes, eyes and LED effects.
+- Mechanical chassis and shell completion.
 
-* software architecture
-* simulator
-* robot behaviour
-* frontend
-* REST API
+---
 
-Once the Raspberry Pi arrives, simulated hardware modules will progressively be replaced by their physical implementations without changing the Brain logic.
+# Current V1 Technical Decisions
+- The frontend is an installable PWA using the existing HTML, CSS and Vanilla JavaScript codebase.
+- HTTPS is terminated locally by Caddy.
+- Shell media modes are temporary and return to Status after a configurable timeout.
+- Eyes, shell media, fonts and sounds are selected through the central asset catalog.
+- Eye expressions are sequences rather than isolated static faces.
+- Servo motion uses current and target angles, gradual updates and automatic PWM detachment.
+- Raspberry Pi 5 WS2812 output uses the official PIO overlay instead of `rpi_ws281x`.
+- Robot startup is handled by `scripts/start_turtle.sh` and `spyturtle.service`.
 
 ---
 

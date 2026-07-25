@@ -1,2 +1,10 @@
-Juste un petit sur le style de programmation, je veux un code le plus compact possible. Ne saute pas de ligne pour rien, laisse un interligne de 1 ligne max quand tu es oblige d'en mettre un, et que lorsque c'est necessaire. Quand on a des definitions simples, en python par exemple def toto(a, b): return a+b -> mets tout sur une meme ligne pour gagner de la place avec juste un espace apres le ":", essaie de n'allez a la ligne apres un : que si c'est necessaire ou si la ligne devient trop grande.
-Donne moi les fichiers a modifier, et non des bouts.
+# Coding Instructions
+The project uses a compact programming style while preserving readability.
+
+## Rules
+- Keep code as compact as reasonably possible.
+- Do not add unnecessary blank lines; use at most one blank line, and only when separation is useful.
+- Keep simple definitions on one line when they remain readable, for example: `def add(a, b): return a + b`.
+- Avoid starting a new line after `:` unless the body needs several statements or the line would become too long.
+- Prefer concise, readable expressions over artificially expanded code.
+- When modifying project code, provide every complete file that must be changed, not isolated snippets.
