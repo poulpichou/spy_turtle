@@ -9,7 +9,7 @@ class ST7796:
         self.width=320
         self.height=480
 
-        self.gpio=lgpio.gpiochip_open(4)
+        self.gpio=lgpio.gpiochip_open(0)
         lgpio.gpio_claim_output(self.gpio,self.dc)
         lgpio.gpio_claim_output(self.gpio,self.rst)
 
