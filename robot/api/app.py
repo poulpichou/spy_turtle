@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel,Field
 from robot.api import actions
 from robot.assets.assets import get_assets
+from robot.system.network import network_status
 from robot.system.runtime import get_robot
 from robot.utils.logger import log
 
@@ -31,6 +32,7 @@ def state():
     if robot is None:return {"error":"no robot"}
     data=robot.state.to_dict()
     data["servo"]=servo_status(robot)
+    data["network"]=network_status()
     return data
 
 def safe_call(function,default=None,digits=None):
@@ -38,8 +40,7 @@ def safe_call(function,default=None,digits=None):
         value=function()
         if digits is not None and isinstance(value,(int,float)):value=round(value,digits)
         return value
-    except Exception:
-        return default
+    except Exception:return default
 
 def cpu_temperature():
     path=Path("/sys/class/thermal/thermal_zone0/temp")
@@ -63,50 +64,16 @@ def get_health():
     return {
         "ok":True,
         "timestamp":datetime.now().isoformat(),
-        "system":{
-            "uptime_seconds":uptime_seconds(),
-            "cpu_temperature_c":cpu_temperature(),
-            "load_1m":round(os.getloadavg()[0],2) if hasattr(os,"getloadavg") else None,
-            "disk_free_gb":round(disk.free/(1024**3),1),
-            "disk_total_gb":round(disk.total/(1024**3),1)
-        },
-        "battery":{
-            "level_percent":safe_call(battery.get_level,digits=1),
-            "voltage_v":safe_call(battery.get_voltage,digits=2),
-            "current_a":safe_call(battery.get_current,digits=2),
-            "cells":safe_call(battery.get_cells),
-            "remaining_capacity":safe_call(battery.get_remaining_capacity),
-            "charging":safe_call(battery.is_charging),
-            "usb_connected":safe_call(battery.usb_connected)
-        },
-        "robot":{
-            "emotion":robot.state.emotion,
-            "motion":robot.state.motion,
-            "led_mode":robot.state.led_mode,
-            "shell_mode":robot.state.shell_mode,
-            "camera_on":robot.state.camera_on,
-            "idle_seconds":round(robot.state.idle_seconds(),1),
-            "last_interaction_type":robot.state.last_interaction_type,
-            "interaction_count":robot.state.interaction_count,
-            "servo":servo_status(robot),
-            "components":{
-                "motors":robot.motors is not None,
-                "face":robot.face is not None,
-                "leds":robot.leds is not None,
-                "camera":robot.camera is not None,
-                "battery":robot.battery is not None,
-                "speaker":robot.speaker is not None,
-                "servo":robot.servo is not None,
-                "shell":robot.shell is not None
-            }
-        }
+        "network":network_status(),
+        "system":{"uptime_seconds":uptime_seconds(),"cpu_temperature_c":cpu_temperature(),"load_1m":round(os.getloadavg()[0],2) if hasattr(os,"getloadavg") else None,"disk_free_gb":round(disk.free/(1024**3),1),"disk_total_gb":round(disk.total/(1024**3),1)},
+        "battery":{"level_percent":safe_call(battery.get_level,digits=1),"voltage_v":safe_call(battery.get_voltage,digits=2),"current_a":safe_call(battery.get_current,digits=2),"cells":safe_call(battery.get_cells),"remaining_capacity":safe_call(battery.get_remaining_capacity),"charging":safe_call(battery.is_charging),"usb_connected":safe_call(battery.usb_connected)},
+        "robot":{"emotion":robot.state.emotion,"motion":robot.state.motion,"led_mode":robot.state.led_mode,"shell_mode":robot.state.shell_mode,"camera_on":robot.state.camera_on,"idle_seconds":round(robot.state.idle_seconds(),1),"last_interaction_type":robot.state.last_interaction_type,"interaction_count":robot.state.interaction_count,"servo":servo_status(robot),"components":{"motors":robot.motors is not None,"face":robot.face is not None,"leds":robot.leds is not None,"camera":robot.camera is not None,"battery":robot.battery is not None,"speaker":robot.speaker is not None,"servo":robot.servo is not None,"shell":robot.shell is not None}}
     }
 
 @app.get("/assets")
 def get_available_assets(): return {section:build_assets(section) for section in ("shell","eyes","leds","audio")}
 
-def build_assets(section):
-    return [{"name":name,"label":asset.get("label",name)} for name,asset in get_assets(section).items() if asset.get("available",True)]
+def build_assets(section): return [{"name":name,"label":asset.get("label",name)} for name,asset in get_assets(section).items() if asset.get("available",True)]
 
 @app.get("/logs")
 def get_logs(count:int=Query(default=80,ge=1,le=100)): return {"lines":list(log.tail(count))}

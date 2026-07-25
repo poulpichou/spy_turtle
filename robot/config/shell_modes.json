@@ -67,5 +67,10 @@
             "face": "neutral",
             "led": "walking"
         }
+    },
+    "fallback": {
+        "duration_seconds": 10,
+        "face": "neutral",
+        "led": "breathing"
     }
 }

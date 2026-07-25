@@ -54,7 +54,8 @@ class ShellController:
         self.set_view(media_view(asset["path"],asset.get("label")))
 
     def _start_mode(self,name):
-        profile=self.config.get("modes",{}).get(name,{})
+        fallback=self.config.get("fallback",{})
+        profile={**fallback,**self.config.get("modes",{}).get(name,{})}
         duration=float(profile.get("duration_seconds",self.config.get("default_duration_seconds",60)))
         self.expires_at=time.monotonic()+duration if duration>0 else 0.0
         if not self.robot:return

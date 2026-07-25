@@ -34,7 +34,7 @@
         },
         "sleeping": {
             "label": "Sleeping",
-            "animation": "off"
+            "animation": "sleeping"
         },
         "surprised": {
             "label": "Surprised",
@@ -505,6 +505,16 @@
             "tail": 3,
             "period": 1.7,
             "brightness": 0.85
+        },
+        "sleeping": {
+            "type": "breathing",
+            "color": [
+                12,
+                20,
+                70
+            ],
+            "period": 7.0,
+            "brightness": 0.18
         }
     }
 }
