@@ -3,7 +3,14 @@ from dataclasses import dataclass,field
 
 @dataclass
 class TurtleState:
-    battery:float=87.0
+    battery:float|None=None
+    battery_voltage:float|None=None
+    battery_current:float|None=None
+    battery_cells:list[int]=field(default_factory=list)
+    battery_charging:bool|None=None
+    battery_usb:bool|None=None
+    battery_updated_at:float|None=None
+    battery_error:str|None=None
     emotion:str="neutral"
     led_mode:str="off"
     camera_on:bool=False
