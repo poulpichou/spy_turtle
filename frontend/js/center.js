@@ -44,16 +44,8 @@ async function refreshLogs(){
     }
 }
 
-function startLogs(){
-    refreshLogs();
-    if(!logTimer)logTimer=setInterval(refreshLogs,1000);
-}
-
-function stopLogs(){
-    if(!logTimer)return;
-    clearInterval(logTimer);
-    logTimer=null;
-}
+function startLogs(){refreshLogs();if(!logTimer)logTimer=setInterval(refreshLogs,1000);}
+function stopLogs(){if(!logTimer)return;clearInterval(logTimer);logTimer=null;}
 
 async function loadPhotos(){
     try{
@@ -78,26 +70,14 @@ function showPhoto(){
     if(photo)photoPreview.src=`${photo.url}?t=${Date.now()}`;
 }
 
-document.getElementById("photo-previous").onclick=()=>{
-    if(!photos.length)return;
-    photoIndex=(photoIndex-1+photos.length)%photos.length;
-    showPhoto();
-};
-
-document.getElementById("photo-next").onclick=()=>{
-    if(!photos.length)return;
-    photoIndex=(photoIndex+1)%photos.length;
-    showPhoto();
-};
-
+document.getElementById("photo-previous").onclick=()=>{if(!photos.length)return;photoIndex=(photoIndex-1+photos.length)%photos.length;showPhoto();};
+document.getElementById("photo-next").onclick=()=>{if(!photos.length)return;photoIndex=(photoIndex+1)%photos.length;showPhoto();};
 document.getElementById("photo-button").onclick=async()=>{
     try{
         const response=await fetch("/photos/capture",{method:"POST"});
         if(!response.ok)throw new Error(`HTTP ${response.status}`);
         if(activeView==="photos")await loadPhotos();
-    }catch(error){
-        showCommandError(error);
-    }
+    }catch(error){showCommandError(error);}
 };
 
 function formatDuration(seconds){
@@ -110,43 +90,44 @@ function formatDuration(seconds){
     return `${minutes}m ${seconds%60}s`;
 }
 
-function valueOrDash(value,suffix=""){
-    return value===null||value===undefined?"--":`${value}${suffix}`;
+function valueOrDash(value,suffix=""){return value===null||value===undefined?"--":`${value}${suffix}`;}
+function formatServo(axis){return axis?`${valueOrDash(axis.current,"°")} → ${valueOrDash(axis.target,"°")}`:"--";}
+
+async function fetchJson(url){
+    const response=await fetch(`${url}${url.includes("?")?"&":"?"}t=${Date.now()}`,{cache:"no-store"});
+    if(!response.ok)throw new Error(`HTTP ${response.status}`);
+    return response.json();
 }
 
 async function refreshHealth(){
     try{
-        const response=await fetch("/health",{cache:"no-store"});
-        if(!response.ok)throw new Error(`HTTP ${response.status}`);
-        const data=await response.json();
+        const data=await fetchJson("/health");
+        let servo=data.robot?.servo;
+        if(!servo)servo=(await fetchJson("/state")).servo;
         document.getElementById("health-connection").innerText="Connected";
-        document.getElementById("health-network").innerText=valueOrDash(data.network?.ssid);
-        document.getElementById("health-ip").innerText=valueOrDash(data.network?.ip_address);
         document.getElementById("health-uptime").innerText=formatDuration(data.system.uptime_seconds);
         document.getElementById("health-temperature").innerText=valueOrDash(data.system.cpu_temperature_c," °C");
         document.getElementById("health-load").innerText=valueOrDash(data.system.load_1m);
         document.getElementById("health-disk").innerText=valueOrDash(data.system.disk_free_gb," GB");
+        document.getElementById("health-level").innerText=valueOrDash(data.battery.level,"%");
+        document.getElementById("health-battery-status").innerText=data.battery.status||"unknown";
         document.getElementById("health-voltage").innerText=valueOrDash(data.battery.voltage_v," V");
         document.getElementById("health-current").innerText=valueOrDash(data.battery.current_a," A");
-        document.getElementById("health-cells").innerText=valueOrDash(data.battery.cells);
+        document.getElementById("health-power").innerText=valueOrDash(data.battery.power_w," W");
+        document.getElementById("health-cells").innerText=data.battery.cells_mv?.length?data.battery.cells_mv.map(value=>(value/1000).toFixed(3)).join(" / "):"--";
         document.getElementById("health-charging").innerText=data.battery.charging===null?"--":data.battery.charging?"Yes":"No";
+        document.getElementById("health-battery-error").innerText=data.battery.error||"None";
         document.getElementById("health-usb").innerText=data.battery.usb_connected===null?"--":data.battery.usb_connected?"Connected":"No";
-        document.getElementById("health-idle").innerText=formatDuration(data.robot.idle_seconds);
-        document.getElementById("health-mode").innerText=`${data.robot.motion} / ${data.robot.emotion}`;
+        document.getElementById("health-idle").innerText=formatDuration(data.robot.brain?.idle_seconds);
+        document.getElementById("health-mode").innerText=`${data.robot.motion?.state||"stop"} / ${data.robot.brain?.emotion||"neutral"}`;
+        document.getElementById("health-pan").innerText=formatServo(servo?.pan);
+        document.getElementById("health-tilt").innerText=formatServo(servo?.tilt);
     }catch(error){
         document.getElementById("health-connection").innerText="Offline";
-        document.getElementById("health-network").innerText="--";
-        document.getElementById("health-ip").innerText="--";
+        document.getElementById("health-pan").innerText="--";
+        document.getElementById("health-tilt").innerText="--";
     }
 }
 
-function startHealth(){
-    refreshHealth();
-    if(!healthTimer)healthTimer=setInterval(refreshHealth,3000);
-}
-
-function stopHealth(){
-    if(!healthTimer)return;
-    clearInterval(healthTimer);
-    healthTimer=null;
-}
+function startHealth(){refreshHealth();if(!healthTimer)healthTimer=setInterval(refreshHealth,1000);}
+function stopHealth(){if(!healthTimer)return;clearInterval(healthTimer);healthTimer=null;}

@@ -17,8 +17,8 @@ class Robot:
         self.brain=None
         self._last_battery_update=0.0
         self._update_battery(force=True)
-        if self.face:self.face.play("neutral")
-        print("[Robot] initialized")
+        if self.face:self.face.play('neutral')
+        print('[Robot] initialized')
 
     def update(self):
         self._update_battery()
@@ -26,38 +26,43 @@ class Robot:
         if self.servo:self.servo.update()
         if self.leds:self.leds.update()
         if self.face and self.face.update():
-            self.state.emotion="neutral"
+            self.state.emotion='neutral'
             self.state.face_event_until=0.0
         if self.shell:
             self.shell.update()
-            if hasattr(self.shell.screen,"update"):self.shell.screen.update()
+            if hasattr(self.shell.screen,'update'):self.shell.screen.update()
+
+    @staticmethod
+    def _battery_status(level,charging):
+        if charging:return 'charging'
+        if level is None:return 'unknown'
+        if level<=5:return 'critical'
+        if level<=20:return 'low'
+        if level<=50:return 'medium'
+        if level<95:return 'high'
+        return 'full'
 
     def _update_battery(self,force=False):
         now=time.monotonic()
         if not force and now-self._last_battery_update<self.BATTERY_UPDATE_INTERVAL:return
         self._last_battery_update=now
         if not self.battery:
-            self.state.battery_error="Battery component unavailable"
+            self.state.battery={**self.state.battery,'error':'Battery component unavailable','updated_at':None}
             return
         try:
-            self.state.battery=float(self.battery.get_level())
-            self.state.battery_voltage=float(self.battery.get_voltage())
-            self.state.battery_current=float(self.battery.get_current())
-            self.state.battery_cells=list(self.battery.get_cells())
-            self.state.battery_charging=bool(self.battery.is_charging())
-            self.state.battery_usb=bool(self.battery.usb_connected())
-            self.state.battery_updated_at=time.time()
-            self.state.battery_error=None
+            level=float(self.battery.get_level())
+            voltage=float(self.battery.get_voltage())
+            current=float(self.battery.get_current())
+            charging=bool(self.battery.is_charging())
+            self.state.battery={
+                'level':round(level,1),'status':self._battery_status(level,charging),'voltage_v':round(voltage,3),
+                'current_a':round(current,3),'power_w':round(voltage*current,3),'cells_mv':list(self.battery.get_cells()),
+                'remaining_capacity':self.battery.get_remaining_capacity(),'charging':charging,
+                'usb_connected':bool(self.battery.usb_connected()),'updated_at':time.time(),'error':None
+            }
         except Exception as error:
-            self.state.battery=None
-            self.state.battery_voltage=None
-            self.state.battery_current=None
-            self.state.battery_cells=[]
-            self.state.battery_charging=None
-            self.state.battery_usb=None
-            self.state.battery_updated_at=None
-            self.state.battery_error=str(error)
-            print(f"[Battery] update failed: {error}")
+            self.state.battery={'level':None,'status':'unknown','voltage_v':None,'current_a':None,'power_w':None,'cells_mv':[],'remaining_capacity':None,'charging':None,'usb_connected':None,'updated_at':None,'error':str(error)}
+            print(f'[Battery] update failed: {error}')
 
     def forward(self): self.motors.forward()
     def backward(self): self.motors.backward()
