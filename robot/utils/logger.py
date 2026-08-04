@@ -1,29 +1,29 @@
 import time
 from collections import deque
 
-DEBUG = True
+DEBUG=True
 
 class log:
-    _history = deque(maxlen=100)
+    _history=deque(maxlen=100)
 
     @staticmethod
-    def _print(level, msg):
-        line = f"{time.strftime('%H:%M:%S')} [{level}] {msg}"
-        print(line)
+    def _print(level,msg):
+        line=f"{time.strftime('%H:%M:%S')} [{level}] {msg}"
+        print(line,flush=True)
         log._history.append(line)
 
     @staticmethod
-    def info(msg): log._print("INFO", msg)
+    def info(msg): log._print("INFO",msg)
 
     @staticmethod
-    def warn(msg): log._print("WARN", msg)
+    def warn(msg): log._print("WARN",msg)
 
     @staticmethod
-    def error(msg): log._print("ERROR", msg)
+    def error(msg): log._print("ERROR",msg)
 
     @staticmethod
     def debug(msg):
-        if DEBUG: log._print("DEBUG", msg)
+        if DEBUG:log._print("DEBUG",msg)
 
     @staticmethod
     def tail(count=10): return tuple(log._history)[-count:]

@@ -28,7 +28,7 @@ Check:
 - Motor wiring
 
 ---
-
+WN-BC4090  5st35a9ti1
 ## Servo Problems
 
 Check:
