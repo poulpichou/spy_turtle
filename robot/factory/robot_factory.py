@@ -15,6 +15,7 @@ from robot.hardware.shell_screen_st7796 import ShellScreenST7796
 from robot.hardware.battery import Battery
 from robot.hardware.camera import Camera
 from robot.hardware.speaker import Speaker
+from robot.hardware.motor import DifferentialDrive
 from robot.shell.shell_controller import ShellController
 from robot.shell.ui.shell_ui import ShellUI
 from robot.brain.brain import Brain
@@ -42,7 +43,7 @@ class RobotFactory:
         return robot
 
     def create_hardware(self):
-        motors=FakeMotor()
+        motors=DifferentialDrive()
         leds=LEDController()
         camera=Camera()
         speaker=Speaker()
