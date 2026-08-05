@@ -8,7 +8,6 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel,Field
 from robot.api import actions
 from robot.assets.assets import get_assets
-from robot.config import motors as motor_config
 from robot.system.runtime import get_robot
 from robot.utils.logger import log
 
@@ -34,16 +33,11 @@ def servo_status(robot):
     if robot is None or robot.servo is None or not hasattr(robot.servo,'status'):return None
     return safe_call(robot.servo.status)
 
-def motor_status(robot):
-    if robot is None or robot.motors is None or not hasattr(robot.motors,'status'):return None
-    return safe_call(robot.motors.status)
-
 def state():
     robot=get_robot()
     if robot is None:return {'error':'no robot'}
     data=robot.state.to_dict()
     data['servo']=servo_status(robot)
-    data['motors']=motor_status(robot)
     return data
 
 def cpu_temperature():
@@ -59,16 +53,6 @@ def uptime_seconds():
 @app.get('/state')
 def get_state(): return state()
 
-@app.get('/motors/config')
-def get_motor_config():
-    return {
-        'drive_speed':motor_config.DRIVE_SPEED,'turn_speed':motor_config.TURN_SPEED,
-        'speed_step':motor_config.SPEED_STEP,'min_speed':motor_config.MIN_SPEED,'max_speed':motor_config.MAX_SPEED,
-        'wheel_diameter_mm':motor_config.WHEEL_DIAMETER_MM,'track_width_mm':motor_config.TRACK_WIDTH_MM,
-        'encoder_pulses_per_rev':motor_config.ENCODER_PULSES_PER_REV,
-        'distance_step_mm':motor_config.DISTANCE_STEP_MM,'turn_step_degrees':motor_config.TURN_STEP_DEGREES
-    }
-
 @app.get('/health')
 def get_health():
     robot=get_robot()
@@ -79,7 +63,7 @@ def get_health():
         'ok':True,'timestamp':datetime.now().isoformat(),
         'system':{'uptime_seconds':uptime_seconds(),'cpu_temperature_c':cpu_temperature(),'load_1m':round(os.getloadavg()[0],2) if hasattr(os,'getloadavg') else None,'disk_free_gb':round(disk.free/(1024**3),1),'disk_total_gb':round(disk.total/(1024**3),1)},
         'battery':current['battery'],
-        'robot':{'brain':current['brain'],'camera':current['camera'],'motion':current['motion'],'motors':current['motors'],'shell':current['shell'],'leds':current['leds'],'servo':current['servo'],'components':{'motors':robot.motors is not None,'face':robot.face is not None,'leds':robot.leds is not None,'camera':robot.camera is not None,'battery':robot.battery is not None,'speaker':robot.speaker is not None,'servo':robot.servo is not None,'shell':robot.shell is not None}}
+        'robot':{'brain':current['brain'],'camera':current['camera'],'motion':current['motion'],'shell':current['shell'],'leds':current['leds'],'servo':current['servo'],'components':{'motors':robot.motors is not None,'face':robot.face is not None,'leds':robot.leds is not None,'camera':robot.camera is not None,'battery':robot.battery is not None,'speaker':robot.speaker is not None,'servo':robot.servo is not None,'shell':robot.shell is not None}}
     }
 
 @app.get('/assets')
@@ -119,12 +103,10 @@ def command(cmd:Command):
     log.info(f'[API] command {cmd.type} {cmd.value}')
     try:
         if cmd.type=='move':
-            speed=cmd.extra.get('speed')
-            if speed is not None:speed=float(speed)
-            if cmd.value=='forward':actions.move_forward(speed)
-            elif cmd.value=='backward':actions.move_backward(speed)
-            elif cmd.value=='left':actions.turn_left(speed)
-            elif cmd.value=='right':actions.turn_right(speed)
+            if cmd.value=='forward':actions.move_forward()
+            elif cmd.value=='backward':actions.move_backward()
+            elif cmd.value=='left':actions.turn_left()
+            elif cmd.value=='right':actions.turn_right()
             elif cmd.value=='stop':actions.stop()
             else:raise ValueError(f'Unknown movement: {cmd.value}')
         elif cmd.type=='face':actions.set_emotion(cmd.value)

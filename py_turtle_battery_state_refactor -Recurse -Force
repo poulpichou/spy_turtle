@@ -1,0 +1,20 @@
+warning: in the working copy of 'frontend/index.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/js/center.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'frontend/js/dashboard.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'robot/api/app.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'robot/shell/ui/shell_views.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'robot/shell/ui/widgets.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'robot/system/robot.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'robot/system/state.py', LF will be replaced by CRLF the next time Git touches it
+ frontend/index.html                            | 170 [32m++++[m[31m---------------------[m
+ frontend/js/center.js                          |  75 [32m++++[m[31m-------[m
+ frontend/js/dashboard.js                       |  28 [32m++[m[31m--[m
+ robot/api/__pycache__/app.cpython-313.pyc      | Bin [31m5985[m -> [32m13093[m bytes
+ robot/api/app.py                               | 136 [32m++++++++++[m[31m----------[m
+ robot/shell/ui/shell_views.py                  | 153 [32m++++++[m[31m----------------[m
+ robot/shell/ui/widgets.py                      |  47 [32m+++[m[31m----[m
+ robot/system/__pycache__/robot.cpython-313.pyc | Bin [31m1329[m -> [32m6592[m bytes
+ robot/system/__pycache__/state.cpython-313.pyc | Bin [31m819[m -> [32m3365[m bytes
+ robot/system/robot.py                          |  51 [32m++++[m[31m----[m
+ robot/system/state.py                          |  38 [32m+++[m[31m---[m
+ 11 files changed, 243 insertions(+), 455 deletions(-)
