@@ -15,11 +15,63 @@ Any hardware modification must be reflected in this document.
 
 ---
 
+# Raspberry Pi 40-pin Header
+
+| Component | Pin | # | # | Pin | Component |
+|---|---|---:|---:|---|---|
+| 3.3V logic | 3.3V | 1 | 2 | 5V | Reserved |
+| I2C SDA: UPS + OLED eyes | GPIO2 | 3 | 4 | 5V | ST7796 backlight |
+| I2C SCL: UPS + OLED eyes | GPIO3 | 5 | 6 | GND | Common ground |
+| WS2812B data | GPIO4 | 7 | 8 | GPIO14 | Available / UART TX |
+| GND | GND | 9 | 10 | GPIO15 | Available / UART RX |
+| Pan servo | GPIO17 | 11 | 12 | GPIO18 | MAX98357A BCLK (planned) |
+| Tilt servo | GPIO27 | 13 | 14 | GND | Common ground |
+| Available | GPIO22 | 15 | 16 | GPIO23 | Future encoder |
+| 3.3V | 3.3V | 17 | 18 | GPIO24 | ST7796 RESET |
+| ST7796 MOSI | GPIO10 | 19 | 20 | GND | Common ground |
+| ST7796 MISO | GPIO9 | 21 | 22 | GPIO25 | ST7796 DC |
+| ST7796 SCLK | GPIO11 | 23 | 24 | GPIO8 | ST7796 CS |
+| GND | GND | 25 | 26 | GPIO7 | Available / SPI CE1 |
+| Reserved ID_SD | GPIO0 | 27 | 28 | GPIO1 | Reserved ID_SC |
+| TB6612 STBY | GPIO5 | 29 | 30 | GND | Common ground |
+| TB6612 AIN1 | GPIO6 | 31 | 32 | GPIO12 | TB6612 PWMA |
+| TB6612 AIN2 | GPIO13 | 33 | 34 | GND | Common ground |
+| MAX98357A LRCLK (planned) | GPIO19 | 35 | 36 | GPIO16 | TB6612 BIN1 |
+| TB6612 PWMB | GPIO26 | 37 | 38 | GPIO20 | TB6612 BIN2 |
+| GND | GND | 39 | 40 | GPIO21 | MAX98357A DIN (planned) |
+
+# 5V Power Rack
+
+The rack is powered from a USB cable connected to the UPS USB 5V output. Only the cable's +5V and GND conductors are used.
+
+| Rack rail | Source | Connected components | Status |
+|---|---|---|---|
+| +5V | UPS USB 5V output | TB6612 VM | Connected |
+| +5V | UPS USB 5V output | Pan servo | Connected |
+| +5V | UPS USB 5V output | Tilt servo | Connected |
+| +5V | UPS USB 5V output | ST7796 backlight | Connected |
+| +5V | UPS USB 5V output | WS2812B strip | Connected/planned final routing |
+| +5V | UPS USB 5V output | MAX98357A VIN | Planned, replacement amplifier pending |
+| GND | UPS USB GND | TB6612, servos, ST7796, LEDs, future amplifier | Common ground |
+
+Important:
+- TB6612 `VCC` uses Raspberry Pi 3.3V logic.
+- TB6612 `VM` uses the external 5V rack.
+- Raspberry Pi, UPS, rack and all peripherals must share a common ground.
+
+# I2C Devices
+
+| Address | Device |
+|---|---|
+| 0x2D | Waveshare UPS HAT |
+| 0x3C | Left OLED eye |
+| 0x3D | Right OLED eye |
+
+---
+
 # Hardware Overview
 
 Spy Turtle is built around a Raspberry Pi 5.
-
-The Raspberry Pi contains all software intelligence and communicates with all hardware subsystems.
 
 Main systems:
 - Computer System
@@ -42,9 +94,7 @@ Main systems:
 | 64GB microSD A2 | 1 |
 | GeeekPi Active Cooler | 1 |
 
----
-
-# Power System
+## Power System
 | Component | Quantity |
 |---|---:|
 | Waveshare UPS HAT | 1 |
@@ -52,443 +102,99 @@ Main systems:
 | USB-C Panel Mount | 1 |
 | Inline Fuse Holder | 1 |
 | 5A Fuse | 1 |
-
-The UPS HAT provides:
-- battery charging
-- battery protection
-- uninterrupted power
-- battery monitoring
-
-Power distribution:
-Battery pack  
-→ Waveshare UPS HAT  
-→ Raspberry Pi 5  
-→ Low power peripherals
-
-Battery system  
-→ Motor driver  
-→ Motors
+| 5V/GND terminal rack fed from UPS USB output | 1 |
 
 ---
 
 # Vision System
 
 ## Camera
-Component: Raspberry Pi Camera Module 3
-Connection:  CSI interface directly connected to Raspberry Pi 5
-Power: Supplied by Raspberry Pi
-Software: camera.py
+Component: Raspberry Pi Camera Module 3  
+Connection: CSI interface directly connected to Raspberry Pi 5  
+Power: Supplied by Raspberry Pi  
+Software: `camera.py`
 
 # Display System
-Spy Turtle uses three displays:
-- Left OLED eye
-- Right OLED eye
-- Shell TFT display
 
-## Eye Displays
-Components:
-- 1.3 inch OLED (final eye target)
-- 128x64 resolution
-- SH1106 driver
+## OLED Eyes
+- I2C SDA: GPIO2
+- I2C SCL: GPIO3
+- Left: 0x3C
+- Right: 0x3D
 
-Earlier 0.96 inch SSD1306 hardware was used successfully for initial I2C display tests.
-- I2C interface
-
-Both displays share the same I2C bus.
-
-GPIO allocation:
-
-| Signal | Raspberry Pi GPIO |
-|---|---|
-| SDA | GPIO 2 |
-| SCL | GPIO 3 |
-
-Typical addresses:
-
-| Display | Address |
-|---|---|
-| Left Eye | 0x3C |
-| Right Eye | 0x3D |
-
-Software: eyes.py
-
-Functions:
-- facial expressions
-- emotions
-- animations
-- status feedback
-
----
-## Shell TFT Display
-The turtle shell uses a larger color display.
-
-Components:
-- 3.5 inch IPS TFT
-- 320x480 resolution
-- ST7796U driver
-- SPI interface
-
-Touch controller:
-- FT6336U
-- I2C interface
-
-Touch status:
-- Hardware available
-- Disabled in Version 1
-
-Purpose:
-- displaying messages
-- animations
-- robot status
-- user feedback
-
----
-
-## TFT SPI Connection
-
-| Signal | Raspberry Pi GPIO |
-|---|---|
-| MOSI | GPIO 10 |
-| MISO | GPIO 9 |
-| SCLK | GPIO 11 |
-| CS | GPIO 8 |
-
-Additional signals:
-| Signal | Status |
-|---|---|
-| DC / LCD_RS | GPIO 25 |
-| RESET | GPIO 24 |
-| Backlight | 5V |
-
-Software: ST7796 display driver and shell UI modules. The driver uses SPI plus `lgpio` for control pins. On the current Raspberry Pi OS installation the GPIO header is exposed through `gpiochip0`; do not hard-code the obsolete `gpiochip4`.
-
----
+## ST7796 Shell Display
+- MOSI: GPIO10
+- MISO: GPIO9
+- SCLK: GPIO11
+- CS: GPIO8
+- DC: GPIO25
+- RESET: GPIO24
+- Backlight: 5V rack
+- SPI0 device 0
 
 # Mobility System
-The mobility system controls the two wheels.
 
-Components:
-- TB6612FNG motor driver
-- 2 x JGA25-370 DC motors
-- Hall encoders
-
-The Raspberry Pi does not power the motors directly.
-
-The TB6612FNG receives control signals from the Raspberry Pi and provides the required current to the motors.
-
----
-
-## Motor Control
-The TB6612FNG is a dual H-Bridge motor driver.
-
-It controls:
-- motor direction
-- motor speed through PWM
-- motor activation
-
-GPIO allocation:
-
-| Signal | Raspberry Pi GPIO |
+## TB6612FNG
+| Signal | GPIO |
 |---|---|
-| PWMA | GPIO 12 |
-| AIN1 | GPIO 5 |
-| AIN2 | GPIO 6 |
-| PWMB | GPIO 13 |
-| BIN1 | GPIO 16 |
-| BIN2 | GPIO 20 |
-| STBY | GPIO 4 optional |
+| STBY | GPIO5 |
+| PWMA | GPIO12 |
+| AIN1 | GPIO6 |
+| AIN2 | GPIO13 |
+| PWMB | GPIO26 |
+| BIN1 | GPIO16 |
+| BIN2 | GPIO20 |
 
----
+Power:
+- `VCC` → Raspberry Pi 3.3V
+- `VM` → 5V rack
+- `GND` → common ground
 
-## Encoder Feedback
-The JGA25-370 motors include Hall effect encoders.
-
-Each encoder provides:
-- Channel A
-- Channel B
-
-Used for:
-- speed measurement
-- future odometry
-- trajectory correction
-
-GPIO allocation:
-
-| Encoder | Raspberry Pi GPIO |
-|---|---|
-| Left Motor Encoder A | GPIO 23 |
-| Left Motor Encoder B | GPIO 24 |
-| Right Motor Encoder A | GPIO 25 |
-| Right Motor Encoder B | GPIO 26 |
-
-Encoder feedback can be enabled progressively.
-
-Version 1 can operate without closed-loop motor control.
+Motors:
+- Channel A: AO1/AO2
+- Channel B: BO1/BO2
+- Motor wires: red and white
+- Encoder wires remain disconnected for now
 
 # Head Articulation System
-The turtle head uses two servos to control movement.
+- Pan servo signal: GPIO17
+- Tilt servo signal: GPIO27
+- Servo power: 5V rack
+- Servo ground: common ground
 
-Components:
-- 2 x MG90S servo
-
-The two degrees of freedom are:
-- Pan: left/right rotation
-- Tilt: up/down movement
-
----
-## Pan Servo
-
-Function:
-- left/right head rotation
-
-Connection:
-| Signal | Raspberry Pi GPIO |
-|---|---|
-| PWM | GPIO 17 |
-
----
-
-## Tilt Servo
-Function:
-- up/down head movement
-
-Connection:
-| Signal | Raspberry Pi GPIO |
-|---|---|
-| PWM | GPIO 27 |
-
-Software: servo.py
-
----
 # Audio System
-Audio files are supported by the software asset catalog, including WAV and MP3 assets. The previously planned MAX98357A I2S amplifier was removed from the current V1 wiring, so GPIO 18, 19 and 21 are no longer reserved for that amplifier. A final physical audio output path will be selected and documented later.
+Status: planned; replacement MAX98357A board pending.
 
----
+Final allocation:
+- BCLK: GPIO18
+- LRCLK: GPIO19
+- DIN: GPIO21
+- VIN: 5V rack
+- GND: common ground
 
 # Lighting System
-Spy Turtle uses two independent lighting systems.
-- Shell lighting
-- Status indicator
 
----
-## Shell RGB LEDs
-Component: WS2812B individually addressable RGB LED strip.
+## WS2812B Shell LEDs
+- Data: GPIO4, physical pin 7
+- Power: 5V rack
+- Ground: common ground
+- Device: `/dev/leds0`
 
-Purpose:
-- shell illumination
-- animations and directional effects
-- emotion and shell-mode feedback
-
-Connection:
-| Signal | Connection |
-|---|---|
-| Data | GPIO 18 |
-| Power | 5V |
-| Ground | Common GND |
-
-Raspberry Pi 5 configuration:
+Raspberry Pi 5 overlay:
 
 ```ini
-dtoverlay=ws2812-pio,gpio=18,num_leds=32,brightness=255
+dtoverlay=ws2812-pio,gpio=4,num_leds=32,brightness=255
 ```
 
-The overlay exposes `/dev/leds0`. The Python backend writes raw pixel bytes directly to that device and does not use `rpi_ws281x`. `/dev/leds0` must remain writable by the runtime user, normally through a persistent udev rule. A level shifter remains optional if the data signal proves unreliable.
+The move from GPIO18 to GPIO4 removes the conflict with the planned MAX98357A I2S BCLK.
 
----
-
-## Status RGB LED
-
-Component:
-- RGB status LED
-
-Purpose:
-Provide quick robot state indication:
-
-Examples:
-- startup
-- connected
-- battery status
-- error state
-- charging state
-
-Connection:
-Controlled through GPIO.
-
-Final GPIO assignment will be validated during assembly.
----
-# Raspberry Pi GPIO Allocation
-
-Current GPIO allocation target:
-
-| GPIO | Function |
-|---|---|
-| GPIO 2 | I2C SDA |
-| GPIO 3 | I2C SCL |
-| GPIO 4 | TB6612 STBY optional |
-| GPIO 5 | Motor A direction |
-| GPIO 6 | Motor A direction |
-| GPIO 8 | TFT CS |
-| GPIO 9 | SPI MISO |
-| GPIO 10 | SPI MOSI |
-| GPIO 11 | SPI Clock |
-| GPIO 12 | Motor PWM A |
-| GPIO 13 | Motor PWM B |
-| GPIO 16 | Motor B direction |
-| GPIO 17 | Head Pan Servo |
-| GPIO 18 | WS2812B data through ws2812-pio |
-| GPIO 19 | Available after MAX98357A removal |
-| GPIO 20 | Motor B direction |
-| GPIO 21 | Available after MAX98357A removal |
-| GPIO 22 | Available / future assignment |
-| GPIO 23 | Left Encoder A |
-| GPIO 24 | TFT RESET; encoder allocation must be revised |
-| GPIO 25 | TFT DC / LCD_RS; encoder allocation must be revised |
-| GPIO 26 | Right Encoder B |
-| GPIO 27 | Head Tilt Servo |
-
-Unused GPIOs remain available for future extensions.
-
----
-
-# Power Distribution
-The UPS HAT powers the complete robot.
-
-Power domains:
-
-## Raspberry Pi Domain
-Powered by:
-- Waveshare UPS HAT
-
-Devices:
-- Raspberry Pi 5
-- Camera
-- OLED displays
-- TFT display logic
-- Audio interface
-- Sensors
-
----
-
-## Motor Domain
-
-Powered by:
-- Battery system
-
-Devices:
-- TB6612FNG motor driver
-- JGA25-370 motors
-
-The motor power ground and Raspberry Pi ground must be common.
----
-
-# Cable Management
-
-Project rules:
-- Use GPIO breakout board whenever possible.
-- Prefer Dupont connectors.
-- Avoid soldering whenever practical.
-- Keep cables short and organized.
-- Secure wiring using zip ties.
-- Leave enough slack for maintenance.
-- Keep wiring modular.
-
----
-
-# Assembly Order
-Recommended assembly sequence:
-1. Assemble chassis.
-2. Install motors.
-3. Install wheels.
-4. Install servos.
-5. Mount Raspberry Pi.
-6. Mount UPS HAT.
-7. Install GPIO breakout board.
-8. Connect camera.
-9. Connect OLED displays.
-10. Connect TFT display.
-11. Connect motor driver.
-12. Connect encoder signals.
-13. Connect servos.
-14. Connect speaker.
-15. Connect LEDs.
-16. Verify wiring.
-17. Install batteries.
-18. First power-on.
-
----
-# First Boot Checklist
-## Raspberry Pi
-- [ ] Raspberry Pi OS boots successfully
-- [ ] SSH available
-- [ ] Network connection works
-
----
-
-## UPS
-- [ ] Battery detected
-- [ ] Charging works
-- [ ] Battery monitoring works
-
----
-
-## Camera
-- [ ] Camera detected
-- [ ] Live stream available
-
----
-
-## Displays
-- [ ] Left OLED detected
-- [ ] Right OLED detected
-- [ ] TFT detected
-- [ ] Shell display works
-
----
-
-## Mobility
-- [ ] Forward movement
-- [ ] Backward movement
-- [ ] Left turn
-- [ ] Right turn
-- [ ] Encoder reading
-
----
-
-## Head
-- [ ] Pan servo works
-- [ ] Tilt servo works
-
----
-
-## LEDs
-- [ ] Shell LEDs power on
-- [ ] Animations work
-- [ ] Status LED works
-
----
-
-## Audio
-- [ ] Speaker detected
-- [ ] Sound playback works
-
----
-
-# Current Hardware Validation Notes
-Validated on the Raspberry Pi 5:
-- Camera Module 3 detected as IMX708 and operational with `rpicam` tools.
-- UPS HAT visible on I2C address `0x2D`.
-- OLED test display visible on I2C address `0x3C`.
-- MG90S servos physically moved and are now controlled through smooth target updates.
-- ST7796U SPI display produced full-screen color and rendered shell UI content.
-- WS2812B strip produced valid output through `/dev/leds0`.
-
-Still requiring final hardware validation:
-- Two-eye final SH1106 installation and address strategy.
-- TB6612FNG motors and encoder pin allocation.
-- Final audio output hardware.
-- Complete power testing under simultaneous camera, displays, servos and LED load.
-
-Important power note: the Raspberry Pi GPIO 5V rail can be convenient for bench tests, but servo and LED current peaks can cause voltage drops or sudden shutdowns. Final wiring must use a power path sized for simultaneous loads while keeping all grounds common.
-
----
-
+# Assembly and Validation Notes
+- Camera validated.
+- UPS detected at 0x2D.
+- OLED eyes detected at 0x3C and 0x3D.
+- Servos validated.
+- ST7796 display validated.
+- TB6612 and both motors validated through the final API/frontend.
+- WS2812B validated previously on GPIO18; must be revalidated after moving DATA to GPIO4.
+- Audio installation pending replacement amplifier.
+- Encoders are not connected yet.
