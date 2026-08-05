@@ -8,7 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel,Field
 from robot.api import actions
 from robot.assets.assets import get_assets
-from robot.config import motors as motor_config
+from robot.config import settings
 from robot.system.runtime import get_robot
 from robot.utils.logger import log
 
@@ -62,11 +62,11 @@ def get_state(): return state()
 @app.get('/motors/config')
 def get_motor_config():
     return {
-        'drive_speed':motor_config.DRIVE_SPEED,'turn_speed':motor_config.TURN_SPEED,
-        'speed_step':motor_config.SPEED_STEP,'min_speed':motor_config.MIN_SPEED,'max_speed':motor_config.MAX_SPEED,
-        'wheel_diameter_mm':motor_config.WHEEL_DIAMETER_MM,'track_width_mm':motor_config.TRACK_WIDTH_MM,
-        'encoder_pulses_per_rev':motor_config.ENCODER_PULSES_PER_REV,
-        'distance_step_mm':motor_config.DISTANCE_STEP_MM,'turn_step_degrees':motor_config.TURN_STEP_DEGREES
+        'drive_speed':settings.MOTOR_DRIVE_SPEED,'turn_speed':settings.MOTOR_TURN_SPEED,
+        'speed_step':settings.MOTOR_SPEED_STEP,'min_speed':settings.MOTOR_MIN_SPEED,'max_speed':settings.MOTOR_MAX_SPEED,
+        'wheel_diameter_mm':settings.MOTOR_WHEEL_DIAMETER_MM,'track_width_mm':settings.MOTOR_TRACK_WIDTH_MM,
+        'encoder_pulses_per_rev':settings.MOTOR_ENCODER_PULSES_PER_REV,
+        'distance_step_mm':settings.MOTOR_DISTANCE_STEP_MM,'turn_step_degrees':settings.MOTOR_TURN_STEP_DEGREES
     }
 
 @app.get('/health')

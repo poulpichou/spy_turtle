@@ -1,5 +1,5 @@
 from robot.assets.assets import get_asset
-from robot.config import motors as motor_config
+from robot.config import settings
 from robot.system.runtime import get_robot
 from robot.utils.logger import log
 
@@ -18,13 +18,13 @@ def interact(kind):
     return instance
 
 def move_forward(speed=None):
-    instance=interact("move_forward");log.info(f"[API] move forward speed={speed}");instance.motors.forward(speed);instance.state.motion="forward";instance.state.x+=motor_config.DISTANCE_STEP_MM
+    instance=interact("move_forward");log.info(f"[API] move forward speed={speed}");instance.motors.forward(speed);instance.state.motion="forward";instance.state.x+=settings.MOTOR_DISTANCE_STEP_MM
 def move_backward(speed=None):
-    instance=interact("move_backward");log.info(f"[API] move backward speed={speed}");instance.motors.backward(speed);instance.state.motion="backward";instance.state.x-=motor_config.DISTANCE_STEP_MM
+    instance=interact("move_backward");log.info(f"[API] move backward speed={speed}");instance.motors.backward(speed);instance.state.motion="backward";instance.state.x-=settings.MOTOR_DISTANCE_STEP_MM
 def turn_left(speed=None):
-    instance=interact("turn_left");log.info(f"[API] turn left speed={speed}");instance.motors.turn_left(speed);instance.state.motion="left";instance.state.angle-=motor_config.TURN_STEP_DEGREES
+    instance=interact("turn_left");log.info(f"[API] turn left speed={speed}");instance.motors.turn_left(speed);instance.state.motion="left";instance.state.angle-=settings.MOTOR_TURN_STEP_DEGREES
 def turn_right(speed=None):
-    instance=interact("turn_right");log.info(f"[API] turn right speed={speed}");instance.motors.turn_right(speed);instance.state.motion="right";instance.state.angle+=motor_config.TURN_STEP_DEGREES
+    instance=interact("turn_right");log.info(f"[API] turn right speed={speed}");instance.motors.turn_right(speed);instance.state.motion="right";instance.state.angle+=settings.MOTOR_TURN_STEP_DEGREES
 def stop():
     instance=interact("stop");log.info("[API] stop");instance.motors.stop();instance.state.motion="stop"
 

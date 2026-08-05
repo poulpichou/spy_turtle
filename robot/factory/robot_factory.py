@@ -19,6 +19,7 @@ from robot.hardware.motor import DifferentialDrive
 from robot.shell.shell_controller import ShellController
 from robot.shell.ui.shell_ui import ShellUI
 from robot.brain.brain import Brain
+from robot.config import settings
 
 class RobotFactory:
     def __init__(self,simulation=True): self.simulation=simulation
@@ -49,8 +50,8 @@ class RobotFactory:
         speaker=Speaker()
         servo=ServoController()
         battery=Battery()
-        left_display=OLEDDisplay(0x3C,"left")
-        right_display=OLEDDisplay(0x3D,"right")
+        left_display=OLEDDisplay(settings.OLED_LEFT_ADDRESS,"left")
+        right_display=OLEDDisplay(settings.OLED_RIGHT_ADDRESS,"right")
         eyes_renderer=EyesRenderer(left_display,right_display)
         face=FaceController(eyes_renderer,leds)
         shell_screen=ShellScreenST7796()

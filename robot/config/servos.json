@@ -1,7 +1,6 @@
 {
     "detach_after_seconds":0.25,
     "pan":{
-        "gpio":17,
         "center":0.0,
         "minimum":-60.0,
         "maximum":60.0,
@@ -16,7 +15,6 @@
         "inverted":true
     },
     "tilt":{
-        "gpio":27,
         "center":0.0,
         "minimum":-45.0,
         "maximum":45.0,

@@ -2,13 +2,14 @@ import json
 import time
 from pathlib import Path
 import lgpio
+from robot.config import settings
 from robot.utils.logger import log
 
 class ServoAxis:
-    def __init__(self,chip,name,config,detach_after):
+    def __init__(self,chip,name,gpio,config,detach_after):
         self.chip=chip
         self.name=name
-        self.gpio=int(config["gpio"])
+        self.gpio=int(gpio)
         self.center_angle=float(config.get("center",0.0))
         self.minimum=float(config["minimum"])
         self.maximum=float(config["maximum"])
@@ -30,10 +31,7 @@ class ServoAxis:
         self.reached_at=None
         self.attached=False
         lgpio.gpio_claim_output(self.chip,self.gpio,0)
-        log.info(
-            f"[SERVO] {name} GPIO{self.gpio} ready detached "
-            f"center={self.center_angle:.1f} pulse={self.center_pulse}"
-        )
+        log.info(f"[SERVO] {name} GPIO{self.gpio} ready detached center={self.center_angle:.1f} pulse={self.center_pulse}")
 
     def set_target(self,angle):
         self.target=self._clamp(float(angle))
@@ -58,20 +56,11 @@ class ServoAxis:
         if self.reached_at is None:
             self._write(self.current,now,force=True)
             self.reached_at=now
-        elif self.attached and self.detach_after>=0 and now-self.reached_at>=self.detach_after:
-            self.detach()
+        elif self.attached and self.detach_after>=0 and now-self.reached_at>=self.detach_after:self.detach()
         return False
 
     def status(self):
-        return {
-            "current":round(self.current,1),
-            "target":round(self.target,1),
-            "center":round(self.center_angle,1),
-            "minimum":round(self.minimum,1),
-            "maximum":round(self.maximum,1),
-            "pulse_us":self.last_pulse,
-            "attached":self.attached
-        }
+        return {"current":round(self.current,1),"target":round(self.target,1),"center":round(self.center_angle,1),"minimum":round(self.minimum,1),"maximum":round(self.maximum,1),"pulse_us":self.last_pulse,"attached":self.attached}
 
     def detach(self):
         if self.attached:lgpio.tx_servo(self.chip,self.gpio,0)
@@ -90,8 +79,7 @@ class ServoAxis:
         if self.inverted:offset=-offset
         pulse=round(self.center_pulse+offset*self.microseconds_per_degree)
         pulse=max(self.minimum_pulse,min(self.maximum_pulse,pulse))
-        if not force and self.last_pulse is not None and abs(pulse-self.last_pulse)<self.minimum_pulse_change:
-            return False
+        if not force and self.last_pulse is not None and abs(pulse-self.last_pulse)<self.minimum_pulse_change:return False
         lgpio.tx_servo(self.chip,self.gpio,pulse,50)
         self.last_pulse=pulse
         self.last_write=now
@@ -107,8 +95,8 @@ class ServoController:
         with path.open(encoding="utf-8") as file:config=json.load(file)
         self.chip=lgpio.gpiochip_open(0)
         detach_after=config.get("detach_after_seconds",0.25)
-        self.pan=ServoAxis(self.chip,"pan",config["pan"],detach_after)
-        self.tilt=ServoAxis(self.chip,"tilt",config["tilt"],detach_after)
+        self.pan=ServoAxis(self.chip,"pan",settings.SERVO_PAN_PIN,config["pan"],detach_after)
+        self.tilt=ServoAxis(self.chip,"tilt",settings.SERVO_TILT_PIN,config["tilt"],detach_after)
         self.closed=False
 
     def update(self):
@@ -117,22 +105,10 @@ class ServoController:
         self.tilt.update(now)
 
     def status(self): return {"pan":self.pan.status(),"tilt":self.tilt.status()}
-
-    def look_left(self):
-        angle=self.pan.move(-self.pan.step)
-        log.info(f"[SERVO] pan target {angle:.1f}")
-
-    def look_right(self):
-        angle=self.pan.move(self.pan.step)
-        log.info(f"[SERVO] pan target {angle:.1f}")
-
-    def look_up(self):
-        angle=self.tilt.move(-self.tilt.step)
-        log.info(f"[SERVO] tilt target {angle:.1f}")
-
-    def look_down(self):
-        angle=self.tilt.move(self.tilt.step)
-        log.info(f"[SERVO] tilt target {angle:.1f}")
+    def look_left(self): log.info(f"[SERVO] pan target {self.pan.move(-self.pan.step):.1f}")
+    def look_right(self): log.info(f"[SERVO] pan target {self.pan.move(self.pan.step):.1f}")
+    def look_up(self): log.info(f"[SERVO] tilt target {self.tilt.move(-self.tilt.step):.1f}")
+    def look_down(self): log.info(f"[SERVO] tilt target {self.tilt.move(self.tilt.step):.1f}")
 
     def center(self):
         self.pan.center()

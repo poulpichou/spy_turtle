@@ -1,23 +1,21 @@
 import time
 import spidev
 import lgpio
+from robot.config import settings
 
 class ST7796:
-    def __init__(self,dc=25,rst=24):
-        self.dc=dc
-        self.rst=rst
+    def __init__(self,dc=None,rst=None):
+        self.dc=settings.SHELL_DISPLAY_DC_PIN if dc is None else dc
+        self.rst=settings.SHELL_DISPLAY_RESET_PIN if rst is None else rst
         self.width=320
         self.height=480
-
         self.gpio=lgpio.gpiochip_open(0)
         lgpio.gpio_claim_output(self.gpio,self.dc)
         lgpio.gpio_claim_output(self.gpio,self.rst)
-
         self.spi=spidev.SpiDev()
-        self.spi.open(0,0)
-        self.spi.max_speed_hz=16000000
+        self.spi.open(settings.SHELL_DISPLAY_SPI_BUS,settings.SHELL_DISPLAY_SPI_DEVICE)
+        self.spi.max_speed_hz=settings.SHELL_DISPLAY_SPI_SPEED_HZ
         self.spi.mode=0
-
         lgpio.gpio_write(self.gpio,self.rst,1)
 
     def command(self,value):
@@ -36,44 +34,33 @@ class ST7796:
 
     def init(self):
         self.reset()
-
         self.command(0x01)
         time.sleep(0.15)
-
         self.command(0x11)
         time.sleep(0.12)
-
         self.command(0x3A)
         self.data([0x55])
-
         self.command(0x36)
         self.data([0x48])
-
         self.command(0x21)
         self.command(0x29)
-
         time.sleep(0.1)
 
     def set_window(self,x0,y0,x1,y1):
         self.command(0x2A)
         self.data([x0>>8,x0&0xff,x1>>8,x1&0xff])
-
         self.command(0x2B)
         self.data([y0>>8,y0&0xff,y1>>8,y1&0xff])
-
         self.command(0x2C)
 
     def push_pixels(self,pixels):
-        for i in range(0,len(pixels),4096):
-            self.data(pixels[i:i+4096])
+        for i in range(0,len(pixels),4096):self.data(pixels[i:i+4096])
 
     def fill(self,color):
         self.set_window(0,0,self.width-1,self.height-1)
-
         pixel=[color>>8,color&0xff]
         buffer=pixel*512
         total=self.width*self.height
-
         while total:
             count=min(total,512)
             self.push_pixels(buffer[:count*2])
