@@ -1,34 +1,46 @@
-import hmac,os,subprocess
-from fastapi import APIRouter,Header,HTTPException
+import subprocess
+from fastapi import APIRouter,HTTPException,Request
 from pydantic import BaseModel,Field
 from robot.utils.logger import log
+
 router=APIRouter(prefix="/admin",tags=["admin"])
-class WifiRequest(BaseModel):ssid:str=Field(min_length=1,max_length=64);password:str=Field(min_length=8,max_length=128)
-def auth(token):
-    expected=os.environ.get("SPY_TURTLE_ADMIN_TOKEN","")
-    if not expected:raise HTTPException(503,"Admin token is not configured")
-    if not token or not hmac.compare_digest(token,expected):raise HTTPException(401,"Invalid admin token")
-def run(cmd,timeout=30):
-    result=subprocess.run(cmd,capture_output=True,text=True,timeout=timeout,check=False)
+
+class WifiRequest(BaseModel):
+    ssid:str=Field(min_length=1,max_length=64)
+    password:str=Field(min_length=8,max_length=128)
+
+def origin(request):
+    forwarded=request.headers.get("x-forwarded-for")
+    address=forwarded.split(",")[0].strip() if forwarded else request.client.host if request.client else "unknown"
+    agent=request.headers.get("user-agent","unknown")
+    return f"ip={address} agent={agent}"
+
+def run(command,timeout=30):
+    result=subprocess.run(command,capture_output=True,text=True,timeout=timeout,check=False)
     output=(result.stdout or result.stderr).strip()
-    if result.returncode:raise HTTPException(500,output or f"Command failed: {result.returncode}")
+    if result.returncode:raise HTTPException(status_code=500,detail=output or f"Command failed: {result.returncode}")
     return output
+
 @router.post("/turtle/restart")
-def restart(x_admin_token:str|None=Header(None)):
-    auth(x_admin_token);log.warn("[ADMIN] turtle restart requested")
+def restart_turtle(request:Request):
+    log.warn(f"[ADMIN] restart turtle requested {origin(request)}")
     subprocess.Popen(["sudo","systemctl","restart","spy-turtle.service"],start_new_session=True)
-    return {"ok":True,"message":"Restart scheduled"}
+    return {"ok":True,"message":"Spy Turtle restart scheduled"}
+
 @router.post("/system/reboot")
-def reboot(x_admin_token:str|None=Header(None)):
-    auth(x_admin_token);log.warn("[ADMIN] reboot requested")
+def reboot(request:Request):
+    log.warn(f"[ADMIN] reboot requested {origin(request)}")
     subprocess.Popen(["sudo","systemctl","reboot"],start_new_session=True)
     return {"ok":True,"message":"Reboot scheduled"}
+
 @router.post("/system/shutdown")
-def shutdown(x_admin_token:str|None=Header(None)):
-    auth(x_admin_token);log.warn("[ADMIN] shutdown requested")
+def shutdown(request:Request):
+    log.warn(f"[ADMIN] shutdown requested {origin(request)}")
     subprocess.Popen(["sudo","systemctl","poweroff"],start_new_session=True)
     return {"ok":True,"message":"Shutdown scheduled"}
+
 @router.post("/wifi")
-def wifi(req:WifiRequest,x_admin_token:str|None=Header(None)):
-    auth(x_admin_token);log.info(f"[ADMIN] add Wi-Fi {req.ssid}")
-    return {"ok":True,"message":run(["sudo","nmcli","device","wifi","connect",req.ssid,"password",req.password])}
+def add_wifi(data:WifiRequest,request:Request):
+    log.info(f"[ADMIN] add Wi-Fi ssid={data.ssid} requested {origin(request)}")
+    output=run(["sudo","nmcli","device","wifi","connect",data.ssid,"password",data.password])
+    return {"ok":True,"message":output or "Wi-Fi connection added"}
