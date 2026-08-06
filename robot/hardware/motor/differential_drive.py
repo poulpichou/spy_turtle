@@ -1,5 +1,6 @@
 from robot.config import settings
 from robot.hardware.motor.motor import Motor
+from robot.hardware.motor.motor_encoder import MotorEncoder
 from robot.hardware.motor.tb6612 import TB6612Driver
 from robot.utils.logger import log
 
@@ -17,10 +18,26 @@ class DifferentialDrive:
         )
         self.left_motor=Motor(self.driver,"A","left",settings.MOTOR_LEFT_INVERTED)
         self.right_motor=Motor(self.driver,"B","right",settings.MOTOR_RIGHT_INVERTED)
+        self.left_encoder=None
+        self.right_encoder=None
         self.left_speed=0.0
         self.right_speed=0.0
         self.motion="stop"
-        log.info(f"[MOTORS] ready left_inverted={settings.MOTOR_LEFT_INVERTED} right_inverted={settings.MOTOR_RIGHT_INVERTED}")
+        if settings.MOTOR_ENCODERS_ENABLED:self._create_encoders()
+        log.info(f"[MOTORS] ready left_inverted={settings.MOTOR_LEFT_INVERTED} right_inverted={settings.MOTOR_RIGHT_INVERTED} encoders={settings.MOTOR_ENCODERS_ENABLED}")
+
+    def _create_encoders(self):
+        self.left_encoder=MotorEncoder(
+            settings.MOTOR_LEFT_ENCODER_A_PIN,settings.MOTOR_LEFT_ENCODER_B_PIN,"left",
+            settings.MOTOR_LEFT_ENCODER_INVERTED,settings.MOTOR_ENCODER_PULL_UP,
+            settings.MOTOR_ENCODER_PULSES_PER_REV,settings.MOTOR_WHEEL_DIAMETER_MM
+        )
+        self.right_encoder=MotorEncoder(
+            settings.MOTOR_RIGHT_ENCODER_A_PIN,settings.MOTOR_RIGHT_ENCODER_B_PIN,"right",
+            settings.MOTOR_RIGHT_ENCODER_INVERTED,settings.MOTOR_ENCODER_PULL_UP,
+            settings.MOTOR_ENCODER_PULSES_PER_REV,settings.MOTOR_WHEEL_DIAMETER_MM
+        )
+        log.info("[MOTORS] encoders ready")
 
     @staticmethod
     def normalize_speed(speed,default):
@@ -65,17 +82,34 @@ class DifferentialDrive:
         self.motion="right"
         log.info(f"[MOTORS] right speed={speed:.2f}")
 
-    def turn_left(self,speed=None): self.left(speed)
-    def turn_right(self,speed=None): self.right(speed)
+    def turn_left(self,speed=None):self.left(speed)
+    def turn_right(self,speed=None):self.right(speed)
 
     def stop(self):
         self.set_speeds(0,0)
         self.motion="stop"
         log.info("[MOTORS] stop")
 
+    def reset_encoders(self):
+        if self.left_encoder:self.left_encoder.reset()
+        if self.right_encoder:self.right_encoder.reset()
+
     def status(self):
-        return {"motion":self.motion,"left_speed":round(self.left_speed,3),"right_speed":round(self.right_speed,3),"left_inverted":settings.MOTOR_LEFT_INVERTED,"right_inverted":settings.MOTOR_RIGHT_INVERTED}
+        return {
+            "motion":self.motion,
+            "left_speed":round(self.left_speed,3),
+            "right_speed":round(self.right_speed,3),
+            "left_inverted":settings.MOTOR_LEFT_INVERTED,
+            "right_inverted":settings.MOTOR_RIGHT_INVERTED,
+            "encoders":{
+                "enabled":settings.MOTOR_ENCODERS_ENABLED,
+                "left":self.left_encoder.status() if self.left_encoder else None,
+                "right":self.right_encoder.status() if self.right_encoder else None
+            }
+        }
 
     def close(self):
         self.stop()
+        if self.left_encoder:self.left_encoder.close()
+        if self.right_encoder:self.right_encoder.close()
         self.driver.close()
