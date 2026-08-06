@@ -1,7 +1,12 @@
-# Camera/Admin frontend fix
+# Frontend and camera cleanup
 
-- Serializes access to the shared Picamera2 instance.
-- Retries once after a broken camera pipe.
-- Accepts an empty HTTP response for reboot, shutdown and restart commands.
+This update replaces the duplicated files created by repeatedly applying the previous patch.
 
-The RGB and temporary thermal endpoints can now share the same physical camera safely.
+Changes:
+- one API router, middleware, `/version`, `/health` HTTPS entry, Thermal route and Admin view
+- exactly six center tabs
+- no frontend/service-worker cache
+- Picamera2 recreation after a broken start or capture pipe
+- synchronized RGB/Thermal fallback access
+
+After deployment, close the installed Chrome app completely and open it again once. The old service worker will unregister itself and all application caches will be deleted.
