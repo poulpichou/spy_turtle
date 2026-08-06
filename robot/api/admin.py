@@ -1,46 +1,44 @@
 import subprocess
-from fastapi import APIRouter,HTTPException,Request
+from pathlib import Path
+from fastapi import APIRouter,Request
 from pydantic import BaseModel,Field
 from robot.utils.logger import log
 
 router=APIRouter(prefix="/admin",tags=["admin"])
+ROOT=Path(__file__).resolve().parents[2]
 
 class WifiRequest(BaseModel):
     ssid:str=Field(min_length=1,max_length=64)
     password:str=Field(min_length=8,max_length=128)
 
-def origin(request):
+def source(request):
     forwarded=request.headers.get("x-forwarded-for")
-    address=forwarded.split(",")[0].strip() if forwarded else request.client.host if request.client else "unknown"
-    agent=request.headers.get("user-agent","unknown")
-    return f"ip={address} agent={agent}"
+    ip=forwarded.split(",")[0].strip() if forwarded else request.client.host if request.client else "unknown"
+    return f"ip={ip}"
 
-def run(command,timeout=30):
-    result=subprocess.run(command,capture_output=True,text=True,timeout=timeout,check=False)
-    output=(result.stdout or result.stderr).strip()
-    if result.returncode:raise HTTPException(status_code=500,detail=output or f"Command failed: {result.returncode}")
-    return output
+def detached(command):
+    subprocess.Popen(command,cwd=ROOT,start_new_session=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
 
 @router.post("/turtle/restart")
 def restart_turtle(request:Request):
-    log.warn(f"[ADMIN] restart turtle requested {origin(request)}")
-    subprocess.Popen(["sudo","systemctl","restart","spy-turtle.service"],start_new_session=True)
-    return {"ok":True,"message":"Spy Turtle restart scheduled"}
+    log.warn(f"[ADMIN] restart turtle {source(request)}")
+    detached(["bash","-lc","sleep 1; ./scripts/stop_turtle.sh; sleep 1; ./scripts/start_turtle.sh"])
+    return {"ok":True,"message":"Spy Turtle restart requested"}
 
 @router.post("/system/reboot")
 def reboot(request:Request):
-    log.warn(f"[ADMIN] reboot requested {origin(request)}")
-    subprocess.Popen(["sudo","systemctl","reboot"],start_new_session=True)
-    return {"ok":True,"message":"Reboot scheduled"}
+    log.warn(f"[ADMIN] sudo reboot {source(request)}")
+    detached(["sudo","-n","reboot"])
+    return {"ok":True,"message":"Reboot requested"}
 
 @router.post("/system/shutdown")
 def shutdown(request:Request):
-    log.warn(f"[ADMIN] shutdown requested {origin(request)}")
-    subprocess.Popen(["sudo","systemctl","poweroff"],start_new_session=True)
-    return {"ok":True,"message":"Shutdown scheduled"}
+    log.warn(f"[ADMIN] sudo shutdown now {source(request)}")
+    detached(["sudo","-n","shutdown","now"])
+    return {"ok":True,"message":"Shutdown requested"}
 
 @router.post("/wifi")
 def add_wifi(data:WifiRequest,request:Request):
-    log.info(f"[ADMIN] add Wi-Fi ssid={data.ssid} requested {origin(request)}")
-    output=run(["sudo","nmcli","device","wifi","connect",data.ssid,"password",data.password])
-    return {"ok":True,"message":output or "Wi-Fi connection added"}
+    log.info(f"[ADMIN] add Wi-Fi ssid={data.ssid} {source(request)}")
+    detached(["sudo","-n","nmcli","device","wifi","connect",data.ssid,"password",data.password])
+    return {"ok":True,"message":"Wi-Fi command sent"}

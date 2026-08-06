@@ -13,6 +13,8 @@ from robot.api.admin import router as admin_router
 from robot.system.https_status import get_https_status
 from robot.api.admin import router as admin_router
 from robot.system.https_status import get_https_status
+from robot.api.admin import router as admin_router
+from robot.system.https_status import get_https_status
 from robot.assets.assets import get_assets
 from robot.config import settings
 from robot.system.runtime import get_robot
@@ -22,10 +24,21 @@ app=FastAPI()
 app.include_router(admin_router)
 app.include_router(admin_router)
 app.include_router(admin_router)
+app.include_router(admin_router)
 ROOT=Path(__file__).parent.parent.parent
 FRONTEND=ROOT/'frontend'
 PHOTOS=ROOT/'photos'
 PHOTOS.mkdir(exist_ok=True)
+STARTED_AT=datetime.now().isoformat()
+
+@app.middleware("http")
+async def no_cache(request,call_next):
+    response=await call_next(request)
+    if request.url.path=="/" or request.url.path.endswith((".html",".css",".js",".webmanifest")):
+        response.headers["Cache-Control"]="no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"]="no-cache"
+        response.headers["Expires"]="0"
+    return response
 STARTED_AT=datetime.now().isoformat()
 
 @app.middleware("http")
@@ -107,6 +120,9 @@ def get_version(): return {'frontend':'2026.08.06.1','started_at':STARTED_AT}
 @app.get('/version')
 def get_version(): return {'frontend':'2026.08.06.1','started_at':STARTED_AT}
 
+@app.get('/version')
+def get_version(): return {'frontend':'2026.08.06.1','started_at':STARTED_AT}
+
 @app.get('/motors/config')
 def get_motor_config():
     return {
@@ -124,7 +140,7 @@ def get_health():
     disk=shutil.disk_usage(ROOT)
     current=state()
     return {
-        'ok':True,'timestamp':datetime.now().isoformat(),'https':get_https_status(),'https':get_https_status(),'https':get_https_status(),
+        'ok':True,'timestamp':datetime.now().isoformat(),'https':get_https_status(),'https':get_https_status(),'https':get_https_status(),'https':get_https_status(),
         'system':{'uptime_seconds':uptime_seconds(),'cpu_temperature_c':cpu_temperature(),'load_1m':round(os.getloadavg()[0],2) if hasattr(os,'getloadavg') else None,'disk_free_gb':round(disk.free/(1024**3),1),'disk_total_gb':round(disk.total/(1024**3),1)},
         'battery':current['battery'],
         'robot':{'brain':current['brain'],'camera':current['camera'],'motion':current['motion'],'motors':current['motors'],'shell':current['shell'],'leds':current['leds'],'servo':current['servo'],'components':{'motors':robot.motors is not None,'face':robot.face is not None,'leds':robot.leds is not None,'camera':robot.camera is not None,'battery':robot.battery is not None,'speaker':robot.speaker is not None,'servo':robot.servo is not None,'shell':robot.shell is not None}}

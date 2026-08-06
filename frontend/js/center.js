@@ -8,6 +8,7 @@ let activeView="camera";
 let thermalTimer=null;
 let thermalTimer=null;
 let thermalTimer=null;
+let thermalTimer=null;
 let logTimer=null;
 let healthTimer=null;
 let photos=[];
@@ -23,7 +24,9 @@ function setCenterView(name){
     if(thermalTimer){clearInterval(thermalTimer);thermalTimer=null;}
     if(thermalTimer){clearInterval(thermalTimer);thermalTimer=null;}
     if(thermalTimer){clearInterval(thermalTimer);thermalTimer=null;}
+    if(thermalTimer){clearInterval(thermalTimer);thermalTimer=null;}
     if(name==="camera")startCameraRefresh();
+    else if(name==="thermal"){stopCameraRefresh();const refresh=()=>document.getElementById("thermal-stream").src=`/thermal/frame?t=${Date.now()}`;refresh();thermalTimer=setInterval(refresh,250);}
     else if(name==="thermal"){stopCameraRefresh();const refresh=()=>document.getElementById("thermal-stream").src=`/thermal/frame?t=${Date.now()}`;refresh();thermalTimer=setInterval(refresh,250);}
     else if(name==="thermal"){stopCameraRefresh();const refresh=()=>document.getElementById("thermal-stream").src=`/thermal/frame?t=${Date.now()}`;refresh();thermalTimer=setInterval(refresh,250);}
     else if(name==="thermal"){stopCameraRefresh();const refresh=()=>document.getElementById("thermal-stream").src=`/thermal/frame?t=${Date.now()}`;refresh();thermalTimer=setInterval(refresh,250);}
