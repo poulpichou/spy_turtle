@@ -1,9 +1,7 @@
-# PWA V2 identity test
+# Final PWA identity
 
-This changes only the manifest identity:
+This restores the visible app name and normal start URL while keeping a fresh, stable internal PWA identity.
 
-- name: Spy Turtle V2
-- id: /spy-turtle-v2
-- start_url: /?app=v2
-
-It forces Chrome Android to install a new WebAPK identity without changing the frontend or API.
+- name: Spy Turtle
+- id: /spyturtle-app
+- start_url: /

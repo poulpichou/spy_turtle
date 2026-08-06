@@ -1,9 +1,9 @@
 {
-  "name":"Spy Turtle V2",
-  "short_name":"Spy Turtle V2",
+  "name":"Spy Turtle",
+  "short_name":"Spy Turtle",
   "description":"Remote control interface for the Spy Turtle robot.",
-  "id":"/spy-turtle-v2",
-  "start_url":"/?app=v2",
+  "id":"/spyturtle-app",
+  "start_url":"/",
   "scope":"/",
   "display":"standalone",
   "display_override":["standalone","minimal-ui"],
