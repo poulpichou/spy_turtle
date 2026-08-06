@@ -5,6 +5,7 @@ const photoPreview=document.getElementById("photo-preview");
 const photoEmpty=document.getElementById("photo-empty");
 const photoName=document.getElementById("photo-name");
 let activeView="camera";
+let thermalTimer=null;
 let logTimer=null;
 let healthTimer=null;
 let photos=[];
@@ -17,7 +18,9 @@ function setCenterView(name){
     views.forEach(view=>view.classList.toggle("active",view.id===`${name}-view`));
     stopLogs();
     stopHealth();
+    if(thermalTimer){clearInterval(thermalTimer);thermalTimer=null;}
     if(name==="camera")startCameraRefresh();
+    else if(name==="thermal"){stopCameraRefresh();const refresh=()=>document.getElementById("thermal-stream").src=`/thermal/frame?t=${Date.now()}`;refresh();thermalTimer=setInterval(refresh,250);}
     else{
         stopCameraRefresh();
         if(name==="logs")startLogs();
