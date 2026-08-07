@@ -15,6 +15,7 @@ class ThermalCamera:
         import adafruit_mlx90640
         import board
         import busio
+        if settings.THERMAL_ROTATION not in (0,90,180,270):raise ValueError("THERMAL_ROTATION must be 0, 90, 180 or 270")
         self.adafruit_mlx90640=adafruit_mlx90640
         self.frame=[0.0]*self.PIXELS
         self.cache_lock=Lock()
@@ -30,7 +31,7 @@ class ThermalCamera:
         self.sensor.refresh_rate=self._refresh_rate(settings.THERMAL_REFRESH_RATE_HZ)
         self.worker=Thread(target=self._run,name="thermal-camera",daemon=True)
         self.worker.start()
-        log.info(f"[THERMAL] MLX90640 ready address=0x{settings.THERMAL_CAMERA_ADDRESS:02X} refresh={settings.THERMAL_REFRESH_RATE_HZ}Hz nonblocking=true")
+        log.info(f"[THERMAL] MLX90640 ready address=0x{settings.THERMAL_CAMERA_ADDRESS:02X} refresh={settings.THERMAL_REFRESH_RATE_HZ}Hz rotation={settings.THERMAL_ROTATION} nonblocking=true")
 
     def _refresh_rate(self,hz):
         rates={
@@ -99,15 +100,22 @@ class ThermalCamera:
                 return tuple(round(c1[i]+(c2[i]-c1[i])*ratio) for i in range(3))
         return stops[-1][1]
 
+    @staticmethod
+    def _rotate(image):
+        rotation=settings.THERMAL_ROTATION
+        if rotation==90:return image.transpose(Image.Transpose.ROTATE_90)
+        if rotation==180:return image.transpose(Image.Transpose.ROTATE_180)
+        if rotation==270:return image.transpose(Image.Transpose.ROTATE_270)
+        return image
+
     def _image(self,values):
         low,high=self._range(values)
         scale=max(0.001,high-low)
         pixels=[self._palette((value-low)/scale) for value in values]
         image=Image.new("RGB",(self.SENSOR_WIDTH,self.SENSOR_HEIGHT))
         image.putdata(pixels)
+        image=self._rotate(image)
         image=image.resize((settings.THERMAL_OUTPUT_WIDTH,settings.THERMAL_OUTPUT_HEIGHT),Image.Resampling.BICUBIC)
-        rotation=settings.THERMAL_ROTATION%360
-        if rotation:image=image.rotate(rotation,expand=False)
         draw=ImageDraw.Draw(image)
         minimum=min(values);maximum=max(values);center=values[(self.SENSOR_HEIGHT//2)*self.SENSOR_WIDTH+self.SENSOR_WIDTH//2]
         text=f"{minimum:.1f}C  center {center:.1f}C  max {maximum:.1f}C"
@@ -137,8 +145,8 @@ class ThermalCamera:
                 "available":True,"model":"MLX90640","address":f"0x{settings.THERMAL_CAMERA_ADDRESS:02X}",
                 "sensor_size":[self.SENSOR_WIDTH,self.SENSOR_HEIGHT],
                 "output_size":[settings.THERMAL_OUTPUT_WIDTH,settings.THERMAL_OUTPUT_HEIGHT],
-                "refresh_rate_hz":settings.THERMAL_REFRESH_RATE_HZ,"last_frame_at":self.last_frame,
-                "min_c":self.last_min,"max_c":self.last_max,"error":self.last_error
+                "refresh_rate_hz":settings.THERMAL_REFRESH_RATE_HZ,"rotation":settings.THERMAL_ROTATION,
+                "last_frame_at":self.last_frame,"min_c":self.last_min,"max_c":self.last_max,"error":self.last_error
             }
 
     def close(self):
