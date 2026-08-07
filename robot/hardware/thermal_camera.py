@@ -1,6 +1,6 @@
 import time
 from io import BytesIO
-from threading import RLock
+from threading import Event,Lock,Thread
 from PIL import Image,ImageDraw
 from robot.config import settings
 from robot.utils.logger import log
@@ -9,20 +9,28 @@ class ThermalCamera:
     SENSOR_WIDTH=32
     SENSOR_HEIGHT=24
     PIXELS=SENSOR_WIDTH*SENSOR_HEIGHT
+    ACTIVE_WINDOW_SECONDS=2.0
 
     def __init__(self):
         import adafruit_mlx90640
         import board
         import busio
         self.adafruit_mlx90640=adafruit_mlx90640
-        self.lock=RLock()
         self.frame=[0.0]*self.PIXELS
+        self.cache_lock=Lock()
+        self.latest_jpeg=self._placeholder("Thermal warming up")
         self.last_frame=None
         self.last_error=None
+        self.last_min=None
+        self.last_max=None
+        self.requested_until=0.0
+        self.stop_event=Event()
         self.i2c=busio.I2C(board.SCL,board.SDA,frequency=settings.THERMAL_I2C_FREQUENCY)
         self.sensor=adafruit_mlx90640.MLX90640(self.i2c,address=settings.THERMAL_CAMERA_ADDRESS)
         self.sensor.refresh_rate=self._refresh_rate(settings.THERMAL_REFRESH_RATE_HZ)
-        log.info(f"[THERMAL] MLX90640 ready address=0x{settings.THERMAL_CAMERA_ADDRESS:02X} refresh={settings.THERMAL_REFRESH_RATE_HZ}Hz")
+        self.worker=Thread(target=self._run,name="thermal-camera",daemon=True)
+        self.worker.start()
+        log.info(f"[THERMAL] MLX90640 ready address=0x{settings.THERMAL_CAMERA_ADDRESS:02X} refresh={settings.THERMAL_REFRESH_RATE_HZ}Hz nonblocking=true")
 
     def _refresh_rate(self,hz):
         rates={
@@ -37,21 +45,37 @@ class ThermalCamera:
         }
         return rates.get(hz,rates[2])
 
-    def read_temperatures(self):
-        with self.lock:
-            error=None
-            for _ in range(8):
-                try:
-                    self.sensor.getFrame(self.frame)
-                    values=list(self.frame)
+    def _run(self):
+        while not self.stop_event.is_set():
+            if time.monotonic()>self.requested_until:
+                self.stop_event.wait(0.05)
+                continue
+            try:
+                values=self._read_temperatures()
+                image=self._image(values)
+                buffer=BytesIO()
+                image.save(buffer,format="JPEG",quality=settings.THERMAL_JPEG_QUALITY)
+                with self.cache_lock:
+                    self.latest_jpeg=buffer.getvalue()
                     self.last_frame=time.time()
+                    self.last_min=round(min(values),1)
+                    self.last_max=round(max(values),1)
                     self.last_error=None
-                    return values
-                except (ValueError,RuntimeError) as exc:
-                    error=exc
-                    time.sleep(0.02)
-            self.last_error=str(error)
-            raise RuntimeError(f"MLX90640 frame read failed: {error}") from error
+            except Exception as error:
+                with self.cache_lock:self.last_error=str(error)
+                log.warn(f"[THERMAL] background frame failed: {error}")
+                self.stop_event.wait(0.1)
+
+    def _read_temperatures(self):
+        error=None
+        for _ in range(4):
+            try:
+                self.sensor.getFrame(self.frame)
+                return list(self.frame)
+            except (ValueError,RuntimeError) as exc:
+                error=exc
+                time.sleep(0.02)
+        raise RuntimeError(f"MLX90640 frame read failed: {error}") from error
 
     @staticmethod
     def _range(values):
@@ -92,23 +116,33 @@ class ThermalCamera:
         draw.text((7,6),text,fill=(255,255,255))
         return image
 
-    def get_frame(self):
-        image=self._image(self.read_temperatures())
+    def _placeholder(self,text):
+        image=Image.new("RGB",(settings.THERMAL_OUTPUT_WIDTH,settings.THERMAL_OUTPUT_HEIGHT),(20,20,20))
+        draw=ImageDraw.Draw(image)
+        box=draw.textbbox((0,0),text)
+        x=max(0,(settings.THERMAL_OUTPUT_WIDTH-(box[2]-box[0]))//2)
+        y=max(0,(settings.THERMAL_OUTPUT_HEIGHT-(box[3]-box[1]))//2)
+        draw.text((x,y),text,fill=(255,255,255))
         buffer=BytesIO()
-        image.save(buffer,format="JPEG",quality=settings.THERMAL_JPEG_QUALITY)
+        image.save(buffer,format="JPEG",quality=80)
         return buffer.getvalue()
 
+    def get_frame(self):
+        self.requested_until=time.monotonic()+self.ACTIVE_WINDOW_SECONDS
+        with self.cache_lock:return self.latest_jpeg
+
     def status(self):
-        values=list(self.frame) if self.last_frame else None
-        return {
-            "available":True,"model":"MLX90640","address":f"0x{settings.THERMAL_CAMERA_ADDRESS:02X}",
-            "sensor_size":[self.SENSOR_WIDTH,self.SENSOR_HEIGHT],
-            "output_size":[settings.THERMAL_OUTPUT_WIDTH,settings.THERMAL_OUTPUT_HEIGHT],
-            "refresh_rate_hz":settings.THERMAL_REFRESH_RATE_HZ,"last_frame_at":self.last_frame,
-            "min_c":round(min(values),1) if values else None,"max_c":round(max(values),1) if values else None,
-            "error":self.last_error
-        }
+        with self.cache_lock:
+            return {
+                "available":True,"model":"MLX90640","address":f"0x{settings.THERMAL_CAMERA_ADDRESS:02X}",
+                "sensor_size":[self.SENSOR_WIDTH,self.SENSOR_HEIGHT],
+                "output_size":[settings.THERMAL_OUTPUT_WIDTH,settings.THERMAL_OUTPUT_HEIGHT],
+                "refresh_rate_hz":settings.THERMAL_REFRESH_RATE_HZ,"last_frame_at":self.last_frame,
+                "min_c":self.last_min,"max_c":self.last_max,"error":self.last_error
+            }
 
     def close(self):
+        self.stop_event.set()
+        if self.worker.is_alive():self.worker.join(timeout=2.0)
         try:self.i2c.deinit()
         except Exception:pass
