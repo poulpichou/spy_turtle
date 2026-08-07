@@ -1,0 +1,1049 @@
+============================================================
+Spy Turtle startup
+Date: 2026-08-07 23:04:24 CEST
+Host: spyturtle
+Kernel: 6.18.34+rpt-rpi-2712
+============================================================
+23:04:24 [INFO] Starting Spy Turtle
+23:04:24 [INFO] [TB6612] ready STBY=5 A=(12,6,13) B=(26,16,20)
+23:04:24 [INFO] [MOTORS] ready left_inverted=True right_inverted=False encoders=False
+23:04:24 [INFO] [LED] ready device=/dev/leds0 count=32
+[0:19:28.165665683] [1823]  INFO Camera camera_manager.cpp:340 libcamera v0.7.1+rpt20260609
+[0:19:28.174596875] [1857]  INFO RPI pisp.cpp:720 libpisp version v1.5.0 01-05-2026 (05:33:53)
+[0:19:28.182343851] [1857]  INFO IPAProxy ipa_proxy.cpp:184 Using tuning file /usr/share/libcamera/ipa/rpi/pisp/imx708.json
+[0:19:28.189733552] [1857]  INFO Camera camera_manager.cpp:223 Adding camera '/base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a' for pipeline handler rpi/pisp
+[0:19:28.189767811] [1857]  INFO RPI pisp.cpp:1181 Registered camera /base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a to CFE device /dev/media0 and ISP device /dev/media2 using PiSP variant BCM2712_D0
+[0:19:28.192171094] [1857]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc30
+[0:19:28.192192520] [1857]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc12
+[0:19:28.192735554] [1823]  INFO Camera camera.cpp:1216 configuring streams: (0) 1280x720-RGB888/Rec709/Rec709/None/Full (1) 1536x864-BGGR_PISP_COMP1/RAW
+[0:19:28.192824868] [1857]  INFO RPI pisp.cpp:1485 Sensor: /base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a - Selected sensor format: 1536x864-SBGGR10_1X10/RAW - Selected CFE format: 1536x864-PC1B/RAW
+23:04:24 [INFO] [CAMERA] ready
+/home/spy/spy_turtle/.venv/lib/python3.13/site-packages/adafruit_blinka/microcontroller/generic_linux/i2c.py:30: RuntimeWarning: I2C frequency is not settable in python, ignoring!
+  warnings.warn(
+23:04:24 [INFO] [THERMAL] MLX90640 ready address=0x33 refresh=2Hz
+23:04:24 [INFO] [SPEAKER] ready device=plughw:CARD=MAX98357A,DEV=0
+23:04:24 [INFO] [SERVO] pan GPIO17 ready detached center=0.0 pulse=1500
+23:04:24 [INFO] [SERVO] tilt GPIO27 ready detached center=0.0 pulse=1650
+[Battery] ready
+[OLEDDisplay] left ready at 0x3c
+[OLEDDisplay] right ready at 0x3d
+[EyesRenderer] ready
+23:04:25 [INFO] [FACE] sequence neutral
+23:04:26 [INFO] [LED] mode neutral -> neutral
+[Robot] initialized
+[Brain] initialized
+23:04:26 [INFO] [LED] mode red -> solid_red
+23:04:26 [INFO] [LED TEST] 32 LEDs set to solid red
+23:04:26 [INFO] Robot ready
+23:04:26 [INFO] Main loop started
+23:04:26 [DEBUG] [SERVO] pan angle=0.0 pulse=1500
+23:04:26 [DEBUG] [SERVO] tilt angle=0.0 pulse=1650
+23:04:26 [INFO] [HEARTBEAT] alive uptime=00:00:00
+23:04:26 [INFO] [HEALTH] battery=39.0% voltage=14.421V current=-337.0A power=-4859.877W cells_mv=3602,3607,3608,3605 charging=no usb=no temp=47.4C memory=7.4% load=0.89 throttled=0x0
+23:04:26 [INFO] Starting API
+INFO:     Started server process [1823]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+23:04:30 [INFO] [IDLE] blink
+23:04:30 [INFO] [FACE] sequence blink
+23:04:31 [INFO] [FACE] sequence neutral
+23:04:36 [INFO] [IDLE] blink
+23:04:36 [INFO] [FACE] sequence blink
+23:04:38 [INFO] [FACE] sequence neutral
+23:04:39 [INFO] [IDLE] blink
+23:04:39 [INFO] [FACE] sequence blink
+23:04:41 [INFO] [FACE] sequence neutral
+23:04:43 [INFO] [IDLE] blink
+23:04:43 [INFO] [FACE] sequence blink
+23:04:45 [INFO] [FACE] sequence neutral
+23:04:48 [INFO] [IDLE] look_high
+23:04:48 [INFO] [FACE] sequence look_high
+23:04:50 [INFO] [FACE] sequence neutral
+23:04:52 [INFO] [IDLE] double blink
+23:04:52 [INFO] [FACE] sequence double_blink
+23:04:55 [INFO] [FACE] sequence neutral
+23:04:56 [INFO] [HEARTBEAT] alive uptime=00:00:30
+23:04:57 [INFO] [IDLE] yawn
+23:04:57 [INFO] [FACE] sequence yawn
+23:05:01 [INFO] [FACE] sequence neutral
+INFO:     192.168.0.17:58052 - "GET /state HTTP/1.1" 200 OK
+23:05:03 [INFO] [IDLE] look_left
+23:05:03 [INFO] [FACE] sequence look_left
+23:05:05 [INFO] [FACE] sequence neutral
+23:05:09 [INFO] [IDLE] double blink
+23:05:09 [INFO] [FACE] sequence double_blink
+23:05:12 [INFO] [FACE] sequence neutral
+INFO:     127.0.0.1:38152 - "GET /thermal/status~ HTTP/1.1" 404 Not Found
+23:05:13 [INFO] [IDLE] look_right
+23:05:13 [INFO] [FACE] sequence look_right
+23:05:16 [INFO] [FACE] sequence neutral
+23:05:19 [INFO] [IDLE] blink
+23:05:19 [INFO] [FACE] sequence blink
+INFO:     127.0.0.1:36104 - "GET /thermal/status HTTP/1.1" 200 OK
+23:05:21 [INFO] [FACE] sequence neutral
+23:05:22 [INFO] [IDLE] double blink
+23:05:22 [INFO] [FACE] sequence double_blink
+23:05:25 [INFO] [IDLE] yawn
+23:05:25 [INFO] [FACE] sequence neutral
+23:05:26 [INFO] [HEARTBEAT] alive uptime=00:01:00
+23:05:26 [INFO] [HEALTH] battery=38.0% voltage=14.417V current=-359.0A power=-5175.703W cells_mv=3601,3606,3606,3606 charging=no usb=no temp=46.9C memory=7.1% load=0.90 throttled=0x0
+23:05:31 [INFO] [IDLE] blink
+23:05:31 [INFO] [FACE] sequence blink
+23:05:32 [INFO] [FACE] sequence neutral
+23:05:34 [INFO] [IDLE] look_down
+23:05:34 [INFO] [FACE] sequence look_down
+INFO:     127.0.0.1:59906 - "GET /thermal/frame HTTP/1.1" 200 OK
+23:05:37 [INFO] [FACE] sequence neutral
+23:05:39 [INFO] [IDLE] look_left
+23:05:39 [INFO] [FACE] sequence look_left
+23:05:41 [INFO] [FACE] sequence neutral
+23:05:44 [INFO] [IDLE] blink
+23:05:44 [INFO] [FACE] sequence blink
+23:05:46 [INFO] [FACE] sequence neutral
+23:05:48 [INFO] [IDLE] blink
+23:05:48 [INFO] [FACE] sequence blink
+23:05:50 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+[0:20:54.889769187] [1857] ERROR V4L2 v4l2_videodevice.cpp:1998 /dev/video7[27:out]: Failed to start streaming: Broken pipe
+23:05:51 [WARN] [CAMERA] start failed, recreating camera: Failed to start camera: Broken pipe
+[0:20:55.175871454] [1857]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc30
+[0:20:55.175907398] [1857]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc12
+[0:20:55.176291785] [1895]  INFO Camera camera.cpp:1216 configuring streams: (0) 1280x720-RGB888/Rec709/Rec709/None/Full (1) 1536x864-BGGR_PISP_COMP1/RAW
+[0:20:55.176391951] [1857]  INFO RPI pisp.cpp:1485 Sensor: /base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a - Selected sensor format: 1536x864-SBGGR10_1X10/RAW - Selected CFE format: 1536x864-PC1B/RAW
+23:05:51 [INFO] [CAMERA] started
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136751578 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136752078 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136752578 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136753078 HTTP/1.1" 200 OK
+23:05:53 [INFO] [IDLE] blink
+23:05:53 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786136753532 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:05:55 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:05:56 [INFO] [HEARTBEAT] alive uptime=00:01:30
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:05:59 [INFO] [IDLE] blink
+23:05:59 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:00 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     192.168.0.17:40198 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:04 [INFO] [IDLE] look_right
+23:06:04 [INFO] [FACE] sequence look_right
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:06 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:09 [INFO] [IDLE] look_down
+23:06:09 [INFO] [FACE] sequence look_down
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:11 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:12 [INFO] [IDLE] look_high
+23:06:12 [INFO] [FACE] sequence look_high
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:14 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136775946 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136776447 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136776947 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136777447 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136777947 HTTP/1.1" 200 OK
+23:06:18 [INFO] [IDLE] look_right
+23:06:18 [INFO] [FACE] sequence look_right
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136778448 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136778947 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136779447 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136779947 HTTP/1.1" 200 OK
+23:06:20 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:23 [INFO] [IDLE] blink
+23:06:23 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:25 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:26 [INFO] [HEALTH] battery=38.0% voltage=14.413V current=-362.0A power=-5217.506W cells_mv=3599,3605,3605,3603 charging=no usb=no temp=46.9C memory=7.7% load=1.37 throttled=0x0
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:26 [INFO] [HEARTBEAT] alive uptime=00:02:00
+23:06:27 [INFO] [IDLE] look_left
+23:06:27 [INFO] [FACE] sequence look_left
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:30 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:31 [INFO] [IDLE] yawn
+23:06:31 [INFO] [FACE] sequence yawn
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:34 [INFO] [IDLE] yawn
+23:06:34 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:38 [INFO] [IDLE] blink
+23:06:38 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:39 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:42 [INFO] [IDLE] double blink
+23:06:42 [INFO] [FACE] sequence double_blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:06:45 [INFO] [FACE] sequence neutral
+23:06:48 [INFO] [IDLE] blink
+23:06:48 [INFO] [FACE] sequence blink
+23:06:49 [INFO] [FACE] sequence neutral
+23:06:52 [INFO] [IDLE] sleep for 19.5s
+23:06:52 [INFO] [FACE] sequence sleeping
+23:06:52 [INFO] [LED] mode sleeping -> sleeping
+23:06:57 [INFO] [HEARTBEAT] alive uptime=00:02:31
+23:07:12 [INFO] [IDLE] wake up (timer)
+23:07:12 [INFO] [FACE] sequence wake_up
+23:07:16 [INFO] [FACE] sequence neutral
+23:07:16 [INFO] [IDLE] yawn
+23:07:16 [INFO] [FACE] sequence yawn
+23:07:20 [INFO] [FACE] sequence neutral
+23:07:21 [INFO] [IDLE] look_left
+23:07:21 [INFO] [FACE] sequence look_left
+23:07:24 [INFO] [FACE] sequence neutral
+23:07:24 [INFO] [IDLE] blink
+23:07:24 [INFO] [FACE] sequence blink
+INFO:     192.168.0.17:13424 - "GET /state HTTP/1.1" 200 OK
+23:07:26 [INFO] [FACE] sequence neutral
+23:07:26 [INFO] [HEALTH] battery=38.0% voltage=14.402V current=-379.0A power=-5458.358W cells_mv=3596,3602,3602,3601 charging=no usb=no temp=47.4C memory=7.8% load=1.72 throttled=0x0
+23:07:27 [INFO] [HEARTBEAT] alive uptime=00:03:01
+23:07:27 [INFO] [IDLE] look_left
+23:07:27 [INFO] [FACE] sequence look_left
+23:07:29 [INFO] [FACE] sequence neutral
+23:07:34 [INFO] [IDLE] blink
+23:07:34 [INFO] [FACE] sequence blink
+23:07:35 [INFO] [FACE] sequence neutral
+23:07:38 [INFO] [IDLE] yawn
+23:07:38 [INFO] [FACE] sequence yawn
+23:07:42 [INFO] [IDLE] blink
+23:07:42 [INFO] [FACE] sequence neutral
+23:07:45 [INFO] [IDLE] blink
+23:07:45 [INFO] [FACE] sequence blink
+23:07:46 [INFO] [FACE] sequence neutral
+23:07:51 [INFO] [IDLE] blink
+23:07:51 [INFO] [FACE] sequence blink
+23:07:53 [INFO] [FACE] sequence neutral
+23:07:54 [INFO] [IDLE] blink
+23:07:54 [INFO] [FACE] sequence blink
+23:07:56 [INFO] [FACE] sequence neutral
+23:07:57 [INFO] [HEARTBEAT] alive uptime=00:03:31
+23:08:01 [INFO] [IDLE] blink
+23:08:01 [INFO] [FACE] sequence blink
+23:08:02 [INFO] [FACE] sequence neutral
+23:08:06 [INFO] [IDLE] blink
+23:08:06 [INFO] [FACE] sequence blink
+23:08:08 [INFO] [FACE] sequence neutral
+23:08:13 [INFO] [IDLE] blink
+23:08:13 [INFO] [FACE] sequence blink
+23:08:14 [INFO] [FACE] sequence neutral
+23:08:17 [INFO] [IDLE] look_high
+23:08:17 [INFO] [FACE] sequence look_high
+23:08:19 [INFO] [FACE] sequence neutral
+23:08:23 [INFO] [IDLE] look_left
+23:08:23 [INFO] [FACE] sequence look_left
+23:08:25 [INFO] [FACE] sequence neutral
+23:08:27 [INFO] [HEALTH] battery=38.0% voltage=14.4V current=-365.0A power=-5256.0W cells_mv=3595,3602,3602,3601 charging=no usb=no temp=45.8C memory=7.8% load=1.73 throttled=0x0
+23:08:27 [INFO] [HEARTBEAT] alive uptime=00:04:01
+INFO:     192.168.0.17:53347 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET / HTTP/1.1" 200 OK
+23:08:29 [INFO] [IDLE] yawn
+23:08:29 [INFO] [FACE] sequence yawn
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/mobile.css?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/style.css?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/admin.css?v=2 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/api.js?v=5 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dashboard.js?v=7 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/controls.js?v=5 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/center.js?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dropdowns.js?v=2 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/admin.js?v=2 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/camera.js?v=5 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/pwa.js?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/mobile.css?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/style.css?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/admin.css?v=2 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/controls.js?v=5 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dashboard.js?v=7 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/api.js?v=5 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/admin.js?v=2 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/center.js?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dropdowns.js?v=2 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/pwa.js?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/camera.js?v=5 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136909906 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136909962 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /manifest.webmanifest HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136910406 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136910463 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136910906 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136910962 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136911406 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136911463 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136911906 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136911962 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136912406 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136912463 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:08:32 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136912963 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136913463 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136913962 HTTP/1.1" 200 OK
+23:08:34 [INFO] [IDLE] double blink
+23:08:34 [INFO] [FACE] sequence double_blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136914464 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136914962 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136915463 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136915962 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136916463 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136916962 HTTP/1.1" 200 OK
+23:08:38 [INFO] [IDLE] look_right
+23:08:38 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:08:44 [INFO] [IDLE] blink
+23:08:44 [INFO] [FACE] sequence blink
+23:08:46 [INFO] [FACE] sequence neutral
+23:08:47 [INFO] [IDLE] look_high
+23:08:47 [INFO] [FACE] sequence look_high
+23:08:49 [INFO] [FACE] sequence neutral
+23:08:53 [INFO] [IDLE] blink
+23:08:53 [INFO] [FACE] sequence blink
+23:08:54 [INFO] [FACE] sequence neutral
+23:08:56 [INFO] [IDLE] double blink
+23:08:56 [INFO] [FACE] sequence double_blink
+23:08:57 [INFO] [API] command head right
+23:08:57 [INFO] [API] camera right
+23:08:57 [INFO] [SERVO] pan target 5.0
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:08:57 [DEBUG] [SERVO] pan angle=5.0 pulse=1470
+23:08:57 [INFO] [HEARTBEAT] alive uptime=00:04:31
+23:08:57 [DEBUG] [SERVO] pan angle=5.0 pulse=1470
+23:08:59 [INFO] [FACE] sequence neutral
+23:09:00 [INFO] [API] command face happy
+23:09:00 [INFO] [API] face happy
+23:09:00 [INFO] [FACE] sequence happy
+23:09:00 [INFO] [LED] mode happy -> happy
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:09:05 [INFO] [API] command face sleepy
+23:09:05 [INFO] [API] face sleepy
+23:09:05 [INFO] [FACE] sequence sleepy
+23:09:05 [INFO] [LED] mode sleepy -> sleepy
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786136912585 HTTP/1.1" 200 OK
+23:09:14 [INFO] [API] command shell log
+23:09:14 [INFO] [API] shell log
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:09:15 [INFO] [FACE] sequence neutral
+23:09:16 [INFO] [LED] mode neutral -> neutral
+23:09:16 [INFO] [IDLE] blink
+23:09:16 [INFO] [FACE] sequence blink
+23:09:18 [INFO] [FACE] sequence neutral
+23:09:20 [INFO] [IDLE] blink
+23:09:20 [INFO] [FACE] sequence blink
+23:09:22 [INFO] [FACE] sequence neutral
+23:09:26 [INFO] [IDLE] look_down
+23:09:26 [INFO] [FACE] sequence look_down
+23:09:27 [INFO] [API] command face sleeping
+23:09:27 [INFO] [API] face sleeping
+23:09:27 [INFO] [FACE] sequence sleeping
+23:09:27 [INFO] [LED] mode sleeping -> sleeping
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:09:27 [INFO] [HEALTH] battery=38.0% voltage=14.39V current=-384.0A power=-5525.76W cells_mv=3595,3599,3600,3600 charging=no usb=no temp=46.9C memory=9.3% load=1.60 throttled=0x0
+23:09:28 [INFO] [HEARTBEAT] alive uptime=00:05:02
+INFO:     192.168.0.17:50691 - "GET /state HTTP/1.1" 200 OK
+23:09:37 [INFO] [FACE] sequence neutral
+23:09:37 [INFO] [LED] mode neutral -> neutral
+23:09:37 [INFO] [IDLE] look_high
+23:09:37 [INFO] [FACE] sequence look_high
+23:09:40 [INFO] [FACE] sequence neutral
+23:09:41 [INFO] [API] command face angry
+23:09:41 [INFO] [API] face angry
+23:09:41 [INFO] [FACE] sequence angry
+23:09:41 [INFO] [LED] mode angry -> angry
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:09:52 [INFO] [FACE] sequence neutral
+23:09:52 [INFO] [LED] mode neutral -> neutral
+23:09:52 [INFO] [IDLE] look_high
+23:09:52 [INFO] [FACE] sequence look_high
+23:09:55 [INFO] [FACE] sequence neutral
+23:09:58 [INFO] [HEARTBEAT] alive uptime=00:05:32
+23:09:58 [INFO] [IDLE] look_high
+23:09:58 [INFO] [FACE] sequence look_high
+23:10:01 [INFO] [FACE] sequence neutral
+23:10:02 [INFO] [IDLE] look_right
+23:10:02 [INFO] [FACE] sequence look_right
+23:10:05 [INFO] [FACE] sequence neutral
+23:10:07 [INFO] [IDLE] double blink
+23:10:07 [INFO] [FACE] sequence double_blink
+23:10:10 [INFO] [FACE] sequence neutral
+23:10:13 [INFO] [IDLE] look_high
+23:10:13 [INFO] [FACE] sequence look_high
+23:10:16 [INFO] [FACE] sequence neutral
+23:10:17 [INFO] [IDLE] double blink
+23:10:17 [INFO] [FACE] sequence double_blink
+23:10:21 [INFO] [FACE] sequence neutral
+23:10:24 [INFO] [IDLE] blink
+23:10:24 [INFO] [FACE] sequence blink
+23:10:26 [INFO] [FACE] sequence neutral
+23:10:27 [INFO] [HEALTH] battery=38.0% voltage=14.387V current=-378.0A power=-5438.286W cells_mv=3593,3599,3599,3597 charging=no usb=no temp=47.4C memory=9.4% load=1.62 throttled=0x0
+23:10:28 [INFO] [HEARTBEAT] alive uptime=00:06:02
+23:10:29 [INFO] [IDLE] look_left
+23:10:29 [INFO] [FACE] sequence look_left
+23:10:31 [INFO] [FACE] sequence neutral
+23:10:35 [INFO] [IDLE] blink
+23:10:35 [INFO] [FACE] sequence blink
+23:10:37 [INFO] [FACE] sequence neutral
+23:10:38 [INFO] [IDLE] blink
+23:10:38 [INFO] [FACE] sequence blink
+23:10:40 [INFO] [FACE] sequence neutral
+23:10:41 [INFO] [IDLE] blink
+23:10:41 [INFO] [FACE] sequence blink
+23:10:43 [INFO] [FACE] sequence neutral
+23:10:45 [INFO] [IDLE] blink
+23:10:45 [INFO] [FACE] sequence blink
+23:10:47 [INFO] [FACE] sequence neutral
+23:10:49 [INFO] [IDLE] blink
+23:10:49 [INFO] [FACE] sequence blink
+23:10:51 [INFO] [FACE] sequence neutral
+23:10:55 [INFO] [IDLE] blink
+23:10:55 [INFO] [FACE] sequence blink
+23:10:55 [INFO] [API] command face happy
+23:10:55 [INFO] [API] face happy
+23:10:55 [INFO] [FACE] sequence happy
+23:10:56 [INFO] [LED] mode happy -> happy
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:10:58 [INFO] [HEARTBEAT] alive uptime=00:06:32
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136986118 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:11:05 [INFO] [API] command move forward
+23:11:05 [INFO] [API] move forward speed=None
+23:11:05 [INFO] [MOTORS] forward speed=0.30
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:06 [INFO] [FACE] sequence neutral
+23:11:06 [INFO] [LED] mode neutral -> neutral
+23:11:07 [INFO] [API] command move stop
+23:11:07 [INFO] [API] stop
+23:11:07 [INFO] [MOTORS] stop
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:07 [INFO] [API] command move left
+23:11:07 [INFO] [API] turn left speed=None
+23:11:07 [INFO] [MOTORS] left speed=0.25
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:07 [INFO] [IDLE] blink
+23:11:07 [INFO] [FACE] sequence blink
+23:11:07 [INFO] [API] command move stop
+23:11:07 [INFO] [API] stop
+23:11:07 [INFO] [MOTORS] stop
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:08 [INFO] [FACE] sequence neutral
+23:11:09 [INFO] [API] command move left
+23:11:09 [INFO] [API] turn left speed=None
+23:11:09 [INFO] [MOTORS] left speed=0.25
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:09 [INFO] [API] command move stop
+23:11:09 [INFO] [API] stop
+23:11:09 [INFO] [MOTORS] stop
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:09 [INFO] [API] command move right
+23:11:09 [INFO] [API] turn right speed=None
+23:11:09 [INFO] [MOTORS] right speed=0.25
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:10 [INFO] [API] command move stop
+23:11:10 [INFO] [API] stop
+23:11:10 [INFO] [MOTORS] stop
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:10 [INFO] [API] command move backward
+23:11:10 [INFO] [API] move backward speed=None
+23:11:10 [INFO] [MOTORS] backward speed=0.30
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:11 [INFO] [API] command move stop
+23:11:11 [INFO] [API] stop
+23:11:11 [INFO] [MOTORS] stop
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:11 [INFO] [API] command move left
+23:11:11 [INFO] [API] turn left speed=None
+23:11:11 [INFO] [MOTORS] left speed=0.25
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:11 [INFO] [API] command move stop
+23:11:11 [INFO] [API] stop
+23:11:11 [INFO] [MOTORS] stop
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:11 [INFO] [IDLE] blink
+23:11:11 [INFO] [FACE] sequence blink
+23:11:12 [INFO] [API] command move right
+23:11:12 [INFO] [API] turn right speed=None
+23:11:12 [INFO] [MOTORS] right speed=0.25
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:12 [INFO] [API] command move stop
+23:11:12 [INFO] [API] stop
+23:11:12 [INFO] [MOTORS] stop
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:13 [INFO] [API] command move forward
+23:11:13 [INFO] [API] move forward speed=None
+23:11:13 [INFO] [MOTORS] forward speed=0.30
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:13 [INFO] [API] command move stop
+23:11:13 [INFO] [API] stop
+23:11:13 [INFO] [MOTORS] stop
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:11:13 [INFO] [FACE] sequence neutral
+23:11:18 [INFO] [IDLE] look_left
+23:11:18 [INFO] [FACE] sequence look_left
+23:11:20 [INFO] [FACE] sequence neutral
+23:11:21 [INFO] [IDLE] blink
+23:11:21 [INFO] [FACE] sequence blink
+23:11:23 [INFO] [FACE] sequence neutral
+INFO:     192.168.0.17:29931 - "GET /state HTTP/1.1" 200 OK
+23:11:26 [INFO] [IDLE] blink
+23:11:26 [INFO] [FACE] sequence blink
+23:11:27 [INFO] [FACE] sequence neutral
+23:11:28 [INFO] [HEALTH] battery=38.0% voltage=14.384V current=-394.0A power=-5667.296W cells_mv=3589,3597,3599,3598 charging=no usb=no temp=46.9C memory=9.4% load=1.70 throttled=0x0
+23:11:28 [INFO] [HEARTBEAT] alive uptime=00:07:02
+23:11:29 [INFO] [IDLE] blink
+23:11:29 [INFO] [FACE] sequence blink
+23:11:31 [INFO] [FACE] sequence neutral
+23:11:35 [INFO] [IDLE] blink
+23:11:35 [INFO] [FACE] sequence blink
+23:11:37 [INFO] [FACE] sequence neutral
+23:11:41 [INFO] [IDLE] look_right
+23:11:41 [INFO] [FACE] sequence look_right
+23:11:44 [INFO] [FACE] sequence neutral
+23:11:46 [INFO] [IDLE] yawn
+23:11:46 [INFO] [FACE] sequence yawn
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137106336 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137107265 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137107479 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137107934 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137108434 HTTP/1.1" 200 OK
+23:11:49 [INFO] [FACE] sequence neutral
+23:11:50 [INFO] [IDLE] blink
+23:11:50 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/style.css?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/mobile.css?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/api.js?v=5 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/controls.js?v=5 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dashboard.js?v=7 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/admin.css?v=2 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dropdowns.js?v=2 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/center.js?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/camera.js?v=5 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/admin.js?v=2 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/pwa.js?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137111811 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137112311 HTTP/1.1" 200 OK
+23:11:52 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137112811 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137113311 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137113811 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:11:55 [INFO] [IDLE] look_high
+23:11:55 [INFO] [FACE] sequence look_high
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:11:58 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:11:58 [INFO] [HEARTBEAT] alive uptime=00:07:32
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:12:00 [INFO] [IDLE] blink
+23:12:00 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:12:01 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     192.168.0.17:55713 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137114106 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:12:05 [INFO] [IDLE] look_right
+23:12:05 [INFO] [FACE] sequence look_right
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:12:08 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:12:10 [INFO] [IDLE] yawn
+23:12:10 [INFO] [FACE] sequence yawn
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:12:13 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:12:16 [INFO] [IDLE] blink
+23:12:16 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:12:18 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:12:21 [INFO] [IDLE] blink
+23:12:21 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:12:23 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:12:27 [INFO] [IDLE] look_down
+23:12:27 [INFO] [FACE] sequence look_down
+23:12:28 [INFO] [HEALTH] battery=37.0% voltage=14.382V current=-391.0A power=-5623.362W cells_mv=3591,3597,3597,3597 charging=no usb=no temp=48.0C memory=8.7% load=1.71 throttled=0x0
+23:12:29 [INFO] [HEARTBEAT] alive uptime=00:08:03
+23:12:29 [INFO] [FACE] sequence neutral
+23:12:33 [INFO] [IDLE] blink
+23:12:33 [INFO] [FACE] sequence blink
+23:12:35 [INFO] [FACE] sequence neutral
+23:12:38 [INFO] [IDLE] yawn
+23:12:38 [INFO] [FACE] sequence yawn
+23:12:41 [INFO] [IDLE] blink
+23:12:42 [INFO] [FACE] sequence neutral
+23:12:47 [INFO] [IDLE] yawn
+23:12:47 [INFO] [FACE] sequence yawn
+23:12:51 [INFO] [FACE] sequence neutral
+23:12:53 [INFO] [IDLE] yawn
+23:12:53 [INFO] [FACE] sequence yawn
+23:12:57 [INFO] [FACE] sequence neutral
+23:12:57 [INFO] [IDLE] double blink
+23:12:57 [INFO] [FACE] sequence double_blink
+23:12:59 [INFO] [HEARTBEAT] alive uptime=00:08:33
+23:13:01 [INFO] [FACE] sequence neutral
+23:13:03 [INFO] [IDLE] blink
+23:13:03 [INFO] [FACE] sequence blink
+23:13:04 [INFO] [FACE] sequence neutral
+23:13:09 [INFO] [IDLE] look_high
+23:13:09 [INFO] [FACE] sequence look_high
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /logs?count=80 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /logs?count=80 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /logs?count=80 HTTP/1.1" 200 OK
+23:13:11 [INFO] [FACE] sequence neutral
+23:13:13 [INFO] [IDLE] blink
+23:13:13 [INFO] [FACE] sequence blink
+23:13:14 [INFO] [FACE] sequence neutral
+23:13:16 [INFO] [IDLE] blink
+23:13:16 [INFO] [FACE] sequence blink
+23:13:18 [INFO] [FACE] sequence neutral
+23:13:20 [INFO] [IDLE] yawn
+23:13:20 [INFO] [FACE] sequence yawn
+23:13:23 [INFO] [IDLE] blink
+23:13:24 [INFO] [FACE] sequence neutral
+23:13:27 [INFO] [IDLE] look_down
+23:13:27 [INFO] [FACE] sequence look_down
+23:13:28 [INFO] [HEALTH] battery=37.0% voltage=14.374V current=-391.0A power=-5620.234W cells_mv=3590,3595,3596,3593 charging=no usb=no temp=46.9C memory=8.7% load=1.78 throttled=0x0
+23:13:29 [INFO] [HEARTBEAT] alive uptime=00:09:03
+23:13:30 [INFO] [FACE] sequence neutral
+23:13:32 [INFO] [IDLE] blink
+23:13:32 [INFO] [FACE] sequence blink
+23:13:34 [INFO] [FACE] sequence neutral
+INFO:     192.168.0.17:61094 - "GET /state HTTP/1.1" 200 OK
+23:13:37 [INFO] [IDLE] look_down
+23:13:37 [INFO] [FACE] sequence look_down
+23:13:39 [INFO] [FACE] sequence neutral
+23:13:43 [INFO] [IDLE] blink
+23:13:43 [INFO] [FACE] sequence blink
+23:13:44 [INFO] [FACE] sequence neutral
+23:13:48 [INFO] [IDLE] blink
+23:13:48 [INFO] [FACE] sequence blink
+23:13:50 [INFO] [FACE] sequence neutral
+23:13:54 [INFO] [IDLE] blink
+23:13:54 [INFO] [FACE] sequence blink
+23:13:56 [INFO] [FACE] sequence neutral
+23:13:58 [INFO] [IDLE] double blink
+23:13:58 [INFO] [FACE] sequence double_blink
+23:14:00 [INFO] [HEARTBEAT] alive uptime=00:09:34
+23:14:02 [INFO] [FACE] sequence neutral
+23:14:02 [INFO] [IDLE] look_down
+23:14:02 [INFO] [FACE] sequence look_down
+23:14:05 [INFO] [FACE] sequence neutral
+23:14:05 [INFO] [IDLE] double blink
+23:14:05 [INFO] [FACE] sequence double_blink
+23:14:08 [INFO] [IDLE] look_right
+23:14:09 [INFO] [FACE] sequence neutral
+23:14:12 [INFO] [IDLE] blink
+23:14:12 [INFO] [FACE] sequence blink
+23:14:13 [INFO] [FACE] sequence neutral
+23:14:18 [INFO] [IDLE] blink
+23:14:18 [INFO] [FACE] sequence blink
+23:14:20 [INFO] [FACE] sequence neutral
+23:14:24 [INFO] [IDLE] blink
+23:14:24 [INFO] [FACE] sequence blink
+23:14:25 [INFO] [FACE] sequence neutral
+23:14:28 [INFO] [HEALTH] battery=37.0% voltage=14.378V current=-376.0A power=-5406.128W cells_mv=3591,3596,3596,3595 charging=no usb=no temp=46.9C memory=8.7% load=1.76 throttled=0x0
+23:14:30 [INFO] [HEARTBEAT] alive uptime=00:10:04
+23:14:30 [INFO] [IDLE] look_down
+23:14:30 [INFO] [FACE] sequence look_down
+23:14:33 [INFO] [FACE] sequence neutral
+23:14:33 [INFO] [IDLE] blink
+23:14:33 [INFO] [FACE] sequence blink
+23:14:35 [INFO] [FACE] sequence neutral
+23:14:39 [INFO] [IDLE] blink
+23:14:39 [INFO] [FACE] sequence blink
+23:14:41 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137213728 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137214730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137215730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137216731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137217730 HTTP/1.1" 200 OK
+23:14:41 [INFO] [API] command face happy
+23:14:41 [INFO] [API] face happy
+23:14:41 [INFO] [FACE] sequence happy
+23:14:42 [INFO] [LED] mode happy -> happy
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137218730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137219731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137220729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137221729 HTTP/1.1" 200 OK
+23:14:42 [INFO] [API] command face sleepy
+23:14:42 [INFO] [API] face sleepy
+23:14:42 [INFO] [FACE] sequence sleepy
+23:14:42 [INFO] [LED] mode sleepy -> sleepy
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137222729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137223730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137224731 HTTP/1.1" 200 OK
+23:14:42 [INFO] [API] command face sleeping
+23:14:42 [INFO] [API] face sleeping
+23:14:42 [INFO] [FACE] sequence sleeping
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137225729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137226729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137227729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137228729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137229731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137230730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137231730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137232729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137233730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137234730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137235730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137236729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137237731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137238731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137239730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137240731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137241731 HTTP/1.1" 200 OK
+INFO:     192.168.0.17:24256 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137242731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137243729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137244730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137245731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137246731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137247731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137248731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137249731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137250731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137251731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137252730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137253731 HTTP/1.1" 200 OK
+23:14:43 [INFO] [LED] mode sleeping -> sleeping
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137254729 HTTP/1.1" 200 OK
+23:14:43 [INFO] [API] command face neutral
+23:14:43 [INFO] [API] face neutral
+23:14:43 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137255729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137256729 HTTP/1.1" 200 OK
+23:14:43 [INFO] [LED] mode neutral -> neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137257729 HTTP/1.1" 200 OK
+23:14:43 [INFO] [API] command face sleeping
+23:14:43 [INFO] [API] face sleeping
+23:14:43 [INFO] [FACE] sequence sleeping
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137258729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137259729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137260730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137261731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137262732 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137263731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137264730 HTTP/1.1" 200 OK
+23:14:43 [INFO] [API] command shell rocket
+23:14:43 [INFO] [API] shell rocket
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137265729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137266730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137267730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137268730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137269730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137270730 HTTP/1.1" 200 OK
+23:14:43 [INFO] [LED] mode sleeping -> sleeping
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137271730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137272731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137273731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137274731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137275731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137276731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137277731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137278731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137279731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137280731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137281730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:14:44 [INFO] [FACE] sequence happy
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137282729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137283729 HTTP/1.1" 200 OK
+23:14:44 [INFO] [LED] mode happy -> happy
+23:14:44 [INFO] [LED] mode rocket -> rocket_launch
+23:14:44 [INFO] [SHELL] mode rocket duration=60s face=happy led=rocket
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137284730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137285729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49838 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137286729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137287729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137288729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137289729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137290729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137291729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137292729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137293729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137294729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137295729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137296729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137297730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137298731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137299731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:15:00 [INFO] [HEARTBEAT] alive uptime=00:10:34
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137300730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137301731 HTTP/1.1" 200 OK
+INFO:     192.168.0.17:39857 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137302731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137303731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137304731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137305731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137306731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137307731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137308730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137309731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137310731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137311730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137312729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137313730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137314731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137315730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137316729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137317731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137318731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137319730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137320729 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137213496 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137321730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49840 - "GET /thermal/frame HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43046 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137322731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137323731 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137324730 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137326333 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137327333 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:15:28 [INFO] [HEALTH] battery=37.0% voltage=14.368V current=-379.0A power=-5445.472W cells_mv=3589,3593,3593,3593 charging=no usb=no temp=48.0C memory=9.4% load=1.72 throttled=0x0
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137328333 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137329333 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137330333 HTTP/1.1" 200 OK
+23:15:31 [INFO] [HEARTBEAT] alive uptime=00:11:05
+23:15:44 [INFO] [SHELL] mode rocket expired
+23:15:44 [INFO] [FACE] sequence neutral
+23:15:44 [INFO] [LED] mode neutral -> neutral
+23:15:44 [INFO] [LED] mode neutral -> neutral
+23:15:44 [INFO] [IDLE] blink
+23:15:44 [INFO] [FACE] sequence blink
+23:15:46 [INFO] [FACE] sequence neutral
+23:15:49 [INFO] [IDLE] blink
+23:15:49 [INFO] [FACE] sequence blink
+23:15:50 [INFO] [FACE] sequence neutral
+23:15:53 [INFO] [IDLE] yawn
+23:15:53 [INFO] [FACE] sequence yawn
+23:15:56 [INFO] [FACE] sequence neutral
+23:15:57 [INFO] [IDLE] blink
+23:15:57 [INFO] [FACE] sequence blink
+23:15:59 [INFO] [FACE] sequence neutral
+23:16:00 [INFO] [IDLE] look_down
+23:16:00 [INFO] [FACE] sequence look_down
+23:16:01 [INFO] [HEARTBEAT] alive uptime=00:11:35
+INFO:     192.168.0.17:6766 - "GET /state HTTP/1.1" 200 OK
+23:16:03 [INFO] [FACE] sequence neutral
+23:16:03 [INFO] [IDLE] blink
+23:16:03 [INFO] [FACE] sequence blink
+23:16:05 [INFO] [FACE] sequence neutral
+23:16:08 [INFO] [IDLE] blink
+23:16:08 [INFO] [FACE] sequence blink
+23:16:10 [INFO] [FACE] sequence neutral
+23:16:13 [INFO] [IDLE] blink
+23:16:13 [INFO] [FACE] sequence blink
+23:16:15 [INFO] [FACE] sequence neutral
+23:16:20 [INFO] [IDLE] blink
+23:16:20 [INFO] [FACE] sequence blink
+23:16:22 [INFO] [FACE] sequence neutral
+23:16:26 [INFO] [IDLE] look_high
+23:16:26 [INFO] [FACE] sequence look_high
+23:16:28 [INFO] [FACE] sequence neutral
+23:16:28 [INFO] [HEALTH] battery=37.0% voltage=14.367V current=-362.0A power=-5200.854W cells_mv=3588,3593,3593,3593 charging=no usb=no temp=48.0C memory=8.7% load=1.15 throttled=0x0
+23:16:30 [INFO] [IDLE] double blink
+23:16:30 [INFO] [FACE] sequence double_blink
+23:16:31 [INFO] [HEARTBEAT] alive uptime=00:12:05
+23:16:33 [INFO] [FACE] sequence neutral
+23:16:34 [INFO] [IDLE] blink
+23:16:34 [INFO] [FACE] sequence blink
+23:16:35 [INFO] [FACE] sequence neutral
+23:16:36 [INFO] [IDLE] look_down
+23:16:36 [INFO] [FACE] sequence look_down
+23:16:39 [INFO] [FACE] sequence neutral
+23:16:41 [INFO] [IDLE] look_right
+23:16:41 [INFO] [FACE] sequence look_right
+23:16:43 [INFO] [FACE] sequence neutral
+23:16:45 [INFO] [IDLE] yawn
+23:16:45 [INFO] [FACE] sequence yawn
+23:16:48 [INFO] [FACE] sequence neutral
+23:16:51 [INFO] [IDLE] double blink
+23:16:51 [INFO] [FACE] sequence double_blink
+23:16:55 [INFO] [FACE] sequence neutral
+23:16:57 [INFO] [IDLE] blink
+23:16:57 [INFO] [FACE] sequence blink
+23:16:59 [INFO] [FACE] sequence neutral
+23:17:02 [INFO] [HEARTBEAT] alive uptime=00:12:36
+23:17:02 [INFO] [IDLE] blink
+23:17:02 [INFO] [FACE] sequence blink
+INFO:     192.168.0.17:32174 - "GET /state HTTP/1.1" 200 OK
+23:17:03 [INFO] [FACE] sequence neutral
+23:17:08 [INFO] [IDLE] blink
+23:17:08 [INFO] [FACE] sequence blink
+23:17:09 [INFO] [FACE] sequence neutral
+23:17:10 [INFO] [IDLE] look_down
+23:17:10 [INFO] [FACE] sequence look_down
+23:17:13 [INFO] [FACE] sequence neutral
+23:17:13 [INFO] [IDLE] blink
+23:17:13 [INFO] [FACE] sequence blink
+23:17:15 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137331333 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137435680 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137433758 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137389012 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137378061 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137434678 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137333334 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137418708 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137334333 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137336787 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137375062 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137377062 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137374061 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137357293 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137343733 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137436074 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137376061 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137332333 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137437074 HTTP/1.1" 200 OK
+23:17:20 [INFO] [IDLE] look_left
+23:17:20 [INFO] [FACE] sequence look_left
+23:17:22 [INFO] [FACE] sequence neutral
+23:17:24 [INFO] [IDLE] blink
+23:17:24 [INFO] [FACE] sequence blink
+23:17:25 [INFO] [FACE] sequence neutral
+23:17:27 [INFO] [IDLE] blink
+23:17:27 [INFO] [FACE] sequence blink

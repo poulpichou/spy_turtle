@@ -1,0 +1,1005 @@
+============================================================
+Spy Turtle startup
+Date: 2026-08-07 23:20:30 CEST
+Host: spyturtle
+Kernel: 6.18.34+rpt-rpi-2712
+============================================================
+23:20:31 [INFO] Starting Spy Turtle
+23:20:31 [INFO] [TB6612] ready STBY=5 A=(12,6,13) B=(26,16,20)
+23:20:31 [INFO] [MOTORS] ready left_inverted=True right_inverted=False encoders=False
+23:20:31 [INFO] [LED] ready device=/dev/leds0 count=32
+[0:35:34.531108299] [2314]  INFO Camera camera_manager.cpp:340 libcamera v0.7.1+rpt20260609
+[0:35:34.539836889] [2346]  INFO RPI pisp.cpp:720 libpisp version v1.5.0 01-05-2026 (05:33:53)
+[0:35:34.552443778] [2346]  INFO IPAProxy ipa_proxy.cpp:184 Using tuning file /usr/share/libcamera/ipa/rpi/pisp/imx708.json
+[0:35:34.560377134] [2346]  INFO Camera camera_manager.cpp:223 Adding camera '/base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a' for pipeline handler rpi/pisp
+[0:35:34.560422930] [2346]  INFO RPI pisp.cpp:1181 Registered camera /base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a to CFE device /dev/media0 and ISP device /dev/media2 using PiSP variant BCM2712_D0
+[0:35:34.563123388] [2346]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc30
+[0:35:34.563150110] [2346]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc12
+[0:35:34.563791790] [2314]  INFO Camera camera.cpp:1216 configuring streams: (0) 1280x720-RGB888/Rec709/Rec709/None/Full (1) 1536x864-BGGR_PISP_COMP1/RAW
+[0:35:34.563906603] [2346]  INFO RPI pisp.cpp:1485 Sensor: /base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a - Selected sensor format: 1536x864-SBGGR10_1X10/RAW - Selected CFE format: 1536x864-PC1B/RAW
+23:20:31 [INFO] [CAMERA] ready
+/home/spy/spy_turtle/.venv/lib/python3.13/site-packages/adafruit_blinka/microcontroller/generic_linux/i2c.py:30: RuntimeWarning: I2C frequency is not settable in python, ignoring!
+  warnings.warn(
+23:20:31 [INFO] [THERMAL] MLX90640 ready address=0x33 refresh=2Hz nonblocking=true
+23:20:31 [INFO] [SPEAKER] ready device=plughw:CARD=MAX98357A,DEV=0
+23:20:31 [INFO] [SERVO] pan GPIO17 ready detached center=0.0 pulse=1500
+23:20:31 [INFO] [SERVO] tilt GPIO27 ready detached center=0.0 pulse=1650
+[Battery] ready
+[OLEDDisplay] left ready at 0x3c
+[OLEDDisplay] right ready at 0x3d
+[EyesRenderer] ready
+23:20:32 [INFO] [FACE] sequence neutral
+23:20:32 [INFO] [LED] mode neutral -> neutral
+[Robot] initialized
+[Brain] initialized
+23:20:32 [INFO] [LED] mode red -> solid_red
+23:20:32 [INFO] [LED TEST] 32 LEDs set to solid red
+23:20:32 [INFO] Robot ready
+23:20:32 [INFO] Main loop started
+23:20:32 [DEBUG] [SERVO] pan angle=0.0 pulse=1500
+23:20:32 [DEBUG] [SERVO] tilt angle=0.0 pulse=1650
+23:20:32 [INFO] [HEARTBEAT] alive uptime=00:00:00
+23:20:32 [INFO] [HEALTH] battery=37.0% voltage=14.367V current=-348.0A power=-4999.716W cells_mv=3588,3593,3593,3593 charging=no usb=no temp=47.4C memory=7.4% load=0.05 throttled=0x0
+23:20:32 [INFO] Starting API
+INFO:     Started server process [2314]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+23:20:37 [INFO] [IDLE] blink
+23:20:37 [INFO] [FACE] sequence blink
+23:20:39 [INFO] [FACE] sequence neutral
+23:20:40 [INFO] [IDLE] blink
+23:20:40 [INFO] [FACE] sequence blink
+23:20:42 [INFO] [FACE] sequence neutral
+23:20:43 [INFO] [IDLE] look_down
+23:20:43 [INFO] [FACE] sequence look_down
+23:20:46 [INFO] [FACE] sequence neutral
+23:20:47 [INFO] [IDLE] blink
+23:20:47 [INFO] [FACE] sequence blink
+23:20:48 [INFO] [FACE] sequence neutral
+23:20:50 [INFO] [IDLE] look_left
+23:20:50 [INFO] [FACE] sequence look_left
+23:20:52 [INFO] [FACE] sequence neutral
+23:20:56 [INFO] [IDLE] double blink
+23:20:56 [INFO] [FACE] sequence double_blink
+23:20:59 [INFO] [FACE] sequence neutral
+23:21:00 [INFO] [IDLE] double blink
+23:21:00 [INFO] [FACE] sequence double_blink
+INFO:     127.0.0.1:40922 - "GET /thermal/frame HTTP/1.1" 200 OK
+INFO:     192.168.0.17:12279 - "GET /state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40930 - "GET /thermal/frame HTTP/1.1" 200 OK
+23:21:02 [INFO] [HEARTBEAT] alive uptime=00:00:30
+INFO:     127.0.0.1:40940 - "GET /state HTTP/1.1" 200 OK
+23:21:03 [INFO] [FACE] sequence neutral
+23:21:05 [INFO] [IDLE] look_left
+23:21:05 [INFO] [FACE] sequence look_left
+23:21:08 [INFO] [FACE] sequence neutral
+23:21:11 [INFO] [IDLE] blink
+23:21:11 [INFO] [FACE] sequence blink
+23:21:12 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/style.css?v=9 HTTP/1.1" 200 OK
+[0:36:19.183824490] [2346] ERROR V4L2 v4l2_videodevice.cpp:1998 /dev/video7[27:out]: Failed to start streaming: Broken pipe
+23:21:15 [WARN] [CAMERA] start failed, recreating camera: Failed to start camera: Broken pipe
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/mobile.css?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/admin.css?v=2 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/api.js?v=5 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dashboard.js?v=7 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/controls.js?v=5 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dropdowns.js?v=2 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/camera.js?v=5 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/center.js?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/admin.js?v=2 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/pwa.js?v=9 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+[0:36:19.710314607] [2346]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc30
+[0:36:19.710351107] [2346]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc12
+[0:36:19.710717733] [2371]  INFO Camera camera.cpp:1216 configuring streams: (0) 1280x720-RGB888/Rec709/Rec709/None/Full (1) 1536x864-BGGR_PISP_COMP1/RAW
+[0:36:19.710817362] [2346]  INFO RPI pisp.cpp:1485 Sensor: /base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a - Selected sensor format: 1536x864-SBGGR10_1X10/RAW - Selected CFE format: 1536x864-PC1B/RAW
+23:21:16 [INFO] [CAMERA] started
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137676271 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137676770 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137677271 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137677600 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:21:18 [INFO] [IDLE] blink
+23:21:18 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137678100 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137678601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137679100 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137679601 HTTP/1.1" 200 OK
+23:21:19 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137680101 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137680601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137681101 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137681602 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:21:21 [INFO] [IDLE] look_high
+23:21:21 [INFO] [FACE] sequence look_high
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137682100 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137682600 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137683100 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137683601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137684101 HTTP/1.1" 200 OK
+23:21:24 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137684601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137685101 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137685601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137686101 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137686601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137687101 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137687601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137688101 HTTP/1.1" 200 OK
+23:21:28 [INFO] [IDLE] yawn
+23:21:28 [INFO] [FACE] sequence yawn
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137688601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137689100 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137689601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137690101 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137690600 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137691100 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137691602 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:21:32 [INFO] [IDLE] look_high
+23:21:32 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137692100 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137692602 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:21:32 [INFO] [HEALTH] battery=36.0% voltage=14.349V current=-384.0A power=-5510.016W cells_mv=3583,3589,3589,3588 charging=no usb=no temp=47.4C memory=7.7% load=0.89 throttled=0x0
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137693102 HTTP/1.1" 200 OK
+23:21:33 [INFO] [HEARTBEAT] alive uptime=00:01:00
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137693602 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137694101 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137694602 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137695101 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137695600 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137696101 HTTP/1.1" 200 OK
+23:21:36 [INFO] [IDLE] blink
+23:21:36 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137696602 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137697101 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137697601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:21:37 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137698101 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137698601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137699101 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137699602 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137700100 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137700602 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137701100 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137701601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137702101 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137702601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:21:42 [INFO] [IDLE] blink
+23:21:42 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137703101 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137703601 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137703849 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137704350 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137704550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:21:44 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137705050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137705551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137706051 HTTP/1.1" 200 OK
+23:21:46 [INFO] [API] command move forward
+23:21:46 [INFO] [API] move forward speed=None
+23:21:46 [INFO] [MOTORS] forward speed=0.30
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:21:46 [INFO] [API] command move stop
+23:21:46 [INFO] [API] stop
+23:21:46 [INFO] [MOTORS] stop
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137706550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:21:46 [INFO] [API] command move left
+23:21:46 [INFO] [API] turn left speed=None
+23:21:46 [INFO] [MOTORS] left speed=0.25
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:21:47 [INFO] [API] command move stop
+23:21:47 [INFO] [API] stop
+23:21:47 [INFO] [MOTORS] stop
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137707051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:21:47 [INFO] [API] command move right
+23:21:47 [INFO] [API] turn right speed=None
+23:21:47 [INFO] [MOTORS] right speed=0.25
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:21:47 [INFO] [API] command move stop
+23:21:47 [INFO] [API] stop
+23:21:47 [INFO] [MOTORS] stop
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137707550 HTTP/1.1" 200 OK
+23:21:47 [INFO] [API] command move backward
+23:21:47 [INFO] [API] move backward speed=None
+23:21:47 [INFO] [MOTORS] backward speed=0.30
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:21:47 [INFO] [API] command move stop
+23:21:47 [INFO] [API] stop
+23:21:47 [INFO] [MOTORS] stop
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137708051 HTTP/1.1" 200 OK
+23:21:48 [INFO] [API] command move forward
+23:21:48 [INFO] [API] move forward speed=None
+23:21:48 [INFO] [MOTORS] forward speed=0.30
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:21:48 [INFO] [API] command move stop
+23:21:48 [INFO] [API] stop
+23:21:48 [INFO] [MOTORS] stop
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137708551 HTTP/1.1" 200 OK
+23:21:48 [INFO] [IDLE] blink
+23:21:48 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137709051 HTTP/1.1" 200 OK
+23:21:49 [INFO] [API] command head left
+23:21:49 [INFO] [API] camera left
+23:21:49 [INFO] [SERVO] pan target -5.0
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:21:49 [DEBUG] [SERVO] pan angle=-5.0 pulse=1530
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137709552 HTTP/1.1" 200 OK
+23:21:49 [INFO] [API] command head right
+23:21:49 [INFO] [API] camera right
+23:21:49 [INFO] [SERVO] pan target 0.0
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:21:49 [DEBUG] [SERVO] pan angle=0.0 pulse=1500
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137710050 HTTP/1.1" 200 OK
+23:21:50 [INFO] [API] command head down
+23:21:50 [INFO] [API] camera down
+23:21:50 [INFO] [SERVO] tilt target 5.0
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+23:21:50 [DEBUG] [SERVO] pan angle=0.0 pulse=1500
+23:21:50 [DEBUG] [SERVO] tilt angle=5.0 pulse=1615
+23:21:50 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137710550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:21:50 [DEBUG] [SERVO] tilt angle=5.0 pulse=1615
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137711050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137711551 HTTP/1.1" 200 OK
+23:21:51 [INFO] [API] command face happy
+23:21:51 [INFO] [API] face happy
+23:21:51 [INFO] [FACE] sequence happy
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:21:51 [INFO] [LED] mode happy -> happy
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137712051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137712551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137713050 HTTP/1.1" 200 OK
+23:21:53 [INFO] [API] command face sleepy
+23:21:53 [INFO] [API] face sleepy
+23:21:53 [INFO] [FACE] sequence sleepy
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137713550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:21:53 [INFO] [LED] mode sleepy -> sleepy
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137714050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137714550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137715051 HTTP/1.1" 200 OK
+23:21:55 [INFO] [API] command shell log
+23:21:55 [INFO] [API] shell log
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137715550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137716050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137716551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137717051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137717552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137718051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137718551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137719051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137719551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137720051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137720552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137721052 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137721551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     192.168.0.17:61748 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137722051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137722552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137723051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137723551 HTTP/1.1" 200 OK
+23:22:03 [INFO] [HEARTBEAT] alive uptime=00:01:31
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:22:03 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137724051 HTTP/1.1" 200 OK
+23:22:04 [INFO] [LED] mode neutral -> neutral
+23:22:04 [INFO] [IDLE] blink
+23:22:04 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137724552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137725051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137725552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137726051 HTTP/1.1" 200 OK
+23:22:06 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137726551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137727050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137727552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137728050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137728551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:22:08 [INFO] [IDLE] blink
+23:22:08 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137729051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137729552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137730050 HTTP/1.1" 200 OK
+23:22:10 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137730551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137731051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137731552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137732050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137732551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137733051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137733552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137734051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137734552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137735051 HTTP/1.1" 200 OK
+23:22:15 [INFO] [IDLE] blink
+23:22:15 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137735552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137736050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137736552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:22:16 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137737051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137737552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137738050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137738552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137739051 HTTP/1.1" 200 OK
+23:22:19 [INFO] [IDLE] blink
+23:22:19 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137739552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137740051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137740552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137741051 HTTP/1.1" 200 OK
+23:22:21 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137741551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137742051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137742552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137743051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137743552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137744051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137744552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137745051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137745552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:22:25 [INFO] [IDLE] yawn
+23:22:25 [INFO] [FACE] sequence yawn
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137746051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137746551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137747050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137747552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137748051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137748551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137749050 HTTP/1.1" 200 OK
+23:22:29 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137749551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137750051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137750552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:22:30 [INFO] [IDLE] double blink
+23:22:30 [INFO] [FACE] sequence double_blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137751050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137751551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137752051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137752552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:22:33 [INFO] [HEALTH] battery=36.0% voltage=14.348V current=-378.0A power=-5423.544W cells_mv=3583,3589,3589,3588 charging=no usb=no temp=48.0C memory=7.4% load=1.35 throttled=0x0
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137753051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137753551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:22:33 [INFO] [HEARTBEAT] alive uptime=00:02:01
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137754051 HTTP/1.1" 200 OK
+23:22:34 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137754552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137755051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137755551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137756051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137756552 HTTP/1.1" 200 OK
+23:22:36 [INFO] [IDLE] look_down
+23:22:36 [INFO] [FACE] sequence look_down
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137757051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137757551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137758051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137758552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137759050 HTTP/1.1" 200 OK
+23:22:39 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137759551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137760051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137760552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137761050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137761551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:22:42 [INFO] [IDLE] blink
+23:22:42 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137762051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137762552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137763050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137763552 HTTP/1.1" 200 OK
+23:22:43 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137764050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137764552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137765050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137765552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137766051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137766552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:22:46 [INFO] [IDLE] yawn
+23:22:46 [INFO] [FACE] sequence yawn
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137767051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137767552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137768051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137768551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137769050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137769551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137770051 HTTP/1.1" 200 OK
+23:22:50 [INFO] [IDLE] blink
+23:22:50 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137770552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137771051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137771552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137772051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137772550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137773051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137773551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137774051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137774551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137775051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137775550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137776051 HTTP/1.1" 200 OK
+23:22:56 [INFO] [IDLE] look_down
+23:22:56 [INFO] [FACE] sequence look_down
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137776550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137777050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137777551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137778051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137778550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:22:58 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137779051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137779550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137780050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137780550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137781050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137781550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137782051 HTTP/1.1" 200 OK
+INFO:     192.168.0.17:49185 - "GET /state HTTP/1.1" 200 OK
+23:23:02 [INFO] [IDLE] double blink
+23:23:02 [INFO] [FACE] sequence double_blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137782550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137783051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137783550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:23:04 [INFO] [HEARTBEAT] alive uptime=00:02:31
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137784050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137784550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137785051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137785550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:23:06 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137786051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137786550 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137787051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137787550 HTTP/1.1" 200 OK
+23:23:07 [INFO] [IDLE] blink
+23:23:07 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137788051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137788551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137789051 HTTP/1.1" 200 OK
+23:23:09 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137789551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137790051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137790552 HTTP/1.1" 200 OK
+23:23:10 [INFO] [IDLE] look_right
+23:23:10 [INFO] [FACE] sequence look_right
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137791051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137791552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137792051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137792551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137793050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137793552 HTTP/1.1" 200 OK
+23:23:13 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137794051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137794552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137795051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137795551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137796051 HTTP/1.1" 200 OK
+23:23:16 [INFO] [IDLE] blink
+23:23:16 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137796552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137797051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137797552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:23:17 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137798051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137798552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137799051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137799553 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137800051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137800551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137801050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137801552 HTTP/1.1" 200 OK
+23:23:21 [INFO] [IDLE] blink
+23:23:21 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137802051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137802552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137803051 HTTP/1.1" 200 OK
+23:23:23 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137803552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137804051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137804552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:23:24 [INFO] [IDLE] yawn
+23:23:24 [INFO] [FACE] sequence yawn
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137805051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137805552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137806051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137806552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137807052 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137807552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137808052 HTTP/1.1" 200 OK
+23:23:28 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137808551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137809051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137809552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137810051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137810552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:23:31 [INFO] [IDLE] yawn
+23:23:31 [INFO] [FACE] sequence yawn
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137811051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137811552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137812051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137812551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137813051 HTTP/1.1" 200 OK
+23:23:33 [INFO] [HEALTH] battery=36.0% voltage=14.341V current=-392.0A power=-5621.672W cells_mv=3582,3587,3587,3585 charging=no usb=no temp=47.4C memory=7.5% load=1.64 throttled=0x0
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137813552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137814051 HTTP/1.1" 200 OK
+23:23:34 [INFO] [HEARTBEAT] alive uptime=00:03:02
+23:23:34 [INFO] [IDLE] look_down
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137814553 HTTP/1.1" 200 OK
+23:23:34 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137815051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137815552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137816051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137816552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137817051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137817552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137818051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137818552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137819050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137819552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137820051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137820552 HTTP/1.1" 200 OK
+23:23:40 [INFO] [IDLE] yawn
+23:23:40 [INFO] [FACE] sequence yawn
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137821051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137821552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137822051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137822552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137823051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137823552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137824051 HTTP/1.1" 200 OK
+23:23:44 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137824551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137825050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137825552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:23:45 [INFO] [IDLE] look_left
+23:23:45 [INFO] [FACE] sequence look_left
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137826051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137826552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137827051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137827552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137828050 HTTP/1.1" 200 OK
+23:23:48 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137828553 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137829050 HTTP/1.1" 200 OK
+23:23:49 [INFO] [IDLE] double blink
+23:23:49 [INFO] [FACE] sequence double_blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137829552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137830051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137830552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137831052 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137831552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137832050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137832551 HTTP/1.1" 200 OK
+23:23:52 [INFO] [IDLE] blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137833051 HTTP/1.1" 200 OK
+23:23:53 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137833551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137834051 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137834551 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137835050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137835552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137836050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137836552 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137837050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137838170 HTTP/1.1" 200 OK
+23:23:58 [INFO] [IDLE] sleep for 11.6s
+23:23:58 [INFO] [FACE] sequence sleeping
+23:23:59 [INFO] [LED] mode sleeping -> sleeping
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137839170 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137840172 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137841171 HTTP/1.1" 200 OK
+INFO:     192.168.0.17:45865 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137842171 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:24:04 [INFO] [HEARTBEAT] alive uptime=00:03:32
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137847317 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137848242 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137848623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137849122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137849622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137850122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137850622 HTTP/1.1" 200 OK
+23:24:10 [INFO] [IDLE] wake up (timer)
+23:24:10 [INFO] [FACE] sequence wake_up
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137851123 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137851622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137852122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137852622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137853122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137853624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137854123 HTTP/1.1" 200 OK
+23:24:14 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137854622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137855122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137855622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137856122 HTTP/1.1" 200 OK
+23:24:16 [INFO] [IDLE] look_down
+23:24:16 [INFO] [FACE] sequence look_down
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137856624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137857122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137857624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137858122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137858624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:24:19 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137859122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137859623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137860123 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137860623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137861122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137861623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137862122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137862624 HTTP/1.1" 200 OK
+23:24:22 [INFO] [IDLE] blink
+23:24:22 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137863122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137863624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137864122 HTTP/1.1" 200 OK
+23:24:24 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137864623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137865123 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137865622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:24:26 [INFO] [IDLE] blink
+23:24:26 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137866122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137866622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137867122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137867623 HTTP/1.1" 200 OK
+23:24:27 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137868122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137868623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137869123 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137869623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137870123 HTTP/1.1" 200 OK
+23:24:30 [INFO] [IDLE] blink
+23:24:30 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137870624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137871122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137871624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:24:31 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137872122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137872622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137873122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137873623 HTTP/1.1" 200 OK
+23:24:33 [INFO] [HEALTH] battery=36.0% voltage=14.338V current=-375.0A power=-5376.75W cells_mv=3580,3585,3587,3586 charging=no usb=no temp=48.5C memory=7.4% load=1.67 throttled=0x0
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137874122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137874624 HTTP/1.1" 200 OK
+23:24:34 [INFO] [HEARTBEAT] alive uptime=00:04:02
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137875122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137875623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:24:35 [INFO] [IDLE] look_high
+23:24:35 [INFO] [FACE] sequence look_high
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137876122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137876624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137877122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137877623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137878122 HTTP/1.1" 200 OK
+23:24:38 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137878623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137879122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137879624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137880122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137880623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137881123 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137881623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137882123 HTTP/1.1" 200 OK
+23:24:42 [INFO] [IDLE] look_left
+23:24:42 [INFO] [FACE] sequence look_left
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137882624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137883122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137883623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137884122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137884622 HTTP/1.1" 200 OK
+23:24:45 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137885242 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137886242 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137887242 HTTP/1.1" 200 OK
+23:24:47 [INFO] [IDLE] blink
+23:24:47 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137888243 HTTP/1.1" 200 OK
+23:24:49 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137889242 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137889622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137890122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137890622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:24:50 [INFO] [IDLE] blink
+23:24:50 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137891122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137891622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137892122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137892622 HTTP/1.1" 200 OK
+23:24:52 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137893123 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137893622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137894122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137895243 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:24:55 [INFO] [IDLE] double blink
+23:24:55 [INFO] [FACE] sequence double_blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137895768 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137896122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137896622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137897122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137897622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137898122 HTTP/1.1" 200 OK
+23:24:58 [INFO] [IDLE] double blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137898623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:24:58 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137899123 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137899624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137900122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137900624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137901122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137901624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137902122 HTTP/1.1" 200 OK
+INFO:     192.168.0.17:6486 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137902622 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137903122 HTTP/1.1" 200 OK
+23:25:03 [INFO] [IDLE] blink
+23:25:03 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137903623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137904122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137904623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:25:05 [INFO] [HEARTBEAT] alive uptime=00:04:32
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137905123 HTTP/1.1" 200 OK
+23:25:05 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137905623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137906122 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137906624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137907123 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137907624 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137908122 HTTP/1.1" 200 OK
+23:25:08 [INFO] [IDLE] blink
+23:25:08 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137908623 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137909122 HTTP/1.1" 200 OK
+23:25:10 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137910242 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137911242 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:25:11 [INFO] [IDLE] sleep for 11.9s
+23:25:11 [INFO] [FACE] sequence sleeping
+23:25:11 [INFO] [LED] mode sleeping -> sleeping
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137912243 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137917310 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137922217 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
+23:25:23 [INFO] [IDLE] wake up (timer)
+23:25:23 [INFO] [FACE] sequence wake_up
+23:25:27 [INFO] [IDLE] blink
+23:25:27 [INFO] [FACE] sequence neutral
