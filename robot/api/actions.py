@@ -48,6 +48,10 @@ def camera_start():
 def camera_stop():
     instance=interact("camera_stop");log.info("[API] camera stop");instance.camera.stop();instance.state.camera_on=False
 def camera_frame(): return robot().camera.get_frame()
+def thermal_frame():
+    instance=robot()
+    if not instance.thermal_camera:raise RuntimeError("Thermal camera is unavailable")
+    return instance.thermal_camera.get_frame()
 
 def speak(text):
     instance=interact(f"sound:{text}");log.info(f"[API] speak {text}")

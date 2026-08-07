@@ -1,0 +1,114 @@
+import time
+from io import BytesIO
+from threading import RLock
+from PIL import Image,ImageDraw
+from robot.config import settings
+from robot.utils.logger import log
+
+class ThermalCamera:
+    SENSOR_WIDTH=32
+    SENSOR_HEIGHT=24
+    PIXELS=SENSOR_WIDTH*SENSOR_HEIGHT
+
+    def __init__(self):
+        import adafruit_mlx90640
+        import board
+        import busio
+        self.adafruit_mlx90640=adafruit_mlx90640
+        self.lock=RLock()
+        self.frame=[0.0]*self.PIXELS
+        self.last_frame=None
+        self.last_error=None
+        self.i2c=busio.I2C(board.SCL,board.SDA,frequency=settings.THERMAL_I2C_FREQUENCY)
+        self.sensor=adafruit_mlx90640.MLX90640(self.i2c,address=settings.THERMAL_CAMERA_ADDRESS)
+        self.sensor.refresh_rate=self._refresh_rate(settings.THERMAL_REFRESH_RATE_HZ)
+        log.info(f"[THERMAL] MLX90640 ready address=0x{settings.THERMAL_CAMERA_ADDRESS:02X} refresh={settings.THERMAL_REFRESH_RATE_HZ}Hz")
+
+    def _refresh_rate(self,hz):
+        rates={
+            0.5:self.adafruit_mlx90640.RefreshRate.REFRESH_0_5_HZ,
+            1:self.adafruit_mlx90640.RefreshRate.REFRESH_1_HZ,
+            2:self.adafruit_mlx90640.RefreshRate.REFRESH_2_HZ,
+            4:self.adafruit_mlx90640.RefreshRate.REFRESH_4_HZ,
+            8:self.adafruit_mlx90640.RefreshRate.REFRESH_8_HZ,
+            16:self.adafruit_mlx90640.RefreshRate.REFRESH_16_HZ,
+            32:self.adafruit_mlx90640.RefreshRate.REFRESH_32_HZ,
+            64:self.adafruit_mlx90640.RefreshRate.REFRESH_64_HZ
+        }
+        return rates.get(hz,rates[2])
+
+    def read_temperatures(self):
+        with self.lock:
+            error=None
+            for _ in range(8):
+                try:
+                    self.sensor.getFrame(self.frame)
+                    values=list(self.frame)
+                    self.last_frame=time.time()
+                    self.last_error=None
+                    return values
+                except (ValueError,RuntimeError) as exc:
+                    error=exc
+                    time.sleep(0.02)
+            self.last_error=str(error)
+            raise RuntimeError(f"MLX90640 frame read failed: {error}") from error
+
+    @staticmethod
+    def _range(values):
+        ordered=sorted(v for v in values if -100<v<500)
+        if not ordered:return 20.0,40.0
+        low=ordered[max(0,int(len(ordered)*0.05)-1)]
+        high=ordered[min(len(ordered)-1,int(len(ordered)*0.95))]
+        if high-low<2:
+            center=(high+low)/2
+            return center-1,center+1
+        return low,high
+
+    @staticmethod
+    def _palette(value):
+        stops=((0.00,(0,0,0)),(0.20,(45,0,75)),(0.42,(145,0,85)),(0.62,(230,35,25)),(0.80,(255,145,0)),(0.93,(255,235,60)),(1.00,(255,255,255)))
+        value=max(0.0,min(1.0,value))
+        for index in range(1,len(stops)):
+            p1,c1=stops[index-1];p2,c2=stops[index]
+            if value<=p2:
+                ratio=(value-p1)/(p2-p1)
+                return tuple(round(c1[i]+(c2[i]-c1[i])*ratio) for i in range(3))
+        return stops[-1][1]
+
+    def _image(self,values):
+        low,high=self._range(values)
+        scale=max(0.001,high-low)
+        pixels=[self._palette((value-low)/scale) for value in values]
+        image=Image.new("RGB",(self.SENSOR_WIDTH,self.SENSOR_HEIGHT))
+        image.putdata(pixels)
+        image=image.resize((settings.THERMAL_OUTPUT_WIDTH,settings.THERMAL_OUTPUT_HEIGHT),Image.Resampling.BICUBIC)
+        rotation=settings.THERMAL_ROTATION%360
+        if rotation:image=image.rotate(rotation,expand=False)
+        draw=ImageDraw.Draw(image)
+        minimum=min(values);maximum=max(values);center=values[(self.SENSOR_HEIGHT//2)*self.SENSOR_WIDTH+self.SENSOR_WIDTH//2]
+        text=f"{minimum:.1f}C  center {center:.1f}C  max {maximum:.1f}C"
+        box=draw.textbbox((0,0),text)
+        draw.rectangle((4,4,box[2]+10,box[3]+10),fill=(0,0,0))
+        draw.text((7,6),text,fill=(255,255,255))
+        return image
+
+    def get_frame(self):
+        image=self._image(self.read_temperatures())
+        buffer=BytesIO()
+        image.save(buffer,format="JPEG",quality=settings.THERMAL_JPEG_QUALITY)
+        return buffer.getvalue()
+
+    def status(self):
+        values=list(self.frame) if self.last_frame else None
+        return {
+            "available":True,"model":"MLX90640","address":f"0x{settings.THERMAL_CAMERA_ADDRESS:02X}",
+            "sensor_size":[self.SENSOR_WIDTH,self.SENSOR_HEIGHT],
+            "output_size":[settings.THERMAL_OUTPUT_WIDTH,settings.THERMAL_OUTPUT_HEIGHT],
+            "refresh_rate_hz":settings.THERMAL_REFRESH_RATE_HZ,"last_frame_at":self.last_frame,
+            "min_c":round(min(values),1) if values else None,"max_c":round(max(values),1) if values else None,
+            "error":self.last_error
+        }
+
+    def close(self):
+        try:self.i2c.deinit()
+        except Exception:pass

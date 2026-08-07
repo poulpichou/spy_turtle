@@ -4,11 +4,12 @@ from robot.system.state import TurtleState
 class Robot:
     BATTERY_UPDATE_INTERVAL=2.0
 
-    def __init__(self,motors,face,leds,camera,battery,speaker,servo,shell=None):
+    def __init__(self,motors,face,leds,camera,battery,speaker,servo,shell=None,thermal_camera=None):
         self.motors=motors
         self.face=face
         self.leds=leds
         self.camera=camera
+        self.thermal_camera=thermal_camera
         self.battery=battery
         self.speaker=speaker
         self.servo=servo

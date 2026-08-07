@@ -2,12 +2,10 @@ import os
 import shutil
 from datetime import datetime
 from pathlib import Path
-
 from fastapi import FastAPI,HTTPException,Query
 from fastapi.responses import FileResponse,Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel,Field
-
 from robot.api import actions
 from robot.api.admin import router as admin_router
 from robot.assets.assets import get_assets
@@ -54,12 +52,17 @@ def motor_status(robot):
     if robot is None or robot.motors is None or not hasattr(robot.motors,"status"):return None
     return safe_call(robot.motors.status)
 
+def thermal_status(robot):
+    if robot is None or robot.thermal_camera is None or not hasattr(robot.thermal_camera,"status"):return {"available":False}
+    return safe_call(robot.thermal_camera.status,{"available":False})
+
 def state():
     robot=get_robot()
     if robot is None:return {"error":"no robot"}
     data=robot.state.to_dict()
     data["servo"]=servo_status(robot)
     data["motors"]=motor_status(robot)
+    data["thermal"]=thermal_status(robot)
     return data
 
 def cpu_temperature():
@@ -76,7 +79,7 @@ def uptime_seconds():
 def get_state():return state()
 
 @app.get("/version")
-def get_version():return {"frontend":"2026.08.06.2","started_at":STARTED_AT}
+def get_version():return {"frontend":"2026.08.07.thermal1","started_at":STARTED_AT}
 
 @app.get("/motors/config")
 def get_motor_config():
@@ -88,6 +91,12 @@ def get_motor_config():
         "distance_step_mm":settings.MOTOR_DISTANCE_STEP_MM,"turn_step_degrees":settings.MOTOR_TURN_STEP_DEGREES
     }
 
+@app.get("/thermal/status")
+def get_thermal_status():
+    robot=get_robot()
+    if robot is None:raise HTTPException(status_code=503,detail="Robot is not initialized")
+    return thermal_status(robot)
+
 @app.get("/health")
 def get_health():
     robot=get_robot()
@@ -98,7 +107,7 @@ def get_health():
         "ok":True,"timestamp":datetime.now().isoformat(),"https":get_https_status(),
         "system":{"uptime_seconds":uptime_seconds(),"cpu_temperature_c":cpu_temperature(),"load_1m":round(os.getloadavg()[0],2) if hasattr(os,"getloadavg") else None,"disk_free_gb":round(disk.free/(1024**3),1),"disk_total_gb":round(disk.total/(1024**3),1)},
         "battery":current["battery"],
-        "robot":{"brain":current["brain"],"camera":current["camera"],"motion":current["motion"],"motors":current["motors"],"shell":current["shell"],"leds":current["leds"],"servo":current["servo"],"components":{"motors":robot.motors is not None,"face":robot.face is not None,"leds":robot.leds is not None,"camera":robot.camera is not None,"battery":robot.battery is not None,"speaker":robot.speaker is not None,"servo":robot.servo is not None,"shell":robot.shell is not None}}
+        "robot":{"brain":current["brain"],"camera":current["camera"],"thermal":current["thermal"],"motion":current["motion"],"motors":current["motors"],"shell":current["shell"],"leds":current["leds"],"servo":current["servo"],"components":{"motors":robot.motors is not None,"face":robot.face is not None,"leds":robot.leds is not None,"camera":robot.camera is not None,"thermal_camera":robot.thermal_camera is not None,"battery":robot.battery is not None,"speaker":robot.speaker is not None,"servo":robot.servo is not None,"shell":robot.shell is not None}}
     }
 
 @app.get("/assets")
@@ -167,7 +176,11 @@ def command(cmd:Command):
 def camera_frame():return Response(content=actions.camera_frame(),media_type="image/jpeg",headers={"Cache-Control":"no-store"})
 
 @app.get("/thermal/frame")
-def thermal_frame():return Response(content=actions.camera_frame(),media_type="image/jpeg",headers={"Cache-Control":"no-store","X-Thermal-Fallback":"rgb-camera"})
+def thermal_frame():
+    try:return Response(content=actions.thermal_frame(),media_type="image/jpeg",headers={"Cache-Control":"no-store","X-Thermal-Source":"mlx90640"})
+    except Exception as error:
+        log.warn(f"[THERMAL] frame failed, using RGB fallback: {error}")
+        return Response(content=actions.camera_frame(),media_type="image/jpeg",headers={"Cache-Control":"no-store","X-Thermal-Fallback":"rgb-camera"})
 
 @app.post("/camera/start")
 def camera_start():actions.camera_start();return state()
