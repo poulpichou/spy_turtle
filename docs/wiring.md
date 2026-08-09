@@ -396,12 +396,19 @@ arecord -l
 - Power: 5V rack
 - Ground: common ground
 - Device: `/dev/leds0`
+Colors of wires
+```
+Red   -> 5V Power rack
+Green -> GPIO4
+White -> GND Power rack
+```
 
 Raspberry Pi 5 overlay:
 
 ```ini
 dtoverlay=ws2812-pio,gpio=4,num_leds=32,brightness=255
 ```
+
 
 The move from GPIO18 to GPIO4 removes the conflict with the MAX98357A I2S BCLK.
 

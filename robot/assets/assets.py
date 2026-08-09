@@ -20,6 +20,7 @@ class AssetCatalog:
         except json.JSONDecodeError as error:raise AssetError(f"Invalid asset configuration: {error}") from error
         if not isinstance(data,dict):raise AssetError("Asset configuration root must be an object")
         self._discover_shell_gifs(data)
+        self._discover_audio(data)
         return data
 
     def _discover_shell_gifs(self,data):
@@ -30,6 +31,16 @@ class AssetCatalog:
         for path in sorted(images.glob("*.gif")):
             name=path.stem.lower().replace(" ","_").replace("-","_")
             assets.setdefault(name,{"label":path.stem.replace("_"," ").replace("-"," ").title(),"type":"gif","file":f"images/{path.name}","rotation":0,"resize":True})
+
+    def _discover_audio(self,data):
+        sounds=self.assets_dir/"sounds"
+        if not sounds.is_dir():return
+        audio=data.setdefault("audio",{})
+        assets=audio.setdefault("assets",{})
+        for path in sorted(sounds.iterdir()):
+            if path.suffix.lower() not in {".wav",".mp3"}:continue
+            name=path.stem.lower().replace(" ","_").replace("-","_")
+            assets.setdefault(name,{"label":path.stem.replace("_"," ").replace("-"," ").title(),"type":"sound","file":f"sounds/{path.name}","tags":["auto"]})
 
     def reload(self):
         self.data=self._load()

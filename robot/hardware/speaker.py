@@ -12,10 +12,11 @@ class Speaker:
         config_path=Path(__file__).resolve().parent.parent/"config"/"audio"/"speaker.json"
         with config_path.open(encoding="utf-8") as file:self.config=json.load(file)
         self.device=self.config.get("device","plughw:CARD=MAX98357A,DEV=0")
+        self.mp3_device=self.config.get("mp3_device","hw:MAX98357A,0")
         self.volume=int(self.config.get("volume",100))
         self.process=None
         self.lock=threading.Lock()
-        log.info(f"[SPEAKER] ready device={self.device}")
+        log.info(f"[SPEAKER] ready device={self.device} mp3_device={self.mp3_device}")
 
     def play(self,name):
         try:asset=get_asset("audio",name)
@@ -43,7 +44,7 @@ class Speaker:
 
     def _command(self,path,extension):
         if extension==".wav":return ["aplay","-q","-D",self.device,str(path)]
-        return ["mpg123","-q","-a",self.device,str(path)]
+        return ["mpg123","-q","-o","alsa","-a",self.mp3_device,str(path)]
 
     def _watch(self,name,process):
         _,stderr=process.communicate()

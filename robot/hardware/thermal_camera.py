@@ -31,19 +31,10 @@ class ThermalCamera:
         self.sensor.refresh_rate=self._refresh_rate(settings.THERMAL_REFRESH_RATE_HZ)
         self.worker=Thread(target=self._run,name="thermal-camera",daemon=True)
         self.worker.start()
-        log.info(f"[THERMAL] MLX90640 ready address=0x{settings.THERMAL_CAMERA_ADDRESS:02X} refresh={settings.THERMAL_REFRESH_RATE_HZ}Hz rotation={settings.THERMAL_ROTATION} nonblocking=true")
+        log.info(f"[THERMAL] MLX90640 ready address=0x{settings.THERMAL_CAMERA_ADDRESS:02X} refresh={settings.THERMAL_REFRESH_RATE_HZ}Hz rotation={settings.THERMAL_ROTATION} flip_vertical={settings.THERMAL_FLIP_VERTICAL} nonblocking=true")
 
     def _refresh_rate(self,hz):
-        rates={
-            0.5:self.adafruit_mlx90640.RefreshRate.REFRESH_0_5_HZ,
-            1:self.adafruit_mlx90640.RefreshRate.REFRESH_1_HZ,
-            2:self.adafruit_mlx90640.RefreshRate.REFRESH_2_HZ,
-            4:self.adafruit_mlx90640.RefreshRate.REFRESH_4_HZ,
-            8:self.adafruit_mlx90640.RefreshRate.REFRESH_8_HZ,
-            16:self.adafruit_mlx90640.RefreshRate.REFRESH_16_HZ,
-            32:self.adafruit_mlx90640.RefreshRate.REFRESH_32_HZ,
-            64:self.adafruit_mlx90640.RefreshRate.REFRESH_64_HZ
-        }
+        rates={0.5:self.adafruit_mlx90640.RefreshRate.REFRESH_0_5_HZ,1:self.adafruit_mlx90640.RefreshRate.REFRESH_1_HZ,2:self.adafruit_mlx90640.RefreshRate.REFRESH_2_HZ,4:self.adafruit_mlx90640.RefreshRate.REFRESH_4_HZ,8:self.adafruit_mlx90640.RefreshRate.REFRESH_8_HZ,16:self.adafruit_mlx90640.RefreshRate.REFRESH_16_HZ,32:self.adafruit_mlx90640.RefreshRate.REFRESH_32_HZ,64:self.adafruit_mlx90640.RefreshRate.REFRESH_64_HZ}
         return rates.get(hz,rates[2])
 
     def _run(self):
@@ -101,11 +92,12 @@ class ThermalCamera:
         return stops[-1][1]
 
     @staticmethod
-    def _rotate(image):
+    def _transform(image):
         rotation=settings.THERMAL_ROTATION
-        if rotation==90:return image.transpose(Image.Transpose.ROTATE_90)
-        if rotation==180:return image.transpose(Image.Transpose.ROTATE_180)
-        if rotation==270:return image.transpose(Image.Transpose.ROTATE_270)
+        if rotation==90:image=image.transpose(Image.Transpose.ROTATE_90)
+        elif rotation==180:image=image.transpose(Image.Transpose.ROTATE_180)
+        elif rotation==270:image=image.transpose(Image.Transpose.ROTATE_270)
+        if settings.THERMAL_FLIP_VERTICAL:image=image.transpose(Image.Transpose.FLIP_TOP_BOTTOM)
         return image
 
     def _image(self,values):
@@ -114,7 +106,7 @@ class ThermalCamera:
         pixels=[self._palette((value-low)/scale) for value in values]
         image=Image.new("RGB",(self.SENSOR_WIDTH,self.SENSOR_HEIGHT))
         image.putdata(pixels)
-        image=self._rotate(image)
+        image=self._transform(image)
         image=image.resize((settings.THERMAL_OUTPUT_WIDTH,settings.THERMAL_OUTPUT_HEIGHT),Image.Resampling.BICUBIC)
         draw=ImageDraw.Draw(image)
         minimum=min(values);maximum=max(values);center=values[(self.SENSOR_HEIGHT//2)*self.SENSOR_WIDTH+self.SENSOR_WIDTH//2]
@@ -141,13 +133,7 @@ class ThermalCamera:
 
     def status(self):
         with self.cache_lock:
-            return {
-                "available":True,"model":"MLX90640","address":f"0x{settings.THERMAL_CAMERA_ADDRESS:02X}",
-                "sensor_size":[self.SENSOR_WIDTH,self.SENSOR_HEIGHT],
-                "output_size":[settings.THERMAL_OUTPUT_WIDTH,settings.THERMAL_OUTPUT_HEIGHT],
-                "refresh_rate_hz":settings.THERMAL_REFRESH_RATE_HZ,"rotation":settings.THERMAL_ROTATION,
-                "last_frame_at":self.last_frame,"min_c":self.last_min,"max_c":self.last_max,"error":self.last_error
-            }
+            return {"available":True,"model":"MLX90640","address":f"0x{settings.THERMAL_CAMERA_ADDRESS:02X}","sensor_size":[self.SENSOR_WIDTH,self.SENSOR_HEIGHT],"output_size":[settings.THERMAL_OUTPUT_WIDTH,settings.THERMAL_OUTPUT_HEIGHT],"refresh_rate_hz":settings.THERMAL_REFRESH_RATE_HZ,"rotation":settings.THERMAL_ROTATION,"flip_vertical":settings.THERMAL_FLIP_VERTICAL,"last_frame_at":self.last_frame,"min_c":self.last_min,"max_c":self.last_max,"error":self.last_error}
 
     def close(self):
         self.stop_event.set()
