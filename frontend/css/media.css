@@ -1,0 +1,3 @@
+.message-actions{width:100%;display:flex;align-items:center;gap:6px}.message-actions button{width:30px;height:30px;font-size:.8rem}.message-actions span{font-size:.55rem;color:#aaa;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.message-actions button.recording{background:#8b2d2d}
+.media-card{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:6px}.media-card button{width:100%;height:44px;border-radius:8px;font-size:1rem}.media-card button.active{background:#285f8f}.media-card audio{display:none}
+.admin-volume{width:100%;display:grid;grid-template-columns:auto minmax(80px,1fr);align-items:center;gap:8px}.admin-volume label{font-size:.65rem;color:#ccc}.admin-volume input{width:100%;min-width:0}

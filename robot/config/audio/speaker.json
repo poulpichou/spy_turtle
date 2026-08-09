@@ -1,5 +1,6 @@
 {
     "device": "plughw:CARD=MAX98357A,DEV=0",
     "mp3_device": "hw:MAX98357A,0",
-    "volume": 100
+    "volume": 60,
+    "reference_volume": 60
 }

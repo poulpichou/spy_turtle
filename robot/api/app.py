@@ -1,9 +1,11 @@
 import os
 import shutil
+import subprocess
+import tempfile
 from datetime import datetime
 from pathlib import Path
-from fastapi import FastAPI,HTTPException,Query
-from fastapi.responses import FileResponse,Response
+from fastapi import FastAPI,HTTPException,Query,Request
+from fastapi.responses import FileResponse,Response,StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel,Field
 from robot.api import actions
@@ -79,7 +81,7 @@ def uptime_seconds():
 def get_state():return state()
 
 @app.get("/version")
-def get_version():return {"frontend":"2026.08.07.thermal1","started_at":STARTED_AT}
+def get_version():return {"frontend":"2026.08.09.media1","started_at":STARTED_AT}
 
 @app.get("/motors/config")
 def get_motor_config():
@@ -123,14 +125,15 @@ def get_photos():
     return {"photos":[{"name":path.name,"url":f"/photos/{path.name}"} for path in found]}
 
 @app.post("/photos/capture")
-def capture_photo():
+def capture_photo(source:str=Query(default="camera",pattern="^(camera|thermal)$")):
     try:
-        content=actions.camera_frame()
-        name=datetime.now().strftime("%Y%m%d_%H%M%S_%f")+".jpg"
+        content=actions.thermal_frame() if source=="thermal" else actions.camera_frame()
+        prefix="thermal_" if source=="thermal" else ""
+        name=prefix+datetime.now().strftime("%Y%m%d_%H%M%S_%f")+".jpg"
         path=PHOTOS/name
         path.write_bytes(content)
-        log.info(f"[PHOTO] saved {name}")
-        return {"name":name,"url":f"/photos/{name}"}
+        log.info(f"[PHOTO] saved {name} source={source}")
+        return {"name":name,"url":f"/photos/{name}","source":source}
     except Exception as error:
         log.error(f"[PHOTO ERROR] {error}")
         raise HTTPException(status_code=500,detail=str(error)) from error
@@ -140,6 +143,40 @@ def get_photo(name:str):
     path=(PHOTOS/name).resolve()
     if path.parent!=PHOTOS.resolve() or not path.is_file():raise HTTPException(status_code=404,detail="Photo not found")
     return FileResponse(path)
+
+@app.post("/audio/message")
+async def audio_message(request:Request):
+    robot=get_robot()
+    if robot is None or robot.speaker is None:raise HTTPException(status_code=503,detail="Speaker unavailable")
+    content=await request.body()
+    if not content:raise HTTPException(status_code=400,detail="Empty audio message")
+    if len(content)>12*1024*1024:raise HTTPException(status_code=413,detail="Audio message too large")
+    temp=tempfile.NamedTemporaryFile(prefix="spyturtle_phone_",suffix=".wav",delete=False)
+    temp.write(content);temp.close()
+    log.info(f"[AUDIO] phone voice message bytes={len(content)}")
+    if not robot.speaker.play_file(temp.name,"phone_message",delete_after=True):
+        Path(temp.name).unlink(missing_ok=True)
+        raise HTTPException(status_code=500,detail="Unable to play voice message")
+    return {"ok":True,"message":"Voice message sent"}
+
+def microphone_chunks():
+    command=["arecord","-q","-D",settings.MICROPHONE_DEVICE,"-f","S16_LE","-r",str(settings.MICROPHONE_RATE),"-c",str(settings.MICROPHONE_CHANNELS),"-t","wav"]
+    process=subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL)
+    log.info(f"[MICROPHONE] listen start device={settings.MICROPHONE_DEVICE}")
+    try:
+        while process.stdout:
+            chunk=process.stdout.read(4096)
+            if not chunk:break
+            yield chunk
+    finally:
+        if process.poll() is None:process.terminate()
+        try:process.wait(timeout=1)
+        except subprocess.TimeoutExpired:process.kill()
+        log.info("[MICROPHONE] listen stop")
+
+@app.get("/audio/listen")
+def audio_listen():
+    return StreamingResponse(microphone_chunks(),media_type="audio/wav",headers={"Cache-Control":"no-store"})
 
 @app.post("/command")
 def command(cmd:Command):

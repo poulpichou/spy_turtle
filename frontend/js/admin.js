@@ -30,3 +30,24 @@ document.getElementById("wifi-add").onclick=async()=>{
         document.getElementById("wifi-password").value="";
     }catch(error){adminResult.textContent=error.message}
 };
+
+const volumeSlider=document.getElementById("volume-slider");
+const volumeValue=document.getElementById("volume-value");
+function showVolume(value){volumeValue.textContent=`${value}%`}
+volumeSlider.oninput=()=>showVolume(volumeSlider.value);
+volumeSlider.onchange=async()=>{
+    try{
+        const data=await adminPost("/admin/audio/volume",{volume:Number(volumeSlider.value)});
+        showVolume(data.volume);
+        adminResult.textContent=data.message;
+    }catch(error){adminResult.textContent=error.message}
+};
+(async()=>{
+    try{
+        const response=await fetch("/admin/audio/volume",{cache:"no-store"});
+        if(!response.ok)return;
+        const data=await response.json();
+        volumeSlider.value=data.volume;
+        showVolume(data.volume);
+    }catch(error){console.error("[VOLUME]",error)}
+})();
