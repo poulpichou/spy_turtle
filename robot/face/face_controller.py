@@ -9,6 +9,13 @@ class FaceController:
         self.leds=leds
         self.manual_until=0.0
         self.manual_sequence=None
+        self.enabled=True
+
+    def set_enabled(self,enabled):
+        self.enabled=bool(enabled)
+        if hasattr(self.engine.renderer,"set_enabled"):self.engine.renderer.set_enabled(self.enabled)
+        if self.enabled:self.play("neutral",force=True)
+        return self.enabled
 
     def update(self):
         self.engine.update()

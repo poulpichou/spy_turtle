@@ -1,8 +1,10 @@
 import time
 from robot.system.state import TurtleState
+from robot.system.power import PowerManager
 
 class Robot:
     BATTERY_UPDATE_INTERVAL=2.0
+    IDLE_BATTERY_UPDATE_INTERVAL=30.0
 
     def __init__(self,motors,face,leds,camera,battery,speaker,servo,shell=None,thermal_camera=None):
         self.motors=motors
@@ -17,11 +19,15 @@ class Robot:
         self.state=TurtleState()
         self.brain=None
         self._last_battery_update=0.0
+        self.power=PowerManager(self)
         self._update_battery(force=True)
         if self.face:self.face.play('neutral')
         print('[Robot] initialized')
 
     def update(self):
+        if self.power.idle_mode:
+            self._update_battery(interval=self.IDLE_BATTERY_UPDATE_INTERVAL)
+            return
         self._update_battery()
         if self.brain:self.brain.update()
         if self.servo:self.servo.update()
@@ -43,9 +49,10 @@ class Robot:
         if level<95:return 'high'
         return 'full'
 
-    def _update_battery(self,force=False):
+    def _update_battery(self,force=False,interval=None):
         now=time.monotonic()
-        if not force and now-self._last_battery_update<self.BATTERY_UPDATE_INTERVAL:return
+        interval=self.BATTERY_UPDATE_INTERVAL if interval is None else interval
+        if not force and now-self._last_battery_update<interval:return
         self._last_battery_update=now
         if not self.battery:
             self.state.battery={**self.state.battery,'error':'Battery component unavailable','updated_at':None}

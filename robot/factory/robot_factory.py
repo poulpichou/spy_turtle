@@ -9,7 +9,7 @@ from robot.simulation.fake_motor import FakeMotor
 from robot.simulation.fake_speaker import FakeSpeaker
 from robot.simulation.fake_servo import FakeServo
 from robot.simulation.fake_thermal_camera import FakeThermalCamera
-from robot.hardware.leds import LEDController
+from robot.hardware.power_leds import LEDController
 from robot.hardware.servo import ServoController
 from robot.hardware.oled_display import OLEDDisplay
 from robot.hardware.shell_screen_st7796 import ShellScreenST7796
@@ -18,7 +18,7 @@ from robot.hardware.camera import Camera
 from robot.hardware.thermal_camera import ThermalCamera
 from robot.hardware.speaker import Speaker
 from robot.hardware.motor import DifferentialDrive
-from robot.shell.shell_controller import ShellController
+from robot.shell.power_shell_controller import ShellController
 from robot.shell.ui.shell_ui import ShellUI
 from robot.brain.brain import Brain
 from robot.config import settings
@@ -26,11 +26,7 @@ from robot.utils.logger import log
 
 class RobotFactory:
     def __init__(self,simulation=True): self.simulation=simulation
-
-    def create(self):
-        if self.simulation:return self.create_simulation()
-        return self.create_hardware()
-
+    def create(self): return self.create_simulation() if self.simulation else self.create_hardware()
     def create_simulation(self):
         motors=FakeMotor();leds=FakeLEDController();camera=FakeCamera()
         thermal_camera=FakeThermalCamera() if settings.THERMAL_CAMERA_ENABLED else None
@@ -40,7 +36,6 @@ class RobotFactory:
         robot=Robot(motors=motors,face=face,leds=leds,camera=camera,thermal_camera=thermal_camera,battery=battery,speaker=speaker,servo=servo)
         robot.brain=Brain(robot)
         return robot
-
     def create_hardware(self):
         motors=DifferentialDrive();leds=LEDController();camera=Camera();thermal_camera=None
         if settings.THERMAL_CAMERA_ENABLED:
