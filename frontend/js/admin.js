@@ -23,6 +23,7 @@ function applyPowerState(state){
         button.disabled=runtimePower.idle_mode;
     }
     microSlider.value=runtimePower.microphone_sensitivity??60;showMicro(microSlider.value);
+    if(typeof setDashboardIdle==="function")setDashboardIdle(runtimePower.idle_mode);
     if(runtimePower.idle_mode){stopCameraRefresh();stopThermal()}
     else if(typeof activeView!=="undefined"){
         if(activeView==="camera")startCameraRefresh();
@@ -59,8 +60,13 @@ microSlider.onchange=async()=>{
     catch(error){adminResult.textContent=error.message}
 };
 idleToggle.onclick=async()=>{
-    try{const data=await adminPost("/admin/power/idle",{enabled:!runtimePower.idle_mode});applyPowerState(data);adminResult.textContent=data.idle_mode?"Idle mode enabled — cameras and background visual loops paused":"Idle mode disabled"}
-    catch(error){adminResult.textContent=error.message}
+    try{
+        const data=await adminPost("/admin/power/idle",{enabled:!runtimePower.idle_mode});
+        applyPowerState(data);
+        const governors=Object.values(data.cpu_governors||{});
+        const cpu=data.idle_mode?(governors.length?` CPU: ${[...new Set(governors)].join("/")}.`:""):"";
+        adminResult.textContent=data.idle_mode?`Idle mode enabled — cameras and background visual loops paused.${cpu}`:"Idle mode disabled — normal CPU governor restored.";
+    }catch(error){adminResult.textContent=error.message}
 };
 for(const [name,button] of Object.entries(powerButtons))button.onclick=async()=>{
     try{const data=await adminPost("/admin/power/component",{component:name,enabled:!runtimePower[name]});applyPowerState(data)}
