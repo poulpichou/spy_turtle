@@ -3,7 +3,7 @@ const volumeSlider=document.getElementById("volume-slider"),volumeValue=document
 const microSlider=document.getElementById("micro-slider"),microValue=document.getElementById("micro-value");
 const idleToggle=document.getElementById("idle-toggle");
 const powerButtons={back_screen:document.getElementById("back-screen-toggle"),eyes:document.getElementById("eyes-toggle"),shell_light:document.getElementById("shell-light-toggle")};
-const idleDirectionalIds=["forward","backward","left","right","head-up","head-down","head-left","head-right"];
+const idleDirectionalIds=["forward","backward","left","right","stop","head-up","head-down","head-left","head-right","head-center"];
 const idleControlIds=["animation-select","face-select","shell-select","led-select","sound-select","photo-button","listen-button","record-message","screen-message-button"];
 let runtimePower={idle_mode:false,back_screen:true,eyes:true,shell_light:true,microphone_sensitivity:60};
 let wifiTimer=null;
@@ -29,6 +29,7 @@ function applyPowerState(state){
         button.classList.toggle("active",!!runtimePower[name]);
         button.classList.toggle("off",!runtimePower[name]);
         button.disabled=runtimePower.idle_mode;
+        button.closest(".right-control")?.classList.toggle("idle-disabled",runtimePower.idle_mode);
     }
     idleDirectionalIds.forEach(id=>{const button=document.getElementById(id);if(button)button.disabled=runtimePower.idle_mode});
     idleControlIds.forEach(id=>{
@@ -36,8 +37,8 @@ function applyPowerState(state){
         if(element.tagName==="SELECT")setSelectDisabled(id,runtimePower.idle_mode);
         else element.disabled=runtimePower.idle_mode;
     });
-    document.getElementById("animation-icon").classList.toggle("idle-disabled",runtimePower.idle_mode);
-    document.querySelector(".sound-control")?.classList.toggle("idle-disabled",runtimePower.idle_mode);
+    document.querySelector(".animation-card")?.classList.toggle("idle-disabled",runtimePower.idle_mode);
+    document.querySelector(".sound-card")?.classList.toggle("idle-disabled",runtimePower.idle_mode);
     microSlider.value=runtimePower.microphone_sensitivity??60;showMicro(microSlider.value);
     if(typeof setDashboardIdle==="function")setDashboardIdle(runtimePower.idle_mode);
     if(runtimePower.idle_mode){stopCameraRefresh();stopThermal()}
