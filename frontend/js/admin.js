@@ -3,9 +3,11 @@ const volumeSlider=document.getElementById("volume-slider"),volumeValue=document
 const microSlider=document.getElementById("micro-slider"),microValue=document.getElementById("micro-value");
 const idleToggle=document.getElementById("idle-toggle");
 const powerButtons={back_screen:document.getElementById("back-screen-toggle"),eyes:document.getElementById("eyes-toggle"),shell_light:document.getElementById("shell-light-toggle")};
+const localFeatureButtons={animation:{button:document.getElementById("animation-toggle"),select:"animation-select",card:".animation-card",storage:"spy_turtle_animation_enabled"},sound:{button:document.getElementById("sound-toggle"),select:"sound-select",card:".sound-card",storage:"spy_turtle_sound_enabled"}};
 const idleDirectionalIds=["forward","backward","left","right","stop","head-up","head-down","head-left","head-right","head-center"];
-const idleControlIds=["animation-select","face-select","shell-select","led-select","sound-select","photo-button","listen-button","record-message","screen-message-button"];
+const idleControlIds=["face-select","shell-select","led-select","photo-button","listen-button","record-message","screen-message-button"];
 let runtimePower={idle_mode:false,back_screen:true,eyes:true,shell_light:true,microphone_sensitivity:60};
+let localFeatures={animation:localStorage.getItem(localFeatureButtons.animation.storage)!=="false",sound:localStorage.getItem(localFeatureButtons.sound.storage)!=="false"};
 let wifiTimer=null;
 
 async function adminPost(path,body){
@@ -20,6 +22,20 @@ function setSelectDisabled(id,disabled){
     const select=document.getElementById(id);if(!select)return;
     select.disabled=disabled;
     select.closest(".compact-select")?.classList.toggle("disabled",disabled);
+}
+function applyLocalFeature(name){
+    const config=localFeatureButtons[name],enabled=localFeatures[name],idle=runtimePower.idle_mode;
+    config.button.classList.toggle("active",enabled&&!idle);
+    config.button.classList.toggle("off",!enabled||idle);
+    config.button.disabled=idle;
+    document.querySelector(config.card)?.classList.toggle("feature-disabled",!enabled||idle);
+    setSelectDisabled(config.select,!enabled||idle);
+}
+function toggleLocalFeature(name){
+    if(runtimePower.idle_mode)return;
+    localFeatures[name]=!localFeatures[name];
+    localStorage.setItem(localFeatureButtons[name].storage,String(localFeatures[name]));
+    applyLocalFeature(name);
 }
 function applyPowerState(state){
     runtimePower={...runtimePower,...state};
@@ -37,8 +53,7 @@ function applyPowerState(state){
         if(element.tagName==="SELECT")setSelectDisabled(id,runtimePower.idle_mode);
         else element.disabled=runtimePower.idle_mode;
     });
-    document.querySelector(".animation-card")?.classList.toggle("idle-disabled",runtimePower.idle_mode);
-    document.querySelector(".sound-card")?.classList.toggle("idle-disabled",runtimePower.idle_mode);
+    applyLocalFeature("animation");applyLocalFeature("sound");
     microSlider.value=runtimePower.microphone_sensitivity??60;showMicro(microSlider.value);
     if(typeof setDashboardIdle==="function")setDashboardIdle(runtimePower.idle_mode);
     if(runtimePower.idle_mode){stopCameraRefresh();stopThermal()}
@@ -66,6 +81,8 @@ idleToggle.onclick=async()=>{try{
     adminResult.textContent=data.idle_mode?`Idle mode enabled.${cpu}`:"Idle mode disabled — normal CPU governor restored.";
 }catch(error){adminResult.textContent=error.message}};
 for(const [name,button] of Object.entries(powerButtons))button.onclick=async()=>{try{const data=await adminPost("/admin/power/component",{component:name,enabled:!runtimePower[name]});applyPowerState(data)}catch(error){adminResult.textContent=error.message}};
+localFeatureButtons.animation.button.onclick=()=>toggleLocalFeature("animation");
+localFeatureButtons.sound.button.onclick=()=>toggleLocalFeature("sound");
 document.querySelectorAll(".center-tab").forEach(tab=>tab.addEventListener("click",()=>{if(runtimePower.idle_mode)setTimeout(()=>{stopCameraRefresh();stopThermal()},0)}));
 
 function setupWifiUI(){
@@ -98,4 +115,4 @@ function renderWifi(data){
 async function loadWifi(){try{const response=await fetch("/admin/wifi",{cache:"no-store"});if(response.ok)renderWifi(await response.json())}catch(error){console.error("[WIFI]",error)}scheduleWifi()}
 function scheduleWifi(){if(wifiTimer)clearTimeout(wifiTimer);wifiTimer=setTimeout(loadWifi,runtimePower.idle_mode?30000:15000)}
 
-(async()=>{setupWifiUI();try{const response=await fetch("/admin/audio/volume",{cache:"no-store"});if(response.ok){const data=await response.json();volumeSlider.value=data.volume;showVolume(data.volume)}}catch(error){console.error("[VOLUME]",error)}await loadPower();await loadWifi()})();
+(async()=>{setupWifiUI();applyLocalFeature("animation");applyLocalFeature("sound");try{const response=await fetch("/admin/audio/volume",{cache:"no-store"});if(response.ok){const data=await response.json();volumeSlider.value=data.volume;showVolume(data.volume)}}catch(error){console.error("[VOLUME]",error)}await loadPower();await loadWifi()})();
