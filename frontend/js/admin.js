@@ -3,9 +3,10 @@ const volumeSlider=document.getElementById("volume-slider"),volumeValue=document
 const microSlider=document.getElementById("micro-slider"),microValue=document.getElementById("micro-value");
 const idleToggle=document.getElementById("idle-toggle");
 const powerButtons={back_screen:document.getElementById("back-screen-toggle"),eyes:document.getElementById("eyes-toggle"),shell_light:document.getElementById("shell-light-toggle")};
+const powerSelects={back_screen:"shell-select",eyes:"face-select",shell_light:"led-select"};
 const localFeatureButtons={animation:{button:document.getElementById("animation-toggle"),select:"animation-select",card:".animation-card",storage:"spy_turtle_animation_enabled"},sound:{button:document.getElementById("sound-toggle"),select:"sound-select",card:".sound-card",storage:"spy_turtle_sound_enabled"}};
 const idleDirectionalIds=["forward","backward","left","right","stop","head-up","head-down","head-left","head-right","head-center"];
-const idleControlIds=["face-select","shell-select","led-select","photo-button","listen-button","record-message","screen-message-button"];
+const idleControlIds=["photo-button","listen-button","record-message","screen-message-button"];
 let runtimePower={idle_mode:false,back_screen:true,eyes:true,shell_light:true,microphone_sensitivity:60};
 let localFeatures={animation:localStorage.getItem(localFeatureButtons.animation.storage)!=="false",sound:localStorage.getItem(localFeatureButtons.sound.storage)!=="false"};
 let wifiTimer=null;
@@ -37,22 +38,21 @@ function toggleLocalFeature(name){
     localStorage.setItem(localFeatureButtons[name].storage,String(localFeatures[name]));
     applyLocalFeature(name);
 }
+function applyPowerFeature(name,button){
+    const enabled=!!runtimePower[name],idle=runtimePower.idle_mode,disabled=!enabled||idle;
+    button.classList.toggle("active",enabled&&!idle);
+    button.classList.toggle("off",disabled);
+    button.disabled=idle;
+    button.closest(".right-control")?.classList.toggle("feature-disabled",disabled);
+    setSelectDisabled(powerSelects[name],disabled);
+}
 function applyPowerState(state){
     runtimePower={...runtimePower,...state};
     idleToggle.classList.toggle("active",runtimePower.idle_mode);
     idleToggle.querySelector("span").textContent=runtimePower.idle_mode?"Idle mode ON":"Idle mode";
-    for(const [name,button] of Object.entries(powerButtons)){
-        button.classList.toggle("active",!!runtimePower[name]);
-        button.classList.toggle("off",!runtimePower[name]);
-        button.disabled=runtimePower.idle_mode;
-        button.closest(".right-control")?.classList.toggle("idle-disabled",runtimePower.idle_mode);
-    }
+    for(const [name,button] of Object.entries(powerButtons))applyPowerFeature(name,button);
     idleDirectionalIds.forEach(id=>{const button=document.getElementById(id);if(button)button.disabled=runtimePower.idle_mode});
-    idleControlIds.forEach(id=>{
-        const element=document.getElementById(id);if(!element)return;
-        if(element.tagName==="SELECT")setSelectDisabled(id,runtimePower.idle_mode);
-        else element.disabled=runtimePower.idle_mode;
-    });
+    idleControlIds.forEach(id=>{const element=document.getElementById(id);if(element)element.disabled=runtimePower.idle_mode});
     applyLocalFeature("animation");applyLocalFeature("sound");
     microSlider.value=runtimePower.microphone_sensitivity??60;showMicro(microSlider.value);
     if(typeof setDashboardIdle==="function")setDashboardIdle(runtimePower.idle_mode);
