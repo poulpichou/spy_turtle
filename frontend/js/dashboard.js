@@ -8,8 +8,7 @@ let dashboardIdle=false;
 
 function setConnection(status){
     connectionIcon.className=`connection-dot ${status}`;
-    const label=typeof transportLabel==="function"?transportLabel():"Wi-Fi";
-    connectionText.innerText=status==='connected'?`${label} Connected`:status==='connecting'?`${label} Connecting`:`${label} Offline`;
+    connectionText.innerText=status==='connected'?'Connected':status==='connecting'?'Connecting':'Offline';
 }
 
 function scheduleDashboard(delay=null){

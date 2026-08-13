@@ -11,9 +11,28 @@ let runtimePower={idle_mode:false,back_screen:true,eyes:true,shell_light:true,mi
 let localFeatures={animation:localStorage.getItem(localFeatureButtons.animation.storage)!=="false",sound:localStorage.getItem(localFeatureButtons.sound.storage)!=="false"};
 let wifiTimer=null;
 
+const bluetoothAdminActions={
+    "/admin/turtle/restart":"restart","/admin/system/reboot":"reboot","/admin/system/shutdown":"shutdown",
+    "/admin/wifi":"wifi_add","/admin/wifi/connect":"wifi_connect","/admin/wifi/delete":"wifi_delete",
+    "/admin/audio/volume":"volume_set","/admin/power/component":"power_component","/admin/power/idle":"idle",
+    "/admin/audio/microphone-sensitivity":"microphone_sensitivity"
+};
 async function adminPost(path,body){
+    if(transportMode==="bluetooth")return bluetoothAdminRequest(bluetoothAdminActions[path],body||{});
     const response=await fetch(path,{method:"POST",headers:{"Content-Type":"application/json"},body:body?JSON.stringify(body):null});
     const text=await response.text(),data=text?JSON.parse(text):{ok:response.ok,message:"Command sent"};
+    if(!response.ok)throw Error(data.detail||`HTTP ${response.status}`);
+    return data;
+}
+async function adminGet(path){
+    if(transportMode==="bluetooth"){
+        if(path==="/admin/wifi")return bluetoothAdminRequest("wifi_status");
+        if(path==="/admin/audio/volume")return bluetoothAdminRequest("volume_get");
+        if(path==="/admin/power")return bluetoothAdminRequest("power_get");
+        throw new Error(`Unsupported Bluetooth admin GET: ${path}`);
+    }
+    const response=await fetch(path,{cache:"no-store"});
+    const text=await response.text(),data=text?JSON.parse(text):{};
     if(!response.ok)throw Error(data.detail||`HTTP ${response.status}`);
     return data;
 }
@@ -63,7 +82,8 @@ function applyPowerState(state){
     }
     scheduleWifi();
 }
-async function loadPower(){try{const response=await fetch("/admin/power",{cache:"no-store"});if(response.ok)applyPowerState(await response.json())}catch(error){console.error("[POWER]",error)}}
+async function loadPower(){try{applyPowerState(await adminGet("/admin/power"))}catch(error){console.error("[POWER]",error)}}
+async function loadVolume(){try{const data=await adminGet("/admin/audio/volume");volumeSlider.value=data.volume;showVolume(data.volume)}catch(error){console.error("[VOLUME]",error)}}
 
 document.querySelectorAll("[data-admin-action]").forEach(button=>button.onclick=async()=>{
     const action=button.dataset.adminAction,labels={restart:"restart Spy Turtle",reboot:"reboot the Raspberry Pi",shutdown:"shut down the Raspberry Pi"};
@@ -74,11 +94,10 @@ document.querySelectorAll("[data-admin-action]").forEach(button=>button.onclick=
 volumeSlider.oninput=()=>showVolume(volumeSlider.value);
 volumeSlider.onchange=async()=>{try{const data=await adminPost("/admin/audio/volume",{volume:Number(volumeSlider.value)});showVolume(data.volume);adminResult.textContent=data.message}catch(error){adminResult.textContent=error.message}};
 microSlider.oninput=()=>showMicro(microSlider.value);
-microSlider.onchange=async()=>{try{const data=await adminPost("/admin/audio/microphone-sensitivity",{sensitivity:Number(microSlider.value)});applyPowerState(data);adminResult.textContent="Micro sensitivity saved (display only until microphone is installed)"}catch(error){adminResult.textContent=error.message}};
+microSlider.onchange=async()=>{try{const data=await adminPost("/admin/audio/microphone-sensitivity",{sensitivity:Number(microSlider.value)});applyPowerState(data);adminResult.textContent="Micro sensitivity saved"}catch(error){adminResult.textContent=error.message}};
 idleToggle.onclick=async()=>{try{
     const data=await adminPost("/admin/power/idle",{enabled:!runtimePower.idle_mode});applyPowerState(data);
-    const governors=Object.values(data.cpu_governors||{}),cpu=data.idle_mode?(governors.length?` CPU: ${[...new Set(governors)].join("/")}.`:""):"";
-    adminResult.textContent=data.idle_mode?`Idle mode enabled.${cpu}`:"Idle mode disabled — normal CPU governor restored.";
+    adminResult.textContent=data.idle_mode?"Idle mode enabled.":"Idle mode disabled.";
 }catch(error){adminResult.textContent=error.message}};
 for(const [name,button] of Object.entries(powerButtons))button.onclick=async()=>{try{const data=await adminPost("/admin/power/component",{component:name,enabled:!runtimePower[name]});applyPowerState(data)}catch(error){adminResult.textContent=error.message}};
 localFeatureButtons.animation.button.onclick=()=>toggleLocalFeature("animation");
@@ -89,18 +108,20 @@ function setupWifiUI(){
     const row=document.querySelector(".wifi-row");if(!row)return;
     const nickname=document.createElement("input");nickname.id="wifi-nickname";nickname.placeholder="Wi-Fi nickname";row.prepend(nickname);
     const list=document.createElement("div");list.id="wifi-networks";list.className="wifi-networks";row.before(list);
-    const statusBar=document.getElementById("status-bar");
-    if(statusBar&&!document.getElementById("wifi-name")){const item=document.createElement("div");item.className="wifi-status";item.innerHTML='📶 <span id="wifi-name">--</span>';statusBar.appendChild(item)}
     document.getElementById("wifi-add").onclick=addWifi;
 }
 async function addWifi(){
     const nickname=document.getElementById("wifi-nickname").value.trim(),ssid=document.getElementById("wifi-ssid").value.trim(),password=document.getElementById("wifi-password").value;
     if(!ssid||!password){adminResult.textContent="SSID and password are required";return}
-    try{const data=await adminPost("/admin/wifi",{nickname,ssid,password});adminResult.textContent=data.message;document.getElementById("wifi-password").value="";await loadWifi()}
-    catch(error){adminResult.textContent=`Wi-Fi command sent or connection changed: ${error.message}`;setTimeout(loadWifi,3000)}
+    try{
+        const data=await adminPost("/admin/wifi",{nickname,ssid,password});
+        adminResult.textContent=data.message;document.getElementById("wifi-password").value="";
+        await loadWifi();
+    }catch(error){adminResult.textContent=`Wi-Fi: ${error.message}`;setTimeout(loadWifi,3000)}
 }
 function renderWifi(data){
-    const list=document.getElementById("wifi-networks"),name=document.getElementById("wifi-name");if(name)name.textContent=data.current?.nickname||data.current?.ssid||"Offline";if(!list)return;
+    setWifiTransportName(data.current?.nickname||data.current?.ssid||"Offline");
+    const list=document.getElementById("wifi-networks");if(!list)return;
     list.replaceChildren();const title=document.createElement("div");title.className="wifi-title";title.textContent="Known networks";list.appendChild(title);
     if(!data.networks?.length){const empty=document.createElement("div");empty.className="wifi-empty";empty.textContent="No saved Wi-Fi networks";list.appendChild(empty);return}
     for(const network of data.networks){
@@ -112,7 +133,8 @@ function renderWifi(data){
         actions.append(connect,remove);item.append(info,actions);list.appendChild(item);
     }
 }
-async function loadWifi(){try{const response=await fetch("/admin/wifi",{cache:"no-store"});if(response.ok)renderWifi(await response.json())}catch(error){console.error("[WIFI]",error)}scheduleWifi()}
+async function loadWifi(){try{renderWifi(await adminGet("/admin/wifi"))}catch(error){console.error("[WIFI]",error)}scheduleWifi()}
 function scheduleWifi(){if(wifiTimer)clearTimeout(wifiTimer);wifiTimer=setTimeout(loadWifi,runtimePower.idle_mode?30000:15000)}
 
-(async()=>{setupWifiUI();applyLocalFeature("animation");applyLocalFeature("sound");try{const response=await fetch("/admin/audio/volume",{cache:"no-store"});if(response.ok){const data=await response.json();volumeSlider.value=data.volume;showVolume(data.volume)}}catch(error){console.error("[VOLUME]",error)}await loadPower();await loadWifi()})();
+document.addEventListener("transportchange",async()=>{await Promise.allSettled([loadPower(),loadVolume(),loadWifi()])});
+(async()=>{setupWifiUI();applyLocalFeature("animation");applyLocalFeature("sound");await Promise.allSettled([loadVolume(),loadPower(),loadWifi()])})();
