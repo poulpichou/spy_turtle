@@ -65,7 +65,7 @@ async def serve():
     await server.add_new_characteristic(
         settings.BLUETOOTH_SERVICE_UUID,settings.BLUETOOTH_COMMAND_UUID,
         GATTCharacteristicProperties.write|GATTCharacteristicProperties.write_without_response,
-        None,GATTAttributePermissions.writable
+        None,GATTAttributePermissions.writeable
     )
     await server.add_new_characteristic(
         settings.BLUETOOTH_SERVICE_UUID,settings.BLUETOOTH_STATE_UUID,
