@@ -13,6 +13,12 @@ def start_api():
     log.info("Starting API")
     uvicorn.run(app,host=settings.API_HOST,port=settings.API_PORT)
 
+def start_bluetooth():
+    try:
+        from robot.bluetooth.server import run_bluetooth
+        run_bluetooth()
+    except Exception as error:log.warn(f"[BLUETOOTH] disabled after startup error: {error}")
+
 def main():
     log.info("Starting Spy Turtle")
     robot=RobotFactory(simulation=settings.SIMULATION).create()
@@ -26,6 +32,7 @@ def main():
     health=HealthMonitor(robot)
     log.info("Robot ready")
     threading.Thread(target=start_api,daemon=True).start()
+    if settings.BLUETOOTH_ENABLED and not settings.SIMULATION:threading.Thread(target=start_bluetooth,daemon=True).start()
     delay=1/settings.UPDATE_RATE
     log.info("Main loop started")
     while True:
@@ -33,5 +40,4 @@ def main():
         health.update()
         time.sleep(delay)
 
-if __name__=="__main__":
-    main()
+if __name__=="__main__":main()

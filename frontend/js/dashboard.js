@@ -8,7 +8,8 @@ let dashboardIdle=false;
 
 function setConnection(status){
     connectionIcon.className=`connection-dot ${status}`;
-    connectionText.innerText=status==='connected'?'Connected':status==='connecting'?'Connecting':'Offline';
+    const label=typeof transportLabel==="function"?transportLabel():"Wi-Fi";
+    connectionText.innerText=status==='connected'?`${label} Connected`:status==='connecting'?`${label} Connecting`:`${label} Offline`;
 }
 
 function scheduleDashboard(delay=null){
@@ -23,12 +24,7 @@ function setDashboardIdle(idle){
 
 async function updateDashboard(){
     try{
-        const controller=new AbortController();
-        const timeout=setTimeout(()=>controller.abort(),2000);
-        const response=await fetch('/state',{cache:'no-store',signal:controller.signal});
-        clearTimeout(timeout);
-        if(!response.ok)throw new Error(`HTTP ${response.status}`);
-        const status=await response.json();
+        const status=await getStatus();
         const battery=status.battery||{};
         lastConnectedAt=Date.now();
         setConnection('connected');

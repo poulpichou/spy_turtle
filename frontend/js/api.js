@@ -1,6 +1,7 @@
 const API="";
 
 async function getStatus(){
+    if(transportMode==="bluetooth")return readBluetoothState();
     const response=await fetch(`${API}/state`);
     if(!response.ok)throw new Error(`State request failed: ${response.status}`);
     return response.json();
@@ -13,7 +14,11 @@ async function getAssets(){
 }
 
 async function sendCommand(type,value="",extra={}){
-    console.log("[FRONTEND COMMAND]",type,value,extra);
+    console.log("[FRONTEND COMMAND]",transportLabel(),type,value,extra);
+    if(transportMode==="bluetooth"){
+        await writeBluetoothCommand({type,value,extra});
+        return {ok:true,transport:"bluetooth"};
+    }
     const response=await fetch(`${API}/command`,{
         method:"POST",
         headers:{"Content-Type":"application/json"},
