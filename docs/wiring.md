@@ -65,17 +65,17 @@ Any hardware modification must be reflected in this document.
 | Component                 | Pin    |  # |  # | Pin    | Component                |
 | ------------------------- | ------ | -: | -: | ------ | ------------------------ |
 | 3.3V logic / TB6612 VCC  | 3.3V   |  1 |  2 | 5V     | 5V (Power rack)          |
-| I2C SDA: UPS + OLED eyes + MLX90640 | GPIO2 (I2C rack) |  3 |  4 | 5V (Power rack) | ST7796 backlight / peripherals |
-| I2C SCL: UPS + OLED eyes + MLX90640 | GPIO3 (I2C rack) |  5 |  6 | GND (Power rack) | Common ground            |
+| I2C SDA: UPS + OLED eyes + MLX90640 + ST7796 CTP | GPIO2 (I2C rack) |  3 |  4 | 5V (Power rack) | ST7796 backlight / peripherals |
+| I2C SCL: UPS + OLED eyes + MLX90640 + ST7796 CTP | GPIO3 (I2C rack) |  5 |  6 | GND (Power rack) | Common ground            |
 | WS2812B data              | GPIO4  |  7 |  8 | GPIO14 | Available / UART TX      |
 | GND (Power rack)          | GND    |  9 | 10 | GPIO15 | Available / UART RX      |
 | Pan servo                 | GPIO17 | 11 | 12 | GPIO18 | MAX98357A BCLK           |
 | Tilt servo                | GPIO27 | 13 | 14 | GND (Power rack) | Common ground            |
-| Future left encoder A     | GPIO22 | 15 | 16 | GPIO23 | Future left encoder B    |
-| 3.3V                      | 3.3V   | 17 | 18 | GPIO24 | ST7796 RESET             |
-| ST7796 MOSI               | GPIO10 | 19 | 20 | GND (Power rack) | Common ground            |
-| ST7796 MISO               | GPIO9  | 21 | 22 | GPIO25 | ST7796 DC                |
-| ST7796 SCLK               | GPIO11 | 23 | 24 | GPIO8  | ST7796 CS                |
+| ST7796 CTP_INT            | GPIO22 | 15 | 16 | GPIO23 | ST7796 CTP_RST           |
+| 3.3V                      | 3.3V   | 17 | 18 | GPIO24 | ST7796 LCD_RST           |
+| ST7796 SDI(MOSI)          | GPIO10 | 19 | 20 | GND (Power rack) | Common ground            |
+| Available / ST7796 SDO(MISO) unused | GPIO9 | 21 | 22 | GPIO25 | ST7796 LCD_RS            |
+| ST7796 SCK                | GPIO11 | 23 | 24 | GPIO8  | ST7796 LCD_CS            |
 | GND (Power rack)          | GND    | 25 | 26 | GPIO7  | Available / SPI CE1      |
 | Reserved ID\_SD           | GPIO0  | 27 | 28 | GPIO1  | Reserved ID\_SC          |
 | TB6612 STBY               | GPIO5  | 29 | 30 | GND (Power rack) | Common ground            |
@@ -122,6 +122,7 @@ GPIO2 / SDA
          +--- Left OLED
          +--- Right OLED
          +--- MLX90640
+         +--- ST7796 CTP_SDA
 
 GPIO3 / SCL
     |
@@ -130,6 +131,7 @@ GPIO3 / SCL
          +--- Left OLED
          +--- Right OLED
          +--- MLX90640
+         +--- ST7796 CTP_SCL
 ```
 
 The rack is only a physical distribution point. All devices remain on the same Raspberry Pi I2C bus and are differentiated by their I2C addresses.
@@ -142,6 +144,9 @@ The rack is only a physical distribution point. All devices remain on the same R
 | 0x33    | MLX90640 Thermal Camera |
 | 0x3C    | Left OLED eye     |
 | 0x3D    | Right OLED eye    |
+| TBD     | ST7796 capacitive touch controller |
+
+The ST7796 capacitive touch controller address is intentionally left as `TBD` until it is detected on the assembled hardware with `i2cdetect -y 1`.
 
 ---
 
@@ -242,14 +247,26 @@ The thermal camera has been validated on address `0x33`. Thermal acquisition run
 
 ## ST7796 Shell Display
 
-- MOSI: GPIO10
-- MISO: GPIO9
-- SCLK: GPIO11
-- CS: GPIO8
-- DC: GPIO25
-- RESET: GPIO24
-- Backlight: 5V rack
-- SPI0 device 0
+| ST7796 port | Connection | Status / role |
+| ----------- | ---------- | ------------- |
+| VCC | 5V | Connected |
+| GND | GND / common ground | Connected |
+| LCD_CS | GPIO8 | Connected, SPI0 CE0 |
+| LCD_RST | GPIO24 | Connected, display reset |
+| LCD_RS | GPIO25 | Connected, data/command |
+| SDI(MOSI) | GPIO10 | Connected, SPI0 MOSI |
+| SCK | GPIO11 | Connected, SPI0 clock |
+| LED | 5V Power rack | Connected, backlight |
+| SDO(MISO) | Not connected | Intentionally unused; display is write-only |
+| CTP_SCL | GPIO3 via I2C rack | Connected, capacitive touch I2C clock |
+| CTP_RST | GPIO23 | Connected, capacitive touch reset |
+| CTP_SDA | GPIO2 via I2C rack | Connected, capacitive touch I2C data |
+| CTP_INT | GPIO22 | Connected, capacitive touch interrupt |
+| SD_CS | Not connected | Intentionally unused; display microSD interface is not used |
+
+The LCD uses SPI0 device 0. The capacitive touch controller shares the existing I2C SDA/SCL distribution rack. GPIO22 and GPIO23 are reserved for the touchscreen and must not be reused by the motor encoders.
+
+Touch software support is prepared but not enabled yet. The controller model and I2C address must first be detected on the physical hardware.
 
 # Mobility System
 
@@ -312,11 +329,13 @@ Reserved GPIO allocation:
 
 | Encoder | A | B |
 | ------- | --- | --- |
-| Left | GPIO22 | GPIO23 |
+| Left | TBD | TBD |
 | Right | GPIO14 | GPIO15 |
 
 Notes:
 
+- GPIO22/GPIO23 were previously reserved for the left encoder but are now assigned to the ST7796 capacitive touchscreen (`CTP_INT` / `CTP_RST`).
+- The left encoder GPIO allocation must therefore be reassigned before encoder wiring is enabled.
 - GPIO14/GPIO15 are also UART TX/RX.
 - Encoder output voltage must be confirmed before connection to Raspberry Pi GPIO.
 - The motors operate normally without encoder wiring.
@@ -396,8 +415,10 @@ arecord -l
 - Power: 5V rack
 - Ground: common ground
 - Device: `/dev/leds0`
-Colors of wires
-```
+
+Colors of wires:
+
+```text
 Red   -> 5V Power rack
 Green -> GPIO4
 White -> GND Power rack
@@ -409,7 +430,6 @@ Raspberry Pi 5 overlay:
 dtoverlay=ws2812-pio,gpio=4,num_leds=32,brightness=255
 ```
 
-
 The move from GPIO18 to GPIO4 removes the conflict with the MAX98357A I2S BCLK.
 
 # Assembly and Validation Notes
@@ -420,6 +440,8 @@ The move from GPIO18 to GPIO4 removes the conflict with the MAX98357A I2S BCLK.
 - OLED eyes detected at 0x3C and 0x3D.
 - Servos validated.
 - ST7796 display validated.
+- ST7796 capacitive touch wiring allocated: CTP_SDA/SCL on the I2C rack, CTP_INT on GPIO22 and CTP_RST on GPIO23. Controller detection/software validation pending.
+- ST7796 SDO(MISO) and SD_CS intentionally remain disconnected.
 - TB6612 and both motors validated through the final API/frontend.
 - WS2812B configured on GPIO4 as `/dev/leds0`.
 - Replacement MAX98357A amplifiers received; GPIO18/19/21 wiring defined and amplifier available for validation.
@@ -443,6 +465,7 @@ GPIO2 / SDA
          +--- Left OLED
          +--- Right OLED
          +--- MLX90640
+         +--- ST7796 CTP_SDA
 
 GPIO3 / SCL
     |
@@ -451,6 +474,7 @@ GPIO3 / SCL
          +--- Left OLED
          +--- Right OLED
          +--- MLX90640
+         +--- ST7796 CTP_SCL
 ```
 
 The rack is only a physical distribution point. All devices remain on the same Raspberry Pi I2C bus and are differentiated by their I2C addresses.
@@ -463,7 +487,8 @@ Check:
 - SCL on GPIO3
 - 3.3V power
 - common ground
-- addresses 0x2D, 0x33, 0x3C and 0x3D
+- known addresses 0x2D, 0x33, 0x3C and 0x3D
+- ST7796 capacitive touch controller with `i2cdetect -y 1` after CTP wiring is connected
 
 ## Camera Not Detected
 
@@ -603,14 +628,15 @@ The script:
 | Raspberry Pi 5             | Vision, control and future AI                                    |
 | Waveshare UPS HAT          | Battery power and monitoring                                     |
 | UPS USB output to 5V rack  | High-current peripherals avoid Raspberry Pi GPIO 5V distribution |
-| Dedicated I2C distribution rack | Clean shared SDA/SCL distribution for UPS, OLEDs and MLX90640 |
+| Dedicated I2C distribution rack | Clean shared SDA/SCL distribution for UPS, OLEDs, MLX90640 and ST7796 capacitive touch |
 | TB6612FNG                  | Efficient dual motor control                                     |
 | Red/white motor wires      | Experimentally identified DC motor pair                          |
 | Optional motor encoders    | Robot remains operational before encoder wiring is completed     |
+| GPIO22/23 for ST7796 touch | Dedicated interrupt/reset lines for capacitive touch; left encoder pins must be reassigned |
 | GPIO4 for WS2812B          | Avoids conflict with MAX98357A BCLK on GPIO18                    |
 | GPIO18/19/21 for MAX98357A | Standard I2S allocation                                          |
 | MLX90640 at 0x33           | Thermal vision over the existing shared I2C bus                  |
-| USB microphone             | Audio input without additional GPIO allocation                  |
+| USB microphone             | Audio input without additional GPIO allocation                   |
 | ST7796U TFT                | Large shell display                                              |
 | Two addressed OLED eyes    | Independent I2C control                                          |
 | Shared common ground       | Required signal reference across all power domains               |
@@ -630,7 +656,7 @@ Current hardware includes:
 - Raspberry Pi Camera Module 3
 - MLX90640 thermal camera
 - two OLED eyes
-- ST7796 shell display
+- ST7796 shell display with capacitive touch wiring reserved
 - TB6612FNG motor driver
 - two JGA25-370 motors
 - optional Hall encoders

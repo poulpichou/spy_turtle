@@ -101,3 +101,11 @@ MOTOR_WHEEL_DIAMETER_MM=65.0
 MOTOR_TRACK_WIDTH_MM=180.0
 MOTOR_DISTANCE_STEP_MM=3.33
 MOTOR_TURN_STEP_DEGREES=3.33
+
+# ST7796 capacitive touch GPIO reservation
+# Wiring is reserved now; runtime touch support remains disabled until the
+# controller model/address is detected and the driver is implemented.
+ST7796_CTP_ENABLED=False
+ST7796_CTP_I2C_BUS=1
+ST7796_CTP_INT_GPIO=22
+ST7796_CTP_RST_GPIO=23
