@@ -1,4 +1,4 @@
-﻿# Runtime
+# Runtime
 DEBUG=True
 SIMULATION=False
 API_HOST="0.0.0.0"
@@ -29,6 +29,7 @@ SPI_MISO_PIN=9
 SPI_CE0_PIN=8
 
 # OLED eyes (shared I2C bus)
+EYES_ENABLED=False
 OLED_LEFT_ADDRESS=0x3C
 OLED_RIGHT_ADDRESS=0x3D
 

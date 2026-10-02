@@ -1,0 +1,8 @@
+{
+  "shell": {"default": "loading", "assets": {}},
+  "faces": {"default": "neutral", "assets": {}},
+  "eyes": {"default": "open", "assets": {}},
+  "leds": {"default": "off", "assets": {}},
+  "audio": {"default": "bird_parakeet1", "assets": {}},
+  "fonts": {"default": "roboto_regular", "assets": {}}
+}

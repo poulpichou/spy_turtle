@@ -1,0 +1,17 @@
+{
+    pki {
+        ca local {
+            intermediate_lifetime 1825d
+        }
+    }
+}
+
+spyturtle {
+    tls {
+        issuer internal {
+            ca local
+            lifetime 90d
+        }
+    }
+    reverse_proxy 127.0.0.1:8000
+}

@@ -12,6 +12,7 @@ from robot.simulation.fake_thermal_camera import FakeThermalCamera
 from robot.hardware.power_leds import LEDController
 from robot.hardware.servo import ServoController
 from robot.hardware.oled_display import OLEDDisplay
+from robot.hardware.null_eyes_display import NullEyesDisplay
 from robot.hardware.shell_screen_st7796 import ShellScreenST7796
 from robot.hardware.battery import Battery
 from robot.hardware.camera import Camera
@@ -42,7 +43,14 @@ class RobotFactory:
             try:thermal_camera=ThermalCamera()
             except Exception as error:log.error(f"[THERMAL] initialization failed, RGB fallback remains active: {error}")
         speaker=Speaker();servo=ServoController();battery=Battery()
-        left_display=OLEDDisplay(settings.OLED_LEFT_ADDRESS,"left");right_display=OLEDDisplay(settings.OLED_RIGHT_ADDRESS,"right")
+        left_display=NullEyesDisplay("left");right_display=NullEyesDisplay("right")
+        if settings.EYES_ENABLED:
+            try:
+                left_display=OLEDDisplay(settings.OLED_LEFT_ADDRESS,"left");right_display=OLEDDisplay(settings.OLED_RIGHT_ADDRESS,"right")
+            except Exception as error:
+                log.error(f"[EYES] initialization failed, continuing without OLED eyes: {error}")
+                left_display=NullEyesDisplay("left");right_display=NullEyesDisplay("right")
+        else:log.info("[EYES] disabled by configuration")
         eyes_renderer=EyesRenderer(left_display,right_display);face=FaceController(eyes_renderer,leds)
         shell_screen=ShellScreenST7796();shell_ui=ShellUI(shell_screen.display);shell=ShellController(shell_ui)
         robot=Robot(motors=motors,face=face,leds=leds,camera=camera,thermal_camera=thermal_camera,battery=battery,speaker=speaker,servo=servo,shell=shell)
