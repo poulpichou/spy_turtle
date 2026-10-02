@@ -23,12 +23,6 @@ def main():
     log.info("Starting Spy Turtle")
     robot=RobotFactory(simulation=settings.SIMULATION).create()
     set_robot(robot)
-
-    # TEMPORARY HARDWARE TEST: keep all 32 LEDs solid red.
-    robot.leds.set_mode("red")
-    robot.state.led_mode="red"
-    log.info("[LED TEST] 32 LEDs set to solid red")
-
     health=HealthMonitor(robot)
     log.info("Robot ready")
     threading.Thread(target=start_api,daemon=True).start()
