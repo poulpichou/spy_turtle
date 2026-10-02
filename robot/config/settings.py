@@ -106,7 +106,12 @@ MOTOR_TURN_STEP_DEGREES=3.33
 # ST7796 capacitive touch GPIO reservation
 # Wiring is reserved now; runtime touch support remains disabled until the
 # controller model/address is detected and the driver is implemented.
-ST7796_CTP_ENABLED=False
+ST7796_CTP_ENABLED=True
 ST7796_CTP_I2C_BUS=1
 ST7796_CTP_INT_GPIO=22
 ST7796_CTP_RST_GPIO=23
+ST7796_CTP_WIDTH=320
+ST7796_CTP_HEIGHT=480
+ST7796_CTP_SWAP_XY=False
+ST7796_CTP_INVERT_X=False
+ST7796_CTP_INVERT_Y=False

@@ -1,4 +1,4 @@
-import time
+﻿import time
 from robot.system.state import TurtleState
 from robot.system.power import PowerManager
 
@@ -27,6 +27,7 @@ class Robot:
     def update(self):
         if self.power.idle_mode:
             self._update_battery(interval=self.IDLE_BATTERY_UPDATE_INTERVAL)
+            if self.shell and hasattr(self.shell,'update_touch_only'):self.shell.update_touch_only()
             return
         self._update_battery()
         if self.brain:self.brain.update()

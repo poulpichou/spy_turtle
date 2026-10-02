@@ -2,6 +2,9 @@ import json
 import time
 from pathlib import Path
 from robot.assets.assets import get_asset
+from robot.config import settings
+from robot.hardware.touchscreen import Touchscreen
+from robot.shell.touch_controller import TouchController
 from robot.shell.ui.shell_views import StatusView,LogView,TextView,GifView,media_view
 from robot.utils.logger import log
 
@@ -10,12 +13,20 @@ class ShellController:
         self.robot=None
         self.screen=screen
         self.view=StatusView()
+        self.touchscreen=None
+        self.touch_controller=None
         path=Path(config_path) if config_path else Path(__file__).resolve().parent.parent/"config"/"shell_modes.json"
         with path.open(encoding="utf-8") as file:self.config=json.load(file)
         self.expires_at=0.0
         self.active_mode="status"
 
-    def set_robot(self,robot): self.robot=robot
+    def set_robot(self,robot):
+        self.robot=robot
+        if settings.ST7796_CTP_ENABLED:
+            try:
+                self.touchscreen=Touchscreen()
+                if self.touchscreen.available:self.touch_controller=TouchController(robot,self,self.touchscreen)
+            except Exception as error:log.warn(f"[TOUCH] initialization failed: {error}")
 
     def set_view(self,view):
         if self.view:self.view.close()
@@ -82,7 +93,11 @@ class ShellController:
             self.robot.leds.set_mode("neutral")
             self.robot.state.led_mode="neutral"
 
+    def update_touch_only(self):
+        if self.touch_controller:self.touch_controller.update()
+
     def update(self):
+        self.update_touch_only()
         if self.expires_at and time.monotonic()>=self.expires_at:
             log.info(f"[SHELL] mode {self.active_mode} expired")
             self.show_status()
@@ -97,3 +112,4 @@ class ShellController:
 
     def close(self):
         if self.view:self.view.close()
+        if self.touchscreen:self.touchscreen.close()
