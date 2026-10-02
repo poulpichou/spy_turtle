@@ -31,8 +31,8 @@ async function loadAssetControls(){
 loadAssetControls();
 
 const animations={
-    hello:{face:"happy",shell:"happy",led:"wave"},
-    happy:{face:"happy",shell:"happy",led:"breathing"},
+    hello:{face:"happy",shell:"turtle_happy",led:"wave"},
+    happy:{face:"happy",shell:"turtle_happy",led:"breathing"},
     party:{face:"happy",shell:"dance",led:"dance"},
     rocket:{face:"surprised",shell:"rocket",led:"rocket"},
     sleep:{face:"sleeping",shell:"sleep",led:"off"},

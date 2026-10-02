@@ -1,4 +1,4 @@
-# Runtime
+﻿# Runtime
 DEBUG=True
 SIMULATION=False
 API_HOST="0.0.0.0"
