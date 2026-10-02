@@ -1,647 +1,251 @@
 {
-    "neutral": {
-        "loop": true,
-        "interruptible": true,
-        "next": null,
-        "led": "neutral",
-        "frames": [
-            {
-                "duration": 1000,
-                "left_eye": "open",
-                "right_eye": "open"
-            }
-        ]
-    },
-    "blink": {
-        "loop": false,
-        "interruptible": false,
-        "next": "neutral",
-        "led": null,
-        "frames": [
-            {
-                "duration": 55,
-                "left_eye": "half",
-                "right_eye": "half"
-            },
-            {
-                "duration": 75,
-                "left_eye": "closed",
-                "right_eye": "closed"
-            },
-            {
-                "duration": 55,
-                "left_eye": "half",
-                "right_eye": "half"
-            },
-            {
-                "duration": 110,
-                "left_eye": "open",
-                "right_eye": "open"
-            }
-        ]
-    },
-    "double_blink": {
-        "loop": false,
-        "interruptible": false,
-        "next": "neutral",
-        "led": null,
-        "frames": [
-            {
-                "duration": 55,
-                "left_eye": "half",
-                "right_eye": "half"
-            },
-            {
-                "duration": 75,
-                "left_eye": "closed",
-                "right_eye": "closed"
-            },
-            {
-                "duration": 75,
-                "left_eye": "half",
-                "right_eye": "half"
-            },
-            {
-                "duration": 120,
-                "left_eye": "open",
-                "right_eye": "open"
-            },
-            {
-                "duration": 55,
-                "left_eye": "half",
-                "right_eye": "half"
-            },
-            {
-                "duration": 75,
-                "left_eye": "closed",
-                "right_eye": "closed"
-            },
-            {
-                "duration": 55,
-                "left_eye": "half",
-                "right_eye": "half"
-            },
-            {
-                "duration": 110,
-                "left_eye": "open",
-                "right_eye": "open"
-            }
-        ]
-    },
-    "look_left": {
-        "loop": false,
-        "interruptible": true,
-        "next": "neutral",
-        "led": null,
-        "frames": [
-            {
-                "duration": 75,
-                "left_eye": "look_left_1",
-                "right_eye": "look_left_1"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_left_2",
-                "right_eye": "look_left_2"
-            },
-            {
-                "duration": 300,
-                "left_eye": "look_left",
-                "right_eye": "look_left"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_left_2",
-                "right_eye": "look_left_2"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_left_1",
-                "right_eye": "look_left_1"
-            },
-            {
-                "duration": 100,
-                "left_eye": "open",
-                "right_eye": "open"
-            }
-        ]
-    },
-    "look_right": {
-        "loop": false,
-        "interruptible": true,
-        "next": "neutral",
-        "led": null,
-        "frames": [
-            {
-                "duration": 75,
-                "left_eye": "look_right_1",
-                "right_eye": "look_right_1"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_right_2",
-                "right_eye": "look_right_2"
-            },
-            {
-                "duration": 300,
-                "left_eye": "look_right",
-                "right_eye": "look_right"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_right_2",
-                "right_eye": "look_right_2"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_right_1",
-                "right_eye": "look_right_1"
-            },
-            {
-                "duration": 100,
-                "left_eye": "open",
-                "right_eye": "open"
-            }
-        ]
-    },
-    "look_high": {
-        "loop": false,
-        "interruptible": true,
-        "next": "neutral",
-        "led": null,
-        "frames": [
-            {
-                "duration": 75,
-                "left_eye": "look_up_1",
-                "right_eye": "look_up_1"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_up_2",
-                "right_eye": "look_up_2"
-            },
-            {
-                "duration": 300,
-                "left_eye": "look_up",
-                "right_eye": "look_up"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_up_2",
-                "right_eye": "look_up_2"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_up_1",
-                "right_eye": "look_up_1"
-            },
-            {
-                "duration": 100,
-                "left_eye": "open",
-                "right_eye": "open"
-            }
-        ]
-    },
-    "look_up": {
-        "loop": false,
-        "interruptible": true,
-        "next": "neutral",
-        "led": null,
-        "frames": [
-            {
-                "duration": 75,
-                "left_eye": "look_up_1",
-                "right_eye": "look_up_1"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_up_2",
-                "right_eye": "look_up_2"
-            },
-            {
-                "duration": 300,
-                "left_eye": "look_up",
-                "right_eye": "look_up"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_up_2",
-                "right_eye": "look_up_2"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_up_1",
-                "right_eye": "look_up_1"
-            },
-            {
-                "duration": 100,
-                "left_eye": "open",
-                "right_eye": "open"
-            }
-        ]
-    },
-    "look_down": {
-        "loop": false,
-        "interruptible": true,
-        "next": "neutral",
-        "led": null,
-        "frames": [
-            {
-                "duration": 75,
-                "left_eye": "look_down_1",
-                "right_eye": "look_down_1"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_down_2",
-                "right_eye": "look_down_2"
-            },
-            {
-                "duration": 300,
-                "left_eye": "look_down",
-                "right_eye": "look_down"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_down_2",
-                "right_eye": "look_down_2"
-            },
-            {
-                "duration": 75,
-                "left_eye": "look_down_1",
-                "right_eye": "look_down_1"
-            },
-            {
-                "duration": 100,
-                "left_eye": "open",
-                "right_eye": "open"
-            }
-        ]
-    },
-    "happy": {
-        "loop": true,
-        "interruptible": true,
-        "next": null,
-        "led": "happy",
-        "frames": [
-            {
-                "duration": 180,
-                "left_eye": "happy_small",
-                "right_eye": "happy_small"
-            },
-            {
-                "duration": 180,
-                "left_eye": "happy_medium",
-                "right_eye": "happy_medium"
-            },
-            {
-                "duration": 220,
-                "left_eye": "happy_large",
-                "right_eye": "happy_large"
-            },
-            {
-                "duration": 180,
-                "left_eye": "happy_medium",
-                "right_eye": "happy_medium"
-            }
-        ]
-    },
-    "love": {
-        "loop": true,
-        "interruptible": true,
-        "next": null,
-        "led": "love",
-        "frames": [
-            {
-                "duration": 180,
-                "left_eye": "heart_small",
-                "right_eye": "heart_small"
-            },
-            {
-                "duration": 180,
-                "left_eye": "heart_medium",
-                "right_eye": "heart_medium"
-            },
-            {
-                "duration": 220,
-                "left_eye": "heart_large",
-                "right_eye": "heart_large"
-            },
-            {
-                "duration": 180,
-                "left_eye": "heart_medium",
-                "right_eye": "heart_medium"
-            }
-        ]
-    },
-    "surprised": {
-        "loop": true,
-        "interruptible": true,
-        "next": null,
-        "led": "surprised",
-        "frames": [
-            {
-                "duration": 160,
-                "left_eye": "surprised_small",
-                "right_eye": "surprised_small"
-            },
-            {
-                "duration": 180,
-                "left_eye": "surprised_medium",
-                "right_eye": "surprised_medium"
-            },
-            {
-                "duration": 220,
-                "left_eye": "surprised_large",
-                "right_eye": "surprised_large"
-            },
-            {
-                "duration": 180,
-                "left_eye": "surprised_medium",
-                "right_eye": "surprised_medium"
-            }
-        ]
-    },
-    "angry": {
-        "loop": true,
-        "interruptible": true,
-        "next": null,
-        "led": "angry",
-        "frames": [
-            {
-                "duration": 180,
-                "left_eye": "angry_left_soft",
-                "right_eye": "angry_right_soft"
-            },
-            {
-                "duration": 180,
-                "left_eye": "angry_left_medium",
-                "right_eye": "angry_right_medium"
-            },
-            {
-                "duration": 220,
-                "left_eye": "angry_left_strong",
-                "right_eye": "angry_right_strong"
-            },
-            {
-                "duration": 180,
-                "left_eye": "angry_left_medium",
-                "right_eye": "angry_right_medium"
-            }
-        ]
-    },
-    "sleepy": {
-        "loop": true,
-        "interruptible": true,
-        "next": null,
-        "led": "sleepy",
-        "frames": [
-            {
-                "duration": 280,
-                "left_eye": "sleepy_1",
-                "right_eye": "sleepy_1"
-            },
-            {
-                "duration": 320,
-                "left_eye": "sleepy_2",
-                "right_eye": "sleepy_2"
-            },
-            {
-                "duration": 400,
-                "left_eye": "sleepy_3",
-                "right_eye": "sleepy_3"
-            },
-            {
-                "duration": 320,
-                "left_eye": "sleepy_2",
-                "right_eye": "sleepy_2"
-            }
-        ]
-    },
-    "sleeping": {
-        "loop": true,
-        "interruptible": false,
-        "next": null,
-        "led": "sleeping",
-        "frames": [
-            {
-                "duration": 350,
-                "left_eye": "sleep_z_1",
-                "right_eye": "sleep_z_1"
-            },
-            {
-                "duration": 350,
-                "left_eye": "sleep_z_2",
-                "right_eye": "sleep_z_2"
-            },
-            {
-                "duration": 350,
-                "left_eye": "sleep_z_3",
-                "right_eye": "sleep_z_3"
-            },
-            {
-                "duration": 350,
-                "left_eye": "sleep_z_4",
-                "right_eye": "sleep_z_4"
-            }
-        ]
-    },
-    "sleep": {
-        "loop": true,
-        "interruptible": false,
-        "next": null,
-        "led": "sleeping",
-        "frames": [
-            {
-                "duration": 350,
-                "left_eye": "sleep_z_1",
-                "right_eye": "sleep_z_1"
-            },
-            {
-                "duration": 350,
-                "left_eye": "sleep_z_2",
-                "right_eye": "sleep_z_2"
-            },
-            {
-                "duration": 350,
-                "left_eye": "sleep_z_3",
-                "right_eye": "sleep_z_3"
-            },
-            {
-                "duration": 350,
-                "left_eye": "sleep_z_4",
-                "right_eye": "sleep_z_4"
-            }
-        ]
-    },
-    "curious": {
-        "loop": true,
-        "interruptible": true,
-        "next": null,
-        "led": "curious",
-        "frames": [
-            {
-                "duration": 260,
-                "left_eye": "curious_large_left",
-                "right_eye": "curious_small_left"
-            },
-            {
-                "duration": 260,
-                "left_eye": "curious_large_center",
-                "right_eye": "curious_small_center"
-            },
-            {
-                "duration": 260,
-                "left_eye": "curious_large_right",
-                "right_eye": "curious_small_right"
-            },
-            {
-                "duration": 260,
-                "left_eye": "curious_large_center",
-                "right_eye": "curious_small_center"
-            }
-        ]
-    },
-    "dizzy": {
-        "loop": true,
-        "interruptible": true,
-        "next": null,
-        "led": "dizzy",
-        "frames": [
-            {
-                "duration": 140,
-                "left_eye": "dizzy_1",
-                "right_eye": "dizzy_1"
-            },
-            {
-                "duration": 140,
-                "left_eye": "dizzy_2",
-                "right_eye": "dizzy_2"
-            },
-            {
-                "duration": 140,
-                "left_eye": "dizzy_3",
-                "right_eye": "dizzy_3"
-            },
-            {
-                "duration": 140,
-                "left_eye": "dizzy_4",
-                "right_eye": "dizzy_4"
-            }
-        ]
-    },
-    "thinking": {
-        "loop": true,
-        "interruptible": true,
-        "next": null,
-        "led": "thinking",
-        "frames": [
-            {
-                "duration": 350,
-                "left_eye": "thinking_1",
-                "right_eye": "thinking_1"
-            },
-            {
-                "duration": 350,
-                "left_eye": "thinking_2",
-                "right_eye": "thinking_2"
-            },
-            {
-                "duration": 350,
-                "left_eye": "thinking_3",
-                "right_eye": "thinking_3"
-            },
-            {
-                "duration": 350,
-                "left_eye": "thinking_4",
-                "right_eye": "thinking_4"
-            }
-        ]
-    },
-    "yawn": {
-        "loop": false,
-        "interruptible": false,
-        "next": "neutral",
-        "led": null,
-        "frames": [
-            {
-                "duration": 180,
-                "left_eye": "open",
-                "right_eye": "open"
-            },
-            {
-                "duration": 180,
-                "left_eye": "half",
-                "right_eye": "half"
-            },
-            {
-                "duration": 240,
-                "left_eye": "sleepy",
-                "right_eye": "sleepy"
-            },
-            {
-                "duration": 700,
-                "left_eye": "closed",
-                "right_eye": "closed"
-            },
-            {
-                "duration": 320,
-                "left_eye": "sleepy",
-                "right_eye": "sleepy"
-            },
-            {
-                "duration": 180,
-                "left_eye": "half",
-                "right_eye": "half"
-            },
-            {
-                "duration": 150,
-                "left_eye": "open",
-                "right_eye": "open"
-            }
-        ]
-    },
-    "wake_up": {
-        "loop": false,
-        "interruptible": false,
-        "next": "neutral",
-        "led": null,
-        "frames": [
-            {
-                "duration": 450,
-                "left_eye": "sleeping",
-                "right_eye": "sleeping"
-            },
-            {
-                "duration": 300,
-                "left_eye": "closed",
-                "right_eye": "closed"
-            },
-            {
-                "duration": 260,
-                "left_eye": "sleepy",
-                "right_eye": "sleepy"
-            },
-            {
-                "duration": 220,
-                "left_eye": "half",
-                "right_eye": "half"
-            },
-            {
-                "duration": 180,
-                "left_eye": "open",
-                "right_eye": "open"
-            },
-            {
-                "duration": 70,
-                "left_eye": "closed",
-                "right_eye": "closed"
-            },
-            {
-                "duration": 100,
-                "left_eye": "open",
-                "right_eye": "open"
-            }
-        ]
-    }
+  "neutral": {"loop": true, "interruptible": true, "next": null, "led": "neutral", "frames": [{"duration": 1000, "left_eye": "open", "right_eye": "open"}]},
+  "blink": {
+    "loop": false,
+    "interruptible": false,
+    "next": "neutral",
+    "led": null,
+    "frames": [
+      {"duration": 55, "left_eye": "half", "right_eye": "half"},
+      {"duration": 75, "left_eye": "closed", "right_eye": "closed"},
+      {"duration": 55, "left_eye": "half", "right_eye": "half"},
+      {"duration": 110, "left_eye": "open", "right_eye": "open"}
+    ]
+  },
+  "double_blink": {
+    "loop": false,
+    "interruptible": false,
+    "next": "neutral",
+    "led": null,
+    "frames": [
+      {"duration": 55, "left_eye": "half", "right_eye": "half"},
+      {"duration": 75, "left_eye": "closed", "right_eye": "closed"},
+      {"duration": 75, "left_eye": "half", "right_eye": "half"},
+      {"duration": 120, "left_eye": "open", "right_eye": "open"},
+      {"duration": 55, "left_eye": "half", "right_eye": "half"},
+      {"duration": 75, "left_eye": "closed", "right_eye": "closed"},
+      {"duration": 55, "left_eye": "half", "right_eye": "half"},
+      {"duration": 110, "left_eye": "open", "right_eye": "open"}
+    ]
+  },
+  "look_left": {
+    "loop": false,
+    "interruptible": true,
+    "next": "neutral",
+    "led": null,
+    "frames": [
+      {"duration": 75, "left_eye": "look_left_1", "right_eye": "look_left_1"},
+      {"duration": 75, "left_eye": "look_left_2", "right_eye": "look_left_2"},
+      {"duration": 300, "left_eye": "look_left", "right_eye": "look_left"},
+      {"duration": 75, "left_eye": "look_left_2", "right_eye": "look_left_2"},
+      {"duration": 75, "left_eye": "look_left_1", "right_eye": "look_left_1"},
+      {"duration": 100, "left_eye": "open", "right_eye": "open"}
+    ]
+  },
+  "look_right": {
+    "loop": false,
+    "interruptible": true,
+    "next": "neutral",
+    "led": null,
+    "frames": [
+      {"duration": 75, "left_eye": "look_right_1", "right_eye": "look_right_1"},
+      {"duration": 75, "left_eye": "look_right_2", "right_eye": "look_right_2"},
+      {"duration": 300, "left_eye": "look_right", "right_eye": "look_right"},
+      {"duration": 75, "left_eye": "look_right_2", "right_eye": "look_right_2"},
+      {"duration": 75, "left_eye": "look_right_1", "right_eye": "look_right_1"},
+      {"duration": 100, "left_eye": "open", "right_eye": "open"}
+    ]
+  },
+  "look_high": {
+    "loop": false,
+    "interruptible": true,
+    "next": "neutral",
+    "led": null,
+    "frames": [
+      {"duration": 75, "left_eye": "look_up_1", "right_eye": "look_up_1"},
+      {"duration": 75, "left_eye": "look_up_2", "right_eye": "look_up_2"},
+      {"duration": 300, "left_eye": "look_up", "right_eye": "look_up"},
+      {"duration": 75, "left_eye": "look_up_2", "right_eye": "look_up_2"},
+      {"duration": 75, "left_eye": "look_up_1", "right_eye": "look_up_1"},
+      {"duration": 100, "left_eye": "open", "right_eye": "open"}
+    ]
+  },
+  "look_up": {
+    "loop": false,
+    "interruptible": true,
+    "next": "neutral",
+    "led": null,
+    "frames": [
+      {"duration": 75, "left_eye": "look_up_1", "right_eye": "look_up_1"},
+      {"duration": 75, "left_eye": "look_up_2", "right_eye": "look_up_2"},
+      {"duration": 300, "left_eye": "look_up", "right_eye": "look_up"},
+      {"duration": 75, "left_eye": "look_up_2", "right_eye": "look_up_2"},
+      {"duration": 75, "left_eye": "look_up_1", "right_eye": "look_up_1"},
+      {"duration": 100, "left_eye": "open", "right_eye": "open"}
+    ]
+  },
+  "look_down": {
+    "loop": false,
+    "interruptible": true,
+    "next": "neutral",
+    "led": null,
+    "frames": [
+      {"duration": 75, "left_eye": "look_down_1", "right_eye": "look_down_1"},
+      {"duration": 75, "left_eye": "look_down_2", "right_eye": "look_down_2"},
+      {"duration": 300, "left_eye": "look_down", "right_eye": "look_down"},
+      {"duration": 75, "left_eye": "look_down_2", "right_eye": "look_down_2"},
+      {"duration": 75, "left_eye": "look_down_1", "right_eye": "look_down_1"},
+      {"duration": 100, "left_eye": "open", "right_eye": "open"}
+    ]
+  },
+  "happy": {
+    "loop": true,
+    "interruptible": true,
+    "next": null,
+    "led": "happy",
+    "frames": [
+      {"duration": 180, "left_eye": "happy_small", "right_eye": "happy_small"},
+      {"duration": 180, "left_eye": "happy_medium", "right_eye": "happy_medium"},
+      {"duration": 220, "left_eye": "happy_large", "right_eye": "happy_large"},
+      {"duration": 180, "left_eye": "happy_medium", "right_eye": "happy_medium"}
+    ]
+  },
+  "love": {
+    "loop": true,
+    "interruptible": true,
+    "next": null,
+    "led": "love",
+    "frames": [
+      {"duration": 180, "left_eye": "heart_small", "right_eye": "heart_small"},
+      {"duration": 180, "left_eye": "heart_medium", "right_eye": "heart_medium"},
+      {"duration": 220, "left_eye": "heart_large", "right_eye": "heart_large"},
+      {"duration": 180, "left_eye": "heart_medium", "right_eye": "heart_medium"}
+    ]
+  },
+  "surprised": {
+    "loop": true,
+    "interruptible": true,
+    "next": null,
+    "led": "surprised",
+    "frames": [
+      {"duration": 160, "left_eye": "surprised_small", "right_eye": "surprised_small"},
+      {"duration": 180, "left_eye": "surprised_medium", "right_eye": "surprised_medium"},
+      {"duration": 220, "left_eye": "surprised_large", "right_eye": "surprised_large"},
+      {"duration": 180, "left_eye": "surprised_medium", "right_eye": "surprised_medium"}
+    ]
+  },
+  "angry": {
+    "loop": true,
+    "interruptible": true,
+    "next": null,
+    "led": "angry",
+    "frames": [
+      {"duration": 180, "left_eye": "angry_left_soft", "right_eye": "angry_right_soft"},
+      {"duration": 180, "left_eye": "angry_left_medium", "right_eye": "angry_right_medium"},
+      {"duration": 220, "left_eye": "angry_left_strong", "right_eye": "angry_right_strong"},
+      {"duration": 180, "left_eye": "angry_left_medium", "right_eye": "angry_right_medium"}
+    ]
+  },
+  "sleepy": {
+    "loop": true,
+    "interruptible": true,
+    "next": null,
+    "led": "sleepy",
+    "frames": [
+      {"duration": 280, "left_eye": "sleepy_1", "right_eye": "sleepy_1"},
+      {"duration": 320, "left_eye": "sleepy_2", "right_eye": "sleepy_2"},
+      {"duration": 400, "left_eye": "sleepy_3", "right_eye": "sleepy_3"},
+      {"duration": 320, "left_eye": "sleepy_2", "right_eye": "sleepy_2"}
+    ]
+  },
+  "sleeping": {
+    "loop": true,
+    "interruptible": false,
+    "next": null,
+    "led": "sleeping",
+    "frames": [
+      {"duration": 350, "left_eye": "sleep_z_1", "right_eye": "sleep_z_1"},
+      {"duration": 350, "left_eye": "sleep_z_2", "right_eye": "sleep_z_2"},
+      {"duration": 350, "left_eye": "sleep_z_3", "right_eye": "sleep_z_3"},
+      {"duration": 350, "left_eye": "sleep_z_4", "right_eye": "sleep_z_4"}
+    ]
+  },
+  "sleep": {
+    "loop": true,
+    "interruptible": false,
+    "next": null,
+    "led": "sleeping",
+    "frames": [
+      {"duration": 350, "left_eye": "sleep_z_1", "right_eye": "sleep_z_1"},
+      {"duration": 350, "left_eye": "sleep_z_2", "right_eye": "sleep_z_2"},
+      {"duration": 350, "left_eye": "sleep_z_3", "right_eye": "sleep_z_3"},
+      {"duration": 350, "left_eye": "sleep_z_4", "right_eye": "sleep_z_4"}
+    ]
+  },
+  "curious": {
+    "loop": true,
+    "interruptible": true,
+    "next": null,
+    "led": "curious",
+    "frames": [
+      {"duration": 260, "left_eye": "curious_large_left", "right_eye": "curious_small_left"},
+      {"duration": 260, "left_eye": "curious_large_center", "right_eye": "curious_small_center"},
+      {"duration": 260, "left_eye": "curious_large_right", "right_eye": "curious_small_right"},
+      {"duration": 260, "left_eye": "curious_large_center", "right_eye": "curious_small_center"}
+    ]
+  },
+  "dizzy": {
+    "loop": true,
+    "interruptible": true,
+    "next": null,
+    "led": "dizzy",
+    "frames": [
+      {"duration": 140, "left_eye": "dizzy_1", "right_eye": "dizzy_1"},
+      {"duration": 140, "left_eye": "dizzy_2", "right_eye": "dizzy_2"},
+      {"duration": 140, "left_eye": "dizzy_3", "right_eye": "dizzy_3"},
+      {"duration": 140, "left_eye": "dizzy_4", "right_eye": "dizzy_4"}
+    ]
+  },
+  "thinking": {
+    "loop": true,
+    "interruptible": true,
+    "next": null,
+    "led": "thinking",
+    "frames": [
+      {"duration": 350, "left_eye": "thinking_1", "right_eye": "thinking_1"},
+      {"duration": 350, "left_eye": "thinking_2", "right_eye": "thinking_2"},
+      {"duration": 350, "left_eye": "thinking_3", "right_eye": "thinking_3"},
+      {"duration": 350, "left_eye": "thinking_4", "right_eye": "thinking_4"}
+    ]
+  },
+  "yawn": {
+    "loop": false,
+    "interruptible": false,
+    "next": "neutral",
+    "led": null,
+    "frames": [
+      {"duration": 180, "left_eye": "open", "right_eye": "open"},
+      {"duration": 180, "left_eye": "half", "right_eye": "half"},
+      {"duration": 240, "left_eye": "sleepy", "right_eye": "sleepy"},
+      {"duration": 700, "left_eye": "closed", "right_eye": "closed"},
+      {"duration": 320, "left_eye": "sleepy", "right_eye": "sleepy"},
+      {"duration": 180, "left_eye": "half", "right_eye": "half"},
+      {"duration": 150, "left_eye": "open", "right_eye": "open"}
+    ]
+  },
+  "wake_up": {
+    "loop": false,
+    "interruptible": false,
+    "next": "neutral",
+    "led": null,
+    "frames": [
+      {"duration": 450, "left_eye": "sleeping", "right_eye": "sleeping"},
+      {"duration": 300, "left_eye": "closed", "right_eye": "closed"},
+      {"duration": 260, "left_eye": "sleepy", "right_eye": "sleepy"},
+      {"duration": 220, "left_eye": "half", "right_eye": "half"},
+      {"duration": 180, "left_eye": "open", "right_eye": "open"},
+      {"duration": 70, "left_eye": "closed", "right_eye": "closed"},
+      {"duration": 100, "left_eye": "open", "right_eye": "open"}
+    ]
+  }
 }

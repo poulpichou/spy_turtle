@@ -1,4 +1,4 @@
-import os
+﻿import os
 import shutil
 import subprocess
 import tempfile
@@ -113,7 +113,7 @@ def get_health():
     }
 
 @app.get("/assets")
-def get_available_assets():return {section:build_assets(section) for section in ("shell","eyes","leds","audio")}
+def get_available_assets():return {section:build_assets(section) for section in ("shell","faces","leds","audio")}
 def build_assets(section):return [{"name":name,"label":asset.get("label",name)} for name,asset in get_assets(section).items() if asset.get("available",True)]
 
 @app.get("/logs")

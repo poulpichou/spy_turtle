@@ -8,3 +8,4 @@ The project uses a compact programming style while preserving readability.
 - Avoid starting a new line after `:` unless the body needs several statements or the line would become too long.
 - Prefer concise, readable expressions over artificially expanded code.
 - When modifying project code, provide every complete file that must be changed, not isolated snippets.
+- For json, try to inline when you can, example a list of states is a succession of lines like this "surprised":  {"type": "flash", "color":  [255, 255, 255 ],  "period":  0.22, "brightness":  1.0}.

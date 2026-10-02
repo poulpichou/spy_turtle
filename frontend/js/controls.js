@@ -1,14 +1,41 @@
-function startMove(direction){sendCommand("move",direction).catch(showCommandError)}function stopMove(){sendCommand("move","stop").catch(showCommandError)}function showCommandError(error){console.error(error);alert(error.message)}function setupMovementButton(id,direction){const button=document.getElementById(id);button.addEventListener("mousedown",()=>startMove(direction));button.addEventListener("mouseup",stopMove);button.addEventListener("mouseleave",stopMove);button.addEventListener("touchstart",event=>{event.preventDefault();startMove(direction)},{passive:false});button.addEventListener("touchend",event=>{event.preventDefault();stopMove()},{passive:false});button.addEventListener("touchcancel",stopMove)}setupMovementButton("forward","forward");setupMovementButton("backward","backward");setupMovementButton("left","left");setupMovementButton("right","right");document.getElementById("stop").onclick=stopMove;function setupHeadButton(id,direction){document.getElementById(id).onclick=()=>sendCommand("head",direction).catch(showCommandError)}setupHeadButton("head-left","left");setupHeadButton("head-right","right");setupHeadButton("head-up","up");setupHeadButton("head-down","down");setupHeadButton("head-center","center");document.getElementById("face-select").onchange=event=>sendCommand("face",event.target.value).catch(showCommandError);document.getElementById("shell-select").onchange=event=>sendCommand("shell",event.target.value).catch(showCommandError);document.getElementById("led-select").onchange=event=>sendCommand("led",event.target.value).catch(showCommandError);
+function startMove(direction){sendCommand("move",direction).catch(showCommandError)}
+function stopMove(){sendCommand("move","stop").catch(showCommandError)}
+function showCommandError(error){console.error(error);alert(error.message)}
+function setupMovementButton(id,direction){const button=document.getElementById(id);button.addEventListener("mousedown",()=>startMove(direction));button.addEventListener("mouseup",stopMove);button.addEventListener("mouseleave",stopMove);button.addEventListener("touchstart",event=>{event.preventDefault();startMove(direction)},{passive:false});button.addEventListener("touchend",event=>{event.preventDefault();stopMove()},{passive:false});button.addEventListener("touchcancel",stopMove)}
+setupMovementButton("forward","forward");setupMovementButton("backward","backward");setupMovementButton("left","left");setupMovementButton("right","right");document.getElementById("stop").onclick=stopMove;
+function setupHeadButton(id,direction){document.getElementById(id).onclick=()=>sendCommand("head",direction).catch(showCommandError)}
+setupHeadButton("head-left","left");setupHeadButton("head-right","right");setupHeadButton("head-up","up");setupHeadButton("head-down","down");setupHeadButton("head-center","center");
 
-const soundSelect=document.getElementById("sound-select");soundSelect.onchange=event=>{if(event.target.value)sendCommand("sound",event.target.value).catch(showCommandError)};
-async function loadSounds(){try{const data=await getAssets(),sounds=data.audio||[];soundSelect.replaceChildren();for(const sound of sounds){const option=document.createElement("option");option.value=sound.name;option.textContent=sound.label||sound.name;soundSelect.appendChild(option)}if(!sounds.length){const option=document.createElement("option");option.textContent="No sounds";option.value="";soundSelect.appendChild(option)}}catch(error){console.error("[SOUNDS]",error)}}loadSounds();
+const assetSelects={faces:document.getElementById("face-select"),shell:document.getElementById("shell-select"),leds:document.getElementById("led-select"),audio:document.getElementById("sound-select")};
+assetSelects.faces.onchange=event=>sendCommand("face",event.target.value).catch(showCommandError);
+assetSelects.shell.onchange=event=>sendCommand("shell",event.target.value).catch(showCommandError);
+assetSelects.leds.onchange=event=>sendCommand("led",event.target.value).catch(showCommandError);
+assetSelects.audio.onchange=event=>{if(event.target.value)sendCommand("sound",event.target.value).catch(showCommandError)};
+
+function assetOption(name,label){const option=document.createElement("option");option.value=name;option.textContent=label||name;return option}
+function fillAssetSelect(select,items,prefix=[]){
+    const previous=select.value;select.replaceChildren();
+    for(const item of prefix)select.appendChild(assetOption(item.name,item.label));
+    for(const item of items||[])select.appendChild(assetOption(item.name,item.label));
+    if([...select.options].some(option=>option.value===previous))select.value=previous;
+}
+async function loadAssetControls(){
+    try{
+        const data=await getAssets();
+        fillAssetSelect(assetSelects.faces,data.faces);
+        fillAssetSelect(assetSelects.shell,data.shell,[{name:"status",label:"Status"},{name:"log",label:"Log"}]);
+        fillAssetSelect(assetSelects.leds,data.leds);
+        fillAssetSelect(assetSelects.audio,data.audio,[{name:"",label:"Choose sound..."}]);
+    }catch(error){console.error("[ASSETS]",error)}
+}
+loadAssetControls();
 
 const animations={
-    hello:{face:"happy",shell:"happy",led:"wave",sound:"applause"},
-    happy:{face:"happy",shell:"happy",led:"breathing",sound:"laugh"},
-    party:{face:"happy",shell:"dance",led:"dance",sound:"applause"},
-    rocket:{face:"surprised",shell:"rocket",led:"rocket",sound:"rocket"},
-    sleep:{face:"sleeping",shell:"sleep",led:"off",sound:""},
+    hello:{face:"happy",shell:"happy",led:"wave"},
+    happy:{face:"happy",shell:"happy",led:"breathing"},
+    party:{face:"happy",shell:"dance",led:"dance"},
+    rocket:{face:"surprised",shell:"rocket",led:"rocket"},
+    sleep:{face:"sleeping",shell:"sleep",led:"off"},
     fart:{face:"surprised",shell:"smoke",led:"fart",sound:"fart1"}
 };
 async function playAnimation(name){
