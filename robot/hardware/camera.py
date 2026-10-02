@@ -1,4 +1,4 @@
-from io import BytesIO
+﻿from io import BytesIO
 from threading import RLock
 from PIL import Image
 from picamera2 import Picamera2
@@ -41,7 +41,7 @@ class Camera:
             try:image=self.camera.capture_array()
             except RuntimeError as error:
                 log.warn(f"[CAMERA] capture failed, recreating camera: {error}");self._create();self.camera.start();self.running=True;image=self.camera.capture_array()
-            buffer=BytesIO();Image.fromarray(image).convert("RGB").save(buffer,format="JPEG",quality=85);return buffer.getvalue()
+            frame=Image.fromarray(image).convert("RGB");rotation=int(getattr(settings,"CAMERA_ROTATION",0))%360`n            if rotation:frame=frame.rotate(rotation,expand=True)`n            buffer=BytesIO();frame.save(buffer,format="JPEG",quality=85);return buffer.getvalue()
     def close(self):
         with self.lock:
             if self.camera is None:return

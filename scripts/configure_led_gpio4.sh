@@ -1,8 +1,8 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 set -euo pipefail
 
 CONFIG=/boot/firmware/config.txt
-OVERLAY='dtoverlay=ws2812-pio,gpio=4,num_leds=32,brightness=255'
+OVERLAY='dtoverlay=ws2812-pio,gpio=4,num_leds=39,brightness=255'
 
 if [[ ! -f "$CONFIG" ]]; then
     echo "Missing $CONFIG"

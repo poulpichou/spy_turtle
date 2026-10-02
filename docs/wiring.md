@@ -1,4 +1,4 @@
-# Wiring
+﻿# Wiring
 
 ## Table of contents
 
@@ -146,6 +146,13 @@ The rack is only a physical distribution point. All devices remain on the same R
 | 0x3D    | Right OLED eye    |
 | TBD     | ST7796 capacitive touch controller |
 
+Validated I2C addresses on the assembled robot:
+
+- `0x2D` â†’ Waveshare UPS HAT
+- `0x33` â†’ MLX90640 thermal camera
+- `0x3C` â†’ left OLED eye
+- `0x3D` â†’ right OLED eye
+
 The ST7796 capacitive touch controller address is intentionally left as `TBD` until it is detected on the assembled hardware with `i2cdetect -y 1`.
 
 ---
@@ -198,12 +205,13 @@ Main systems:
 Component: Raspberry Pi Camera Module 3
 Connection: CSI interface directly connected to Raspberry Pi 5
 Power: Supplied by Raspberry Pi
+Rotation: 180Â° (`CAMERA_ROTATION=180` in `settings.py`)
 Software: `camera.py`
 
 ## MLX90640 Thermal Camera
 
 Component: MLX90640 thermal sensor  
-Resolution: 32×24  
+Resolution: 32Ã—24  
 Interface: I2C  
 Address: `0x33`  
 Software: `thermal_camera.py`
@@ -284,9 +292,9 @@ Touch software support is prepared but not enabled yet. The controller model and
 
 Power:
 
-- `VCC` → Raspberry Pi 3.3V
-- `VM` → 5V rack
-- `GND` → common ground
+- `VCC` â†’ Raspberry Pi 3.3V
+- `VM` â†’ 5V rack
+- `GND` â†’ common ground
 
 Motors:
 
@@ -414,6 +422,7 @@ arecord -l
 - Data: GPIO4, physical pin 7
 - Power: 5V rack
 - Ground: common ground
+- LED count: 39
 - Device: `/dev/leds0`
 
 Colors of wires:
@@ -427,7 +436,7 @@ White -> GND Power rack
 Raspberry Pi 5 overlay:
 
 ```ini
-dtoverlay=ws2812-pio,gpio=4,num_leds=32,brightness=255
+dtoverlay=ws2812-pio,gpio=4,num_leds=39,brightness=255
 ```
 
 The move from GPIO18 to GPIO4 removes the conflict with the MAX98357A I2S BCLK.
@@ -502,10 +511,10 @@ Check:
 
 Check:
 
-- White → SDA / GPIO2 I2C rack
-- Green → SCL / GPIO3 I2C rack
-- Black → GND Power rack
-- Red → 5V Power rack
+- White â†’ SDA / GPIO2 I2C rack
+- Green â†’ SCL / GPIO3 I2C rack
+- Black â†’ GND Power rack
+- Red â†’ 5V Power rack
 
 Then run:
 
@@ -537,9 +546,9 @@ Check:
 
 Check:
 
-- Brown wire → GND Power rack
-- Red wire → 5V Power rack
-- Yellow/Orange wire → PWM
+- Brown wire â†’ GND Power rack
+- Red wire â†’ 5V Power rack
+- Yellow/Orange wire â†’ PWM
 - pan GPIO17
 - tilt GPIO27
 
@@ -560,7 +569,7 @@ grep ws2812 /boot/firmware/config.txt
 Expected:
 
 ```ini
-dtoverlay=ws2812-pio,gpio=4,num_leds=32,brightness=255
+dtoverlay=ws2812-pio,gpio=4,num_leds=39,brightness=255
 ```
 
 Check kernel initialization:
@@ -650,7 +659,7 @@ Current hardware includes:
 
 - Raspberry Pi 5
 - Waveshare UPS HAT
-- 4× Panasonic NCR18650B batteries
+- 4Ã— Panasonic NCR18650B batteries
 - UPS-fed 5V/GND Power rack
 - SDA/SCL I2C distribution rack
 - Raspberry Pi Camera Module 3
@@ -663,7 +672,7 @@ Current hardware includes:
 - two MG90S servos
 - WS2812B shell LEDs
 - MAX98357A I2S amplifier
-- 4Ω 3W speaker
+- 4Î© 3W speaker
 - USB microphone
 
 This document follows `docs/wiring1.md` and completes the official hardware reference.
