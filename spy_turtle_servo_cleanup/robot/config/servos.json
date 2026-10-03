@@ -1,7 +1,0 @@
-{
-  "detach_after_seconds": 0.25,
-  "safe_pulse_min_us": 1000,
-  "safe_pulse_max_us": 2000,
-  "pan": {"center_angle_deg": 0.0, "minimum_angle_deg": -75.0, "maximum_angle_deg": 75.0, "step_deg": 5.0, "speed_deg_per_second": 50.0, "center_pulse_us": 1500, "microseconds_per_degree": 6.0, "write_interval_seconds": 0.02, "minimum_pulse_change_us": 4, "inverted": true},
-  "tilt": {"center_angle_deg": 0.0, "minimum_angle_deg": -45.0, "maximum_angle_deg": 45.0, "step_deg": 5.0, "speed_deg_per_second": 50.0, "center_pulse_us": 1500, "microseconds_per_degree": 7.0, "write_interval_seconds": 0.02, "minimum_pulse_change_us": 4, "inverted": true}
-}

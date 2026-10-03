@@ -23,6 +23,7 @@ class DifferentialDrive:
         self.left_speed=0.0
         self.right_speed=0.0
         self.motion="stop"
+        self.speed_multiplier=1.0
         if settings.MOTOR_ENCODERS_ENABLED:self._create_encoders()
         log.info(f"[MOTORS] ready left_inverted={settings.MOTOR_LEFT_INVERTED} right_inverted={settings.MOTOR_RIGHT_INVERTED} encoders={settings.MOTOR_ENCODERS_ENABLED}")
 
@@ -58,26 +59,32 @@ class DifferentialDrive:
         self.set_left_speed(left)
         self.set_right_speed(right)
 
+    def set_speed_percent(self,percent):
+        self.speed_multiplier=max(1.0,min(3.0,float(percent)/100.0))
+        return round(self.speed_multiplier*100)
+
+    def get_speed_percent(self): return round(self.speed_multiplier*100)
+
     def forward(self,speed=None):
-        speed=self.normalize_speed(speed,settings.MOTOR_DRIVE_SPEED)
+        speed=self.normalize_speed(speed,settings.MOTOR_DRIVE_SPEED*self.speed_multiplier)
         self.set_speeds(speed,speed)
         self.motion="forward"
         log.info(f"[MOTORS] forward speed={speed:.2f}")
 
     def backward(self,speed=None):
-        speed=self.normalize_speed(speed,settings.MOTOR_DRIVE_SPEED)
+        speed=self.normalize_speed(speed,settings.MOTOR_DRIVE_SPEED*self.speed_multiplier)
         self.set_speeds(-speed,-speed)
         self.motion="backward"
         log.info(f"[MOTORS] backward speed={speed:.2f}")
 
     def left(self,speed=None):
-        speed=self.normalize_speed(speed,settings.MOTOR_TURN_SPEED)
+        speed=self.normalize_speed(speed,settings.MOTOR_TURN_SPEED*self.speed_multiplier)
         self.set_speeds(-speed,speed)
         self.motion="left"
         log.info(f"[MOTORS] left speed={speed:.2f}")
 
     def right(self,speed=None):
-        speed=self.normalize_speed(speed,settings.MOTOR_TURN_SPEED)
+        speed=self.normalize_speed(speed,settings.MOTOR_TURN_SPEED*self.speed_multiplier)
         self.set_speeds(speed,-speed)
         self.motion="right"
         log.info(f"[MOTORS] right speed={speed:.2f}")
@@ -88,6 +95,7 @@ class DifferentialDrive:
     def stop(self):
         self.set_speeds(0,0)
         self.motion="stop"
+        self.speed_multiplier=1.0
         log.info("[MOTORS] stop")
 
     def reset_encoders(self):

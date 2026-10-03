@@ -20,6 +20,7 @@ class ComponentRequest(BaseModel):
     component:str
     enabled:bool
 class SensitivityRequest(BaseModel): sensitivity:int=Field(ge=0,le=100)
+class MotorSpeedRequest(BaseModel): speed:int=Field(ge=100,le=300)
 
 def source(request):
     forwarded=request.headers.get('x-forwarded-for')
@@ -92,3 +93,16 @@ def set_microphone_sensitivity(data:SensitivityRequest,request:Request):
     state=robot_or_503().power.set_microphone_sensitivity(data.sensitivity)
     log.info(f'[ADMIN] microphone sensitivity={data.sensitivity}% display-only {source(request)}')
     return {'ok':True,**state}
+
+@router.get('/motors/speed')
+def get_motor_speed():
+    robot=robot_or_503()
+    if robot.motors is None or not hasattr(robot.motors,'get_speed_percent'):raise HTTPException(status_code=503,detail='Motor speed control unavailable')
+    return {'ok':True,'speed':robot.motors.get_speed_percent()}
+@router.post('/motors/speed')
+def set_motor_speed(data:MotorSpeedRequest,request:Request):
+    robot=robot_or_503()
+    if robot.motors is None or not hasattr(robot.motors,'set_speed_percent'):raise HTTPException(status_code=503,detail='Motor speed control unavailable')
+    speed=robot.motors.set_speed_percent(data.speed)
+    log.info(f'[ADMIN] motor speed={speed}% {source(request)}')
+    return {'ok':True,'speed':speed,'message':f'Drive speed set to {speed}%'}

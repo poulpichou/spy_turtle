@@ -1,6 +1,6 @@
-﻿const adminResult=document.getElementById("admin-result");
+const adminResult=document.getElementById("admin-result");
 const volumeSlider=document.getElementById("volume-slider"),volumeValue=document.getElementById("volume-value");
-const microSlider=document.getElementById("micro-slider"),microValue=document.getElementById("micro-value");
+const microSlider=document.getElementById("micro-slider"),microValue=document.getElementById("micro-value");const driveSpeedSlider=document.getElementById("drive-speed-slider"),driveSpeedValue=document.getElementById("drive-speed-value");const cameraFpsSlider=document.getElementById("camera-fps-slider"),cameraFpsValue=document.getElementById("camera-fps-value");
 const idleToggle=document.getElementById("idle-toggle");
 const powerButtons={back_screen:document.getElementById("back-screen-toggle"),eyes:document.getElementById("eyes-toggle"),shell_light:document.getElementById("shell-light-toggle")};
 const powerSelects={back_screen:"shell-select",eyes:"face-select",shell_light:"led-select"};
@@ -37,7 +37,7 @@ async function adminGet(path){
     return data;
 }
 function showVolume(value){volumeValue.textContent=`${value}%`}
-function showMicro(value){microValue.textContent=`${value}%`}
+function showMicro(value){microValue.textContent=`${value}%`}function showDriveSpeed(value){driveSpeedValue.textContent=`${value}%`}function showCameraFps(value){cameraFpsValue.textContent=`${value} fps`}
 function setSelectDisabled(id,disabled){
     const select=document.getElementById(id);if(!select)return;
     select.disabled=disabled;
@@ -83,7 +83,7 @@ function applyPowerState(state){
     scheduleWifi();
 }
 async function loadPower(){try{applyPowerState(await adminGet("/admin/power"))}catch(error){console.error("[POWER]",error)}}
-async function loadVolume(){try{const data=await adminGet("/admin/audio/volume");volumeSlider.value=data.volume;showVolume(data.volume)}catch(error){console.error("[VOLUME]",error)}}
+async function loadVolume(){try{const data=await adminGet("/admin/audio/volume");volumeSlider.value=data.volume;showVolume(data.volume)}catch(error){console.error("[VOLUME]",error)}}async function loadDriveSpeed(){try{const data=await adminGet("/admin/motors/speed");driveSpeedSlider.value=data.speed;showDriveSpeed(data.speed)}catch(error){console.error("[MOTOR SPEED]",error)}}function loadCameraFps(){const fps=getCameraFps();cameraFpsSlider.value=fps;showCameraFps(fps)}
 
 document.querySelectorAll("[data-admin-action]").forEach(button=>button.onclick=async()=>{
     const action=button.dataset.adminAction,labels={restart:"restart Spy Turtle",reboot:"reboot the Raspberry Pi",shutdown:"shut down the Raspberry Pi"};
@@ -94,7 +94,7 @@ document.querySelectorAll("[data-admin-action]").forEach(button=>button.onclick=
 volumeSlider.oninput=()=>showVolume(volumeSlider.value);
 volumeSlider.onchange=async()=>{try{const data=await adminPost("/admin/audio/volume",{volume:Number(volumeSlider.value)});showVolume(data.volume);adminResult.textContent=data.message}catch(error){adminResult.textContent=error.message}};
 microSlider.oninput=()=>showMicro(microSlider.value);
-microSlider.onchange=async()=>{try{const data=await adminPost("/admin/audio/microphone-sensitivity",{sensitivity:Number(microSlider.value)});applyPowerState(data);adminResult.textContent="Micro sensitivity saved"}catch(error){adminResult.textContent=error.message}};
+microSlider.onchange=async()=>{try{const data=await adminPost("/admin/audio/microphone-sensitivity",{sensitivity:Number(microSlider.value)});applyPowerState(data);adminResult.textContent="Micro sensitivity saved"}catch(error){adminResult.textContent=error.message}};driveSpeedSlider.oninput=()=>showDriveSpeed(driveSpeedSlider.value);driveSpeedSlider.onchange=async()=>{try{const data=await adminPost("/admin/motors/speed",{speed:Number(driveSpeedSlider.value)});driveSpeedSlider.value=data.speed;showDriveSpeed(data.speed);adminResult.textContent=data.message}catch(error){adminResult.textContent=error.message}};cameraFpsSlider.oninput=()=>showCameraFps(cameraFpsSlider.value);cameraFpsSlider.onchange=()=>{const fps=setCameraFps(cameraFpsSlider.value);showCameraFps(fps);adminResult.textContent=`Camera refresh set to ${fps} fps`};
 idleToggle.onclick=async()=>{try{
     const data=await adminPost("/admin/power/idle",{enabled:!runtimePower.idle_mode});applyPowerState(data);
     adminResult.textContent=data.idle_mode?"Idle mode enabled.":"Idle mode disabled.";
@@ -136,18 +136,5 @@ function renderWifi(data){
 async function loadWifi(){try{renderWifi(await adminGet("/admin/wifi"))}catch(error){console.error("[WIFI]",error)}scheduleWifi()}
 function scheduleWifi(){if(wifiTimer)clearTimeout(wifiTimer);wifiTimer=setTimeout(loadWifi,runtimePower.idle_mode?30000:15000)}
 
-document.addEventListener("transportchange",async()=>{await Promise.allSettled([loadPower(),loadVolume(),loadWifi()])});
-(async()=>{setupWifiUI();applyLocalFeature("animation");applyLocalFeature("sound");await Promise.allSettled([loadVolume(),loadPower(),loadWifi(),loadHeadServoStatus()])})();
-
-async function loadHeadServoStatus(){
-    const output=document.getElementById("head-servo-status");if(!output)return;
-    try{
-        const response=await fetch(`/state?t=${Date.now()}`,{cache:"no-store"});
-        if(!response.ok)throw new Error(`HTTP ${response.status}`);
-        const servo=(await response.json()).servo;
-        if(!servo){output.textContent="Head servos unavailable";return}
-        const line=axis=>`${axis.current}deg -> ${axis.target}deg | ${axis.pulse_us??"--"}us | center ${axis.center_pulse_us??"--"}us | range ${axis.minimum}..${axis.maximum}deg`;
-        output.textContent=`PAN  ${line(servo.pan)}\nTILT ${line(servo.tilt)}`;
-    }catch(error){output.textContent=`Head servos: ${error.message}`}
-}
-setInterval(loadHeadServoStatus,1500);
+document.addEventListener("transportchange",async()=>{await Promise.allSettled([loadPower(),loadVolume(),loadDriveSpeed(),loadWifi()]);loadCameraFps()});
+(async()=>{setupWifiUI();applyLocalFeature("animation");applyLocalFeature("sound");await Promise.allSettled([loadVolume(),loadPower(),loadDriveSpeed(),loadWifi()]);loadCameraFps()})();
