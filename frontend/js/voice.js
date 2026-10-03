@@ -1,4 +1,4 @@
-const recordButton=document.getElementById("record-message");
+﻿const recordButton=document.getElementById("record-message");
 const recordStatus=document.getElementById("record-status");
 const listenButton=document.getElementById("listen-button");
 let recorder=null;
@@ -7,7 +7,9 @@ let recorderChunks=[];
 let listening=false;
 let listenAbortController=null;
 let listenAudioContext=null;
+let listenGainNode=null;
 let listenNextTime=0;
+const LISTEN_GAIN=3.0;
 
 function currentCenterView(){return document.querySelector(".center-tab.active")?.dataset.view||"camera"}
 
@@ -65,14 +67,14 @@ async function sendRecordedMessage(){
 
 recordButton.onclick=async()=>{
     if(recorder&&recorder.state==="recording"){
-        recorder.stop();recordButton.classList.remove("recording");recordButton.textContent="🎙️";return;
+        recorder.stop();recordButton.classList.remove("recording");recordButton.textContent="ðŸŽ™ï¸";return;
     }
     try{
         recorderStream=await navigator.mediaDevices.getUserMedia({audio:true});
         recorderChunks=[];recorder=new MediaRecorder(recorderStream);
         recorder.ondataavailable=event=>{if(event.data.size)recorderChunks.push(event.data)};
         recorder.onstop=sendRecordedMessage;recorder.start();
-        recordButton.classList.add("recording");recordButton.textContent="■";recordStatus.textContent="Recording...";
+        recordButton.classList.add("recording");recordButton.textContent="â– ";recordStatus.textContent="Recording...";
     }catch(error){
         console.error("[VOICE RECORD]",error);recordStatus.textContent="Microphone denied";showCommandError(error);
     }
@@ -87,7 +89,7 @@ function playPcmChunk(bytes){
     const buffer=listenAudioContext.createBuffer(1,sampleCount,16000);
     buffer.copyToChannel(samples,0);
     const source=listenAudioContext.createBufferSource();
-    source.buffer=buffer;source.connect(listenAudioContext.destination);
+    source.buffer=buffer;source.connect(listenGainNode);
     const now=listenAudioContext.currentTime;
     if(listenNextTime<now+0.05)listenNextTime=now+0.05;
     source.start(listenNextTime);
@@ -99,6 +101,9 @@ async function startListening(){
     listening=true;listenButton.classList.add("active");
     listenAbortController=new AbortController();
     listenAudioContext=new (window.AudioContext||window.webkitAudioContext)({sampleRate:16000});
+    listenGainNode=listenAudioContext.createGain();
+    listenGainNode.gain.value=LISTEN_GAIN;
+    listenGainNode.connect(listenAudioContext.destination);
     await listenAudioContext.resume();
     listenNextTime=listenAudioContext.currentTime+0.08;
     let carry=null;
@@ -130,7 +135,7 @@ async function stopListening(){
     if(!listening&&!listenAudioContext)return;
     listening=false;listenButton.classList.remove("active");
     listenAbortController?.abort();listenAbortController=null;
-    const context=listenAudioContext;listenAudioContext=null;listenNextTime=0;
+    const context=listenAudioContext;listenAudioContext=null;listenGainNode=null;listenNextTime=0;
     if(context&&context.state!=="closed"){
         try{await context.close()}catch(error){console.debug("[LISTEN] close",error)}
     }
