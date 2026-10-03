@@ -1,4 +1,4 @@
-from robot.assets.assets import get_assets
+﻿from robot.assets.assets import get_assets
 from robot.shell.ui import colors,theme
 from robot.shell.ui.widgets import draw_title,text
 
@@ -66,7 +66,7 @@ class CommandsView(TouchView):
     footer="COMMANDS"
     def draw(self,draw,display,data):
         draw_title(draw,"COMMANDS")
-        items=[("FACE","faces"),("LEDS","leds"),("SCREEN","shell"),("SOUND","audio"),("←","back")]
+        items=[("FACE","faces"),("LEDS","leds"),("SCREEN","shell"),("SOUND","audio"),("<-","back")]
         self.hitboxes=[]
         for box,(label,action) in zip(grid(len(items)),items):
             draw_button(draw,box,label)
@@ -88,7 +88,7 @@ class SelectionView(TouchView):
         for box,(name,asset) in zip(grid(len(current),theme.CONTENT_Y+40),current):
             draw_button(draw,box,asset.get("label",name))
             self.hitboxes.append((box,("select",name)))
-        for box,label,action in zip(navigation_boxes(),("←","◀","▶"),("back","prev","next")):
+        for box,label,action in zip(navigation_boxes(),("<-","<<",">>"),("back","prev","next")):
             draw_button(draw,box,label)
             self.hitboxes.append((box,action))
     def action_at(self,x,y):
@@ -106,7 +106,7 @@ class AdminView(TouchView):
         volume_boxes=grid(2)
         draw_button(draw,volume_boxes[0],"VOL -",data.get("volume"));draw_button(draw,volume_boxes[1],"VOL +")
         self.hitboxes += [(volume_boxes[0],"volume_down"),(volume_boxes[1],"volume_up")]
-        items=[("WI-FI","wifi"),("IDLE","idle"),("SHUTDOWN","shutdown"),("←","back")]
+        items=[("WI-FI","wifi"),("IDLE","idle"),("SHUTDOWN","shutdown"),("<-","back")]
         for box,(label,action) in zip(grid(len(items),FIRST_Y+ROW_H+ROW_GAP),items):
             value="ON" if action=="idle" and data.get("idle") else "OFF" if action=="idle" else None
             draw_button(draw,box,label,value,active=action=="idle" and data.get("idle"),danger=action=="shutdown")
@@ -132,7 +132,7 @@ class WifiView(TouchView):
             draw_button(draw,box,network.get("nickname") or network.get("ssid"),"ON" if network.get("active") else None,active=bool(network.get("active")))
             self.hitboxes.append((box,("wifi",network.get("ssid"))))
         if not current:text(draw,12,theme.CONTENT_Y+70,data.get("error") or "No saved Wi-Fi",14,colors.GRAY)
-        for box,label,action in zip(navigation_boxes(),("←","◀","▶"),("back","prev","next")):
+        for box,label,action in zip(navigation_boxes(),("<-","<<",">>"),("back","prev","next")):
             draw_button(draw,box,label);self.hitboxes.append((box,action))
     def action_at(self,x,y):
         for box,action in getattr(self,"hitboxes",[]):

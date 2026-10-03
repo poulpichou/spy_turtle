@@ -409,10 +409,25 @@ The speaker must be connected directly between `SPK+` and `SPK-`. Neither speake
 
 The microphone has an integrated USB audio interface and connects directly to a Raspberry Pi USB port. No GPIO connection is required.
 
+Validated hardware:
+
+- USB codec: Texas Instruments PCM2902 (`08bb:2902`)
+- ALSA card: `Device` / `USB PnP Sound Device`
+- Capture device: `plughw:CARD=Device,DEV=0`
+- Runtime format: 16-bit PCM, 16 kHz, mono
+
 Detection:
 
 ```bash
+lsusb
 arecord -l
+```
+
+Quick 5-second capture test:
+
+```bash
+arecord -D plughw:CARD=Device,DEV=0 -f S16_LE -r 16000 -c1 -d5 /tmp/mic-test.wav
+aplay -D plughw:CARD=MAX98357A,DEV=0 /tmp/mic-test.wav
 ```
 
 # Lighting System

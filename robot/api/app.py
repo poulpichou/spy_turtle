@@ -54,6 +54,16 @@ def motor_status(robot):
     if robot is None or robot.motors is None or not hasattr(robot.motors,"status"):return None
     return safe_call(robot.motors.status)
 
+def microphone_status():
+    if not getattr(settings,"MICROPHONE_ENABLED",True):
+        return {"enabled":False,"available":False,"device":settings.MICROPHONE_DEVICE}
+    try:
+        process=subprocess.run(["arecord","-l"],capture_output=True,text=True,timeout=3)
+        output=(process.stdout or "")+"\n"+(process.stderr or "")
+        available=process.returncode==0 and ("USB PnP Sound Device" in output or "USB Audio" in output)
+        return {"enabled":True,"available":available,"device":settings.MICROPHONE_DEVICE,"model":"Texas Instruments PCM2902 / USB PnP Sound Device" if available else None}
+    except Exception as error:
+        return {"enabled":True,"available":False,"device":settings.MICROPHONE_DEVICE,"error":str(error)}
 def thermal_status(robot):
     if robot is None or robot.thermal_camera is None or not hasattr(robot.thermal_camera,"status"):return {"available":False}
     return safe_call(robot.thermal_camera.status,{"available":False})
@@ -109,7 +119,7 @@ def get_health():
         "ok":True,"timestamp":datetime.now().isoformat(),"https":get_https_status(),
         "system":{"uptime_seconds":uptime_seconds(),"cpu_temperature_c":cpu_temperature(),"load_1m":round(os.getloadavg()[0],2) if hasattr(os,"getloadavg") else None,"disk_free_gb":round(disk.free/(1024**3),1),"disk_total_gb":round(disk.total/(1024**3),1)},
         "battery":current["battery"],
-        "robot":{"brain":current["brain"],"camera":current["camera"],"thermal":current["thermal"],"motion":current["motion"],"motors":current["motors"],"shell":current["shell"],"leds":current["leds"],"servo":current["servo"],"components":{"motors":robot.motors is not None,"face":robot.face is not None,"leds":robot.leds is not None,"camera":robot.camera is not None,"thermal_camera":robot.thermal_camera is not None,"battery":robot.battery is not None,"speaker":robot.speaker is not None,"servo":robot.servo is not None,"shell":robot.shell is not None}}
+        "robot":{"brain":current["brain"],"camera":current["camera"],"thermal":current["thermal"],"motion":current["motion"],"motors":current["motors"],"shell":current["shell"],"leds":current["leds"],"servo":current["servo"],"components":{"motors":robot.motors is not None,"face":robot.face is not None,"leds":robot.leds is not None,"camera":robot.camera is not None,"thermal_camera":robot.thermal_camera is not None,"battery":robot.battery is not None,"speaker":robot.speaker is not None,"microphone":microphone_status(),"servo":robot.servo is not None,"shell":robot.shell is not None}}
     }
 
 @app.get("/assets")
@@ -174,8 +184,14 @@ def microphone_chunks():
         except subprocess.TimeoutExpired:process.kill()
         log.info("[MICROPHONE] listen stop")
 
+@app.get("/audio/microphone/status")
+def audio_microphone_status():return microphone_status()
+
 @app.get("/audio/listen")
 def audio_listen():
+    status=microphone_status()
+    if not status.get("enabled"):raise HTTPException(status_code=503,detail="Microphone disabled")
+    if not status.get("available"):raise HTTPException(status_code=503,detail="USB microphone unavailable")
     return StreamingResponse(microphone_chunks(),media_type="audio/wav",headers={"Cache-Control":"no-store"})
 
 @app.post("/command")
