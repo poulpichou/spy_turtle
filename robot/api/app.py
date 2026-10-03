@@ -170,9 +170,9 @@ async def audio_message(request:Request):
     return {"ok":True,"message":"Voice message sent"}
 
 def microphone_chunks():
-    command=["arecord","-q","-D",settings.MICROPHONE_DEVICE,"-f","S16_LE","-r",str(settings.MICROPHONE_RATE),"-c",str(settings.MICROPHONE_CHANNELS),"-t","wav"]
+    command=["arecord","-q","-D",settings.MICROPHONE_DEVICE,"-f","S16_LE","-r",str(settings.MICROPHONE_RATE),"-c",str(settings.MICROPHONE_CHANNELS),"-t","raw"]
     process=subprocess.Popen(command,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL)
-    log.info(f"[MICROPHONE] listen start device={settings.MICROPHONE_DEVICE}")
+    log.info(f"[MICROPHONE] listen start device={settings.MICROPHONE_DEVICE} format=raw-pcm")
     try:
         while process.stdout:
             chunk=process.stdout.read(4096)
@@ -192,7 +192,7 @@ def audio_listen():
     status=microphone_status()
     if not status.get("enabled"):raise HTTPException(status_code=503,detail="Microphone disabled")
     if not status.get("available"):raise HTTPException(status_code=503,detail="USB microphone unavailable")
-    return StreamingResponse(microphone_chunks(),media_type="audio/wav",headers={"Cache-Control":"no-store"})
+    return StreamingResponse(microphone_chunks(),media_type="application/octet-stream",headers={"Cache-Control":"no-store","X-Audio-Format":"s16le","X-Audio-Rate":str(settings.MICROPHONE_RATE),"X-Audio-Channels":str(settings.MICROPHONE_CHANNELS)})
 
 @app.post("/command")
 def command(cmd:Command):
