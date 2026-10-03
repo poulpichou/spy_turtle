@@ -1,6 +1,6 @@
-import subprocess
+﻿import subprocess
 from robot.api import actions
-from robot.shell.ui.touch_views import HomeView,CommandsView,SelectionView,AdminView,WifiView,ConfirmShutdownView
+from robot.shell.ui.touch_views import HomeView,CommandsView,SelectionView,AdminView,HeadInfoView,WifiView,ConfirmShutdownView
 from robot.system.wifi import wifi_manager
 from robot.utils.logger import log
 
@@ -37,12 +37,14 @@ class TouchController:
         if action=="logs":self.shell.show_log();return
         if action=="commands":self._show(CommandsView(),"touch_commands");return
         if action=="admin":self._show(AdminView(),"touch_admin");return
+        if action=="head_info":self._show(HeadInfoView(),"touch_head_info");return
         if action=="idle":
             self.robot.power.set_idle(not self.robot.power.idle_mode)
             if not self.robot.power.idle_mode:self.open_home()
             return
         if action=="back":
             if isinstance(view,(CommandsView,AdminView)):self.open_home()
+            elif isinstance(view,HeadInfoView):self._show(AdminView(),"touch_admin")
             elif isinstance(view,SelectionView):self._show(CommandsView(),"touch_commands")
             elif isinstance(view,WifiView):self._show(AdminView(),"touch_admin")
             else:self.open_home()

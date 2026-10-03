@@ -1,4 +1,4 @@
-const adminResult=document.getElementById("admin-result");
+﻿const adminResult=document.getElementById("admin-result");
 const volumeSlider=document.getElementById("volume-slider"),volumeValue=document.getElementById("volume-value");
 const microSlider=document.getElementById("micro-slider"),microValue=document.getElementById("micro-value");
 const idleToggle=document.getElementById("idle-toggle");
@@ -137,4 +137,17 @@ async function loadWifi(){try{renderWifi(await adminGet("/admin/wifi"))}catch(er
 function scheduleWifi(){if(wifiTimer)clearTimeout(wifiTimer);wifiTimer=setTimeout(loadWifi,runtimePower.idle_mode?30000:15000)}
 
 document.addEventListener("transportchange",async()=>{await Promise.allSettled([loadPower(),loadVolume(),loadWifi()])});
-(async()=>{setupWifiUI();applyLocalFeature("animation");applyLocalFeature("sound");await Promise.allSettled([loadVolume(),loadPower(),loadWifi()])})();
+(async()=>{setupWifiUI();applyLocalFeature("animation");applyLocalFeature("sound");await Promise.allSettled([loadVolume(),loadPower(),loadWifi(),loadHeadServoStatus()])})();
+
+async function loadHeadServoStatus(){
+    const output=document.getElementById("head-servo-status");if(!output)return;
+    try{
+        const response=await fetch(`/state?t=${Date.now()}`,{cache:"no-store"});
+        if(!response.ok)throw new Error(`HTTP ${response.status}`);
+        const servo=(await response.json()).servo;
+        if(!servo){output.textContent="Head servos unavailable";return}
+        const line=axis=>`${axis.current}deg -> ${axis.target}deg | ${axis.pulse_us??"--"}us | center ${axis.center_pulse_us??"--"}us | range ${axis.minimum}..${axis.maximum}deg`;
+        output.textContent=`PAN  ${line(servo.pan)}\nTILT ${line(servo.tilt)}`;
+    }catch(error){output.textContent=`Head servos: ${error.message}`}
+}
+setInterval(loadHeadServoStatus,1500);

@@ -106,7 +106,7 @@ class AdminView(TouchView):
         volume_boxes=grid(2)
         draw_button(draw,volume_boxes[0],"VOL -",data.get("volume"));draw_button(draw,volume_boxes[1],"VOL +")
         self.hitboxes += [(volume_boxes[0],"volume_down"),(volume_boxes[1],"volume_up")]
-        items=[("WI-FI","wifi"),("IDLE","idle"),("SHUTDOWN","shutdown"),("<-","back")]
+        items=[("WI-FI","wifi"),("HEAD INFO","head_info"),("IDLE","idle"),("SHUTDOWN","shutdown"),("<-","back")]
         for box,(label,action) in zip(grid(len(items),FIRST_Y+ROW_H+ROW_GAP),items):
             value="ON" if action=="idle" and data.get("idle") else "OFF" if action=="idle" else None
             draw_button(draw,box,label,value,active=action=="idle" and data.get("idle"),danger=action=="shutdown")
@@ -115,6 +115,23 @@ class AdminView(TouchView):
         for box,action in getattr(self,"hitboxes",[]):
             if inside(x,y,box):return action
 
+
+class HeadInfoView(TouchView):
+    footer="HEAD"
+    def get_data(self,robot): return robot.servo.status() if robot.servo else {}
+    def draw(self,draw,display,data):
+        draw_title(draw,"HEAD SERVOS")
+        pan=data.get("pan",{});tilt=data.get("tilt",{})
+        text(draw,12,theme.CONTENT_Y+55,f"PAN  {pan.get('current','--')} deg -> {pan.get('target','--')} deg",15,colors.WHITE,True)
+        text(draw,12,theme.CONTENT_Y+83,f"Pulse {pan.get('pulse_us','--')} us   center {pan.get('center_pulse_us','--')} us",13,colors.GRAY)
+        text(draw,12,theme.CONTENT_Y+112,f"Range {pan.get('minimum','--')} .. {pan.get('maximum','--')} deg",13,colors.GRAY)
+        text(draw,12,theme.CONTENT_Y+165,f"TILT {tilt.get('current','--')} deg -> {tilt.get('target','--')} deg",15,colors.WHITE,True)
+        text(draw,12,theme.CONTENT_Y+193,f"Pulse {tilt.get('pulse_us','--')} us   center {tilt.get('center_pulse_us','--')} us",13,colors.GRAY)
+        text(draw,12,theme.CONTENT_Y+222,f"Range {tilt.get('minimum','--')} .. {tilt.get('maximum','--')} deg",13,colors.GRAY)
+        self.back=(ROW_X,theme.CONTENT_Y+285,ROW_X+ROW_W,theme.CONTENT_Y+337)
+        draw_button(draw,self.back,"<-")
+    def action_at(self,x,y):
+        if inside(x,y,self.back):return "back"
 class WifiView(TouchView):
     PAGE_SIZE=8
     footer="WI-FI"
