@@ -149,8 +149,8 @@ The rack is only a physical distribution point. All devices remain on the same R
 | 0x3C    | Left OLED eye     |
 | 0x3D    | Right OLED eye    |
 | 0x29    | VL53L0X/VL53L1X ToF sensor |
-| 0x76/0x77 | BME680 environmental sensor |
-| TBD     | ST7796 capacitive touch controller |
+| 0x77    | BME680 environmental sensor |
+| 0x38    | ST7796 capacitive touch controller |
 
 Validated I2C addresses on the assembled robot:
 
@@ -158,8 +158,11 @@ Validated I2C addresses on the assembled robot:
 - `0x33` â†’ MLX90640 thermal camera
 - `0x3C` â†’ left OLED eye
 - `0x3D` â†’ right OLED eye
+- `0x29` → VL53L0X/VL53L1X ToF sensor
+- `0x38` → ST7796 capacitive touch controller
+- `0x77` → BME680 environmental sensor
 
-The ST7796 capacitive touch controller address is intentionally left as `TBD` until it is detected on the assembled hardware with `i2cdetect -y 1`.
+The ST7796 capacitive touch controller has been validated at `0x38` on the assembled robot.
 
 ---
 
@@ -273,7 +276,7 @@ The breakout PCB is marked `VL53L0/1X V2`; software tries VL53L1X first and then
 Component: BME680 / CJMCU-680 breakout  
 Measurements: temperature, humidity, pressure and gas resistance  
 Interface: I2C  
-Address: `0x76` by default in software; change `BME680_ADDRESS` to `0x77` if required by the breakout  
+Address: `0x77` (validated on the assembled robot)  
 Power: 3.3V via 3.3V rack
 
 | BME680 port | Connection |
@@ -318,7 +321,7 @@ The BME680 should be mounted close to a ventilated opening and away from major h
 
 The LCD uses SPI0 device 0. The capacitive touch controller shares the existing I2C SDA/SCL distribution rack. GPIO22 and GPIO23 are reserved for the touchscreen and must not be reused by the motor encoders.
 
-Touch software support is prepared but not enabled yet. The controller model and I2C address must first be detected on the physical hardware.
+Capacitive touch is connected and validated at I2C address `0x38`.
 
 # Mobility System
 
@@ -508,7 +511,7 @@ The move from GPIO18 to GPIO4 removes the conflict with the MAX98357A I2S BCLK.
 - OLED eyes detected at 0x3C and 0x3D.
 - Servos validated.
 - ST7796 display validated.
-- ST7796 capacitive touch wiring allocated: CTP_SDA/SCL on the I2C rack, CTP_INT on GPIO22 and CTP_RST on GPIO23. Controller detection/software validation pending.
+- ST7796 capacitive touch validated at `0x38`: CTP_SDA/SCL on the I2C rack, CTP_INT on GPIO22 and CTP_RST on GPIO23.
 - ST7796 SDO(MISO) and SD_CS intentionally remain disconnected.
 - TB6612 and both motors validated through the final API/frontend.
 - WS2812B configured on GPIO4 as `/dev/leds0`.

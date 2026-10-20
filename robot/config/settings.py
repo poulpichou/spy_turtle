@@ -1,4 +1,4 @@
-﻿# Runtime
+# Runtime
 DEBUG=True
 SIMULATION=False
 API_HOST="0.0.0.0"
@@ -40,7 +40,7 @@ DISTANCE_SENSOR_UPDATE_INTERVAL=0.25
 
 # BME680 environmental sensor (shared I2C bus)
 BME680_ENABLED=True
-BME680_ADDRESS=0x76
+BME680_ADDRESS=0x77
 BME680_UPDATE_INTERVAL=5.0
 
 # MLX90640 thermal camera (shared I2C bus)
