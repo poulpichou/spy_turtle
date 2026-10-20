@@ -1,4 +1,4 @@
-﻿import os
+import os
 import shutil
 import subprocess
 import tempfile
@@ -67,6 +67,13 @@ def microphone_status():
 def thermal_status(robot):
     if robot is None or robot.thermal_camera is None or not hasattr(robot.thermal_camera,"status"):return {"available":False}
     return safe_call(robot.thermal_camera.status,{"available":False})
+def distance_status(robot):
+    if robot is None or robot.distance_sensor is None:return {"available":False}
+    return safe_call(robot.distance_sensor.status,{"available":False})
+
+def environment_status(robot):
+    if robot is None or robot.environment_sensor is None:return {"available":False}
+    return safe_call(robot.environment_sensor.status,{"available":False})
 
 def state():
     robot=get_robot()
@@ -75,6 +82,7 @@ def state():
     data["servo"]=servo_status(robot)
     data["motors"]=motor_status(robot)
     data["thermal"]=thermal_status(robot)
+    data["sensors"]={"distance":distance_status(robot),"environment":environment_status(robot)}
     return data
 
 def cpu_temperature():
@@ -118,8 +126,8 @@ def get_health():
     return {
         "ok":True,"timestamp":datetime.now().isoformat(),"https":get_https_status(),
         "system":{"uptime_seconds":uptime_seconds(),"cpu_temperature_c":cpu_temperature(),"load_1m":round(os.getloadavg()[0],2) if hasattr(os,"getloadavg") else None,"disk_free_gb":round(disk.free/(1024**3),1),"disk_total_gb":round(disk.total/(1024**3),1)},
-        "battery":current["battery"],
-        "robot":{"brain":current["brain"],"camera":current["camera"],"thermal":current["thermal"],"motion":current["motion"],"motors":current["motors"],"shell":current["shell"],"leds":current["leds"],"servo":current["servo"],"components":{"motors":robot.motors is not None,"face":robot.face is not None,"leds":robot.leds is not None,"camera":robot.camera is not None,"thermal_camera":robot.thermal_camera is not None,"battery":robot.battery is not None,"speaker":robot.speaker is not None,"microphone":microphone_status(),"servo":robot.servo is not None,"shell":robot.shell is not None}}
+        "battery":current["battery"],"sensors":current["sensors"],
+        "robot":{"brain":current["brain"],"camera":current["camera"],"thermal":current["thermal"],"motion":current["motion"],"motors":current["motors"],"shell":current["shell"],"leds":current["leds"],"servo":current["servo"],"components":{"motors":robot.motors is not None,"face":robot.face is not None,"leds":robot.leds is not None,"camera":robot.camera is not None,"thermal_camera":robot.thermal_camera is not None,"distance_sensor":robot.distance_sensor is not None,"environment_sensor":robot.environment_sensor is not None,"battery":robot.battery is not None,"speaker":robot.speaker is not None,"microphone":microphone_status(),"servo":robot.servo is not None,"shell":robot.shell is not None}}
     }
 
 @app.get("/assets")

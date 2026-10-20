@@ -1,4 +1,4 @@
-﻿# Wiring
+# Wiring
 
 ## Table of contents
 
@@ -123,6 +123,8 @@ GPIO2 / SDA
          +--- Right OLED
          +--- MLX90640
          +--- ST7796 CTP_SDA
+         +--- VL53L0X/VL53L1X ToF sensor
+         +--- BME680
 
 GPIO3 / SCL
     |
@@ -132,6 +134,8 @@ GPIO3 / SCL
          +--- Right OLED
          +--- MLX90640
          +--- ST7796 CTP_SCL
+         +--- VL53L0X/VL53L1X ToF sensor
+         +--- BME680
 ```
 
 The rack is only a physical distribution point. All devices remain on the same Raspberry Pi I2C bus and are differentiated by their I2C addresses.
@@ -144,6 +148,8 @@ The rack is only a physical distribution point. All devices remain on the same R
 | 0x33    | MLX90640 Thermal Camera |
 | 0x3C    | Left OLED eye     |
 | 0x3D    | Right OLED eye    |
+| 0x29    | VL53L0X/VL53L1X ToF sensor |
+| 0x76/0x77 | BME680 environmental sensor |
 | TBD     | ST7796 capacitive touch controller |
 
 Validated I2C addresses on the assembled robot:
@@ -244,10 +250,48 @@ Allowed values: `0`, `90`, `180`, `270`.
 
 The thermal camera has been validated on address `0x33`. Thermal acquisition runs asynchronously so I2C frame reads do not block the API or robot controls.
 
+## VL53L0X/VL53L1X ToF Distance Sensor
+
+Component: VL53L0/1X V2 breakout board  
+Interface: I2C  
+Address: `0x29`  
+Power: 3.3V via 3.3V rack
+
+| Sensor port | Connection |
+| ----------- | ---------- |
+| VCC | 3.3V via 3.3V rack |
+| GND | Common ground |
+| SDA | GPIO2 via I2C rack |
+| SCL | GPIO3 via I2C rack |
+| XSHUT | Not connected |
+| GPIO1 / INT | Not connected |
+
+The breakout PCB is marked `VL53L0/1X V2`; software tries VL53L1X first and then VL53L0X so the installed sensor variant is detected at startup.
+
+## BME680 Environmental Sensor
+
+Component: BME680 / CJMCU-680 breakout  
+Measurements: temperature, humidity, pressure and gas resistance  
+Interface: I2C  
+Address: `0x76` by default in software; change `BME680_ADDRESS` to `0x77` if required by the breakout  
+Power: 3.3V via 3.3V rack
+
+| BME680 port | Connection |
+| ----------- | ---------- |
+| VCC | 3.3V via 3.3V rack |
+| GND | Common ground |
+| SDA | GPIO2 via I2C rack |
+| SCL | GPIO3 via I2C rack |
+
+The BME680 should be mounted close to a ventilated opening and away from major heat sources such as the Raspberry Pi, UPS and display.
+
+
 # Display System
 
 ## OLED Eyes
 
+- VCC: 3.3V via 3.3V rack
+- GND: common ground
 - I2C SDA: GPIO2 via I2C rack
 - I2C SCL: GPIO3 via I2C rack
 - Left: 0x3C
@@ -490,6 +534,8 @@ GPIO2 / SDA
          +--- Right OLED
          +--- MLX90640
          +--- ST7796 CTP_SDA
+         +--- VL53L0X/VL53L1X ToF sensor
+         +--- BME680
 
 GPIO3 / SCL
     |
@@ -499,6 +545,8 @@ GPIO3 / SCL
          +--- Right OLED
          +--- MLX90640
          +--- ST7796 CTP_SCL
+         +--- VL53L0X/VL53L1X ToF sensor
+         +--- BME680
 ```
 
 The rack is only a physical distribution point. All devices remain on the same Raspberry Pi I2C bus and are differentiated by their I2C addresses.

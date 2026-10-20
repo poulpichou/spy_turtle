@@ -17,6 +17,8 @@ from robot.hardware.shell_screen_st7796 import ShellScreenST7796
 from robot.hardware.battery import Battery
 from robot.hardware.camera import Camera
 from robot.hardware.thermal_camera import ThermalCamera
+from robot.hardware.distance_sensor import DistanceSensor
+from robot.hardware.environment_sensor import EnvironmentSensor
 from robot.hardware.speaker import Speaker
 from robot.hardware.motor import DifferentialDrive
 from robot.shell.power_shell_controller import ShellController
@@ -34,7 +36,7 @@ class RobotFactory:
         battery=FakeBattery();speaker=FakeSpeaker();servo=FakeServo()
         left_display=FakeEyesDisplay("left");right_display=FakeEyesDisplay("right")
         eyes_renderer=EyesRenderer(left_display,right_display);face=FaceController(eyes_renderer,leds)
-        robot=Robot(motors=motors,face=face,leds=leds,camera=camera,thermal_camera=thermal_camera,battery=battery,speaker=speaker,servo=servo)
+        robot=Robot(motors=motors,face=face,leds=leds,camera=camera,thermal_camera=thermal_camera,battery=battery,speaker=speaker,servo=servo,distance_sensor=None,environment_sensor=None)
         robot.brain=Brain(robot)
         return robot
     def create_hardware(self):
@@ -43,6 +45,13 @@ class RobotFactory:
             try:thermal_camera=ThermalCamera()
             except Exception as error:log.error(f"[THERMAL] initialization failed, RGB fallback remains active: {error}")
         speaker=Speaker();servo=ServoController();battery=Battery()
+        distance_sensor=None;environment_sensor=None
+        if settings.DISTANCE_SENSOR_ENABLED:
+            try:distance_sensor=DistanceSensor()
+            except Exception as error:log.error(f"[DISTANCE] initialization failed: {error}")
+        if settings.BME680_ENABLED:
+            try:environment_sensor=EnvironmentSensor()
+            except Exception as error:log.error(f"[ENVIRONMENT] initialization failed: {error}")
         left_display=NullEyesDisplay("left");right_display=NullEyesDisplay("right")
         if settings.EYES_ENABLED:
             try:
@@ -53,6 +62,6 @@ class RobotFactory:
         else:log.info("[EYES] disabled by configuration")
         eyes_renderer=EyesRenderer(left_display,right_display);face=FaceController(eyes_renderer,leds)
         shell_screen=ShellScreenST7796();shell_ui=ShellUI(shell_screen.display);shell=ShellController(shell_ui)
-        robot=Robot(motors=motors,face=face,leds=leds,camera=camera,thermal_camera=thermal_camera,battery=battery,speaker=speaker,servo=servo,shell=shell)
+        robot=Robot(motors=motors,face=face,leds=leds,camera=camera,thermal_camera=thermal_camera,battery=battery,speaker=speaker,servo=servo,shell=shell,distance_sensor=distance_sensor,environment_sensor=environment_sensor)
         shell.set_robot(robot);robot.brain=Brain(robot)
         return robot
