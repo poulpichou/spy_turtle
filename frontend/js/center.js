@@ -105,7 +105,7 @@ async function refreshHealth(){
         if(!servo)servo=(await fetchJson("/state")).servo;
         const distance=data.sensors?.distance?.distance_mm;
         const environment=data.sensors?.environment||{};
-        document.getElementById("health-object-distance").innerText=valueOrDash(distance," mm");
+        document.getElementById("health-object-distance").innerText=distance==null?"--":data.sensors?.distance?.out_of_range?"∞":`${distance} mm`;
         document.getElementById("health-environment-temperature").innerText=valueOrDash(environment.temperature_c," °C");
         document.getElementById("health-humidity").innerText=valueOrDash(environment.humidity_percent," %");
         document.getElementById("health-pressure").innerText=valueOrDash(environment.pressure_hpa," hPa");

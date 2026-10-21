@@ -34,4 +34,6 @@ class DistanceSensor:
             if value is not None:self.last_distance_mm=value;self.last_updated_at=time.time();self.last_error=None
         except Exception as error:self.last_error=str(error)
     def status(self):
-        self.update();return {"available":True,"model":self.model,"address":f"0x{self.address:02X}","distance_mm":self.last_distance_mm,"updated_at":self.last_updated_at,"error":self.last_error}
+        self.update()
+        out_of_range=self.last_distance_mm is not None and self.last_distance_mm>settings.DISTANCE_SENSOR_MAX_MM
+        return {"available":True,"model":self.model,"address":f"0x{self.address:02X}","distance_mm":self.last_distance_mm,"out_of_range":out_of_range,"max_distance_mm":settings.DISTANCE_SENSOR_MAX_MM,"updated_at":self.last_updated_at,"error":self.last_error}

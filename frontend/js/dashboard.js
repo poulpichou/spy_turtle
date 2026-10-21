@@ -39,7 +39,7 @@ async function updateDashboard(){
         document.getElementById('sensor-humidity').innerText=environment.humidity_percent==null?'--':`${environment.humidity_percent.toFixed(1)}%`;
         document.getElementById('sensor-pressure').innerText=environment.pressure_hpa==null?'--':`${environment.pressure_hpa.toFixed(1)} hPa | ${environment.pressure_atm?.toFixed(3)??'--'} atm`;
         document.getElementById('sensor-gas').innerText=environment.gas_ohms==null?'--':`${(environment.gas_ohms/1000).toFixed(1)} kΩ | ${environment.air_quality?.toFixed(1)??'--'}/10`;
-        document.getElementById('sensor-distance').innerText=distance==null?'--':`${(distance/10).toFixed(1)} cm`;
+        document.getElementById('sensor-distance').innerText=distance==null?'--':status.sensors?.distance?.out_of_range?'∞':`${(distance/10).toFixed(1)} cm`;
     }catch(error){setConnection('disconnected')}
     scheduleDashboard();
 }
