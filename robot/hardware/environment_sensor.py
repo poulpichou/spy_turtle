@@ -15,5 +15,18 @@ class EnvironmentSensor:
         try:
             self.last_values={"temperature_c":round(float(self.sensor.temperature),1),"humidity_percent":round(float(self.sensor.relative_humidity),1),"pressure_hpa":round(float(self.sensor.pressure),1),"gas_ohms":round(float(self.sensor.gas),0)};self.last_updated_at=time.time();self.last_error=None
         except Exception as error:self.last_error=str(error)
+    @staticmethod
+    def _air_quality(gas_ohms):
+        if gas_ohms is None:return None
+        points=sorted(settings.BME680_AIR_QUALITY_POINTS,key=lambda point:point[1])
+        if gas_ohms<=points[0][1]:return float(points[0][0])
+        if gas_ohms>=points[-1][1]:return float(points[-1][0])
+        for (score1,ohms1),(score2,ohms2) in zip(points,points[1:]):
+            if ohms1<=gas_ohms<=ohms2:
+                score=score1+(gas_ohms-ohms1)*(score2-score1)/(ohms2-ohms1)
+                return round(float(score),1)
+        return None
     def status(self):
-        self.update();return {"available":True,"model":"BME680","address":f"0x{self.address:02X}",**self.last_values,"updated_at":self.last_updated_at,"error":self.last_error}
+        self.update()
+        pressure=self.last_values.get("pressure_hpa");gas=self.last_values.get("gas_ohms")
+        return {"available":True,"model":"BME680","address":f"0x{self.address:02X}",**self.last_values,"pressure_atm":None if pressure is None else round(float(pressure)/1013.25,3),"air_quality":self._air_quality(gas),"updated_at":self.last_updated_at,"error":self.last_error}

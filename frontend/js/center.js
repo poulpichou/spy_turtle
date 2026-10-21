@@ -103,6 +103,15 @@ async function refreshHealth(){
         const data=await fetchJson("/health");
         let servo=data.robot?.servo;
         if(!servo)servo=(await fetchJson("/state")).servo;
+        const distance=data.sensors?.distance?.distance_mm;
+        const environment=data.sensors?.environment||{};
+        document.getElementById("health-object-distance").innerText=valueOrDash(distance," mm");
+        document.getElementById("health-environment-temperature").innerText=valueOrDash(environment.temperature_c," °C");
+        document.getElementById("health-humidity").innerText=valueOrDash(environment.humidity_percent," %");
+        document.getElementById("health-pressure").innerText=valueOrDash(environment.pressure_hpa," hPa");
+        document.getElementById("health-pressure-atm").innerText=valueOrDash(environment.pressure_atm," atm");
+        document.getElementById("health-gas").innerText=environment.gas_ohms==null?"--":`${(environment.gas_ohms/1000).toFixed(1)} kΩ`;
+        document.getElementById("health-air-quality").innerText=valueOrDash(environment.air_quality," / 10");
         document.getElementById("health-connection").innerText="Connected";
         document.getElementById("health-uptime").innerText=formatDuration(data.system.uptime_seconds);
         document.getElementById("health-temperature").innerText=valueOrDash(data.system.cpu_temperature_c," °C");

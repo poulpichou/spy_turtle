@@ -42,6 +42,10 @@ DISTANCE_SENSOR_UPDATE_INTERVAL=0.25
 BME680_ENABLED=True
 BME680_ADDRESS=0x77
 BME680_UPDATE_INTERVAL=5.0
+# Simple Spy Turtle air-quality scale: (score /10, gas resistance in ohms).
+# Higher BME680 gas resistance is treated as better air quality.
+# Tune these five resistance values after observing the robot in real use.
+BME680_AIR_QUALITY_POINTS=((0,10000),(2,20000),(5,50000),(8,100000),(10,200000))
 
 # MLX90640 thermal camera (shared I2C bus)
 THERMAL_CAMERA_ENABLED=True
