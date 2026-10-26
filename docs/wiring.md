@@ -67,8 +67,8 @@ Any hardware modification must be reflected in this document.
 | 3.3V logic / TB6612 VCC  | 3.3V   |  1 |  2 | 5V     | 5V (Power rack)          |
 | I2C SDA: UPS + OLED eyes + MLX90640 + ST7796 CTP | GPIO2 (I2C rack) |  3 |  4 | 5V (Power rack) | ST7796 backlight / peripherals |
 | I2C SCL: UPS + OLED eyes + MLX90640 + ST7796 CTP | GPIO3 (I2C rack) |  5 |  6 | GND (Power rack) | Common ground            |
-| WS2812B data              | GPIO4  |  7 |  8 | GPIO14 | Available / UART TX      |
-| GND (Power rack)          | GND    |  9 | 10 | GPIO15 | Available / UART RX      |
+| WS2812B data              | GPIO4  |  7 |  8 | GPIO14 | Left motor encoder A / UART TX |
+| GND (Power rack)          | GND    |  9 | 10 | GPIO15 | Right motor encoder A / UART RX |
 | Pan servo                 | GPIO17 | 11 | 12 | GPIO18 | MAX98357A BCLK           |
 | Tilt servo                | GPIO27 | 13 | 14 | GND (Power rack) | Common ground            |
 | ST7796 CTP_INT            | GPIO22 | 15 | 16 | GPIO23 | ST7796 CTP_RST           |
@@ -378,22 +378,26 @@ The remaining blue, green, yellow and black wires belong to the Hall encoder sys
 
 ### Motor Encoders
 
-Encoder wiring is currently optional and disabled in software.
+Encoder wiring is optional. Spy Turtle uses one Hall encoder channel per motor to minimize GPIO usage while still measuring relative wheel speed for straight-line motor correction.
 
 Reserved GPIO allocation:
 
-| Encoder | A | B |
-| ------- | --- | --- |
-| Left | TBD | TBD |
-| Right | GPIO14 | GPIO15 |
+| Encoder | Signal used | GPIO |
+| ------- | ----------- | ---- |
+| Left | A | GPIO14 |
+| Right | A | GPIO15 |
+
+The B channels remain disconnected. With a single channel, encoder direction is not measured directly; commanded motor direction is already known by the motor controller. GPIO14/GPIO15 are also UART TX/RX and must not be used by UART while motor encoders are enabled.
+
+Software configuration is in `robot/config/settings.py`. Encoder acquisition and straight-line correction are independently controlled by `MOTOR_ENCODERS_ENABLED` and `MOTOR_ENCODER_CORRECTION_ENABLED`. Both remain disabled until the physical encoder VCC/GND/A/B wires and signal voltage have been validated.
 
 Notes:
 
-- GPIO22/GPIO23 were previously reserved for the left encoder but are now assigned to the ST7796 capacitive touchscreen (`CTP_INT` / `CTP_RST`).
-- The left encoder GPIO allocation must therefore be reassigned before encoder wiring is enabled.
-- GPIO14/GPIO15 are also UART TX/RX.
-- Encoder output voltage must be confirmed before connection to Raspberry Pi GPIO.
-- The motors operate normally without encoder wiring.
+- GPIO22/GPIO23 remain assigned to the ST7796 capacitive touchscreen (`CTP_INT` / `CTP_RST`).
+- Encoder output voltage must be confirmed as Raspberry Pi GPIO compatible before connection.
+- The motors operate normally with encoder support disabled.
+- Straight-line correction compares left/right encoder pulses over short intervals and adjusts motor PWM within a configured maximum correction.
+- Intentional left/right turns are not encoder-balanced.
 
 # Head Articulation System
 
@@ -695,6 +699,16 @@ The script:
 - backs up `/boot/firmware/config.txt`
 - replaces an existing `ws2812-pio` GPIO assignment with GPIO4
 - adds the correct overlay if none exists
+
+## Future IMU Prospect
+
+A BNO085/BNO086 IMU is planned as a future optional upgrade but is not currently installed or implemented in software.
+
+- Interface: shared I2C bus
+- Expected default address: `0x4A` (breakout dependent; verify before integration)
+- Planned use: heading/rotation feedback for future closed-loop trajectory correction
+- GPIO impact: no dedicated GPIO required when using I2C
+- Status: prospect only; hardware and software integration deferred
 
 # Hardware Design Decisions
 

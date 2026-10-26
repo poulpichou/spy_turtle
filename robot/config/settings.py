@@ -37,16 +37,11 @@ OLED_RIGHT_ADDRESS=0x3D
 DISTANCE_SENSOR_ENABLED=True
 DISTANCE_SENSOR_ADDRESS=0x29
 DISTANCE_SENSOR_UPDATE_INTERVAL=0.25
-DISTANCE_SENSOR_MAX_MM=2000
 
 # BME680 environmental sensor (shared I2C bus)
 BME680_ENABLED=True
-BME680_ADDRESS=0x77
+BME680_ADDRESS=0x76
 BME680_UPDATE_INTERVAL=5.0
-# Simple Spy Turtle air-quality scale: (score /10, gas resistance in ohms).
-# Higher BME680 gas resistance is treated as better air quality.
-# Tune these five resistance values after observing the robot in real use.
-BME680_AIR_QUALITY_POINTS=((0,10000),(2,20000),(5,50000),(8,100000),(10,200000))
 
 # MLX90640 thermal camera (shared I2C bus)
 THERMAL_CAMERA_ENABLED=True
@@ -103,16 +98,25 @@ MOTOR_SPEED_STEP=0.05
 MOTOR_MIN_SPEED=0.20
 MOTOR_MAX_SPEED=1.00
 
-# Optional motor encoders
+# Optional single-channel motor encoders
+# Keep disabled until encoder VCC/GND/signal wires have been physically identified and signal voltage confirmed Raspberry Pi safe.
 MOTOR_ENCODERS_ENABLED=False
-MOTOR_LEFT_ENCODER_A_PIN=None # GPIO22 reserved for ST7796 CTP_INT
-MOTOR_LEFT_ENCODER_B_PIN=None # GPIO23 reserved for ST7796 CTP_RST
-MOTOR_RIGHT_ENCODER_A_PIN=14
-MOTOR_RIGHT_ENCODER_B_PIN=15
+MOTOR_LEFT_ENCODER_A_PIN=14
+MOTOR_LEFT_ENCODER_B_PIN=None
+MOTOR_RIGHT_ENCODER_A_PIN=15
+MOTOR_RIGHT_ENCODER_B_PIN=None
 MOTOR_LEFT_ENCODER_INVERTED=False
 MOTOR_RIGHT_ENCODER_INVERTED=False
 MOTOR_ENCODER_PULL_UP=True
 MOTOR_ENCODER_PULSES_PER_REV=0
+
+# Closed-loop left/right wheel-speed balancing
+# Requires MOTOR_ENCODERS_ENABLED=True. Applies only to forward/backward; turns remain open-loop.
+MOTOR_ENCODER_CORRECTION_ENABLED=False
+MOTOR_ENCODER_CORRECTION_INTERVAL=0.10
+MOTOR_ENCODER_CORRECTION_KP=0.20
+MOTOR_ENCODER_CORRECTION_MAX=0.08
+MOTOR_ENCODER_CORRECTION_MIN_PULSES=2
 
 # Mechanical geometry / future encoder calibration
 MOTOR_WHEEL_DIAMETER_MM=65.0
