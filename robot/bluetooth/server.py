@@ -122,10 +122,12 @@ async def serve():
     def write_request(characteristic:BlessGATTCharacteristic,value,**kwargs):
         nonlocal admin_response
         try:
-            payload=json.loads(bytes(value).decode("utf-8"))
+            raw=bytes(value)
             if characteristic_uuid(characteristic)==settings.BLUETOOTH_CAMERA_UUID.lower():
-                ble_camera.write(bytes(value))
-            elif characteristic_uuid(characteristic)==settings.BLUETOOTH_ADMIN_UUID.lower():
+                ble_camera.write(raw)
+                return
+            payload=json.loads(raw.decode("utf-8"))
+            if characteristic_uuid(characteristic)==settings.BLUETOOTH_ADMIN_UUID.lower():
                 try:result=admin_dispatch(payload)
                 except Exception as error:
                     log.error(f"[BLUETOOTH ADMIN ERROR] {error}")
