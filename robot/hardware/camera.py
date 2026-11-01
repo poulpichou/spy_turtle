@@ -14,7 +14,7 @@ class Camera:
             try:self.camera.close()
             except Exception:pass
         self.camera=Picamera2()
-        self.camera.configure(self.camera.create_video_configuration(main={"size":(settings.CAMERA_WIDTH,settings.CAMERA_HEIGHT),"format":"RGB888"}))
+        self.camera.configure(self.camera.create_video_configuration(main={"size":(settings.CAMERA_WIDTH,settings.CAMERA_HEIGHT),"format":"BGR888"}))
         self.running=False
 
     def set_enabled(self,enabled):

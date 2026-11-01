@@ -33,6 +33,10 @@ async function updateDashboard(){
         document.getElementById('shell-mode').innerText=status.shell?.mode||'status';
         document.getElementById('led-mode').innerText=status.leds?.mode||'off';
         document.getElementById('motion').innerText=status.motion?.state||'stop';
+        const head=status.servo||{};
+        const pan=head.pan?.current,tilt=head.tilt?.current;
+        const indicator=document.getElementById('head-position');
+        if(indicator)indicator.textContent=`Pan: ${pan==null?'--':Math.round(pan)+'°'} · Tilt: ${tilt==null?'--':Math.round(tilt)+'°'}`;
         const distance=status.sensors?.distance?.distance_mm;
         const environment=status.sensors?.environment||{};
         document.getElementById('sensor-temperature').innerText=environment.temperature_c==null?'--':`${environment.temperature_c.toFixed(1)}°C`;

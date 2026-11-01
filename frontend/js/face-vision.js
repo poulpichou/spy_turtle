@@ -9,11 +9,13 @@ overlay.setAttribute("aria-hidden","true");
 cameraView.appendChild(overlay);
 let enabled=false;
 let lastFaces=[];
+let lastDetectedAt=0;
 let lastSuccessfulPoll=0;
-function clear(){overlay.replaceChildren()}
+const HOLD_MS=3000;
+const shapes=[];
+function clear(){shapes.forEach(pair=>pair.group.remove());shapes.length=0}
 function draw(faces){
-    clear();
-    if(!enabled||!image.naturalWidth||!image.naturalHeight||!cameraView.classList.contains("active"))return;
+    if(!enabled||!image.naturalWidth||!image.naturalHeight||!cameraView.classList.contains("active")){clear();return}
     const bounds=image.getBoundingClientRect(),box=cameraView.getBoundingClientRect();
     const ratio=Math.min(bounds.width/image.naturalWidth,bounds.height/image.naturalHeight);
     const width=image.naturalWidth*ratio,height=image.naturalHeight*ratio;
@@ -22,31 +24,34 @@ function draw(faces){
     overlay.style.width=`${width}px`;
     overlay.style.height=`${height}px`;
     overlay.setAttribute("viewBox",`0 0 ${width} ${height}`);
-    for(const face of faces){
-        const x=face.x*width,y=face.y*height,w=face.w*width,h=face.h*height;
-        const rect=document.createElementNS(NS,"rect");
-        rect.setAttribute("x",x);rect.setAttribute("y",y);
-        rect.setAttribute("width",w);rect.setAttribute("height",h);
-        overlay.appendChild(rect);
-        const name=document.createElementNS(NS,"text");
-        name.setAttribute("x",Math.max(2,x));
-        name.setAttribute("y",Math.min(height-4,y+h+16));
-        name.textContent=face.name||"unknown";
-        overlay.appendChild(name);
+    while(shapes.length>faces.length){shapes.pop().group.remove()}
+    for(let i=0;i<faces.length;i++){
+        if(!shapes[i]){
+            const group=document.createElementNS(NS,"g"),rect=document.createElementNS(NS,"rect"),name=document.createElementNS(NS,"text");
+            group.append(rect,name);overlay.appendChild(group);shapes.push({group,rect,name});
+        }
+        const face=faces[i],shape=shapes[i],x=face.x*width,y=face.y*height,w=face.w*width,h=face.h*height;
+        shape.rect.setAttribute("x",x);shape.rect.setAttribute("y",y);
+        shape.rect.setAttribute("width",w);shape.rect.setAttribute("height",h);
+        shape.name.setAttribute("x",Math.max(2,x));
+        shape.name.setAttribute("y",Math.min(height-4,y+h+16));
+        shape.name.textContent=face.name||"unknown";
     }
 }
 async function refresh(){
     if(typeof transportMode!=="undefined"&&transportMode==="bluetooth"){
-        enabled=false;lastFaces=[];clear();return;
+        enabled=false;lastFaces=[];lastDetectedAt=0;clear();return;
     }
     try{
         const response=await fetch("/vision/status",{cache:"no-store"});
         if(!response.ok)throw Error(`HTTP ${response.status}`);
         const data=await response.json();
         enabled=!!data.enabled;
-        lastFaces=Array.isArray(data.faces)?data.faces:[];
-        lastSuccessfulPoll=Date.now();
-        if(enabled)draw(lastFaces);else clear();
+        const incoming=Array.isArray(data.faces)?data.faces:[];
+        const now=Date.now();lastSuccessfulPoll=now;
+        if(incoming.length){lastFaces=incoming;lastDetectedAt=now}
+        else if(!enabled||now-lastDetectedAt>HOLD_MS){lastFaces=[]}
+        if(enabled)draw(lastFaces);else{lastFaces=[];clear()}
     }catch(error){
         if(Date.now()-lastSuccessfulPoll>5000){lastFaces=[];clear()}
         console.warn("[FACE]",error);

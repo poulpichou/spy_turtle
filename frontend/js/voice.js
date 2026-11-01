@@ -1,4 +1,4 @@
-﻿const recordButton=document.getElementById("record-message");
+const recordButton=document.getElementById("record-message");
 const recordStatus=document.getElementById("record-status");
 const listenButton=document.getElementById("listen-button");
 let recorder=null;
@@ -67,14 +67,14 @@ async function sendRecordedMessage(){
 
 recordButton.onclick=async()=>{
     if(recorder&&recorder.state==="recording"){
-        recorder.stop();recordButton.classList.remove("recording");recordButton.textContent="ðŸŽ™ï¸";return;
+        recorder.stop();recordButton.classList.remove("recording");recordButton.textContent="🎙️";return;
     }
     try{
         recorderStream=await navigator.mediaDevices.getUserMedia({audio:true});
         recorderChunks=[];recorder=new MediaRecorder(recorderStream);
         recorder.ondataavailable=event=>{if(event.data.size)recorderChunks.push(event.data)};
         recorder.onstop=sendRecordedMessage;recorder.start();
-        recordButton.classList.add("recording");recordButton.textContent="â– ";recordStatus.textContent="Recording...";
+        recordButton.classList.add("recording");recordButton.textContent="■";recordStatus.textContent="Recording...";
     }catch(error){
         console.error("[VOICE RECORD]",error);recordStatus.textContent="Microphone denied";showCommandError(error);
     }
