@@ -2,8 +2,9 @@ const BLE_SERVICE_UUID="6f2d0001-9b7e-4b2a-a1d3-53d9c4e8f210";
 const BLE_COMMAND_UUID="6f2d0002-9b7e-4b2a-a1d3-53d9c4e8f210";
 const BLE_STATE_UUID="6f2d0003-9b7e-4b2a-a1d3-53d9c4e8f210";
 const BLE_ADMIN_UUID="6f2d0004-9b7e-4b2a-a1d3-53d9c4e8f210";
+const BLE_CAMERA_UUID="6f2d0005-9b7e-4b2a-a1d3-53d9c4e8f210";
 let transportMode="wifi";
-let bluetoothDevice=null,bluetoothServer=null,bluetoothCommand=null,bluetoothState=null,bluetoothAdmin=null;
+let bluetoothDevice=null,bluetoothServer=null,bluetoothCommand=null,bluetoothState=null,bluetoothAdmin=null,bluetoothCamera=null;
 let bluetoothQueue=Promise.resolve(),bluetoothPending=0,bluetoothEpoch=0;
 let bluetoothCachedState=null,bluetoothCachedAt=0;
 let bluetoothMoveEpoch=0;
@@ -39,7 +40,7 @@ async function connectBluetooth(){
     if(!navigator.bluetooth)throw new Error("Web Bluetooth is not supported by this browser");
     bluetoothDevice=await navigator.bluetooth.requestDevice({filters:[{services:[BLE_SERVICE_UUID]}]});
     bluetoothDevice.addEventListener("gattserverdisconnected",()=>{
-        invalidateBluetooth();bluetoothServer=null;bluetoothCommand=null;bluetoothState=null;bluetoothAdmin=null;
+        invalidateBluetooth();bluetoothServer=null;bluetoothCommand=null;bluetoothState=null;bluetoothAdmin=null;bluetoothCamera=null;
         updateTransportUI();if(typeof setConnection==="function")setConnection("disconnected");emitTransportChange();
     });
     bluetoothServer=await bluetoothDevice.gatt.connect();
@@ -47,6 +48,7 @@ async function connectBluetooth(){
     bluetoothCommand=await service.getCharacteristic(BLE_COMMAND_UUID);
     bluetoothState=await service.getCharacteristic(BLE_STATE_UUID);
     bluetoothAdmin=await service.getCharacteristic(BLE_ADMIN_UUID);
+    bluetoothCamera=await service.getCharacteristic(BLE_CAMERA_UUID);
     transportMode="bluetooth";
     updateTransportUI();emitTransportChange();
     if(typeof scheduleDashboard==="function")scheduleDashboard(0);
@@ -54,7 +56,7 @@ async function connectBluetooth(){
 function useWifi(){
     transportMode="wifi";
     if(bluetoothDevice?.gatt?.connected)bluetoothDevice.gatt.disconnect();
-    invalidateBluetooth();bluetoothServer=null;bluetoothCommand=null;bluetoothState=null;bluetoothAdmin=null;
+    invalidateBluetooth();bluetoothServer=null;bluetoothCommand=null;bluetoothState=null;bluetoothAdmin=null;bluetoothCamera=null;
     updateTransportUI();emitTransportChange();
     if(typeof scheduleDashboard==="function")scheduleDashboard(0);
 }
@@ -92,6 +94,31 @@ async function bluetoothAdminRequest(action,data={}){
         if(!result.ok)throw new Error(result.error||"Bluetooth admin command failed");
         return result;
     });
+}
+async function readBluetoothCameraFrame(){
+    if(!bluetoothCamera||!bluetoothServer?.connected)throw new Error("Bluetooth camera unavailable");
+    const camera=bluetoothCamera,epoch=bluetoothEpoch;
+    const write=async(value)=>{if(camera.writeValueWithResponse)return camera.writeValueWithResponse(value);return camera.writeValue(value)};
+    const header=await queueGatt(async()=>{
+        await write(new Uint8Array([78]));
+        return bluetoothCamera.readValue();
+    });
+    const meta=new DataView(header.buffer,header.byteOffset,header.byteLength);
+    if(meta.byteLength<6)throw new Error("Invalid BLE camera header");
+    const size=meta.getUint32(0,true);
+    if(size<100||size>65535)throw new Error(`Invalid BLE JPEG size: ${size}`);
+    const image=new Uint8Array(size);
+    for(let offset=0;offset<size;){
+        if(epoch!==bluetoothEpoch||transportMode!=="bluetooth")throw new Error("Camera transfer cancelled");
+        const chunk=await queueGatt(async()=>{
+            const request=new Uint8Array(5);request[0]=67;new DataView(request.buffer).setUint32(1,offset,true);
+            await write(request);return bluetoothCamera.readValue();
+        });
+        const bytes=new Uint8Array(chunk.buffer,chunk.byteOffset,chunk.byteLength);
+        if(!bytes.length||bytes.length>size-offset)throw new Error("Invalid BLE camera chunk");
+        image.set(bytes,offset);offset+=bytes.length;
+    }
+    return new Blob([image],{type:"image/jpeg"});
 }
 document.addEventListener("DOMContentLoaded",()=>{
     updateTransportUI();

@@ -4,6 +4,7 @@ import subprocess
 from pathlib import Path
 
 from robot.api import actions
+from robot.bluetooth.camera import BLECamera
 from robot.config import settings
 from robot.system.runtime import get_robot
 from robot.system.wifi import wifi_manager
@@ -109,10 +110,12 @@ async def serve():
     loop=asyncio.get_running_loop()
     server=BlessServer(name=settings.BLUETOOTH_NAME,loop=loop)
     admin_response=bytearray(b'{"ok":true}')
+    ble_camera=BLECamera()
 
     def characteristic_uuid(characteristic): return str(getattr(characteristic,"uuid","")).lower()
 
     def read_request(characteristic:BlessGATTCharacteristic,**kwargs):
+        if characteristic_uuid(characteristic)==settings.BLUETOOTH_CAMERA_UUID.lower():return bytearray(ble_camera.read())
         if characteristic_uuid(characteristic)==settings.BLUETOOTH_ADMIN_UUID.lower():return admin_response
         return bytearray(json.dumps(compact_state(),separators=(",",":")).encode())
 
@@ -120,7 +123,9 @@ async def serve():
         nonlocal admin_response
         try:
             payload=json.loads(bytes(value).decode("utf-8"))
-            if characteristic_uuid(characteristic)==settings.BLUETOOTH_ADMIN_UUID.lower():
+            if characteristic_uuid(characteristic)==settings.BLUETOOTH_CAMERA_UUID.lower():
+                ble_camera.write(bytes(value))
+            elif characteristic_uuid(characteristic)==settings.BLUETOOTH_ADMIN_UUID.lower():
                 try:result=admin_dispatch(payload)
                 except Exception as error:
                     log.error(f"[BLUETOOTH ADMIN ERROR] {error}")
@@ -146,6 +151,11 @@ async def serve():
         settings.BLUETOOTH_SERVICE_UUID,settings.BLUETOOTH_ADMIN_UUID,
         GATTCharacteristicProperties.read|GATTCharacteristicProperties.write,
         bytearray(b'{"ok":true}'),GATTAttributePermissions.readable|GATTAttributePermissions.writeable
+    )
+    await server.add_new_characteristic(
+        settings.BLUETOOTH_SERVICE_UUID,settings.BLUETOOTH_CAMERA_UUID,
+        GATTCharacteristicProperties.read|GATTCharacteristicProperties.write,
+        bytearray(b""),GATTAttributePermissions.readable|GATTAttributePermissions.writeable
     )
     await server.start()
     log.info(f"[BLUETOOTH] ready name={settings.BLUETOOTH_NAME}")
