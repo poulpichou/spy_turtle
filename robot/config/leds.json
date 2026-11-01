@@ -1,5 +1,5 @@
 {
-  "settings": {"enabled": true, "gpio": 4, "device": "/dev/leds0", "count": 39, "brightness": 0.22, "reversed": false},
+  "settings": {"enabled": true, "gpio": 4, "device": "/dev/leds0", "count": 40, "brightness": 0.22, "reversed": false},
   "modes": {
     "off": {"label": "Off", "animation": "off"},
     "neutral": {"label": "Neutral", "animation": "neutral"},

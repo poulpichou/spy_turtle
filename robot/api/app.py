@@ -233,8 +233,22 @@ def command(cmd:Command):
         raise HTTPException(status_code=400,detail=str(error)) from error
     return state()
 
+@app.get("/vision/status")
+def vision_status():return vision.status()
+
+class VisionToggle(BaseModel):
+    enabled:bool
+
+@app.post("/vision/enable")
+def vision_enable(value:VisionToggle):
+    try:return vision.enable(value.enabled)
+    except Exception as error:raise HTTPException(status_code=503,detail=str(error)) from error
+
 @app.get("/camera/frame")
-def camera_frame():return Response(content=actions.camera_frame(),media_type="image/jpeg",headers={"Cache-Control":"no-store"})
+def camera_frame():
+    frame=actions.camera_frame()
+    vision.submit(frame)
+    return Response(content=frame,media_type="image/jpeg",headers={"Cache-Control":"no-store"})
 
 @app.get("/thermal/frame")
 def thermal_frame():

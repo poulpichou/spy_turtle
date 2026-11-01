@@ -13,3 +13,6 @@ __pycache__/
 Thumbs.db
 
 photos/
+# Private face photos and downloaded models
+/robot/assets/faces/
+/robot/assets/models/
