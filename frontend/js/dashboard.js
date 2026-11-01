@@ -13,7 +13,7 @@ function setConnection(status){
 
 function scheduleDashboard(delay=null){
     if(dashboardTimer)clearTimeout(dashboardTimer);
-    dashboardTimer=setTimeout(updateDashboard,delay??(dashboardIdle?DASHBOARD_IDLE_MS:DASHBOARD_NORMAL_MS));
+    dashboardTimer=setTimeout(updateDashboard,delay??(dashboardIdle?DASHBOARD_IDLE_MS:transportMode==="bluetooth"?2000:DASHBOARD_NORMAL_MS));
 }
 
 function setDashboardIdle(idle){

@@ -4,7 +4,24 @@ const BLE_STATE_UUID="6f2d0003-9b7e-4b2a-a1d3-53d9c4e8f210";
 const BLE_ADMIN_UUID="6f2d0004-9b7e-4b2a-a1d3-53d9c4e8f210";
 let transportMode="wifi";
 let bluetoothDevice=null,bluetoothServer=null,bluetoothCommand=null,bluetoothState=null,bluetoothAdmin=null;
-let bluetoothWriteQueue=Promise.resolve(),bluetoothAdminQueue=Promise.resolve();
+let bluetoothQueue=Promise.resolve(),bluetoothPending=0,bluetoothEpoch=0;
+let bluetoothCachedState=null,bluetoothCachedAt=0;
+let bluetoothMoveEpoch=0;
+function queueGatt(task,{lowPriority=false,moveEpoch=null}={}){
+    if(lowPriority&&bluetoothPending)return Promise.resolve(bluetoothCachedState);
+    const epoch=bluetoothEpoch;
+    bluetoothPending++;
+    const run=async()=>{
+        if(epoch!==bluetoothEpoch||!bluetoothServer?.connected)throw new Error("Bluetooth disconnected");
+        if(moveEpoch!==null&&moveEpoch!==bluetoothMoveEpoch)return;
+        return task();
+    };
+    const result=bluetoothQueue.then(run,run);
+    bluetoothQueue=result.catch(()=>{});
+    return result.finally(()=>{bluetoothPending=Math.max(0,bluetoothPending-1)});
+}
+function invalidateBluetooth(){bluetoothEpoch++;bluetoothMoveEpoch++;bluetoothCachedState=null;bluetoothCachedAt=0}
+
 let currentWifiName="--";
 
 function transportLabel(){return transportMode==="bluetooth"?"Bluetooth":"Wi-Fi"}
@@ -22,7 +39,7 @@ async function connectBluetooth(){
     if(!navigator.bluetooth)throw new Error("Web Bluetooth is not supported by this browser");
     bluetoothDevice=await navigator.bluetooth.requestDevice({filters:[{services:[BLE_SERVICE_UUID]}]});
     bluetoothDevice.addEventListener("gattserverdisconnected",()=>{
-        bluetoothServer=null;bluetoothCommand=null;bluetoothState=null;bluetoothAdmin=null;
+        invalidateBluetooth();bluetoothServer=null;bluetoothCommand=null;bluetoothState=null;bluetoothAdmin=null;
         updateTransportUI();if(typeof setConnection==="function")setConnection("disconnected");emitTransportChange();
     });
     bluetoothServer=await bluetoothDevice.gatt.connect();
@@ -37,7 +54,7 @@ async function connectBluetooth(){
 function useWifi(){
     transportMode="wifi";
     if(bluetoothDevice?.gatt?.connected)bluetoothDevice.gatt.disconnect();
-    bluetoothServer=null;bluetoothCommand=null;bluetoothState=null;bluetoothAdmin=null;
+    invalidateBluetooth();bluetoothServer=null;bluetoothCommand=null;bluetoothState=null;bluetoothAdmin=null;
     updateTransportUI();emitTransportChange();
     if(typeof scheduleDashboard==="function")scheduleDashboard(0);
 }
@@ -45,21 +62,27 @@ async function writeBluetoothCommand(payload){
     if(!bluetoothCommand||!bluetoothServer?.connected)throw new Error("Bluetooth is not connected");
     const value=new TextEncoder().encode(JSON.stringify(payload));
     if(value.byteLength>400)throw new Error("Bluetooth command is too large");
-    const write=async()=>{
+    const isMove=payload.type==="move";
+    if(isMove&&payload.value==="stop")bluetoothMoveEpoch++;
+    const moveEpoch=isMove&&payload.value!=="stop"?bluetoothMoveEpoch:null;
+    return queueGatt(async()=>{
         if(bluetoothCommand.writeValueWithResponse)return bluetoothCommand.writeValueWithResponse(value);
         return bluetoothCommand.writeValue(value);
-    };
-    bluetoothWriteQueue=bluetoothWriteQueue.then(write,write);
-    return bluetoothWriteQueue;
+    },{moveEpoch});
 }
 async function readBluetoothState(){
     if(!bluetoothState||!bluetoothServer?.connected)throw new Error("Bluetooth is not connected");
-    const value=await bluetoothState.readValue();
-    return JSON.parse(new TextDecoder().decode(value));
+    if(bluetoothPending&&bluetoothCachedState)return bluetoothCachedState;
+    const result=await queueGatt(async()=>{
+        const value=await bluetoothState.readValue();
+        const data=JSON.parse(new TextDecoder().decode(value));
+        bluetoothCachedState=data;bluetoothCachedAt=Date.now();return data;
+    },{lowPriority:!!bluetoothCachedState});
+    return result||bluetoothCachedState||{};
 }
 async function bluetoothAdminRequest(action,data={}){
     if(!bluetoothAdmin||!bluetoothServer?.connected)throw new Error("Bluetooth is not connected");
-    const task=async()=>{
+    return queueGatt(async()=>{
         const payload=new TextEncoder().encode(JSON.stringify({action,data}));
         if(payload.byteLength>400)throw new Error("Bluetooth admin request is too large");
         if(bluetoothAdmin.writeValueWithResponse)await bluetoothAdmin.writeValueWithResponse(payload);
@@ -68,9 +91,7 @@ async function bluetoothAdminRequest(action,data={}){
         const result=JSON.parse(new TextDecoder().decode(value));
         if(!result.ok)throw new Error(result.error||"Bluetooth admin command failed");
         return result;
-    };
-    bluetoothAdminQueue=bluetoothAdminQueue.then(task,task);
-    return bluetoothAdminQueue;
+    });
 }
 document.addEventListener("DOMContentLoaded",()=>{
     updateTransportUI();

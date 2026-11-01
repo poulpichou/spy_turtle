@@ -15,13 +15,22 @@ def compact_state():
     robot=get_robot()
     if robot is None:return {"error":"no robot"}
     data=robot.state.to_dict()
-    battery=data.get("battery",{})
+    def safe_status(component):
+        if component is None:return {}
+        try:return component.status()
+        except Exception as error:return {"available":False,"error":str(error)}
+    env=safe_status(robot.environment_sensor)
+    dist=safe_status(robot.distance_sensor)
+    servo=safe_status(robot.servo)
+    # Only the fields used by the dashboard; preserve REST field names.
     return {
-        "battery":{"level":battery.get("level"),"status":battery.get("status")},
-        "brain":{"emotion":data.get("brain",{}).get("emotion","neutral")},
-        "shell":{"mode":data.get("shell",{}).get("mode","status")},
-        "leds":{"mode":data.get("leds",{}).get("mode","off")},
-        "motion":{"state":data.get("motion",{}).get("state","stop")}
+        "battery":{"level":data["battery"].get("level"),"status":data["battery"].get("status")},
+        "brain":{"emotion":data["brain"].get("emotion","neutral")},
+        "shell":{"mode":data["shell"].get("mode","status")},
+        "leds":{"mode":data["leds"].get("mode","off")},
+        "motion":{"state":data["motion"].get("state","stop")},
+        "servo":{"pan":{"current":(servo.get("pan") or {}).get("current")},"tilt":{"current":(servo.get("tilt") or {}).get("current")}},
+        "sensors":{"environment":{k:env.get(k) for k in ("temperature_c","humidity_percent","pressure_hpa","pressure_atm","gas_ohms","air_quality")},"distance":{k:dist.get(k) for k in ("distance_mm","out_of_range")}}
     }
 
 def compact_wifi_status():
