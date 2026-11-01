@@ -44,7 +44,7 @@ tabs.forEach(tab=>tab.addEventListener("click",event=>{
 
 async function refreshLogs(){
     try{
-        const response=await fetch("/logs?count=80",{cache:"no-store"});
+        const response=await fetch(`/logs?count=80&level=${encodeURIComponent(localStorage.getItem("spy_log_level")||"INFO")}`,{cache:"no-store"});
         if(!response.ok)throw new Error(`HTTP ${response.status}`);
         const data=await response.json();
         logElement.textContent=data.lines.join("\n")||"No logs yet";

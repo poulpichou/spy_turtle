@@ -138,3 +138,20 @@ function scheduleWifi(){if(wifiTimer)clearTimeout(wifiTimer);wifiTimer=setTimeou
 
 document.addEventListener("transportchange",async()=>{await Promise.allSettled([loadPower(),loadVolume(),loadDriveSpeed(),loadWifi()]);loadCameraFps()});
 (async()=>{setupWifiUI();applyLocalFeature("animation");applyLocalFeature("sound");await Promise.allSettled([loadVolume(),loadPower(),loadDriveSpeed(),loadWifi()]);loadCameraFps()})();
+
+// Face recognition and log display controls (Wi-Fi only).
+const faceEnabled=document.getElementById("face-enabled"),faceInterval=document.getElementById("face-interval"),logLevel=document.getElementById("log-level"),facePerformance=document.getElementById("face-performance");
+logLevel.value=localStorage.getItem("spy_log_level")||"INFO";
+logLevel.onchange=()=>{localStorage.setItem("spy_log_level",logLevel.value);adminResult.textContent=`Log display: ${logLevel.value}`};
+async function refreshFaceStatus(){
+    if(typeof transportMode!=="undefined"&&transportMode==="bluetooth")return;
+    try{
+        const response=await fetch("/vision/status",{cache:"no-store"});if(!response.ok)throw Error(`HTTP ${response.status}`);
+        const data=await response.json();faceEnabled.checked=!!data.enabled;faceInterval.value=String(data.interval||2);
+        facePerformance.textContent=`Faces: ${data.faces?.length||0} · References: ${data.references||0} · Last: ${data.last_ms??"--"} ms · Avg: ${data.avg_ms??"--"} ms · Max: ${data.max_ms??"--"} ms · Errors: ${data.errors||0}${data.last_error?" · "+data.last_error:""}`;
+    }catch(error){facePerformance.textContent=`Face status: ${error.message}`}
+}
+faceEnabled.onchange=async()=>{try{await adminPost("/vision/enable",{enabled:faceEnabled.checked});await refreshFaceStatus()}catch(error){adminResult.textContent=error.message;await refreshFaceStatus()}};
+faceInterval.onchange=async()=>{try{await adminPost("/vision/interval",{interval:Number(faceInterval.value)});await refreshFaceStatus()}catch(error){adminResult.textContent=error.message}};
+setInterval(()=>{if(document.getElementById("admin-view").classList.contains("active"))refreshFaceStatus()},2000);
+refreshFaceStatus();

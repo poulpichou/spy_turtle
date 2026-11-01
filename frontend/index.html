@@ -30,6 +30,10 @@
 <div class="admin-slider"><label>Speaker <strong id="volume-value">60%</strong></label><input id="volume-slider" type="range" min="0" max="100" value="60"></div>
 <div class="admin-slider"><label>Micro sensitivity <strong id="micro-value">60%</strong></label><input id="micro-slider" type="range" min="0" max="100" value="60"></div><div class="admin-slider"><label>Drive speed <strong id="drive-speed-value">100%</strong></label><input id="drive-speed-slider" type="range" min="100" max="300" step="10" value="100"></div><div class="admin-slider"><label>Camera <strong id="camera-fps-value">6 fps</strong></label><input id="camera-fps-slider" type="range" min="2" max="10" step="1" value="6"></div>
 <div class="wifi-row"><input id="wifi-ssid" placeholder="Wi-Fi SSID"><input id="wifi-password" type="password" placeholder="Wi-Fi password"><button id="wifi-add">Add Wi-Fi</button></div>
+<div class="admin-slider"><label>Face Recognition <input type="checkbox" id="face-enabled"></label></div>
+<div class="admin-slider"><label>Recognition interval <select id="face-interval"><option value="1">1 s</option><option value="2" selected>2 s</option><option value="3">3 s</option><option value="4">4 s</option><option value="5">5 s</option></select></label></div>
+<div class="admin-slider"><label>Log display level <select id="log-level"><option>DEBUG</option><option selected>INFO</option><option>WARNING</option><option>ERROR</option></select></label></div>
+<div id="face-performance" style="font-size:.7rem;color:#ccc">Face recognition OFF</div>
 <pre id="admin-result">Local admin controls.</pre>
 </div></div>
 </section></section>

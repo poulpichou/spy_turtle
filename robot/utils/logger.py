@@ -26,7 +26,10 @@ class log:
         if DEBUG:log._print("DEBUG",msg)
 
     @staticmethod
-    def tail(count=10): return tuple(log._history)[-count:]
+    def tail(count=10,level="DEBUG"):
+        levels={"DEBUG":0,"INFO":1,"WARN":2,"WARNING":2,"ERROR":3}
+        threshold=levels.get(level.upper(),0)
+        return tuple(line for line in log._history if any(f"[{name}]" in line and priority>=threshold for name,priority in levels.items()))[-count:]
 
     @staticmethod
     def history(): return tuple(log._history)

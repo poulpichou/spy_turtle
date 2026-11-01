@@ -15,6 +15,7 @@ from robot.config import settings
 from robot.system.https_status import get_https_status
 from robot.system.runtime import get_robot
 from robot.utils.logger import log
+from robot.vision.face_recognition import vision
 
 app=FastAPI()
 app.include_router(admin_router)
@@ -135,7 +136,7 @@ def get_available_assets():return {section:build_assets(section) for section in 
 def build_assets(section):return [{"name":name,"label":asset.get("label",name)} for name,asset in get_assets(section).items() if asset.get("available",True)]
 
 @app.get("/logs")
-def get_logs(count:int=Query(default=80,ge=1,le=100)):return {"lines":list(log.tail(count))}
+def get_logs(count:int=Query(default=80,ge=1,le=100),level:str=Query(default="DEBUG",pattern="^(DEBUG|INFO|WARNING|ERROR)$")):return {"lines":list(log.tail(count,level))}
 
 @app.get("/photos")
 def get_photos():
@@ -232,6 +233,12 @@ def command(cmd:Command):
         log.error(f"[API ERROR] {error}")
         raise HTTPException(status_code=400,detail=str(error)) from error
     return state()
+
+class VisionInterval(BaseModel):
+    interval:int=Field(ge=1,le=5)
+
+@app.post("/vision/interval")
+def vision_interval(value:VisionInterval):return vision.configure(value.interval)
 
 @app.get("/vision/status")
 def vision_status():return vision.status()
