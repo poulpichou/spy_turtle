@@ -1,4 +1,4 @@
-﻿from robot.assets.assets import get_assets
+from robot.assets.assets import get_assets
 from robot.shell.ui import colors,theme
 from robot.shell.ui.widgets import draw_title,text
 
@@ -106,10 +106,10 @@ class AdminView(TouchView):
         volume_boxes=grid(2)
         draw_button(draw,volume_boxes[0],"VOL -",data.get("volume"));draw_button(draw,volume_boxes[1],"VOL +")
         self.hitboxes += [(volume_boxes[0],"volume_down"),(volume_boxes[1],"volume_up")]
-        items=[("WI-FI","wifi"),("HEAD INFO","head_info"),("IDLE","idle"),("SHUTDOWN","shutdown"),("<-","back")]
+        items=[("WI-FI","wifi"),("HEAD INFO","head_info"),("IDLE","idle"),("RESTART","restart"),("SHUTDOWN","shutdown"),("<-","back")]
         for box,(label,action) in zip(grid(len(items),FIRST_Y+ROW_H+ROW_GAP),items):
             value="ON" if action=="idle" and data.get("idle") else "OFF" if action=="idle" else None
-            draw_button(draw,box,label,value,active=action=="idle" and data.get("idle"),danger=action=="shutdown")
+            draw_button(draw,box,label,value,active=action=="idle" and data.get("idle"),danger=action in ("shutdown","restart"))
             self.hitboxes.append((box,action))
     def action_at(self,x,y):
         for box,action in getattr(self,"hitboxes",[]):
@@ -154,6 +154,19 @@ class WifiView(TouchView):
     def action_at(self,x,y):
         for box,action in getattr(self,"hitboxes",[]):
             if inside(x,y,box):return action
+
+class ConfirmRestartView(TouchView):
+    footer="CONFIRM"
+    def draw(self,draw,display,data):
+        draw_title(draw,"RESTART TURTLE?")
+        text(draw,12,theme.CONTENT_Y+65,"Restart Spy Turtle software?",15,colors.WHITE)
+        self.cancel=(12,theme.CONTENT_Y+140,theme.WIDTH-12,theme.CONTENT_Y+200)
+        self.confirm=(12,theme.CONTENT_Y+220,theme.WIDTH-12,theme.CONTENT_Y+280)
+        draw_button(draw,self.cancel,"CANCEL")
+        draw_button(draw,self.confirm,"RESTART",danger=True)
+    def action_at(self,x,y):
+        if inside(x,y,self.cancel):return "cancel_restart"
+        if inside(x,y,self.confirm):return "confirm_restart"
 
 class ConfirmShutdownView(TouchView):
     footer="CONFIRM"

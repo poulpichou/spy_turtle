@@ -25,6 +25,9 @@ async function updateDashboard(){
     try{
         const status=await getStatus();
         const battery=status.battery||{};
+        const pan=status.servo?.pan?.current;
+        const headPosition=document.getElementById("head-position");
+        if(headPosition)headPosition.textContent=`· ${pan==null?"--":Math.round(pan)+"°"}`;
         lastConnectedAt=Date.now();
         setConnection('connected');
         document.getElementById('battery').innerText=battery.level===null||battery.level===undefined?'--':Math.round(battery.level);

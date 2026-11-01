@@ -6,7 +6,7 @@ const NS="http://www.w3.org/2000/svg";
 const overlay=document.createElementNS(NS,"svg");
 overlay.id="face-overlay";
 overlay.setAttribute("aria-hidden","true");
-cameraView.appendChild(overlay);
+cameraView.appendChild(overlay);overlay.style.zIndex="3";
 let enabled=false;
 let lastFaces=[];
 let lastDetectedAt=0;
@@ -15,10 +15,11 @@ const HOLD_MS=3000;
 const shapes=[];
 function clear(){shapes.forEach(pair=>pair.group.remove());shapes.length=0}
 function draw(faces){
-    if(!enabled||!image.naturalWidth||!image.naturalHeight||!cameraView.classList.contains("active")){clear();return}
-    const bounds=image.getBoundingClientRect(),box=cameraView.getBoundingClientRect();
-    const ratio=Math.min(bounds.width/image.naturalWidth,bounds.height/image.naturalHeight);
-    const width=image.naturalWidth*ratio,height=image.naturalHeight*ratio;
+    const visible=typeof cameraActive!=="undefined"?cameraActive:image;
+    if(!enabled||!visible.naturalWidth||!visible.naturalHeight||!cameraView.classList.contains("active")){clear();return}
+    const bounds=visible.getBoundingClientRect(),box=cameraView.getBoundingClientRect();
+    const ratio=Math.min(bounds.width/visible.naturalWidth,bounds.height/visible.naturalHeight);
+    const width=visible.naturalWidth*ratio,height=visible.naturalHeight*ratio;
     overlay.style.left=`${bounds.left-box.left+(bounds.width-width)/2}px`;
     overlay.style.top=`${bounds.top-box.top+(bounds.height-height)/2}px`;
     overlay.style.width=`${width}px`;
@@ -57,7 +58,7 @@ async function refresh(){
         console.warn("[FACE]",error);
     }
 }
-image.addEventListener("load",()=>draw(lastFaces));
+window.addEventListener("spy-camera-frame",()=>draw(lastFaces));
 window.addEventListener("resize",()=>draw(lastFaces));
 document.addEventListener("visibilitychange",()=>{if(document.hidden)clear();else refresh()});
 setInterval(refresh,1000);

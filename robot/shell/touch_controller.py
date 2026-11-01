@@ -1,6 +1,6 @@
-﻿import subprocess
+import subprocess
 from robot.api import actions
-from robot.shell.ui.touch_views import HomeView,CommandsView,SelectionView,AdminView,HeadInfoView,WifiView,ConfirmShutdownView
+from robot.shell.ui.touch_views import HomeView,CommandsView,SelectionView,AdminView,HeadInfoView,WifiView,ConfirmShutdownView,ConfirmRestartView
 from robot.system.wifi import wifi_manager
 from robot.utils.logger import log
 
@@ -62,6 +62,12 @@ class TouchController:
         if action=="wifi":self._show(WifiView(),"touch_wifi");return
         if isinstance(action,tuple) and action[0]=="wifi":
             wifi_manager.connect(action[1]);self._show(WifiView(view.page),"touch_wifi");return
+        if action=="restart":self._show(ConfirmRestartView(),"touch_restart_confirm");return
+        if action=="cancel_restart":self._show(AdminView(),"touch_admin");return
+        if action=="confirm_restart":
+            log.warn("[TOUCH UI] turtle restart requested")
+            subprocess.Popen(["bash","-lc","sleep 1; ./scripts/stop_turtle.sh; sleep 1; ./scripts/start_turtle.sh"],cwd=__import__("pathlib").Path(__file__).resolve().parents[2],start_new_session=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+            return
         if action=="shutdown":self._show(ConfirmShutdownView(),"touch_shutdown_confirm");return
         if action=="cancel":self._show(AdminView(),"touch_admin");return
         if action=="confirm":
