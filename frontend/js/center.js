@@ -101,8 +101,14 @@ async function fetchJson(url){
 async function refreshHealth(){
     try{
         const data=await fetchJson("/health");
+        const robotState=await fetchJson("/state");
+        const names=(robotState.vision?.detected_recent||[]).map(person=>person.name).filter(Boolean);
+        const allNames=names.join(", ")||"None";
+        const recentElement=document.getElementById("health-detected-recent");
+        recentElement.textContent=allNames.length>25?allNames.slice(0,22)+"...":allNames;
+        recentElement.title=allNames;
         let servo=data.robot?.servo;
-        if(!servo)servo=(await fetchJson("/state")).servo;
+        if(!servo)servo=robotState.servo;
         const distance=data.sensors?.distance?.distance_mm;
         const environment=data.sensors?.environment||{};
         document.getElementById("health-object-distance").innerText=distance==null?"--":data.sensors?.distance?.out_of_range?"∞":`${distance} mm`;
@@ -131,7 +137,7 @@ async function refreshHealth(){
         document.getElementById("health-pan").innerText=formatServo(servo?.pan);
         document.getElementById("health-tilt").innerText=formatServo(servo?.tilt);
     }catch(error){
-        document.getElementById("health-connection").innerText="Offline";
+        document.getElementById("health-connection").innerText="Offline";document.getElementById("health-detected-recent").innerText="--";
         document.getElementById("health-pan").innerText="--";
         document.getElementById("health-tilt").innerText="--";
     }

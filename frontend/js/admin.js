@@ -140,9 +140,7 @@ document.addEventListener("transportchange",async()=>{await Promise.allSettled([
 (async()=>{setupWifiUI();applyLocalFeature("animation");applyLocalFeature("sound");await Promise.allSettled([loadVolume(),loadPower(),loadDriveSpeed(),loadWifi()]);loadCameraFps()})();
 
 // Face recognition and log display controls (Wi-Fi only).
-const faceEnabled=document.getElementById("face-enabled"),faceInterval=document.getElementById("face-interval-slider"),logLevel=document.getElementById("log-level"),facePerformance=document.getElementById("face-performance");
-logLevel.value=localStorage.getItem("spy_log_level")||"INFO";
-logLevel.onchange=()=>{localStorage.setItem("spy_log_level",logLevel.value);adminResult.textContent=`Log display: ${logLevel.value}`};
+const faceEnabled=document.getElementById("face-enabled"),faceInterval=document.getElementById("face-interval-slider"),facePerformance=document.getElementById("face-performance");
 async function refreshFaceStatus(){
     if(typeof transportMode!=="undefined"&&transportMode==="bluetooth")return;
     try{
@@ -159,12 +157,12 @@ refreshFaceStatus();
 // Admin organized controls V2
 const faceIntervalValue=document.getElementById("face-interval-value");
 const logLevelChoices=[...document.querySelectorAll('input[name="log-level-choice"]')];
-function syncLogChoices(){logLevelChoices.forEach(input=>input.checked=input.value===logLevel.value)}
+function syncLogChoices(){const level=localStorage.getItem("spy_log_level")||"INFO";logLevelChoices.forEach(input=>input.checked=input.value===level)}
 function syncFaceInterval(){faceIntervalValue.textContent=`${faceInterval.value} s`;faceInterval.disabled=!faceEnabled.checked}
 const previousFaceRefresh=refreshFaceStatus;
 refreshFaceStatus=async function(){await previousFaceRefresh();syncFaceInterval()};
 faceInterval.addEventListener("input",()=>{faceIntervalValue.textContent=`${faceInterval.value} s`});
 faceInterval.addEventListener("change",syncFaceInterval);
 faceEnabled.addEventListener("change",()=>setTimeout(syncFaceInterval,0));
-logLevelChoices.forEach(input=>input.addEventListener("change",()=>{if(!input.checked)return;logLevel.value=input.value;logLevel.onchange()}));
+logLevelChoices.forEach(input=>input.addEventListener("change",()=>{if(input.checked)localStorage.setItem("spy_log_level",input.value)}));
 syncLogChoices();syncFaceInterval();

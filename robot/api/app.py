@@ -79,6 +79,7 @@ def environment_status(robot):
 def state():
     robot=get_robot()
     if robot is None:return {"error":"no robot"}
+    robot.state.vision=vision.observations()
     data=robot.state.to_dict()
     data["servo"]=servo_status(robot)
     data["motors"]=motor_status(robot)

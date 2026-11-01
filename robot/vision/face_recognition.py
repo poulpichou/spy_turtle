@@ -1,6 +1,7 @@
 import os
 import time
 from collections import deque
+from datetime import datetime,timezone
 from io import BytesIO
 from pathlib import Path
 from threading import Lock, Thread
@@ -12,15 +13,23 @@ ROOT=Path(__file__).resolve().parents[1]/'assets'
 class FaceVision:
     def __init__(self):
         self.lock=Lock();self.enabled=False;self.interval=2;self.busy=False;self.last_start=0
-        self.faces=[];self.stats=deque(maxlen=100);self.errors=0;self.last_error=None
+        self.faces=[];self.recent={};self.last_frame_at=None;self.stats=deque(maxlen=100);self.errors=0;self.last_error=None
         self.detector=None;self.recognizer=None;self.references=[]
+    def observations(self):
+        with self.lock:return self._observations_locked()
+    def _observations_locked(self):
+        now=time.time()
+        self.recent={name:t for name,t in self.recent.items() if now-t<60}
+        current=[f.copy() for f in self.faces] if self.enabled and self.last_frame_at is not None and now-self.last_frame_at<6 else []
+        recent=[{'name':name,'last_detected_at':datetime.fromtimestamp(t,timezone.utc).isoformat().replace('+00:00','Z')} for name,t in sorted(self.recent.items(),key=lambda item:item[1],reverse=True)]
+        return {'detected_current':current,'detected_recent':recent}
     def status(self):
         with self.lock:
-            durations=list(self.stats)
-            return {'enabled':self.enabled,'interval':self.interval,'faces':list(self.faces),'busy':self.busy,'references':len(self.references),'errors':self.errors,'last_error':self.last_error,'last_ms':round(durations[-1],1) if durations else None,'avg_ms':round(sum(durations)/len(durations),1) if durations else None,'max_ms':round(max(durations),1) if durations else None}
+            durations=list(self.stats);obs=self._observations_locked()
+            return {'enabled':self.enabled,'interval':self.interval,'faces':obs['detected_current'],**obs,'busy':self.busy,'references':len(self.references),'errors':self.errors,'last_error':self.last_error,'last_ms':round(durations[-1],1) if durations else None,'avg_ms':round(sum(durations)/len(durations),1) if durations else None,'max_ms':round(max(durations),1) if durations else None}
     def enable(self,enabled):
         if not enabled:
-            with self.lock:self.enabled=False;self.faces=[]
+            with self.lock:self.enabled=False;self.faces=[];self.recent.clear();self.last_frame_at=None
             log.info('[FACE] recognition disabled');return self.status()
         with self.lock:
             if self.enabled:return self.status_unlocked()
@@ -28,7 +37,9 @@ class FaceVision:
         with self.lock:self.enabled=True
         log.info(f'[FACE] recognition enabled interval={self.interval}s references={len(self.references)}')
         return self.status()
-    def status_unlocked(self):return {'enabled':self.enabled,'interval':self.interval,'faces':list(self.faces),'busy':self.busy,'references':len(self.references),'errors':self.errors,'last_error':self.last_error}
+    def status_unlocked(self):
+        obs=self._observations_locked()
+        return {'enabled':self.enabled,'interval':self.interval,'faces':obs['detected_current'],**obs,'busy':self.busy,'references':len(self.references),'errors':self.errors,'last_error':self.last_error}
     def configure(self,interval):
         if interval not in (1,2,3,4,5):raise ValueError('Interval must be 1..5 seconds')
         with self.lock:self.interval=interval
@@ -79,12 +90,16 @@ class FaceVision:
                 result.append({'x':max(0,x/width),'y':max(0,y/height),'w':min(1,w/width),'h':min(1,h/height),'name':name})
             recognition_ms=(time.perf_counter()-tr)*1000;total_ms=(time.perf_counter()-t)*1000
             with self.lock:
-                if self.enabled:self.faces=result
+                if self.enabled:
+                    self.faces=result;self.last_frame_at=time.time()
+                    for face in result:
+                        if face['name']!='unknown':self.recent[face['name']]=self.last_frame_at
+                    self._observations_locked()
                 self.stats.append(total_ms);self.last_error=None
             log.debug(f'[FACE] decode={capture_ms:.0f}ms detect={detection_ms:.0f}ms recognition={recognition_ms:.0f}ms faces={len(result)} names={[r["name"] for r in result]}')
             log.info(f'[FACE] cycle={total_ms:.0f}ms faces={len(result)} interval={self.interval}s')
         except Exception as error:
-            with self.lock:self.errors+=1;self.last_error=str(error);self.faces=[]
+            with self.lock:self.errors+=1;self.last_error=str(error);self.faces=[];self.last_frame_at=None
             log.error(f'[FACE] cycle error: {error}')
         finally:
             with self.lock:self.busy=False
