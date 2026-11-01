@@ -15,7 +15,7 @@ const HOLD_MS=3000;
 const shapes=[];
 function clear(){shapes.forEach(pair=>pair.group.remove());shapes.length=0}
 function draw(faces){
-    const visible=typeof cameraActive!=="undefined"?cameraActive:image;
+    const visible=image;
     if(!enabled||!visible.naturalWidth||!visible.naturalHeight||!cameraView.classList.contains("active")){clear();return}
     const bounds=visible.getBoundingClientRect(),box=cameraView.getBoundingClientRect();
     const ratio=Math.min(bounds.width/visible.naturalWidth,bounds.height/visible.naturalHeight);
@@ -58,7 +58,7 @@ async function refresh(){
         console.warn("[FACE]",error);
     }
 }
-window.addEventListener("spy-camera-frame",()=>draw(lastFaces));
+image.addEventListener("load",()=>draw(lastFaces));
 window.addEventListener("resize",()=>draw(lastFaces));
 document.addEventListener("visibilitychange",()=>{if(document.hidden)clear();else refresh()});
 setInterval(refresh,1000);
