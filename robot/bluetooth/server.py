@@ -4,7 +4,7 @@ import subprocess
 from pathlib import Path
 
 from robot.api import actions
-from robot.bluetooth.camera import BLECamera
+from robot.bluetooth.vision.streamer import VisionStreamer
 from robot.config import settings
 from robot.system.runtime import get_robot
 from robot.system.wifi import wifi_manager
@@ -110,12 +110,12 @@ async def serve():
     loop=asyncio.get_running_loop()
     server=BlessServer(name=settings.BLUETOOTH_NAME,loop=loop)
     admin_response=bytearray(b'{"ok":true}')
-    ble_camera=BLECamera()
+    vision=None
 
     def characteristic_uuid(characteristic): return str(getattr(characteristic,"uuid","")).lower()
 
     def read_request(characteristic:BlessGATTCharacteristic,**kwargs):
-        if characteristic_uuid(characteristic)==settings.BLUETOOTH_CAMERA_UUID.lower():return bytearray(ble_camera.read())
+        if characteristic_uuid(characteristic)==settings.BLUETOOTH_CAMERA_UUID.lower():return bytearray()
         if characteristic_uuid(characteristic)==settings.BLUETOOTH_ADMIN_UUID.lower():return admin_response
         return bytearray(json.dumps(compact_state(),separators=(",",":")).encode())
 
@@ -124,7 +124,7 @@ async def serve():
         try:
             raw=bytes(value)
             if characteristic_uuid(characteristic)==settings.BLUETOOTH_CAMERA_UUID.lower():
-                ble_camera.write(raw)
+                if vision is not None:vision.request(raw)
                 return
             payload=json.loads(raw.decode("utf-8"))
             if characteristic_uuid(characteristic)==settings.BLUETOOTH_ADMIN_UUID.lower():
@@ -156,9 +156,11 @@ async def serve():
     )
     await server.add_new_characteristic(
         settings.BLUETOOTH_SERVICE_UUID,settings.BLUETOOTH_CAMERA_UUID,
-        GATTCharacteristicProperties.read|GATTCharacteristicProperties.write,
-        bytearray(b""),GATTAttributePermissions.readable|GATTAttributePermissions.writeable
+        GATTCharacteristicProperties.notify|GATTCharacteristicProperties.write,
+        bytearray(b""),GATTAttributePermissions.writeable
     )
+    vision=VisionStreamer(server,settings.BLUETOOTH_SERVICE_UUID,settings.BLUETOOTH_CAMERA_UUID,
+        chunk=settings.BLUETOOTH_VISION_CHUNK,interval=settings.BLUETOOTH_VISION_INTERVAL) if settings.BLUETOOTH_VISION_ENABLED else None
     await server.start()
     log.info(f"[BLUETOOTH] ready name={settings.BLUETOOTH_NAME}")
     try:

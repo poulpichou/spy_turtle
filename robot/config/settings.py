@@ -26,6 +26,9 @@ BLUETOOTH_COMMAND_UUID="6f2d0002-9b7e-4b2a-a1d3-53d9c4e8f210"
 BLUETOOTH_STATE_UUID="6f2d0003-9b7e-4b2a-a1d3-53d9c4e8f210"
 BLUETOOTH_ADMIN_UUID="6f2d0004-9b7e-4b2a-a1d3-53d9c4e8f210"
 BLUETOOTH_CAMERA_UUID="6f2d0005-9b7e-4b2a-a1d3-53d9c4e8f210"
+BLUETOOTH_VISION_ENABLED=True
+BLUETOOTH_VISION_CHUNK=60 # Reduce to 15 if notifications exceed negotiated MTU.
+BLUETOOTH_VISION_INTERVAL=0.018 # Seconds between notifications; increase if frames are incomplete.
 
 # Shared buses
 I2C_SDA_PIN=2

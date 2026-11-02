@@ -48,7 +48,7 @@ async function connectBluetooth(){
     bluetoothCommand=await service.getCharacteristic(BLE_COMMAND_UUID);
     bluetoothState=await service.getCharacteristic(BLE_STATE_UUID);
     bluetoothAdmin=await service.getCharacteristic(BLE_ADMIN_UUID);
-    bluetoothCamera=await service.getCharacteristic(BLE_CAMERA_UUID);
+    try{bluetoothCamera=await service.getCharacteristic(BLE_CAMERA_UUID)}catch(error){bluetoothCamera=null;console.warn("[BLE VISION] optional camera unavailable",error)}
     transportMode="bluetooth";
     updateTransportUI();emitTransportChange();
     if(typeof scheduleDashboard==="function")scheduleDashboard(0);
@@ -94,31 +94,6 @@ async function bluetoothAdminRequest(action,data={}){
         if(!result.ok)throw new Error(result.error||"Bluetooth admin command failed");
         return result;
     });
-}
-async function readBluetoothCameraFrame(){
-    if(!bluetoothCamera||!bluetoothServer?.connected)throw new Error("Bluetooth camera unavailable");
-    const camera=bluetoothCamera,epoch=bluetoothEpoch;
-    const write=async(value)=>{if(camera.writeValueWithResponse)return camera.writeValueWithResponse(value);return camera.writeValue(value)};
-    const header=await queueGatt(async()=>{
-        await write(new Uint8Array([78]));
-        return bluetoothCamera.readValue();
-    });
-    const meta=new DataView(header.buffer,header.byteOffset,header.byteLength);
-    if(meta.byteLength<6)throw new Error("Invalid BLE camera header");
-    const size=meta.getUint32(0,true);
-    if(size<100||size>65535)throw new Error(`Invalid BLE JPEG size: ${size}`);
-    const image=new Uint8Array(size);
-    for(let offset=0;offset<size;){
-        if(epoch!==bluetoothEpoch||transportMode!=="bluetooth")throw new Error("Camera transfer cancelled");
-        const chunk=await queueGatt(async()=>{
-            const request=new Uint8Array(5);request[0]=67;new DataView(request.buffer).setUint32(1,offset,true);
-            await write(request);return bluetoothCamera.readValue();
-        });
-        const bytes=new Uint8Array(chunk.buffer,chunk.byteOffset,chunk.byteLength);
-        if(!bytes.length||bytes.length>size-offset)throw new Error("Invalid BLE camera chunk");
-        image.set(bytes,offset);offset+=bytes.length;
-    }
-    return new Blob([image],{type:"image/jpeg"});
 }
 document.addEventListener("DOMContentLoaded",()=>{
     updateTransportUI();

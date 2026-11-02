@@ -1,0 +1,1 @@
+"""Optional BLE camera notifications."""
