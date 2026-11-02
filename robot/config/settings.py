@@ -29,9 +29,9 @@ BLUETOOTH_CAMERA_UUID="6f2d0005-9b7e-4b2a-a1d3-53d9c4e8f210"
 BLUETOOTH_VISION_ENABLED=True
 BLUETOOTH_VISION_CHUNK=60 # Reduce to 15 if notifications exceed negotiated MTU.
 BLUETOOTH_VISION_INTERVAL=0.001 # Seconds between notifications; increase if frames are incomplete.
-BLUETOOTH_VISION_WIDTH=320 # JPEG output width, max 160/240/320 for testing
-BLUETOOTH_VISION_HEIGHT=240 # JPEG output height
-BLUETOOTH_VISION_QUALITY=28 # Pillow JPEG quality (1-95); test 28, 50, 70
+BLUETOOTH_VISION_WIDTH=640 # V5 baseline
+BLUETOOTH_VISION_HEIGHT=360 # V5 baseline
+BLUETOOTH_VISION_QUALITY=25 # V5 baseline
 
 # Shared buses
 I2C_SDA_PIN=2
@@ -151,3 +151,6 @@ ST7796_CTP_HEIGHT=480
 ST7796_CTP_SWAP_XY=False
 ST7796_CTP_INVERT_X=False
 ST7796_CTP_INVERT_Y=False
+
+# V5: keep 60 for known-good BLE notifications. Try 80/100/120 only if phone receives complete images.
+BLUETOOTH_VISION_CHUNK_TEST=60

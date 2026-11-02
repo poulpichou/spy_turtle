@@ -10,7 +10,9 @@ from robot.utils.logger import log
 class VisionStreamer:
     def __init__(self,server,service_uuid,char_uuid,chunk=60,interval=0.018):
         self.server=server;self.service_uuid=service_uuid;self.char_uuid=char_uuid
-        self.chunk=chunk;self.interval=interval;self.task=None;self.serial=0
+        self.chunk=int(getattr(settings,"BLUETOOTH_VISION_CHUNK_TEST",chunk));self.interval=interval;self.task=None;self.serial=0
+        if not 1<=self.chunk<=240:raise ValueError("BLE vision chunk must be 1..240")
+        log.info(f"[BLE VISION CONFIG] chunk={self.chunk} interval_ms={self.interval*1000:.1f} size={settings.BLUETOOTH_VISION_WIDTH}x{settings.BLUETOOTH_VISION_HEIGHT} quality={settings.BLUETOOTH_VISION_QUALITY}")
     def request(self,data):
         if data==b"X":
             if self.task and not self.task.done():self.task.cancel()
@@ -55,7 +57,7 @@ class VisionStreamer:
                 t=perf_counter();await asyncio.sleep(self.interval);sleep_ms+=(perf_counter()-t)*1000
             end=perf_counter()
             log.info(f"[BLE VISION] frame={self.serial} bytes={len(jpeg)}")
-            log.info(f"[BLE PERF] frame={self.serial} jpeg={len(jpeg)} raw={raw_bytes} chunks={chunks} capture_ms={capture_ms:.1f} encode_ms={encode_ms:.1f} prep_ms={(prepared-start)*1000:.1f} notify_ms={notify_ms:.1f} sleep_ms={sleep_ms:.1f} send_ms={(end-prepared)*1000:.1f} total_ms={(end-start)*1000:.1f}")
+            log.info(f"[BLE PERF] frame={self.serial} jpeg={len(jpeg)} raw={raw_bytes} chunks={chunks} chunk_size={self.chunk} interval_ms={self.interval*1000:.1f} capture_ms={capture_ms:.1f} encode_ms={encode_ms:.1f} prep_ms={(prepared-start)*1000:.1f} notify_ms={notify_ms:.1f} sleep_ms={sleep_ms:.1f} send_ms={(end-prepared)*1000:.1f} total_ms={(end-start)*1000:.1f}")
         except asyncio.CancelledError:
             log.info(f"[BLE PERF] cancelled stage={stage} chunks={chunks} elapsed_ms={(perf_counter()-start)*1000:.1f}")
             raise
