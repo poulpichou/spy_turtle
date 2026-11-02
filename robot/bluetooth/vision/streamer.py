@@ -4,6 +4,7 @@ from io import BytesIO
 from time import perf_counter
 from PIL import Image
 from robot.system.runtime import get_robot
+from robot.config import settings
 from robot.utils.logger import log
 
 class VisionStreamer:
@@ -25,8 +26,8 @@ class VisionStreamer:
         raw=robot.camera.get_frame()
         t1=perf_counter()
         with Image.open(BytesIO(raw)) as image:
-            image.thumbnail((160,120));buf=BytesIO()
-            image.convert("RGB").save(buf,format="JPEG",quality=28,optimize=True)
+            image.thumbnail((settings.BLUETOOTH_VISION_WIDTH,settings.BLUETOOTH_VISION_HEIGHT));buf=BytesIO()
+            image.convert("RGB").save(buf,format="JPEG",quality=settings.BLUETOOTH_VISION_QUALITY,optimize=True)
             jpeg=buf.getvalue()
         t2=perf_counter()
         return jpeg,(t1-t0)*1000,(t2-t1)*1000,len(raw)

@@ -29,6 +29,9 @@ BLUETOOTH_CAMERA_UUID="6f2d0005-9b7e-4b2a-a1d3-53d9c4e8f210"
 BLUETOOTH_VISION_ENABLED=True
 BLUETOOTH_VISION_CHUNK=60 # Reduce to 15 if notifications exceed negotiated MTU.
 BLUETOOTH_VISION_INTERVAL=0.001 # Seconds between notifications; increase if frames are incomplete.
+BLUETOOTH_VISION_WIDTH=320 # JPEG output width, max 160/240/320 for testing
+BLUETOOTH_VISION_HEIGHT=240 # JPEG output height
+BLUETOOTH_VISION_QUALITY=28 # Pillow JPEG quality (1-95); test 28, 50, 70
 
 # Shared buses
 I2C_SDA_PIN=2
