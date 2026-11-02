@@ -153,4 +153,3 @@ ST7796_CTP_INVERT_X=False
 ST7796_CTP_INVERT_Y=False
 
 # V5: keep 60 for known-good BLE notifications. Try 80/100/120 only if phone receives complete images.
-BLUETOOTH_VISION_CHUNK_TEST=60

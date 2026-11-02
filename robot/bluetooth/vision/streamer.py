@@ -10,7 +10,7 @@ from robot.utils.logger import log
 class VisionStreamer:
     def __init__(self,server,service_uuid,char_uuid,chunk=60,interval=0.018):
         self.server=server;self.service_uuid=service_uuid;self.char_uuid=char_uuid
-        self.chunk=int(getattr(settings,"BLUETOOTH_VISION_CHUNK_TEST",chunk));self.interval=interval;self.task=None;self.serial=0
+        self.chunk=int(chunk);self.interval=interval;self.task=None;self.serial=0
         if not 1<=self.chunk<=240:raise ValueError("BLE vision chunk must be 1..240")
         log.info(f"[BLE VISION CONFIG] chunk={self.chunk} interval_ms={self.interval*1000:.1f} size={settings.BLUETOOTH_VISION_WIDTH}x{settings.BLUETOOTH_VISION_HEIGHT} quality={settings.BLUETOOTH_VISION_QUALITY}")
     def request(self,data):
