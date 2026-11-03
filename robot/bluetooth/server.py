@@ -7,6 +7,7 @@ from robot.api import actions
 from robot.bluetooth.vision.streamer import VisionStreamer
 from robot.config import settings
 from robot.system.runtime import get_robot
+from robot.vision.face_recognition import vision as face_vision
 from robot.system.wifi import wifi_manager
 from robot.utils.logger import log
 
@@ -85,6 +86,17 @@ def admin_dispatch(request):
     if action=="wifi_delete":
         wifi_manager.delete(str(data.get("ssid","")));return {"ok":True,"message":"Wi-Fi network deleted"}
     if robot is None:raise RuntimeError("Robot unavailable")
+    if action=="vision_status":
+        status=face_vision.status()
+        return {"ok":True,"enabled":status["enabled"],"interval":status["interval"],"faces":[{k:round(f[k],3) if k!="name" else str(f[k])[:24] for k in ("x","y","w","h","name")} for f in status["faces"][:4]],"references":status["references"],"errors":status["errors"],"last_ms":status.get("last_ms")}
+    if action=="vision_enable":return {"ok":True,**{k:v for k,v in face_vision.enable(bool(data.get("enabled"))).items() if k in ("enabled","interval","references","errors")}}
+    if action=="vision_interval":return {"ok":True,**{k:v for k,v in face_vision.configure(int(data.get("interval",2))).items() if k in ("enabled","interval","references","errors")}}
+    if action=="led_brightness_get":
+        if robot.leds is None:raise RuntimeError("LEDs unavailable")
+        return {"ok":True,"brightness":robot.leds.get_brightness_percent()}
+    if action=="led_brightness_set":
+        if robot.leds is None:raise RuntimeError("LEDs unavailable")
+        return {"ok":True,"brightness":robot.leds.set_brightness_percent(int(data.get("brightness",100)))}
     if action=="volume_get":
         if robot.speaker is None:raise RuntimeError("Speaker unavailable")
         return {"ok":True,**robot.speaker.status()}

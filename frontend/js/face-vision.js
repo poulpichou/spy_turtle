@@ -1,19 +1,23 @@
 (()=>{
 const image=document.getElementById("camera-stream");
+const thermalImage=document.getElementById("thermal-stream");
 const cameraView=document.getElementById("camera-view");
+const thermalView=document.getElementById("thermal-view");
 if(!image||!cameraView)return;
 const NS="http://www.w3.org/2000/svg";
 const overlay=document.createElementNS(NS,"svg");
 overlay.id="face-overlay";
 overlay.setAttribute("aria-hidden","true");
 cameraView.appendChild(overlay);overlay.style.zIndex="3";
+const thermalOverlay=document.createElementNS(NS,"svg");thermalOverlay.id="thermal-face-overlay";thermalOverlay.setAttribute("aria-hidden","true");thermalView.appendChild(thermalOverlay);thermalOverlay.style.zIndex="3";
 let enabled=false;
 let lastFaces=[];
 let lastDetectedAt=0;
 let lastSuccessfulPoll=0;
 const HOLD_MS=3000;
 const shapes=[];
-function clear(){shapes.forEach(pair=>pair.group.remove());shapes.length=0}
+const thermalShapes=[];
+function clear(){for(const group of [shapes,thermalShapes]){group.forEach(pair=>pair.group.remove());group.length=0}}
 function draw(faces){
     const visible=image;
     if(!enabled||!visible.naturalWidth||!visible.naturalHeight||!cameraView.classList.contains("active")){clear();return}
@@ -39,27 +43,52 @@ function draw(faces){
         shape.name.textContent=face.name||"unknown";
     }
 }
+// Thermal and RGB sensors share pointing direction but have different optics and mounting offsets.
+// Adjust these normalized values after testing with a face at the center and near the edges.
+const THERMAL_ALIGN={scaleX:1,scaleY:1,offsetX:0,offsetY:0,flipX:false,flipY:false};
+function drawThermal(faces){
+    if(!enabled||!thermalImage?.naturalWidth||!thermalImage.naturalHeight||!thermalView?.classList.contains("active")){thermalShapes.forEach(s=>s.group.remove());thermalShapes.length=0;return}
+    const bounds=thermalImage.getBoundingClientRect(),box=thermalView.getBoundingClientRect();
+    const ratio=Math.min(bounds.width/thermalImage.naturalWidth,bounds.height/thermalImage.naturalHeight);
+    const width=thermalImage.naturalWidth*ratio,height=thermalImage.naturalHeight*ratio;
+    thermalOverlay.style.position="absolute";thermalOverlay.style.pointerEvents="none";
+    thermalOverlay.style.left=`${bounds.left-box.left+(bounds.width-width)/2}px`;
+    thermalOverlay.style.top=`${bounds.top-box.top+(bounds.height-height)/2}px`;
+    thermalOverlay.style.width=`${width}px`;thermalOverlay.style.height=`${height}px`;
+    thermalOverlay.setAttribute("viewBox",`0 0 ${width} ${height}`);
+    while(thermalShapes.length>faces.length)thermalShapes.pop().group.remove();
+    for(let i=0;i<faces.length;i++){
+        if(!thermalShapes[i]){const group=document.createElementNS(NS,"g"),rect=document.createElementNS(NS,"rect"),name=document.createElementNS(NS,"text");group.append(rect,name);thermalOverlay.appendChild(group);thermalShapes.push({group,rect,name})}
+        const f=faces[i],shape=thermalShapes[i];
+        let x=THERMAL_ALIGN.flipX?1-f.x-f.w:f.x,y=THERMAL_ALIGN.flipY?1-f.y-f.h:f.y;
+        x=(x-.5)*THERMAL_ALIGN.scaleX+.5+THERMAL_ALIGN.offsetX;
+        y=(y-.5)*THERMAL_ALIGN.scaleY+.5+THERMAL_ALIGN.offsetY;
+        const w=f.w*THERMAL_ALIGN.scaleX,h=f.h*THERMAL_ALIGN.scaleY;
+        shape.rect.setAttribute("x",x*width);shape.rect.setAttribute("y",y*height);
+        shape.rect.setAttribute("width",w*width);shape.rect.setAttribute("height",h*height);
+        shape.name.setAttribute("x",Math.max(2,x*width));shape.name.setAttribute("y",Math.min(height-4,(y+h)*height+16));shape.name.textContent=f.name||"unknown";
+    }
+}
 async function refresh(){
     if(typeof transportMode!=="undefined"&&transportMode==="bluetooth"){
-        enabled=false;lastFaces=[];lastDetectedAt=0;clear();return;
+        // BLE observations are read through the existing admin characteristic.
     }
     try{
-        const response=await fetch("/vision/status",{cache:"no-store"});
-        if(!response.ok)throw Error(`HTTP ${response.status}`);
-        const data=await response.json();
+        const data=transportMode==="bluetooth"?await bluetoothAdminRequest("vision_status"):await (async()=>{const response=await fetch("/vision/status",{cache:"no-store"});if(!response.ok)throw Error(`HTTP ${response.status}`);return response.json()})();
         enabled=!!data.enabled;
         const incoming=Array.isArray(data.faces)?data.faces:[];
         const now=Date.now();lastSuccessfulPoll=now;
         if(incoming.length){lastFaces=incoming;lastDetectedAt=now}
         else if(!enabled||now-lastDetectedAt>HOLD_MS){lastFaces=[]}
-        if(enabled)draw(lastFaces);else{lastFaces=[];clear()}
+        if(enabled){draw(lastFaces);drawThermal(lastFaces)}else{lastFaces=[];clear()}
     }catch(error){
         if(Date.now()-lastSuccessfulPoll>5000){lastFaces=[];clear()}
         console.warn("[FACE]",error);
     }
 }
 image.addEventListener("load",()=>draw(lastFaces));
-window.addEventListener("resize",()=>draw(lastFaces));
+thermalImage?.addEventListener("load",()=>drawThermal(lastFaces));
+window.addEventListener("resize",()=>{draw(lastFaces);drawThermal(lastFaces)});
 document.addEventListener("visibilitychange",()=>{if(document.hidden)clear();else refresh()});
 setInterval(refresh,1000);
 refresh();

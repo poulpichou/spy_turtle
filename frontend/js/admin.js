@@ -15,7 +15,8 @@ const bluetoothAdminActions={
     "/admin/turtle/restart":"restart","/admin/system/reboot":"reboot","/admin/system/shutdown":"shutdown",
     "/admin/wifi":"wifi_add","/admin/wifi/connect":"wifi_connect","/admin/wifi/delete":"wifi_delete",
     "/admin/audio/volume":"volume_set","/admin/power/component":"power_component","/admin/power/idle":"idle",
-    "/admin/audio/microphone-sensitivity":"microphone_sensitivity"
+    "/admin/audio/microphone-sensitivity":"microphone_sensitivity","/admin/leds/brightness":"led_brightness_set",
+    "/vision/enable":"vision_enable","/vision/interval":"vision_interval"
 };
 async function adminPost(path,body){
     if(transportMode==="bluetooth")return bluetoothAdminRequest(bluetoothAdminActions[path],body||{});
@@ -29,12 +30,20 @@ async function adminGet(path){
         if(path==="/admin/wifi")return bluetoothAdminRequest("wifi_status");
         if(path==="/admin/audio/volume")return bluetoothAdminRequest("volume_get");
         if(path==="/admin/power")return bluetoothAdminRequest("power_get");
+        if(path==="/admin/leds/brightness")return bluetoothAdminRequest("led_brightness_get");
         throw new Error(`Unsupported Bluetooth admin GET: ${path}`);
     }
     const response=await fetch(path,{cache:"no-store"});
     const text=await response.text(),data=text?JSON.parse(text):{};
     if(!response.ok)throw Error(data.detail||`HTTP ${response.status}`);
     return data;
+}
+const ledBrightnessSlider=document.getElementById("led-brightness-slider"),ledBrightnessValue=document.getElementById("led-brightness-value");
+function showLedBrightness(value){if(ledBrightnessValue)ledBrightnessValue.textContent=`${value}%`}
+async function loadLedBrightness(){try{const data=await adminGet("/admin/leds/brightness");ledBrightnessSlider.value=data.brightness;showLedBrightness(data.brightness)}catch(error){console.warn("[LED BRIGHTNESS]",error)}}
+if(ledBrightnessSlider){
+    ledBrightnessSlider.oninput=()=>showLedBrightness(ledBrightnessSlider.value);
+    ledBrightnessSlider.onchange=async()=>{try{const data=await adminPost("/admin/leds/brightness",{brightness:Number(ledBrightnessSlider.value)});showLedBrightness(data.brightness);adminResult.textContent=`LED intensity: ${data.brightness}%`}catch(error){adminResult.textContent=error.message}};
 }
 function showVolume(value){volumeValue.textContent=`${value}%`}
 function showMicro(value){microValue.textContent=`${value}%`}function showDriveSpeed(value){driveSpeedValue.textContent=`${value}%`}function showCameraFps(value){cameraFpsValue.textContent=`${value} fps`}
@@ -136,16 +145,14 @@ function renderWifi(data){
 async function loadWifi(){try{renderWifi(await adminGet("/admin/wifi"))}catch(error){console.error("[WIFI]",error)}scheduleWifi()}
 function scheduleWifi(){if(wifiTimer)clearTimeout(wifiTimer);wifiTimer=setTimeout(loadWifi,runtimePower.idle_mode?30000:15000)}
 
-document.addEventListener("transportchange",async()=>{await Promise.allSettled([loadPower(),loadVolume(),loadDriveSpeed(),loadWifi()]);loadCameraFps()});
-(async()=>{setupWifiUI();applyLocalFeature("animation");applyLocalFeature("sound");await Promise.allSettled([loadVolume(),loadPower(),loadDriveSpeed(),loadWifi()]);loadCameraFps()})();
+document.addEventListener("transportchange",async()=>{await Promise.allSettled([loadPower(),loadVolume(),loadDriveSpeed(),loadLedBrightness(),loadWifi()]);loadCameraFps()});
+(async()=>{setupWifiUI();applyLocalFeature("animation");applyLocalFeature("sound");await Promise.allSettled([loadVolume(),loadPower(),loadDriveSpeed(),loadLedBrightness(),loadWifi()]);loadCameraFps()})();
 
-// Face recognition and log display controls (Wi-Fi only).
+// Face recognition and log display controls (Wi-Fi + BLE).
 const faceEnabled=document.getElementById("face-enabled"),faceInterval=document.getElementById("face-interval-slider"),facePerformance=document.getElementById("face-performance");
 async function refreshFaceStatus(){
-    if(typeof transportMode!=="undefined"&&transportMode==="bluetooth")return;
     try{
-        const response=await fetch("/vision/status",{cache:"no-store"});if(!response.ok)throw Error(`HTTP ${response.status}`);
-        const data=await response.json();faceEnabled.checked=!!data.enabled;faceInterval.value=String(data.interval||2);
+        const data=transportMode==="bluetooth"?await bluetoothAdminRequest("vision_status"):await (async()=>{const response=await fetch("/vision/status",{cache:"no-store"});if(!response.ok)throw Error(`HTTP ${response.status}`);return response.json()})();faceEnabled.checked=!!data.enabled;faceInterval.value=String(data.interval||2);
         facePerformance.textContent=`Faces: ${data.faces?.length||0} · References: ${data.references||0} · Last: ${data.last_ms??"--"} ms · Avg: ${data.avg_ms??"--"} ms · Max: ${data.max_ms??"--"} ms · Errors: ${data.errors||0}${data.last_error?" · "+data.last_error:""}`;
     }catch(error){facePerformance.textContent=`Face status: ${error.message}`}
 }

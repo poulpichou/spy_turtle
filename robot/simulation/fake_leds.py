@@ -8,6 +8,7 @@ class FakeLEDController:
         self.modes=self.config["modes"]
         self.links=self.config.get("links",{})
         self.mode="off"
+        self.user_brightness=1.0
         self.animation_name=self.modes["off"]["animation"]
         print("[FakeLED] ready")
 
@@ -27,5 +28,10 @@ class FakeLEDController:
     def static(self,color): print(f"[FakeLED] static {color}")
     def breathing(self,color): print(f"[FakeLED] breathing {color}")
     def linked_mode(self,group,name): return self.links.get(group,{}).get(name)
+    def get_brightness_percent(self): return round(self.user_brightness*100)
+    def set_brightness_percent(self,value):
+        value=int(value)
+        if not 0<=value<=100:raise ValueError("LED brightness must be 0..100")
+        self.user_brightness=value/100;return value
     def update(self,now=None): return False
     def close(self): pass

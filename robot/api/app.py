@@ -260,6 +260,10 @@ def camera_frame():
 
 @app.get("/thermal/frame")
 def thermal_frame():
+    # Recognition uses the RGB camera, never the thermal pixels. Keep it active in thermal view.
+    if vision.enabled:
+        try:vision.submit(actions.camera_frame())
+        except Exception as error:log.warn(f"[FACE] thermal RGB capture unavailable: {error}")
     try:return Response(content=actions.thermal_frame(),media_type="image/jpeg",headers={"Cache-Control":"no-store","X-Thermal-Source":"mlx90640"})
     except Exception as error:
         log.warn(f"[THERMAL] frame failed, using RGB fallback: {error}")

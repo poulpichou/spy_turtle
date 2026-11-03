@@ -16,6 +16,7 @@ class LEDController:
         self.device=str(settings.get("device","/dev/leds0"))
         self.count=int(settings["count"])
         self.global_brightness=float(settings.get("brightness",1.0))
+        self.user_brightness=1.0 # Additional multiplier; original animation levels unchanged.
         self.reversed=bool(settings.get("reversed",False))
         self.modes=self.config["modes"]
         self.animations=self.config["animations"]
@@ -77,8 +78,18 @@ class LEDController:
         if now-self.last_frame_at<self.frame_interval:return False
         self.last_frame_at=now
         frame,brightness=self._render(self.animations[self.animation_name],now-self.started_at)
-        self._show(self._scale(frame,self.global_brightness*brightness))
+        self._show(self._scale(frame,self.global_brightness*self.user_brightness*brightness))
         return True
+
+    def get_brightness_percent(self): return round(self.user_brightness*100)
+    def set_brightness_percent(self,value):
+        value=int(value)
+        if not 0<=value<=100:raise ValueError("LED brightness must be 0..100")
+        self.user_brightness=value/100
+        self.last_frame_at=0.0
+        self.update()
+        log.info(f"[LED] intensity multiplier {value}%")
+        return value
 
     def _render(self,animation,elapsed):
         effect=animation.get("type",animation.get("effect","off"))

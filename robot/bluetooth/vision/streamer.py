@@ -4,6 +4,7 @@ from io import BytesIO
 from time import perf_counter
 from PIL import Image
 from robot.system.runtime import get_robot
+from robot.vision.face_recognition import vision
 from robot.config import settings
 from robot.utils.logger import log
 
@@ -26,6 +27,7 @@ class VisionStreamer:
         robot=get_robot()
         if robot is None or robot.camera is None:raise RuntimeError("Camera unavailable")
         raw=robot.camera.get_frame()
+        vision.submit(raw) # Submit original JPEG before BLE downsampling.
         t1=perf_counter()
         with Image.open(BytesIO(raw)) as image:
             image.thumbnail((settings.BLUETOOTH_VISION_WIDTH,settings.BLUETOOTH_VISION_HEIGHT));buf=BytesIO()

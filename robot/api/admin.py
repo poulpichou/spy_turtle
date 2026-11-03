@@ -77,6 +77,20 @@ def set_volume(data:VolumeRequest,request:Request):
     robot.speaker.set_volume(data.volume);log.info(f'[ADMIN] speaker volume={data.volume}% {source(request)}')
     return {'ok':True,'volume':robot.speaker.volume,'message':f'Volume set to {robot.speaker.volume}%'}
 
+class LedBrightnessRequest(BaseModel): brightness:int=Field(ge=0,le=100)
+@router.get('/leds/brightness')
+def get_led_brightness():
+    robot=robot_or_503()
+    if robot.leds is None:raise HTTPException(status_code=503,detail='LEDs unavailable')
+    return {'ok':True,'brightness':robot.leds.get_brightness_percent()}
+@router.post('/leds/brightness')
+def set_led_brightness(data:LedBrightnessRequest,request:Request):
+    robot=robot_or_503()
+    if robot.leds is None:raise HTTPException(status_code=503,detail='LEDs unavailable')
+    value=robot.leds.set_brightness_percent(data.brightness)
+    log.info(f'[ADMIN] LED intensity={value}% {source(request)}')
+    return {'ok':True,'brightness':value,'message':f'LED intensity set to {value}%'}
+
 @router.get('/power')
 def get_power(): return {'ok':True,**robot_or_503().power.status()}
 @router.post('/power/component')
