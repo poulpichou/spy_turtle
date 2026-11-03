@@ -45,7 +45,7 @@ function draw(faces){
 }
 // Thermal and RGB sensors share pointing direction but have different optics and mounting offsets.
 // Adjust these normalized values after testing with a face at the center and near the edges.
-const THERMAL_ALIGN={scaleX:1,scaleY:1,offsetX:0,offsetY:0,flipX:false,flipY:false};
+const THERMAL_ALIGN={scaleX:1.25,scaleY:1,offsetX:0,offsetY:0,flipX:false,flipY:false}; // RGB center 80% maps to thermal width
 function drawThermal(faces){
     if(!enabled||!thermalImage?.naturalWidth||!thermalImage.naturalHeight||!thermalView?.classList.contains("active")){thermalShapes.forEach(s=>s.group.remove());thermalShapes.length=0;return}
     const bounds=thermalImage.getBoundingClientRect(),box=thermalView.getBoundingClientRect();
@@ -58,7 +58,7 @@ function drawThermal(faces){
     thermalOverlay.setAttribute("viewBox",`0 0 ${width} ${height}`);
     while(thermalShapes.length>faces.length)thermalShapes.pop().group.remove();
     for(let i=0;i<faces.length;i++){
-        if(!thermalShapes[i]){const group=document.createElementNS(NS,"g"),rect=document.createElementNS(NS,"rect"),name=document.createElementNS(NS,"text");group.append(rect,name);thermalOverlay.appendChild(group);thermalShapes.push({group,rect,name})}
+        if(!thermalShapes[i]){const group=document.createElementNS(NS,"g"),rect=document.createElementNS(NS,"rect"),name=document.createElementNS(NS,"text");rect.setAttribute("fill","none");rect.setAttribute("stroke","#00ff66");rect.setAttribute("stroke-width","2");rect.setAttribute("vector-effect","non-scaling-stroke");name.setAttribute("fill","#00ff66");name.setAttribute("stroke","none");name.setAttribute("font-size","14");name.setAttribute("font-weight","bold");group.append(rect,name);thermalOverlay.appendChild(group);thermalShapes.push({group,rect,name})}
         const f=faces[i],shape=thermalShapes[i];
         let x=THERMAL_ALIGN.flipX?1-f.x-f.w:f.x,y=THERMAL_ALIGN.flipY?1-f.y-f.h:f.y;
         x=(x-.5)*THERMAL_ALIGN.scaleX+.5+THERMAL_ALIGN.offsetX;
