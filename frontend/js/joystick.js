@@ -2,6 +2,7 @@
     const pad=document.getElementById("drive-joystick"),knob=document.getElementById("drive-knob"),toggle=document.getElementById("drive-mode-toggle"),dpad=document.getElementById("drive-dpad");
     if(!pad||!knob||!toggle||!dpad)return;
     const TURN_SENSITIVITY=0.375; // +50% steering vs V5
+    const STRAIGHT_CONE_DEGREES=5; // Steering dead cone around forward/backward axes
     const JOYSTICK_DEADZONE=0.12; // no movement within 12% of radius
     const JOYSTICK_MIN_OUTPUT=0.67; // 0.67 * 0.30 = 0.20 PWM at first movement
     let active=false,pointer=null,timer=null,x=0,y=0,busy=false;
@@ -11,11 +12,10 @@
         const magnitude=Math.hypot(x,y);
         if(magnitude<=JOYSTICK_DEADZONE)return [0,0];
         const scale=JOYSTICK_MIN_OUTPUT+(1-JOYSTICK_MIN_OUTPUT)*(magnitude-JOYSTICK_DEADZONE)/(1-JOYSTICK_DEADZONE);
-        // No steering inside the +/-45 degree forward/backward corridors.
-        // Outside them, steering grows smoothly from zero to full at the sides.
-        // +/-45 degrees: equal wheel speeds. Outside: gradual steering.
+        // Straight corridor +/-STRAIGHT_CONE_DEGREES; smooth steering beyond it.
         // Never normalize small steering into full motor power.
-        const side=Math.max(0,Math.abs(x)-Math.abs(y));
+        const cone=Math.tan(STRAIGHT_CONE_DEGREES*Math.PI/180);
+        const side=Math.max(0,Math.abs(x)-Math.abs(y)*cone);
         const steering=Math.sign(x)*side*TURN_SENSITIVITY;
         const forward=Math.sign(y)*scale*Math.min(1,Math.abs(y)/Math.max(JOYSTICK_DEADZONE,magnitude));
         const turn=steering*(0.25/(0.30*TURN_SENSITIVITY)); // cap pure turning at D-pad 0.25 PWM
