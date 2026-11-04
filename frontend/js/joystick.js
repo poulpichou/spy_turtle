@@ -1,7 +1,7 @@
 (() => {
     const pad=document.getElementById("drive-joystick"),knob=document.getElementById("drive-knob"),toggle=document.getElementById("drive-mode-toggle"),dpad=document.getElementById("drive-dpad");
     if(!pad||!knob||!toggle||!dpad)return;
-    const TURN_SENSITIVITY=0.25; // 25% of original steering sensitivity
+    const TURN_SENSITIVITY=0.375; // +50% steering vs V5
     const JOYSTICK_DEADZONE=0.12; // no movement within 12% of radius
     const JOYSTICK_MIN_OUTPUT=0.67; // 0.67 * 0.30 = 0.20 PWM at first movement
     let active=false,pointer=null,timer=null,x=0,y=0,busy=false;

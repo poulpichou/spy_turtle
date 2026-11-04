@@ -18,7 +18,7 @@
 #drive-mode-toggle[aria-pressed="true"]{background:#285a4c;border-color:#63b99b}
 #drive-dpad{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%}
 #drive-dpad[hidden],#drive-joystick[hidden]{display:none!important}
-#drive-joystick{position:relative;flex:none;width:min(100%,112px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#263e39 0%,#1a2927 70%);border:2px solid #4a9d87;box-shadow:inset 0 0 8px #0008;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#drive-joystick{position:relative;flex:none;width:min(100%,100.8px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#263e39 0%,#1a2927 70%);border:2px solid #4a9d87;box-shadow:inset 0 0 8px #0008;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 #drive-joystick::before,#drive-joystick::after{content:"";position:absolute;pointer-events:none;background:#5b8177;opacity:.5}
 #drive-joystick::before{width:1px;top:12%;bottom:12%;left:50%}
 #drive-joystick::after{height:1px;left:12%;right:12%;top:50%}
