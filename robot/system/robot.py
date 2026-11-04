@@ -29,6 +29,7 @@ class Robot:
     def update(self):
         from robot.api.actions import motion_watchdog
         motion_watchdog()
+        if self.motors and hasattr(self.motors,'update'):self.motors.update()
         if self.power.idle_mode:
             self._update_battery(interval=self.IDLE_BATTERY_UPDATE_INTERVAL)
             if self.shell and hasattr(self.shell,'update_touch_only'):self.shell.update_touch_only()

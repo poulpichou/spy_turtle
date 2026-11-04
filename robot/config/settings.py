@@ -114,8 +114,8 @@ MOTOR_MIN_SPEED=0.20
 MOTOR_MAX_SPEED=1.00
 
 # Optional single-channel motor encoders
-# Keep disabled until encoder VCC/GND/signal wires have been physically identified and signal voltage confirmed Raspberry Pi safe.
-MOTOR_ENCODERS_ENABLED=False
+# Encoder wiring validated on GPIO 14/15 using pull-up inputs.
+MOTOR_ENCODERS_ENABLED=True
 MOTOR_LEFT_ENCODER_A_PIN=14
 MOTOR_LEFT_ENCODER_B_PIN=None
 MOTOR_RIGHT_ENCODER_A_PIN=15
@@ -127,11 +127,12 @@ MOTOR_ENCODER_PULSES_PER_REV=0
 
 # Closed-loop left/right wheel-speed balancing
 # Requires MOTOR_ENCODERS_ENABLED=True. Applies only to forward/backward; turns remain open-loop.
-MOTOR_ENCODER_CORRECTION_ENABLED=False
+MOTOR_ENCODER_CORRECTION_ENABLED=True
 MOTOR_ENCODER_CORRECTION_INTERVAL=0.10
 MOTOR_ENCODER_CORRECTION_KP=0.20
 MOTOR_ENCODER_CORRECTION_MAX=0.08
 MOTOR_ENCODER_CORRECTION_MIN_PULSES=2
+MOTOR_ENCODER_CORRECTION_LOG_INTERVAL=2.0 # Seconds; 0 disables diagnostic logs
 
 # Mechanical geometry / future encoder calibration
 MOTOR_WHEEL_DIAMETER_MM=65.0
