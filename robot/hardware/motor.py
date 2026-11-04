@@ -3,6 +3,7 @@ import time
 from threading import RLock
 from gpiozero import PWMOutputDevice, DigitalOutputDevice, DigitalInputDevice
 from robot.config import settings
+from robot.utils.logger import log
 
 
 def clamp(value,low,high): return max(low,min(high,value))
@@ -19,6 +20,7 @@ class DifferentialDrive:
         self._last_sample=time.monotonic()
         self._last_counts=(0,0)
         self._last_log=0.0
+        self._last_diag=0.0
         self._encoder_ready=False
         self.pwma=PWMOutputDevice(settings.MOTOR_PWMA_PIN,frequency=settings.MOTOR_PWM_FREQUENCY,initial_value=0)
         self.ain1=DigitalOutputDevice(settings.MOTOR_AIN1_PIN,initial_value=False)
@@ -107,6 +109,10 @@ class DifferentialDrive:
             self._drive_motor(speed,self.pwmb,self.bin1,self.bin2)
 
     def update(self):
+        now_diag=time.monotonic()
+        if now_diag-self._last_diag>=float(getattr(settings,"MOTOR_ENCODER_DIAGNOSTIC_INTERVAL",1.0)):
+            self._last_diag=now_diag
+            log.info(f"[MOTOR DIAG] update mode={self._mode} enabled={self._enabled()} base={self._base:.3f} counts={self.encoder_counts()} correction={self._correction:+.3f}")
         if not self._enabled():return
         with self._lock:
             if self._mode not in ("forward","backward") or self._base<=0:return
@@ -132,7 +138,7 @@ class DifferentialDrive:
             log_interval=float(getattr(settings,"MOTOR_ENCODER_CORRECTION_LOG_INTERVAL",2.0))
             if log_interval>0 and now-self._last_log>=log_interval:
                 self._last_log=now
-                print(f"[MOTOR CTRL] {self._mode} pulses L={left} R={right} dt={dt:.2f}s pwm L={left_pwm:.3f} R={right_pwm:.3f} correction={self._correction:+.3f}")
+                log.info(f"[MOTOR CTRL] {self._mode} pulses L={left} R={right} dt={dt:.2f}s pwm L={left_pwm:.3f} R={right_pwm:.3f} correction={self._correction:+.3f}")
 
     def close(self):
         self.stop()
