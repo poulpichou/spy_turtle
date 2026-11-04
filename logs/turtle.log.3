@@ -1,1049 +1,1177 @@
 ============================================================
 Spy Turtle startup
-Date: 2026-08-07 23:04:24 CEST
+Date: 2026-11-04 21:04:11 CET
 Host: spyturtle
-Kernel: 6.18.34+rpt-rpi-2712
+Kernel: 6.18.39+rpt-rpi-2712
 ============================================================
-23:04:24 [INFO] Starting Spy Turtle
-23:04:24 [INFO] [TB6612] ready STBY=5 A=(12,6,13) B=(26,16,20)
-23:04:24 [INFO] [MOTORS] ready left_inverted=True right_inverted=False encoders=False
-23:04:24 [INFO] [LED] ready device=/dev/leds0 count=32
-[0:19:28.165665683] [1823]  INFO Camera camera_manager.cpp:340 libcamera v0.7.1+rpt20260609
-[0:19:28.174596875] [1857]  INFO RPI pisp.cpp:720 libpisp version v1.5.0 01-05-2026 (05:33:53)
-[0:19:28.182343851] [1857]  INFO IPAProxy ipa_proxy.cpp:184 Using tuning file /usr/share/libcamera/ipa/rpi/pisp/imx708.json
-[0:19:28.189733552] [1857]  INFO Camera camera_manager.cpp:223 Adding camera '/base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a' for pipeline handler rpi/pisp
-[0:19:28.189767811] [1857]  INFO RPI pisp.cpp:1181 Registered camera /base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a to CFE device /dev/media0 and ISP device /dev/media2 using PiSP variant BCM2712_D0
-[0:19:28.192171094] [1857]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc30
-[0:19:28.192192520] [1857]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc12
-[0:19:28.192735554] [1823]  INFO Camera camera.cpp:1216 configuring streams: (0) 1280x720-RGB888/Rec709/Rec709/None/Full (1) 1536x864-BGGR_PISP_COMP1/RAW
-[0:19:28.192824868] [1857]  INFO RPI pisp.cpp:1485 Sensor: /base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a - Selected sensor format: 1536x864-SBGGR10_1X10/RAW - Selected CFE format: 1536x864-PC1B/RAW
-23:04:24 [INFO] [CAMERA] ready
+21:04:11 [INFO] Starting Spy Turtle
+21:04:11 [INFO] [TB6612] ready STBY=5 A=(12,6,13) B=(26,16,20)
+/usr/lib/python3/dist-packages/gpiozero/mixins.py:216: CallbackSetToNone: The callback was set to None. This may have been unintentional e.g. btn.when_pressed = pressed() instead of btn.when_pressed = pressed
+  warnings.warn(CallbackSetToNone(callback_warning))
+21:04:11 [INFO] [MOTORS] ready encoders=True correction=True (main loop)
+21:04:11 [INFO] [LED] ready device=/dev/leds0 count=40
+[2:35:40.404735384] [5718]  INFO Camera camera_manager.cpp:340 libcamera v0.7.1+rpt20260609
+[2:35:40.413577094] [5731]  INFO RPI pisp.cpp:720 libpisp version v1.5.0 01-05-2026 (05:33:53)
+[2:35:40.421267924] [5731]  INFO IPAProxy ipa_proxy.cpp:184 Using tuning file /usr/share/libcamera/ipa/rpi/pisp/imx708.json
+[2:35:40.428534369] [5731]  INFO Camera camera_manager.cpp:223 Adding camera '/base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a' for pipeline handler rpi/pisp
+[2:35:40.428567165] [5731]  INFO RPI pisp.cpp:1181 Registered camera /base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a to CFE device /dev/media0 and ISP device /dev/media2 using PiSP variant BCM2712_D0
+[2:35:40.430931869] [5731]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc30
+[2:35:40.430944961] [5731]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc12
+[2:35:40.431457143] [5718]  INFO Camera camera.cpp:1216 configuring streams: (0) 1280x720-BGR888/Rec709/Rec709/None/Full (1) 1536x864-BGGR_PISP_COMP1/RAW
+[2:35:40.431545142] [5731]  INFO RPI pisp.cpp:1485 Sensor: /base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a - Selected sensor format: 1536x864-SBGGR10_1X10/RAW - Selected CFE format: 1536x864-PC1B/RAW
+21:04:11 [INFO] [CAMERA] ready
 /home/spy/spy_turtle/.venv/lib/python3.13/site-packages/adafruit_blinka/microcontroller/generic_linux/i2c.py:30: RuntimeWarning: I2C frequency is not settable in python, ignoring!
   warnings.warn(
-23:04:24 [INFO] [THERMAL] MLX90640 ready address=0x33 refresh=2Hz
-23:04:24 [INFO] [SPEAKER] ready device=plughw:CARD=MAX98357A,DEV=0
-23:04:24 [INFO] [SERVO] pan GPIO17 ready detached center=0.0 pulse=1500
-23:04:24 [INFO] [SERVO] tilt GPIO27 ready detached center=0.0 pulse=1650
+21:04:11 [INFO] [THERMAL] MLX90640 ready address=0x33 refresh=2Hz rotation=90 flip_vertical=True nonblocking=true
+21:04:11 [INFO] [SPEAKER] ready device=plughw:CARD=MAX98357A,DEV=0 volume=60%
+21:04:11 [INFO] [SERVO] pan GPIO17 ready center=0.0deg pulse=1500us range=-75..75deg
+21:04:11 [INFO] [SERVO] tilt GPIO27 ready center=0.0deg pulse=1500us range=-60..60deg
 [Battery] ready
+21:04:11 [INFO] [DISTANCE] VL53L0X ready address=0x29
+21:04:12 [INFO] [ENVIRONMENT] BME680 ready address=0x77
 [OLEDDisplay] left ready at 0x3c
 [OLEDDisplay] right ready at 0x3d
 [EyesRenderer] ready
-23:04:25 [INFO] [FACE] sequence neutral
-23:04:26 [INFO] [LED] mode neutral -> neutral
+21:04:12 [INFO] [FACE] sequence neutral
+21:04:13 [INFO] [LED] mode neutral -> neutral
+21:04:13 [INFO] [CAMERA] enabled
+21:04:13 [INFO] [FACE] sequence neutral
+21:04:13 [INFO] [LED] mode neutral -> neutral
 [Robot] initialized
+21:04:13 [INFO] [TOUCH] ready controller=ft6x36 address=0x38 product=0x11
 [Brain] initialized
-23:04:26 [INFO] [LED] mode red -> solid_red
-23:04:26 [INFO] [LED TEST] 32 LEDs set to solid red
-23:04:26 [INFO] Robot ready
-23:04:26 [INFO] Main loop started
-23:04:26 [DEBUG] [SERVO] pan angle=0.0 pulse=1500
-23:04:26 [DEBUG] [SERVO] tilt angle=0.0 pulse=1650
-23:04:26 [INFO] [HEARTBEAT] alive uptime=00:00:00
-23:04:26 [INFO] [HEALTH] battery=39.0% voltage=14.421V current=-337.0A power=-4859.877W cells_mv=3602,3607,3608,3605 charging=no usb=no temp=47.4C memory=7.4% load=0.89 throttled=0x0
-23:04:26 [INFO] Starting API
-INFO:     Started server process [1823]
+21:04:13 [INFO] Robot ready
+21:04:13 [INFO] Main loop started
+21:04:13 [DEBUG] [SERVO] pan angle=0.0deg pulse=1500us
+21:04:13 [DEBUG] [SERVO] tilt angle=0.0deg pulse=1500us
+21:04:13 [INFO] Starting API
+INFO:     Started server process [5718]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-23:04:30 [INFO] [IDLE] blink
-23:04:30 [INFO] [FACE] sequence blink
-23:04:31 [INFO] [FACE] sequence neutral
-23:04:36 [INFO] [IDLE] blink
-23:04:36 [INFO] [FACE] sequence blink
-23:04:38 [INFO] [FACE] sequence neutral
-23:04:39 [INFO] [IDLE] blink
-23:04:39 [INFO] [FACE] sequence blink
-23:04:41 [INFO] [FACE] sequence neutral
-23:04:43 [INFO] [IDLE] blink
-23:04:43 [INFO] [FACE] sequence blink
-23:04:45 [INFO] [FACE] sequence neutral
-23:04:48 [INFO] [IDLE] look_high
-23:04:48 [INFO] [FACE] sequence look_high
-23:04:50 [INFO] [FACE] sequence neutral
-23:04:52 [INFO] [IDLE] double blink
-23:04:52 [INFO] [FACE] sequence double_blink
-23:04:55 [INFO] [FACE] sequence neutral
-23:04:56 [INFO] [HEARTBEAT] alive uptime=00:00:30
-23:04:57 [INFO] [IDLE] yawn
-23:04:57 [INFO] [FACE] sequence yawn
-23:05:01 [INFO] [FACE] sequence neutral
-INFO:     192.168.0.17:58052 - "GET /state HTTP/1.1" 200 OK
-23:05:03 [INFO] [IDLE] look_left
-23:05:03 [INFO] [FACE] sequence look_left
-23:05:05 [INFO] [FACE] sequence neutral
-23:05:09 [INFO] [IDLE] double blink
-23:05:09 [INFO] [FACE] sequence double_blink
-23:05:12 [INFO] [FACE] sequence neutral
-INFO:     127.0.0.1:38152 - "GET /thermal/status~ HTTP/1.1" 404 Not Found
-23:05:13 [INFO] [IDLE] look_right
-23:05:13 [INFO] [FACE] sequence look_right
-23:05:16 [INFO] [FACE] sequence neutral
-23:05:19 [INFO] [IDLE] blink
-23:05:19 [INFO] [FACE] sequence blink
-INFO:     127.0.0.1:36104 - "GET /thermal/status HTTP/1.1" 200 OK
-23:05:21 [INFO] [FACE] sequence neutral
-23:05:22 [INFO] [IDLE] double blink
-23:05:22 [INFO] [FACE] sequence double_blink
-23:05:25 [INFO] [IDLE] yawn
-23:05:25 [INFO] [FACE] sequence neutral
-23:05:26 [INFO] [HEARTBEAT] alive uptime=00:01:00
-23:05:26 [INFO] [HEALTH] battery=38.0% voltage=14.417V current=-359.0A power=-5175.703W cells_mv=3601,3606,3606,3606 charging=no usb=no temp=46.9C memory=7.1% load=0.90 throttled=0x0
-23:05:31 [INFO] [IDLE] blink
-23:05:31 [INFO] [FACE] sequence blink
-23:05:32 [INFO] [FACE] sequence neutral
-23:05:34 [INFO] [IDLE] look_down
-23:05:34 [INFO] [FACE] sequence look_down
-INFO:     127.0.0.1:59906 - "GET /thermal/frame HTTP/1.1" 200 OK
-23:05:37 [INFO] [FACE] sequence neutral
-23:05:39 [INFO] [IDLE] look_left
-23:05:39 [INFO] [FACE] sequence look_left
-23:05:41 [INFO] [FACE] sequence neutral
-23:05:44 [INFO] [IDLE] blink
-23:05:44 [INFO] [FACE] sequence blink
-23:05:46 [INFO] [FACE] sequence neutral
-23:05:48 [INFO] [IDLE] blink
-23:05:48 [INFO] [FACE] sequence blink
-23:05:50 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-[0:20:54.889769187] [1857] ERROR V4L2 v4l2_videodevice.cpp:1998 /dev/video7[27:out]: Failed to start streaming: Broken pipe
-23:05:51 [WARN] [CAMERA] start failed, recreating camera: Failed to start camera: Broken pipe
-[0:20:55.175871454] [1857]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc30
-[0:20:55.175907398] [1857]  WARN V4L2 v4l2_pixelformat.cpp:346 Unsupported V4L2 pixel format Nc12
-[0:20:55.176291785] [1895]  INFO Camera camera.cpp:1216 configuring streams: (0) 1280x720-RGB888/Rec709/Rec709/None/Full (1) 1536x864-BGGR_PISP_COMP1/RAW
-[0:20:55.176391951] [1857]  INFO RPI pisp.cpp:1485 Sensor: /base/axi/pcie@1000120000/rp1/i2c@80000/imx708@1a - Selected sensor format: 1536x864-SBGGR10_1X10/RAW - Selected CFE format: 1536x864-PC1B/RAW
-23:05:51 [INFO] [CAMERA] started
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136751578 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136752078 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136752578 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136753078 HTTP/1.1" 200 OK
-23:05:53 [INFO] [IDLE] blink
-23:05:53 [INFO] [FACE] sequence blink
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786136753532 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:05:55 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:05:56 [INFO] [HEARTBEAT] alive uptime=00:01:30
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:05:59 [INFO] [IDLE] blink
-23:05:59 [INFO] [FACE] sequence blink
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:00 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     192.168.0.17:40198 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:04 [INFO] [IDLE] look_right
-23:06:04 [INFO] [FACE] sequence look_right
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:06 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:09 [INFO] [IDLE] look_down
-23:06:09 [INFO] [FACE] sequence look_down
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:11 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:12 [INFO] [IDLE] look_high
-23:06:12 [INFO] [FACE] sequence look_high
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:14 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136775946 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136776447 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136776947 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136777447 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136777947 HTTP/1.1" 200 OK
-23:06:18 [INFO] [IDLE] look_right
-23:06:18 [INFO] [FACE] sequence look_right
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136778448 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136778947 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136779447 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136779947 HTTP/1.1" 200 OK
-23:06:20 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:23 [INFO] [IDLE] blink
-23:06:23 [INFO] [FACE] sequence blink
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:25 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:26 [INFO] [HEALTH] battery=38.0% voltage=14.413V current=-362.0A power=-5217.506W cells_mv=3599,3605,3605,3603 charging=no usb=no temp=46.9C memory=7.7% load=1.37 throttled=0x0
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:26 [INFO] [HEARTBEAT] alive uptime=00:02:00
-23:06:27 [INFO] [IDLE] look_left
-23:06:27 [INFO] [FACE] sequence look_left
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:30 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:31 [INFO] [IDLE] yawn
-23:06:31 [INFO] [FACE] sequence yawn
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:34 [INFO] [IDLE] yawn
-23:06:34 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:38 [INFO] [IDLE] blink
-23:06:38 [INFO] [FACE] sequence blink
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:39 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:42 [INFO] [IDLE] double blink
-23:06:42 [INFO] [FACE] sequence double_blink
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:06:45 [INFO] [FACE] sequence neutral
-23:06:48 [INFO] [IDLE] blink
-23:06:48 [INFO] [FACE] sequence blink
-23:06:49 [INFO] [FACE] sequence neutral
-23:06:52 [INFO] [IDLE] sleep for 19.5s
-23:06:52 [INFO] [FACE] sequence sleeping
-23:06:52 [INFO] [LED] mode sleeping -> sleeping
-23:06:57 [INFO] [HEARTBEAT] alive uptime=00:02:31
-23:07:12 [INFO] [IDLE] wake up (timer)
-23:07:12 [INFO] [FACE] sequence wake_up
-23:07:16 [INFO] [FACE] sequence neutral
-23:07:16 [INFO] [IDLE] yawn
-23:07:16 [INFO] [FACE] sequence yawn
-23:07:20 [INFO] [FACE] sequence neutral
-23:07:21 [INFO] [IDLE] look_left
-23:07:21 [INFO] [FACE] sequence look_left
-23:07:24 [INFO] [FACE] sequence neutral
-23:07:24 [INFO] [IDLE] blink
-23:07:24 [INFO] [FACE] sequence blink
-INFO:     192.168.0.17:13424 - "GET /state HTTP/1.1" 200 OK
-23:07:26 [INFO] [FACE] sequence neutral
-23:07:26 [INFO] [HEALTH] battery=38.0% voltage=14.402V current=-379.0A power=-5458.358W cells_mv=3596,3602,3602,3601 charging=no usb=no temp=47.4C memory=7.8% load=1.72 throttled=0x0
-23:07:27 [INFO] [HEARTBEAT] alive uptime=00:03:01
-23:07:27 [INFO] [IDLE] look_left
-23:07:27 [INFO] [FACE] sequence look_left
-23:07:29 [INFO] [FACE] sequence neutral
-23:07:34 [INFO] [IDLE] blink
-23:07:34 [INFO] [FACE] sequence blink
-23:07:35 [INFO] [FACE] sequence neutral
-23:07:38 [INFO] [IDLE] yawn
-23:07:38 [INFO] [FACE] sequence yawn
-23:07:42 [INFO] [IDLE] blink
-23:07:42 [INFO] [FACE] sequence neutral
-23:07:45 [INFO] [IDLE] blink
-23:07:45 [INFO] [FACE] sequence blink
-23:07:46 [INFO] [FACE] sequence neutral
-23:07:51 [INFO] [IDLE] blink
-23:07:51 [INFO] [FACE] sequence blink
-23:07:53 [INFO] [FACE] sequence neutral
-23:07:54 [INFO] [IDLE] blink
-23:07:54 [INFO] [FACE] sequence blink
-23:07:56 [INFO] [FACE] sequence neutral
-23:07:57 [INFO] [HEARTBEAT] alive uptime=00:03:31
-23:08:01 [INFO] [IDLE] blink
-23:08:01 [INFO] [FACE] sequence blink
-23:08:02 [INFO] [FACE] sequence neutral
-23:08:06 [INFO] [IDLE] blink
-23:08:06 [INFO] [FACE] sequence blink
-23:08:08 [INFO] [FACE] sequence neutral
-23:08:13 [INFO] [IDLE] blink
-23:08:13 [INFO] [FACE] sequence blink
-23:08:14 [INFO] [FACE] sequence neutral
-23:08:17 [INFO] [IDLE] look_high
-23:08:17 [INFO] [FACE] sequence look_high
-23:08:19 [INFO] [FACE] sequence neutral
-23:08:23 [INFO] [IDLE] look_left
-23:08:23 [INFO] [FACE] sequence look_left
-23:08:25 [INFO] [FACE] sequence neutral
-23:08:27 [INFO] [HEALTH] battery=38.0% voltage=14.4V current=-365.0A power=-5256.0W cells_mv=3595,3602,3602,3601 charging=no usb=no temp=45.8C memory=7.8% load=1.73 throttled=0x0
-23:08:27 [INFO] [HEARTBEAT] alive uptime=00:04:01
-INFO:     192.168.0.17:53347 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET / HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET / HTTP/1.1" 200 OK
-23:08:29 [INFO] [IDLE] yawn
-23:08:29 [INFO] [FACE] sequence yawn
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/mobile.css?v=9 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/style.css?v=9 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/admin.css?v=2 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/api.js?v=5 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dashboard.js?v=7 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/controls.js?v=5 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/center.js?v=9 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dropdowns.js?v=2 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/admin.js?v=2 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/camera.js?v=5 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/pwa.js?v=9 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/mobile.css?v=9 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/style.css?v=9 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/admin.css?v=2 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/controls.js?v=5 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dashboard.js?v=7 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/api.js?v=5 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/admin.js?v=2 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/center.js?v=9 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dropdowns.js?v=2 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/pwa.js?v=9 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/camera.js?v=5 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136909906 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136909962 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /manifest.webmanifest HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136910406 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136910463 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136910906 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136910962 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136911406 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136911463 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136911906 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136911962 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136912406 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136912463 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:08:32 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136912963 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136913463 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136913962 HTTP/1.1" 200 OK
-23:08:34 [INFO] [IDLE] double blink
-23:08:34 [INFO] [FACE] sequence double_blink
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136914464 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136914962 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136915463 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136915962 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136916463 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136916962 HTTP/1.1" 200 OK
-23:08:38 [INFO] [IDLE] look_right
-23:08:38 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:08:44 [INFO] [IDLE] blink
-23:08:44 [INFO] [FACE] sequence blink
-23:08:46 [INFO] [FACE] sequence neutral
-23:08:47 [INFO] [IDLE] look_high
-23:08:47 [INFO] [FACE] sequence look_high
-23:08:49 [INFO] [FACE] sequence neutral
-23:08:53 [INFO] [IDLE] blink
-23:08:53 [INFO] [FACE] sequence blink
-23:08:54 [INFO] [FACE] sequence neutral
-23:08:56 [INFO] [IDLE] double blink
-23:08:56 [INFO] [FACE] sequence double_blink
-23:08:57 [INFO] [API] command head right
-23:08:57 [INFO] [API] camera right
-23:08:57 [INFO] [SERVO] pan target 5.0
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:08:57 [DEBUG] [SERVO] pan angle=5.0 pulse=1470
-23:08:57 [INFO] [HEARTBEAT] alive uptime=00:04:31
-23:08:57 [DEBUG] [SERVO] pan angle=5.0 pulse=1470
-23:08:59 [INFO] [FACE] sequence neutral
-23:09:00 [INFO] [API] command face happy
-23:09:00 [INFO] [API] face happy
-23:09:00 [INFO] [FACE] sequence happy
-23:09:00 [INFO] [LED] mode happy -> happy
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:09:05 [INFO] [API] command face sleepy
-23:09:05 [INFO] [API] face sleepy
-23:09:05 [INFO] [FACE] sequence sleepy
-23:09:05 [INFO] [LED] mode sleepy -> sleepy
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786136912585 HTTP/1.1" 200 OK
-23:09:14 [INFO] [API] command shell log
-23:09:14 [INFO] [API] shell log
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:09:15 [INFO] [FACE] sequence neutral
-23:09:16 [INFO] [LED] mode neutral -> neutral
-23:09:16 [INFO] [IDLE] blink
-23:09:16 [INFO] [FACE] sequence blink
-23:09:18 [INFO] [FACE] sequence neutral
-23:09:20 [INFO] [IDLE] blink
-23:09:20 [INFO] [FACE] sequence blink
-23:09:22 [INFO] [FACE] sequence neutral
-23:09:26 [INFO] [IDLE] look_down
-23:09:26 [INFO] [FACE] sequence look_down
-23:09:27 [INFO] [API] command face sleeping
-23:09:27 [INFO] [API] face sleeping
-23:09:27 [INFO] [FACE] sequence sleeping
-23:09:27 [INFO] [LED] mode sleeping -> sleeping
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:09:27 [INFO] [HEALTH] battery=38.0% voltage=14.39V current=-384.0A power=-5525.76W cells_mv=3595,3599,3600,3600 charging=no usb=no temp=46.9C memory=9.3% load=1.60 throttled=0x0
-23:09:28 [INFO] [HEARTBEAT] alive uptime=00:05:02
-INFO:     192.168.0.17:50691 - "GET /state HTTP/1.1" 200 OK
-23:09:37 [INFO] [FACE] sequence neutral
-23:09:37 [INFO] [LED] mode neutral -> neutral
-23:09:37 [INFO] [IDLE] look_high
-23:09:37 [INFO] [FACE] sequence look_high
-23:09:40 [INFO] [FACE] sequence neutral
-23:09:41 [INFO] [API] command face angry
-23:09:41 [INFO] [API] face angry
-23:09:41 [INFO] [FACE] sequence angry
-23:09:41 [INFO] [LED] mode angry -> angry
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:09:52 [INFO] [FACE] sequence neutral
-23:09:52 [INFO] [LED] mode neutral -> neutral
-23:09:52 [INFO] [IDLE] look_high
-23:09:52 [INFO] [FACE] sequence look_high
-23:09:55 [INFO] [FACE] sequence neutral
-23:09:58 [INFO] [HEARTBEAT] alive uptime=00:05:32
-23:09:58 [INFO] [IDLE] look_high
-23:09:58 [INFO] [FACE] sequence look_high
-23:10:01 [INFO] [FACE] sequence neutral
-23:10:02 [INFO] [IDLE] look_right
-23:10:02 [INFO] [FACE] sequence look_right
-23:10:05 [INFO] [FACE] sequence neutral
-23:10:07 [INFO] [IDLE] double blink
-23:10:07 [INFO] [FACE] sequence double_blink
-23:10:10 [INFO] [FACE] sequence neutral
-23:10:13 [INFO] [IDLE] look_high
-23:10:13 [INFO] [FACE] sequence look_high
-23:10:16 [INFO] [FACE] sequence neutral
-23:10:17 [INFO] [IDLE] double blink
-23:10:17 [INFO] [FACE] sequence double_blink
-23:10:21 [INFO] [FACE] sequence neutral
-23:10:24 [INFO] [IDLE] blink
-23:10:24 [INFO] [FACE] sequence blink
-23:10:26 [INFO] [FACE] sequence neutral
-23:10:27 [INFO] [HEALTH] battery=38.0% voltage=14.387V current=-378.0A power=-5438.286W cells_mv=3593,3599,3599,3597 charging=no usb=no temp=47.4C memory=9.4% load=1.62 throttled=0x0
-23:10:28 [INFO] [HEARTBEAT] alive uptime=00:06:02
-23:10:29 [INFO] [IDLE] look_left
-23:10:29 [INFO] [FACE] sequence look_left
-23:10:31 [INFO] [FACE] sequence neutral
-23:10:35 [INFO] [IDLE] blink
-23:10:35 [INFO] [FACE] sequence blink
-23:10:37 [INFO] [FACE] sequence neutral
-23:10:38 [INFO] [IDLE] blink
-23:10:38 [INFO] [FACE] sequence blink
-23:10:40 [INFO] [FACE] sequence neutral
-23:10:41 [INFO] [IDLE] blink
-23:10:41 [INFO] [FACE] sequence blink
-23:10:43 [INFO] [FACE] sequence neutral
-23:10:45 [INFO] [IDLE] blink
-23:10:45 [INFO] [FACE] sequence blink
-23:10:47 [INFO] [FACE] sequence neutral
-23:10:49 [INFO] [IDLE] blink
-23:10:49 [INFO] [FACE] sequence blink
-23:10:51 [INFO] [FACE] sequence neutral
-23:10:55 [INFO] [IDLE] blink
-23:10:55 [INFO] [FACE] sequence blink
-23:10:55 [INFO] [API] command face happy
-23:10:55 [INFO] [API] face happy
-23:10:55 [INFO] [FACE] sequence happy
-23:10:56 [INFO] [LED] mode happy -> happy
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:10:58 [INFO] [HEARTBEAT] alive uptime=00:06:32
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786136986118 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:11:05 [INFO] [API] command move forward
-23:11:05 [INFO] [API] move forward speed=None
-23:11:05 [INFO] [MOTORS] forward speed=0.30
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:06 [INFO] [FACE] sequence neutral
-23:11:06 [INFO] [LED] mode neutral -> neutral
-23:11:07 [INFO] [API] command move stop
-23:11:07 [INFO] [API] stop
-23:11:07 [INFO] [MOTORS] stop
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:07 [INFO] [API] command move left
-23:11:07 [INFO] [API] turn left speed=None
-23:11:07 [INFO] [MOTORS] left speed=0.25
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:07 [INFO] [IDLE] blink
-23:11:07 [INFO] [FACE] sequence blink
-23:11:07 [INFO] [API] command move stop
-23:11:07 [INFO] [API] stop
-23:11:07 [INFO] [MOTORS] stop
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:08 [INFO] [FACE] sequence neutral
-23:11:09 [INFO] [API] command move left
-23:11:09 [INFO] [API] turn left speed=None
-23:11:09 [INFO] [MOTORS] left speed=0.25
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:09 [INFO] [API] command move stop
-23:11:09 [INFO] [API] stop
-23:11:09 [INFO] [MOTORS] stop
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:09 [INFO] [API] command move right
-23:11:09 [INFO] [API] turn right speed=None
-23:11:09 [INFO] [MOTORS] right speed=0.25
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:10 [INFO] [API] command move stop
-23:11:10 [INFO] [API] stop
-23:11:10 [INFO] [MOTORS] stop
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:10 [INFO] [API] command move backward
-23:11:10 [INFO] [API] move backward speed=None
-23:11:10 [INFO] [MOTORS] backward speed=0.30
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:11 [INFO] [API] command move stop
-23:11:11 [INFO] [API] stop
-23:11:11 [INFO] [MOTORS] stop
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:11 [INFO] [API] command move left
-23:11:11 [INFO] [API] turn left speed=None
-23:11:11 [INFO] [MOTORS] left speed=0.25
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:11 [INFO] [API] command move stop
-23:11:11 [INFO] [API] stop
-23:11:11 [INFO] [MOTORS] stop
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:11 [INFO] [IDLE] blink
-23:11:11 [INFO] [FACE] sequence blink
-23:11:12 [INFO] [API] command move right
-23:11:12 [INFO] [API] turn right speed=None
-23:11:12 [INFO] [MOTORS] right speed=0.25
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:12 [INFO] [API] command move stop
-23:11:12 [INFO] [API] stop
-23:11:12 [INFO] [MOTORS] stop
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:13 [INFO] [API] command move forward
-23:11:13 [INFO] [API] move forward speed=None
-23:11:13 [INFO] [MOTORS] forward speed=0.30
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:13 [INFO] [API] command move stop
-23:11:13 [INFO] [API] stop
-23:11:13 [INFO] [MOTORS] stop
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-23:11:13 [INFO] [FACE] sequence neutral
-23:11:18 [INFO] [IDLE] look_left
-23:11:18 [INFO] [FACE] sequence look_left
-23:11:20 [INFO] [FACE] sequence neutral
-23:11:21 [INFO] [IDLE] blink
-23:11:21 [INFO] [FACE] sequence blink
-23:11:23 [INFO] [FACE] sequence neutral
-INFO:     192.168.0.17:29931 - "GET /state HTTP/1.1" 200 OK
-23:11:26 [INFO] [IDLE] blink
-23:11:26 [INFO] [FACE] sequence blink
-23:11:27 [INFO] [FACE] sequence neutral
-23:11:28 [INFO] [HEALTH] battery=38.0% voltage=14.384V current=-394.0A power=-5667.296W cells_mv=3589,3597,3599,3598 charging=no usb=no temp=46.9C memory=9.4% load=1.70 throttled=0x0
-23:11:28 [INFO] [HEARTBEAT] alive uptime=00:07:02
-23:11:29 [INFO] [IDLE] blink
-23:11:29 [INFO] [FACE] sequence blink
-23:11:31 [INFO] [FACE] sequence neutral
-23:11:35 [INFO] [IDLE] blink
-23:11:35 [INFO] [FACE] sequence blink
-23:11:37 [INFO] [FACE] sequence neutral
-23:11:41 [INFO] [IDLE] look_right
-23:11:41 [INFO] [FACE] sequence look_right
-23:11:44 [INFO] [FACE] sequence neutral
-23:11:46 [INFO] [IDLE] yawn
-23:11:46 [INFO] [FACE] sequence yawn
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137106336 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137107265 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137107479 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137107934 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137108434 HTTP/1.1" 200 OK
-23:11:49 [INFO] [FACE] sequence neutral
-23:11:50 [INFO] [IDLE] blink
-23:11:50 [INFO] [FACE] sequence blink
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET / HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/style.css?v=9 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/mobile.css?v=9 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/api.js?v=5 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/controls.js?v=5 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dashboard.js?v=7 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /css/admin.css?v=2 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/dropdowns.js?v=2 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/center.js?v=9 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/camera.js?v=5 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/admin.js?v=2 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /js/pwa.js?v=9 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137111811 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137112311 HTTP/1.1" 200 OK
-23:11:52 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137112811 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137113311 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /camera/frame?t=1786137113811 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:11:55 [INFO] [IDLE] look_high
-23:11:55 [INFO] [FACE] sequence look_high
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:11:58 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:11:58 [INFO] [HEARTBEAT] alive uptime=00:07:32
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:12:00 [INFO] [IDLE] blink
-23:12:00 [INFO] [FACE] sequence blink
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:12:01 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     192.168.0.17:55713 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137114106 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:12:05 [INFO] [IDLE] look_right
-23:12:05 [INFO] [FACE] sequence look_right
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:12:08 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:12:10 [INFO] [IDLE] yawn
-23:12:10 [INFO] [FACE] sequence yawn
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:12:13 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:12:16 [INFO] [IDLE] blink
-23:12:16 [INFO] [FACE] sequence blink
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:12:18 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:12:21 [INFO] [IDLE] blink
-23:12:21 [INFO] [FACE] sequence blink
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:12:23 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:12:27 [INFO] [IDLE] look_down
-23:12:27 [INFO] [FACE] sequence look_down
-23:12:28 [INFO] [HEALTH] battery=37.0% voltage=14.382V current=-391.0A power=-5623.362W cells_mv=3591,3597,3597,3597 charging=no usb=no temp=48.0C memory=8.7% load=1.71 throttled=0x0
-23:12:29 [INFO] [HEARTBEAT] alive uptime=00:08:03
-23:12:29 [INFO] [FACE] sequence neutral
-23:12:33 [INFO] [IDLE] blink
-23:12:33 [INFO] [FACE] sequence blink
-23:12:35 [INFO] [FACE] sequence neutral
-23:12:38 [INFO] [IDLE] yawn
-23:12:38 [INFO] [FACE] sequence yawn
-23:12:41 [INFO] [IDLE] blink
-23:12:42 [INFO] [FACE] sequence neutral
-23:12:47 [INFO] [IDLE] yawn
-23:12:47 [INFO] [FACE] sequence yawn
-23:12:51 [INFO] [FACE] sequence neutral
-23:12:53 [INFO] [IDLE] yawn
-23:12:53 [INFO] [FACE] sequence yawn
-23:12:57 [INFO] [FACE] sequence neutral
-23:12:57 [INFO] [IDLE] double blink
-23:12:57 [INFO] [FACE] sequence double_blink
-23:12:59 [INFO] [HEARTBEAT] alive uptime=00:08:33
-23:13:01 [INFO] [FACE] sequence neutral
-23:13:03 [INFO] [IDLE] blink
-23:13:03 [INFO] [FACE] sequence blink
-23:13:04 [INFO] [FACE] sequence neutral
-23:13:09 [INFO] [IDLE] look_high
-23:13:09 [INFO] [FACE] sequence look_high
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /logs?count=80 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /logs?count=80 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /logs?count=80 HTTP/1.1" 200 OK
-23:13:11 [INFO] [FACE] sequence neutral
-23:13:13 [INFO] [IDLE] blink
-23:13:13 [INFO] [FACE] sequence blink
-23:13:14 [INFO] [FACE] sequence neutral
-23:13:16 [INFO] [IDLE] blink
-23:13:16 [INFO] [FACE] sequence blink
-23:13:18 [INFO] [FACE] sequence neutral
-23:13:20 [INFO] [IDLE] yawn
-23:13:20 [INFO] [FACE] sequence yawn
-23:13:23 [INFO] [IDLE] blink
-23:13:24 [INFO] [FACE] sequence neutral
-23:13:27 [INFO] [IDLE] look_down
-23:13:27 [INFO] [FACE] sequence look_down
-23:13:28 [INFO] [HEALTH] battery=37.0% voltage=14.374V current=-391.0A power=-5620.234W cells_mv=3590,3595,3596,3593 charging=no usb=no temp=46.9C memory=8.7% load=1.78 throttled=0x0
-23:13:29 [INFO] [HEARTBEAT] alive uptime=00:09:03
-23:13:30 [INFO] [FACE] sequence neutral
-23:13:32 [INFO] [IDLE] blink
-23:13:32 [INFO] [FACE] sequence blink
-23:13:34 [INFO] [FACE] sequence neutral
-INFO:     192.168.0.17:61094 - "GET /state HTTP/1.1" 200 OK
-23:13:37 [INFO] [IDLE] look_down
-23:13:37 [INFO] [FACE] sequence look_down
-23:13:39 [INFO] [FACE] sequence neutral
-23:13:43 [INFO] [IDLE] blink
-23:13:43 [INFO] [FACE] sequence blink
-23:13:44 [INFO] [FACE] sequence neutral
-23:13:48 [INFO] [IDLE] blink
-23:13:48 [INFO] [FACE] sequence blink
-23:13:50 [INFO] [FACE] sequence neutral
-23:13:54 [INFO] [IDLE] blink
-23:13:54 [INFO] [FACE] sequence blink
-23:13:56 [INFO] [FACE] sequence neutral
-23:13:58 [INFO] [IDLE] double blink
-23:13:58 [INFO] [FACE] sequence double_blink
-23:14:00 [INFO] [HEARTBEAT] alive uptime=00:09:34
-23:14:02 [INFO] [FACE] sequence neutral
-23:14:02 [INFO] [IDLE] look_down
-23:14:02 [INFO] [FACE] sequence look_down
-23:14:05 [INFO] [FACE] sequence neutral
-23:14:05 [INFO] [IDLE] double blink
-23:14:05 [INFO] [FACE] sequence double_blink
-23:14:08 [INFO] [IDLE] look_right
-23:14:09 [INFO] [FACE] sequence neutral
-23:14:12 [INFO] [IDLE] blink
-23:14:12 [INFO] [FACE] sequence blink
-23:14:13 [INFO] [FACE] sequence neutral
-23:14:18 [INFO] [IDLE] blink
-23:14:18 [INFO] [FACE] sequence blink
-23:14:20 [INFO] [FACE] sequence neutral
-23:14:24 [INFO] [IDLE] blink
-23:14:24 [INFO] [FACE] sequence blink
-23:14:25 [INFO] [FACE] sequence neutral
-23:14:28 [INFO] [HEALTH] battery=37.0% voltage=14.378V current=-376.0A power=-5406.128W cells_mv=3591,3596,3596,3595 charging=no usb=no temp=46.9C memory=8.7% load=1.76 throttled=0x0
-23:14:30 [INFO] [HEARTBEAT] alive uptime=00:10:04
-23:14:30 [INFO] [IDLE] look_down
-23:14:30 [INFO] [FACE] sequence look_down
-23:14:33 [INFO] [FACE] sequence neutral
-23:14:33 [INFO] [IDLE] blink
-23:14:33 [INFO] [FACE] sequence blink
-23:14:35 [INFO] [FACE] sequence neutral
-23:14:39 [INFO] [IDLE] blink
-23:14:39 [INFO] [FACE] sequence blink
-23:14:41 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137213728 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137214730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137215730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137216731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137217730 HTTP/1.1" 200 OK
-23:14:41 [INFO] [API] command face happy
-23:14:41 [INFO] [API] face happy
-23:14:41 [INFO] [FACE] sequence happy
-23:14:42 [INFO] [LED] mode happy -> happy
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137218730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137219731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137220729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137221729 HTTP/1.1" 200 OK
-23:14:42 [INFO] [API] command face sleepy
-23:14:42 [INFO] [API] face sleepy
-23:14:42 [INFO] [FACE] sequence sleepy
-23:14:42 [INFO] [LED] mode sleepy -> sleepy
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137222729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137223730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137224731 HTTP/1.1" 200 OK
-23:14:42 [INFO] [API] command face sleeping
-23:14:42 [INFO] [API] face sleeping
-23:14:42 [INFO] [FACE] sequence sleeping
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137225729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137226729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137227729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137228729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137229731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137230730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137231730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137232729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137233730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137234730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137235730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137236729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137237731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137238731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137239730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137240731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137241731 HTTP/1.1" 200 OK
-INFO:     192.168.0.17:24256 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137242731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137243729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137244730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137245731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137246731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137247731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137248731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137249731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137250731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137251731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137252730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137253731 HTTP/1.1" 200 OK
-23:14:43 [INFO] [LED] mode sleeping -> sleeping
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137254729 HTTP/1.1" 200 OK
-23:14:43 [INFO] [API] command face neutral
-23:14:43 [INFO] [API] face neutral
-23:14:43 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137255729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137256729 HTTP/1.1" 200 OK
-23:14:43 [INFO] [LED] mode neutral -> neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137257729 HTTP/1.1" 200 OK
-23:14:43 [INFO] [API] command face sleeping
-23:14:43 [INFO] [API] face sleeping
-23:14:43 [INFO] [FACE] sequence sleeping
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137258729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137259729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137260730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137261731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137262732 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137263731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137264730 HTTP/1.1" 200 OK
-23:14:43 [INFO] [API] command shell rocket
-23:14:43 [INFO] [API] shell rocket
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137265729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137266730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137267730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137268730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137269730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137270730 HTTP/1.1" 200 OK
-23:14:43 [INFO] [LED] mode sleeping -> sleeping
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137271730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137272731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137273731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137274731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137275731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137276731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137277731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137278731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137279731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137280731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137281730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:14:44 [INFO] [FACE] sequence happy
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137282729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137283729 HTTP/1.1" 200 OK
-23:14:44 [INFO] [LED] mode happy -> happy
-23:14:44 [INFO] [LED] mode rocket -> rocket_launch
-23:14:44 [INFO] [SHELL] mode rocket duration=60s face=happy led=rocket
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "POST /command HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137284730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137285729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49838 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137286729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137287729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137288729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137289729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137290729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137291729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137292729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137293729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137294729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137295729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137296729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137297730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137298731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137299731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:15:00 [INFO] [HEARTBEAT] alive uptime=00:10:34
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137300730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137301731 HTTP/1.1" 200 OK
-INFO:     192.168.0.17:39857 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137302731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137303731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137304731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137305731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137306731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137307731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137308730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137309731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137310731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137311730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137312729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137313730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137314731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137315730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137316729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137317731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137318731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137319730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137320729 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /thermal/frame?t=1786137213496 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137321730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49840 - "GET /thermal/frame HTTP/1.1" 200 OK
-INFO:     127.0.0.1:43046 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137322731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137323731 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137324730 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137326333 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137327333 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-23:15:28 [INFO] [HEALTH] battery=37.0% voltage=14.368V current=-379.0A power=-5445.472W cells_mv=3589,3593,3593,3593 charging=no usb=no temp=48.0C memory=9.4% load=1.72 throttled=0x0
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137328333 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137329333 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137330333 HTTP/1.1" 200 OK
-23:15:31 [INFO] [HEARTBEAT] alive uptime=00:11:05
-23:15:44 [INFO] [SHELL] mode rocket expired
-23:15:44 [INFO] [FACE] sequence neutral
-23:15:44 [INFO] [LED] mode neutral -> neutral
-23:15:44 [INFO] [LED] mode neutral -> neutral
-23:15:44 [INFO] [IDLE] blink
-23:15:44 [INFO] [FACE] sequence blink
-23:15:46 [INFO] [FACE] sequence neutral
-23:15:49 [INFO] [IDLE] blink
-23:15:49 [INFO] [FACE] sequence blink
-23:15:50 [INFO] [FACE] sequence neutral
-23:15:53 [INFO] [IDLE] yawn
-23:15:53 [INFO] [FACE] sequence yawn
-23:15:56 [INFO] [FACE] sequence neutral
-23:15:57 [INFO] [IDLE] blink
-23:15:57 [INFO] [FACE] sequence blink
-23:15:59 [INFO] [FACE] sequence neutral
-23:16:00 [INFO] [IDLE] look_down
-23:16:00 [INFO] [FACE] sequence look_down
-23:16:01 [INFO] [HEARTBEAT] alive uptime=00:11:35
-INFO:     192.168.0.17:6766 - "GET /state HTTP/1.1" 200 OK
-23:16:03 [INFO] [FACE] sequence neutral
-23:16:03 [INFO] [IDLE] blink
-23:16:03 [INFO] [FACE] sequence blink
-23:16:05 [INFO] [FACE] sequence neutral
-23:16:08 [INFO] [IDLE] blink
-23:16:08 [INFO] [FACE] sequence blink
-23:16:10 [INFO] [FACE] sequence neutral
-23:16:13 [INFO] [IDLE] blink
-23:16:13 [INFO] [FACE] sequence blink
-23:16:15 [INFO] [FACE] sequence neutral
-23:16:20 [INFO] [IDLE] blink
-23:16:20 [INFO] [FACE] sequence blink
-23:16:22 [INFO] [FACE] sequence neutral
-23:16:26 [INFO] [IDLE] look_high
-23:16:26 [INFO] [FACE] sequence look_high
-23:16:28 [INFO] [FACE] sequence neutral
-23:16:28 [INFO] [HEALTH] battery=37.0% voltage=14.367V current=-362.0A power=-5200.854W cells_mv=3588,3593,3593,3593 charging=no usb=no temp=48.0C memory=8.7% load=1.15 throttled=0x0
-23:16:30 [INFO] [IDLE] double blink
-23:16:30 [INFO] [FACE] sequence double_blink
-23:16:31 [INFO] [HEARTBEAT] alive uptime=00:12:05
-23:16:33 [INFO] [FACE] sequence neutral
-23:16:34 [INFO] [IDLE] blink
-23:16:34 [INFO] [FACE] sequence blink
-23:16:35 [INFO] [FACE] sequence neutral
-23:16:36 [INFO] [IDLE] look_down
-23:16:36 [INFO] [FACE] sequence look_down
-23:16:39 [INFO] [FACE] sequence neutral
-23:16:41 [INFO] [IDLE] look_right
-23:16:41 [INFO] [FACE] sequence look_right
-23:16:43 [INFO] [FACE] sequence neutral
-23:16:45 [INFO] [IDLE] yawn
-23:16:45 [INFO] [FACE] sequence yawn
-23:16:48 [INFO] [FACE] sequence neutral
-23:16:51 [INFO] [IDLE] double blink
-23:16:51 [INFO] [FACE] sequence double_blink
-23:16:55 [INFO] [FACE] sequence neutral
-23:16:57 [INFO] [IDLE] blink
-23:16:57 [INFO] [FACE] sequence blink
-23:16:59 [INFO] [FACE] sequence neutral
-23:17:02 [INFO] [HEARTBEAT] alive uptime=00:12:36
-23:17:02 [INFO] [IDLE] blink
-23:17:02 [INFO] [FACE] sequence blink
-INFO:     192.168.0.17:32174 - "GET /state HTTP/1.1" 200 OK
-23:17:03 [INFO] [FACE] sequence neutral
-23:17:08 [INFO] [IDLE] blink
-23:17:08 [INFO] [FACE] sequence blink
-23:17:09 [INFO] [FACE] sequence neutral
-23:17:10 [INFO] [IDLE] look_down
-23:17:10 [INFO] [FACE] sequence look_down
-23:17:13 [INFO] [FACE] sequence neutral
-23:17:13 [INFO] [IDLE] blink
-23:17:13 [INFO] [FACE] sequence blink
-23:17:15 [INFO] [FACE] sequence neutral
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137331333 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137435680 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137433758 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137389012 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137378061 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137434678 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137333334 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137418708 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137334333 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137336787 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137375062 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137377062 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137374061 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137357293 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137343733 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137436074 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137376061 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137332333 HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /state HTTP/1.1" 200 OK
-INFO:     2a02:21b4:bc5d:7f00:b6fd:a072:56a4:31a7:0 - "GET /health?t=1786137437074 HTTP/1.1" 200 OK
-23:17:20 [INFO] [IDLE] look_left
-23:17:20 [INFO] [FACE] sequence look_left
-23:17:22 [INFO] [FACE] sequence neutral
-23:17:24 [INFO] [IDLE] blink
-23:17:24 [INFO] [FACE] sequence blink
-23:17:25 [INFO] [FACE] sequence neutral
-23:17:27 [INFO] [IDLE] blink
-23:17:27 [INFO] [FACE] sequence blink
+21:04:13 [INFO] [BLE VISION CONFIG] chunk=240 interval_ms=1.0 size=640x360 quality=25
+21:04:13 [INFO] [BLUETOOTH] ready name=SpyTurtle
+21:04:14 [INFO] [HEARTBEAT] alive uptime=00:00:00
+21:04:14 [INFO] [HEALTH] battery=83.0% voltage=16.137V current=-290.0A power=-4679.73W cells_mv=4032,4036,4035,4034 charging=no usb=no temp=50.7C memory=7.5% load=0.88 throttled=0x0
+21:04:18 [INFO] [IDLE] blink
+21:04:18 [INFO] [FACE] sequence blink
+21:04:20 [INFO] [FACE] sequence neutral
+21:04:24 [INFO] [IDLE] blink
+21:04:24 [INFO] [FACE] sequence blink
+21:04:25 [INFO] [FACE] sequence neutral
+21:04:28 [INFO] [IDLE] blink
+21:04:28 [INFO] [FACE] sequence blink
+21:04:29 [INFO] [FACE] sequence neutral
+21:04:31 [INFO] [IDLE] blink
+21:04:31 [INFO] [FACE] sequence blink
+21:04:33 [INFO] [FACE] sequence neutral
+21:04:35 [INFO] [IDLE] look_high
+21:04:35 [INFO] [FACE] sequence look_high
+21:04:38 [INFO] [FACE] sequence neutral
+21:04:41 [INFO] [IDLE] blink
+21:04:41 [INFO] [FACE] sequence blink
+21:04:43 [INFO] [FACE] sequence neutral
+21:04:44 [INFO] [HEARTBEAT] alive uptime=00:00:30
+21:04:46 [INFO] [IDLE] look_right
+21:04:46 [INFO] [FACE] sequence look_right
+21:04:48 [INFO] [IDLE] blink
+21:04:48 [INFO] [FACE] sequence blink
+21:04:50 [INFO] [FACE] sequence neutral
+21:04:53 [INFO] [IDLE] yawn
+21:04:53 [INFO] [FACE] sequence yawn
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET / HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /css/style.css?v=27 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /css/mobile.css?v=27 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /css/admin.css?v=30 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /css/media.css?v=27 HTTP/1.1" 200 OK
+21:04:55 [INFO] [CAMERA] started
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /js/transport.js?v=53 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /js/api.js?v=27 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /js/dashboard.js?v=41 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /js/controls.js?v=41 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /js/dropdowns.js?v=27 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /js/camera.js?v=53 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /js/bluetooth-vision.js?v=61 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /js/center.js?v=30 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /js/voice.js?v=31 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /js/face-vision.js?v=62 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /js/admin.js?v=61 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /js/pwa.js?v=27 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /admin/audio/volume HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /admin/motors/speed HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /admin/leds/brightness HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /admin/power HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /admin/wifi HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /assets HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822695387 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822695720 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /manifest.webmanifest?v=27 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822696053 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822696386 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822696719 HTTP/1.1" 200 OK
+21:04:57 [INFO] [API] command head down
+21:04:57 [INFO] [API] camera down
+21:04:57 [INFO] [SERVO] tilt target 5.0deg
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822697057 HTTP/1.1" 200 OK
+21:04:57 [DEBUG] [SERVO] tilt angle=5.0deg pulse=1465us
+21:04:57 [INFO] [FACE] sequence neutral
+21:04:57 [INFO] [API] command head down
+21:04:57 [INFO] [API] camera down
+21:04:57 [INFO] [SERVO] tilt target 10.0deg
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822697385 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:04:57 [INFO] [API] command head down
+21:04:57 [INFO] [API] camera down
+21:04:57 [INFO] [SERVO] tilt target 15.0deg
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:04:57 [DEBUG] [SERVO] tilt angle=15.0deg pulse=1395us
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822697718 HTTP/1.1" 200 OK
+21:04:57 [DEBUG] [SERVO] tilt angle=15.0deg pulse=1395us
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822698051 HTTP/1.1" 200 OK
+21:04:58 [INFO] [API] command move forward
+21:04:58 [INFO] [API] move forward speed=None
+21:04:58 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822698384 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:04:58 [INFO] [API] command move stop
+21:04:58 [INFO] [API] stop
+21:04:58 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:04:58 [INFO] [API] command move forward
+21:04:58 [INFO] [API] move forward speed=None
+21:04:58 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822698717 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:04:58 [INFO] [MOTOR CTRL] forward pulses L=11 R=8 dt=0.11s pwm L=0.268 R=0.332 correction=-0.032
+21:04:58 [INFO] [API] command move stop
+21:04:58 [INFO] [API] stop
+21:04:58 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:04:58 [INFO] [API] command move forward
+21:04:58 [INFO] [API] move forward speed=None
+21:04:58 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822699050 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:04:59 [INFO] [API] command move forward
+21:04:59 [INFO] [API] move forward speed=None
+21:04:59 [INFO] [MOTOR CTRL] forward pulses L=69 R=54 dt=0.32s pwm L=0.276 R=0.324 correction=-0.024
+21:04:59 [INFO] [IDLE] blink
+21:04:59 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822699383 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:04:59 [INFO] [API] command move stop
+21:04:59 [INFO] [API] stop
+21:04:59 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822699716 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822700049 HTTP/1.1" 200 OK
+21:05:00 [INFO] [API] command move left
+21:05:00 [INFO] [API] turn left speed=None
+21:05:00 [INFO] [MOTORS] left left=-0.25 right=0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822700382 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:00 [INFO] [API] command move stop
+21:05:00 [INFO] [API] stop
+21:05:00 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822700715 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:00 [INFO] [API] command move forward
+21:05:00 [INFO] [API] move forward speed=None
+21:05:00 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822701048 HTTP/1.1" 200 OK
+21:05:01 [INFO] [MOTOR CTRL] forward pulses L=48 R=47 dt=0.30s pwm L=0.298 R=0.302 correction=-0.002
+21:05:01 [INFO] [FACE] sequence neutral
+21:05:01 [INFO] [API] command move forward
+21:05:01 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822701381 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:01 [INFO] [API] command move forward
+21:05:01 [INFO] [API] move forward speed=None
+21:05:01 [INFO] [MOTOR CTRL] forward pulses L=110 R=131 dt=0.47s pwm L=0.317 R=0.283 correction=+0.017
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822701714 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:01 [INFO] [API] command move forward
+21:05:01 [INFO] [API] move forward speed=None
+21:05:01 [INFO] [MOTOR CTRL] forward pulses L=64 R=71 dt=0.29s pwm L=0.310 R=0.290 correction=+0.010
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822702047 HTTP/1.1" 200 OK
+21:05:02 [INFO] [API] command move stop
+21:05:02 [INFO] [API] stop
+21:05:02 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822702380 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822702714 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822703047 HTTP/1.1" 200 OK
+21:05:03 [INFO] [API] command move left
+21:05:03 [INFO] [API] turn left speed=None
+21:05:03 [INFO] [MOTORS] left left=-0.25 right=0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:03 [INFO] [API] command move left
+21:05:03 [INFO] [API] turn left speed=NoneINFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822703379 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:03 [INFO] [API] command move left
+21:05:03 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822703712 HTTP/1.1" 200 OK
+21:05:03 [INFO] [IDLE] yawn
+21:05:03 [INFO] [FACE] sequence yawn
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822704045 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:04 [INFO] [API] command move left
+21:05:04 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:04 [INFO] [API] command move stop
+21:05:04 [INFO] [API] stop
+21:05:04 [INFO] [MOTORS] stop left=0.00 right=0.00
+21:05:04 [INFO] [API] command move forward
+21:05:04 [INFO] [API] move forward speed=None
+21:05:04 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822704378 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822704711 HTTP/1.1" 200 OK
+21:05:04 [INFO] [API] command move forward
+21:05:04 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822705044 HTTP/1.1" 200 OK
+21:05:05 [INFO] [MOTOR CTRL] forward pulses L=95 R=118 dt=0.56s pwm L=0.322 R=0.278 correction=+0.022
+21:05:05 [INFO] [API] command move forward
+21:05:05 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822705377 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:05 [INFO] [API] command move forward
+21:05:05 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822705710 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:05 [INFO] [MOTOR CTRL] forward pulses L=150 R=167 dt=0.66s pwm L=0.311 R=0.289 correction=+0.011
+21:05:05 [INFO] [API] command move forward
+21:05:05 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822706043 HTTP/1.1" 200 OK
+21:05:05 [INFO] [MOTOR CTRL] forward pulses L=61 R=61 dt=0.28s pwm L=0.300 R=0.300 correction=+0.000
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:06 [INFO] [API] command move forward
+21:05:06 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822706376 HTTP/1.1" 200 OK
+21:05:06 [INFO] [MOTOR CTRL] forward pulses L=128 R=137 dt=0.51s pwm L=0.307 R=0.293 correction=+0.007
+21:05:06 [INFO] [API] command move forward
+21:05:06 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822706709 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:06 [INFO] [API] command move forward
+21:05:06 [INFO] [API] move forward speed=None
+21:05:06 [INFO] [MOTOR CTRL] forward pulses L=113 R=116 dt=0.47s pwm L=0.303 R=0.297 correction=+0.003
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822707042 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:07 [INFO] [API] command move forward
+21:05:07 [INFO] [API] move forward speed=NoneINFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822707375 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:07 [INFO] [MOTOR CTRL] forward pulses L=119 R=122 dt=0.49s pwm L=0.302 R=0.298 correction=+0.002
+21:05:07 [INFO] [FACE] sequence neutral
+21:05:07 [INFO] [API] command move forward
+21:05:07 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822707709 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:07 [INFO] [MOTOR CTRL] forward pulses L=117 R=123 dt=0.47s pwm L=0.305 R=0.295 correction=+0.005
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822708041 HTTP/1.1" 200 OK
+21:05:07 [INFO] [API] command move forward
+21:05:07 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:08 [INFO] [API] command move stop
+21:05:08 [INFO] [API] stop
+21:05:08 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:08 [INFO] [API] command move left
+21:05:08 [INFO] [API] turn left speed=None
+21:05:08 [INFO] [MOTORS] left left=-0.25 right=0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822708374 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:08 [INFO] [API] command move left
+21:05:08 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822708707 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:09 [INFO] [API] command move left
+21:05:09 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822709040 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:09 [INFO] [API] command move left
+21:05:09 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822709373 HTTP/1.1" 200 OK
+21:05:09 [INFO] [IDLE] look_right
+21:05:09 [INFO] [FACE] sequence look_right
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822709706 HTTP/1.1" 200 OK
+21:05:09 [INFO] [API] command move left
+21:05:09 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:09 [INFO] [API] command move stop
+21:05:09 [INFO] [API] stop
+21:05:09 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822710039 HTTP/1.1" 200 OK
+21:05:10 [INFO] [API] command move forward
+21:05:10 [INFO] [API] move forward speed=None
+21:05:10 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822710372 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:10 [INFO] [API] command move forward
+21:05:10 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822710705 HTTP/1.1" 200 OK
+21:05:10 [INFO] [MOTOR CTRL] forward pulses L=102 R=108 dt=0.55s pwm L=0.306 R=0.294 correction=+0.006
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /admin/wifi HTTP/1.1" 200 OK
+21:05:10 [INFO] [API] command move forward
+21:05:10 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822711039 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:11 [INFO] [API] command move stop
+21:05:11 [INFO] [API] stop
+21:05:11 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822711371 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:11 [INFO] [API] command move left
+21:05:11 [INFO] [API] turn left speed=None
+21:05:11 [INFO] [MOTORS] left left=-0.25 right=0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822711704 HTTP/1.1" 200 OK
+21:05:11 [INFO] [API] command move left
+21:05:11 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:12 [INFO] [API] command move stop
+21:05:12 [INFO] [API] stop
+21:05:12 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822712037 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:12 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822712370 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822712703 HTTP/1.1" 200 OK
+21:05:12 [INFO] [IDLE] blink
+21:05:12 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822713036 HTTP/1.1" 200 OK
+21:05:13 [INFO] [API] command head down
+21:05:13 [INFO] [API] camera down
+21:05:13 [INFO] [SERVO] tilt target 20.0deg
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:13 [INFO] [API] command head down
+21:05:13 [INFO] [API] camera down
+21:05:13 [INFO] [SERVO] tilt target 25.0deg
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822713369 HTTP/1.1" 200 OK
+21:05:13 [DEBUG] [SERVO] tilt angle=25.0deg pulse=1325us
+21:05:13 [INFO] [API] command move forward
+21:05:13 [INFO] [API] move forward speed=None
+21:05:13 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822713702 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:13 [INFO] [MOTOR CTRL] forward pulses L=38 R=40 dt=0.26s pwm L=0.305 R=0.295 correction=+0.005
+21:05:13 [DEBUG] [SERVO] tilt angle=25.0deg pulse=1325us
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822714035 HTTP/1.1" 200 OK
+21:05:14 [INFO] [API] command move forward
+21:05:14 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:14 [INFO] [HEARTBEAT] alive uptime=00:01:00INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+
+21:05:14 [INFO] [API] command move forwardINFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822714368 HTTP/1.1" 200 OK
+
+21:05:14 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:14 [INFO] [HEALTH] battery=83.0% voltage=16.123V current=-345.0A power=-5562.435W cells_mv=4026,4033,4033,4032 charging=no usb=no temp=49.6C memory=7.7% load=0.95 throttled=0x0
+21:05:14 [INFO] [MOTOR CTRL] forward pulses L=108 R=138 dt=0.49s pwm L=0.324 R=0.276 correction=+0.024
+21:05:14 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822714701 HTTP/1.1" 200 OK
+21:05:14 [INFO] [API] command move forward
+21:05:14 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:14 [INFO] [MOTOR CTRL] forward pulses L=116 R=131 dt=0.51s pwm L=0.312 R=0.288 correction=+0.012
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822715034 HTTP/1.1" 200 OK
+21:05:15 [INFO] [API] command move forward
+21:05:15 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:15 [INFO] [MOTOR CTRL] forward pulses L=74 R=76 dt=0.33s pwm L=0.303 R=0.297 correction=+0.003
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822715367 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:15 [INFO] [API] command move forward
+21:05:15 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:15 [INFO] [API] command move stop
+21:05:15 [INFO] [API] stop
+21:05:15 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822715700 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822716033 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822716366 HTTP/1.1" 200 OK
+21:05:16 [INFO] [IDLE] look_left
+21:05:16 [INFO] [FACE] sequence look_left
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:16 [INFO] [API] command move right
+21:05:16 [INFO] [API] turn right speed=None
+21:05:16 [INFO] [MOTORS] right left=0.25 right=-0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822716699 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:16 [INFO] [API] command move right
+21:05:16 [INFO] [API] turn right speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822717032 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:17 [INFO] [API] command move right
+21:05:17 [INFO] [API] turn right speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:17 [INFO] [API] command move stop
+21:05:17 [INFO] [API] stop
+21:05:17 [INFO] [MOTORS] stop left=0.00 right=0.00INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:17 [INFO] [API] command move forward
+21:05:17 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822717365 HTTP/1.1" 200 OK
+21:05:17 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822717698 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:17 [INFO] [API] command move forward
+21:05:17 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822718031 HTTP/1.1" 200 OK
+21:05:17 [INFO] [MOTOR CTRL] forward pulses L=108 R=83 dt=0.48s pwm L=0.274 R=0.326 correction=-0.026
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:18 [INFO] [API] command move stop
+21:05:18 [INFO] [API] stop
+21:05:18 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822718364 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822718697 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:18 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822719031 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822719364 HTTP/1.1" 200 OK
+21:05:19 [INFO] [IDLE] double blink
+21:05:19 [INFO] [FACE] sequence double_blink
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822719696 HTTP/1.1" 200 OK
+21:05:19 [INFO] [API] command move forward
+21:05:19 [INFO] [API] move forward speed=None
+21:05:19 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822720029 HTTP/1.1" 200 OK
+21:05:20 [INFO] [MOTOR CTRL] forward pulses L=73 R=55 dt=0.35s pwm L=0.272 R=0.328 correction=-0.028
+21:05:20 [INFO] [API] command move forward
+21:05:20 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822720362 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:20 [INFO] [API] command move forward
+21:05:20 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:20 [INFO] [API] command move stop
+21:05:20 [INFO] [API] stop
+21:05:20 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822720695 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822721029 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:21 [INFO] [API] command move left
+21:05:21 [INFO] [API] turn left speed=None
+21:05:21 [INFO] [MOTORS] left left=-0.25 right=0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822721361 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:21 [INFO] [API] command move left
+21:05:21 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822721694 HTTP/1.1" 200 OK
+21:05:21 [INFO] [API] command move left
+21:05:21 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822722028 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:22 [INFO] [API] command move stop
+21:05:22 [INFO] [API] stop
+21:05:22 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822722360 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822722693 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822723027 HTTP/1.1" 200 OK
+21:05:23 [INFO] [IDLE] double blink
+21:05:23 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822723359 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:23 [INFO] [API] command move forward
+21:05:23 [INFO] [API] move forward speed=None
+21:05:23 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822723693 HTTP/1.1" 200 OK
+21:05:23 [INFO] [MOTOR CTRL] forward pulses L=56 R=46 dt=0.29s pwm L=0.280 R=0.320 correction=-0.020
+21:05:23 [INFO] [API] command move forward
+21:05:23 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822724025 HTTP/1.1" 200 OK
+21:05:24 [INFO] [MOTOR CTRL] forward pulses L=64 R=80 dt=0.32s pwm L=0.322 R=0.278 correction=+0.022
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:24 [INFO] [API] command move forward
+21:05:24 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822724359 HTTP/1.1" 200 OK
+21:05:24 [INFO] [MOTOR CTRL] forward pulses L=73 R=75 dt=0.32s pwm L=0.303 R=0.297 correction=+0.003
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:24 [INFO] [API] command move forward
+21:05:24 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822724691 HTTP/1.1" 200 OK
+21:05:24 [INFO] [API] command move forward
+21:05:24 [INFO] [API] move forward speed=None
+21:05:24 [INFO] [MOTOR CTRL] forward pulses L=122 R=127 dt=0.48s pwm L=0.304 R=0.296 correction=+0.004
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822725024 HTTP/1.1" 200 OK
+21:05:25 [INFO] [MOTOR CTRL] forward pulses L=62 R=66 dt=0.28s pwm L=0.306 R=0.294 correction=+0.006
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:25 [INFO] [API] command move forward
+21:05:25 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822725357 HTTP/1.1" 200 OK
+21:05:25 [INFO] [API] command move stop
+21:05:25 [INFO] [API] stop
+21:05:25 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822725691 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822726024 HTTP/1.1" 200 OK
+21:05:26 [INFO] [IDLE] double blink
+21:05:26 [INFO] [FACE] sequence double_blink
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /admin/wifi HTTP/1.1" 200 OK
+21:05:26 [INFO] [API] command move backward
+21:05:26 [INFO] [API] move backward speed=None
+21:05:26 [INFO] [MOTORS] backward left=-0.30 right=-0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822726360 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:26 [INFO] [API] command move backward
+21:05:26 [INFO] [API] move backward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822726690 HTTP/1.1" 200 OK
+21:05:26 [INFO] [API] command move stop
+21:05:26 [INFO] [API] stop
+21:05:26 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822727022 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822727356 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822727688 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822728022 HTTP/1.1" 200 OK
+21:05:28 [INFO] [API] command move left
+21:05:28 [INFO] [API] turn left speed=None
+21:05:28 [INFO] [MOTORS] left left=-0.25 right=0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822728354 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:28 [INFO] [API] command move left
+21:05:28 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822728687 HTTP/1.1" 200 OK
+21:05:28 [INFO] [API] command move left
+21:05:28 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822729020 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822729353 HTTP/1.1" 200 OK
+21:05:29 [INFO] [API] command move left
+21:05:29 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:29 [INFO] [API] command move stop21:05:29 [INFO] [API] command move left
+21:05:29 [INFO] [API] turn left speed=None
+
+21:05:29 [INFO] [API] stop
+21:05:29 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822729687 HTTP/1.1" 200 OK
+21:05:29 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822730019 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822730352 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822730686 HTTP/1.1" 200 OK
+21:05:30 [INFO] [IDLE] look_down
+21:05:30 [INFO] [FACE] sequence look_down
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822731019 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822731352 HTTP/1.1" 200 OK
+21:05:31 [INFO] [API] command move left
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:31 [INFO] [API] turn left speed=None
+21:05:31 [INFO] [MOTORS] left left=-0.25 right=0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:31 [INFO] [API] command move stop
+21:05:31 [INFO] [API] stop
+21:05:31 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822731684 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:32 [INFO] [API] command move forward
+21:05:32 [INFO] [API] move forward speed=None
+21:05:32 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822732019 HTTP/1.1" 200 OK
+21:05:32 [INFO] [MOTOR CTRL] forward pulses L=10 R=10 dt=0.10s pwm L=0.300 R=0.300 correction=+0.000
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822732350 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:32 [INFO] [API] command move forward
+21:05:32 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822732683 HTTP/1.1" 200 OK
+21:05:32 [INFO] [MOTOR CTRL] forward pulses L=96 R=113 dt=0.47s pwm L=0.316 R=0.284 correction=+0.016
+21:05:32 [INFO] [API] command move forward
+21:05:32 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:33 [INFO] [API] command move forward
+21:05:33 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822733017 HTTP/1.1" 200 OK
+21:05:33 [INFO] [MOTOR CTRL] forward pulses L=112 R=128 dt=0.47s pwm L=0.313 R=0.287 correction=+0.013
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822733350 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:33 [INFO] [API] command move forward
+21:05:33 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:33 [INFO] [MOTOR CTRL] forward pulses L=107 R=123 dt=0.47s pwm L=0.314 R=0.286 correction=+0.014
+21:05:33 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822733682 HTTP/1.1" 200 OK
+21:05:33 [INFO] [API] command move forward
+21:05:33 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822734015 HTTP/1.1" 200 OK
+21:05:34 [INFO] [MOTOR CTRL] forward pulses L=113 R=127 dt=0.47s pwm L=0.312 R=0.288 correction=+0.012
+21:05:34 [INFO] [API] command move forward
+21:05:34 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822734348 HTTP/1.1" 200 OK
+21:05:34 [INFO] [MOTOR CTRL] forward pulses L=70 R=74 dt=0.32s pwm L=0.306 R=0.294 correction=+0.006
+21:05:34 [INFO] [API] command move forward
+21:05:34 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822734681 HTTP/1.1" 200 OK
+21:05:34 [INFO] [MOTOR CTRL] forward pulses L=69 R=72 dt=0.32s pwm L=0.304 R=0.296 correction=+0.004
+21:05:34 [INFO] [IDLE] look_down
+21:05:34 [INFO] [FACE] sequence look_down
+21:05:34 [INFO] [API] command move forward
+21:05:34 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822735015 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:35 [INFO] [API] command move forward
+21:05:35 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822735347 HTTP/1.1" 200 OK
+21:05:35 [INFO] [MOTOR CTRL] forward pulses L=188 R=197 dt=0.74s pwm L=0.305 R=0.295 correction=+0.005
+21:05:35 [INFO] [API] command move forward
+21:05:35 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822735680 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:35 [INFO] [API] command move forward
+21:05:35 [INFO] [API] move forward speed=None
+21:05:35 [INFO] [MOTOR CTRL] forward pulses L=118 R=122 dt=0.48s pwm L=0.303 R=0.297 correction=+0.003
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822736014 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:36 [INFO] [API] command move forward
+21:05:36 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822736346 HTTP/1.1" 200 OK
+21:05:36 [INFO] [MOTOR CTRL] forward pulses L=114 R=117 dt=0.47s pwm L=0.303 R=0.297 correction=+0.003
+21:05:36 [INFO] [API] command move forward
+21:05:36 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822736679 HTTP/1.1" 200 OK
+21:05:36 [INFO] [MOTOR CTRL] forward pulses L=118 R=123 dt=0.49s pwm L=0.304 R=0.296 correction=+0.004
+21:05:36 [INFO] [API] command move forward
+21:05:36 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822737013 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:37 [INFO] [API] command move forward
+21:05:37 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822737346 HTTP/1.1" 200 OK
+21:05:37 [INFO] [MOTOR CTRL] forward pulses L=120 R=121 dt=0.52s pwm L=0.301 R=0.299 correction=+0.001
+21:05:37 [INFO] [FACE] sequence neutral
+21:05:37 [INFO] [API] command move stop
+21:05:37 [INFO] [API] stop
+21:05:37 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822737678 HTTP/1.1" 200 OK
+21:05:37 [INFO] [IDLE] blink
+21:05:37 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822738012 HTTP/1.1" 200 OK
+21:05:38 [INFO] [API] command move right
+21:05:38 [INFO] [API] turn right speed=None
+21:05:38 [INFO] [MOTORS] right left=0.25 right=-0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822738344 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:38 [INFO] [API] command move right
+21:05:38 [INFO] [API] turn right speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822738677 HTTP/1.1" 200 OK
+21:05:38 [INFO] [API] command move right
+21:05:38 [INFO] [API] turn right speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822739011 HTTP/1.1" 200 OK
+21:05:39 [INFO] [API] command move right
+21:05:39 [INFO] [API] turn right speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822739343 HTTP/1.1" 200 OK
+21:05:39 [INFO] [API] command move stop
+21:05:39 [INFO] [API] stop
+21:05:39 [INFO] [MOTORS] stop left=0.00 right=0.00
+21:05:39 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822739676 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822740010 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822740342 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822740676 HTTP/1.1" 200 OK
+21:05:41 [INFO] [API] command move forward
+21:05:41 [INFO] [API] move forward speed=None
+21:05:41 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822741010 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /admin/wifi HTTP/1.1" 200 OK
+21:05:41 [INFO] [API] command move forward
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:41 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822741341 HTTP/1.1" 200 OK
+21:05:41 [INFO] [MOTOR CTRL] forward pulses L=61 R=53 dt=0.35s pwm L=0.286 R=0.314 correction=-0.014
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:41 [INFO] [API] command move forward
+21:05:41 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822741674 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:41 [INFO] [MOTOR CTRL] forward pulses L=118 R=105 dt=0.48s pwm L=0.288 R=0.312 correction=-0.012
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822742007 HTTP/1.1" 200 OK
+21:05:42 [INFO] [API] command move forward
+21:05:42 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822742340 HTTP/1.1" 200 OK
+21:05:42 [INFO] [MOTOR CTRL] forward pulses L=121 R=120 dt=0.47s pwm L=0.299 R=0.301 correction=-0.001
+21:05:42 [INFO] [IDLE] blink
+21:05:42 [INFO] [FACE] sequence blink
+21:05:42 [INFO] [API] command move forward
+21:05:42 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822742673 HTTP/1.1" 200 OK
+21:05:42 [INFO] [API] command move forward
+21:05:42 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822743007 HTTP/1.1" 200 OK
+21:05:43 [INFO] [MOTOR CTRL] forward pulses L=182 R=173 dt=0.70s pwm L=0.295 R=0.305 correction=-0.005
+21:05:43 [INFO] [API] command move forward
+21:05:43 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822743339 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:43 [INFO] [API] command move forward
+21:05:43 [INFO] [API] move forward speed=None
+21:05:43 [INFO] [MOTOR CTRL] forward pulses L=123 R=117 dt=0.51s pwm L=0.295 R=0.305 correction=-0.005
+21:05:43 [INFO] [API] command move stop
+21:05:43 [INFO] [API] stop
+21:05:43 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822743672 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:43 [INFO] [API] command move left
+21:05:43 [INFO] [API] turn left speed=None
+21:05:43 [INFO] [MOTORS] left left=-0.25 right=0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822744006 HTTP/1.1" 200 OK
+21:05:44 [INFO] [API] command move stop
+21:05:44 [INFO] [API] stop
+21:05:44 [INFO] [MOTORS] stop left=0.00 right=0.00
+21:05:44 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822744338 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:44 [INFO] [API] command move forwardINFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+
+21:05:44 [INFO] [API] move forward speed=None
+21:05:44 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:44 [INFO] [HEARTBEAT] alive uptime=00:01:31INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+
+21:05:44 [INFO] [MOTOR CTRL] forward pulses L=21 R=22 dt=0.17s pwm L=0.305 R=0.295 correction=+0.005
+21:05:44 [INFO] [API] command move forward
+21:05:44 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822744671 HTTP/1.1" 200 OK
+21:05:44 [INFO] [MOTOR CTRL] forward pulses L=53 R=62 dt=0.28s pwm L=0.316 R=0.284 correction=+0.016
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:44 [INFO] [API] command move stop
+21:05:44 [INFO] [API] stop
+21:05:44 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822745009 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822745337 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822745670 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822746003 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822746336 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822746670 HTTP/1.1" 200 OK
+21:05:46 [INFO] [API] command move left
+21:05:46 [INFO] [API] turn left speed=None
+21:05:46 [INFO] [MOTORS] left left=-0.25 right=0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822747003 HTTP/1.1" 200 OK
+21:05:46 [INFO] [API] command move left
+21:05:46 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:47 [INFO] [API] command move stop
+21:05:47 [INFO] [API] stop
+21:05:47 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822747335 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:47 [INFO] [API] command move forward
+21:05:47 [INFO] [API] move forward speed=None
+21:05:47 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822747668 HTTP/1.1" 200 OK
+21:05:47 [INFO] [MOTOR CTRL] forward pulses L=21 R=20 dt=0.17s pwm L=0.295 R=0.305 correction=-0.005
+21:05:47 [INFO] [IDLE] blink
+21:05:47 [INFO] [FACE] sequence blink
+21:05:47 [INFO] [API] command move forward
+21:05:47 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822748001 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:48 [INFO] [API] command move forward
+21:05:48 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822748334 HTTP/1.1" 200 OK
+21:05:48 [INFO] [MOTOR CTRL] forward pulses L=164 R=209 dt=0.74s pwm L=0.324 R=0.276 correction=+0.024
+21:05:48 [INFO] [API] command move forward
+21:05:48 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822748667 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:48 [INFO] [API] command move stop
+21:05:48 [INFO] [API] stop
+21:05:48 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822749000 HTTP/1.1" 200 OK
+21:05:48 [INFO] [API] command move left
+21:05:48 [INFO] [API] turn left speed=None
+21:05:48 [INFO] [MOTORS] left left=-0.25 right=0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:49 [INFO] [API] command move left
+21:05:49 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822749333 HTTP/1.1" 200 OK
+21:05:49 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822749666 HTTP/1.1" 200 OK
+21:05:49 [INFO] [API] command move left
+21:05:49 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822749999 HTTP/1.1" 200 OK
+21:05:50 [INFO] [API] command move left
+21:05:50 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822750332 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:50 [INFO] [API] command move left
+21:05:50 [INFO] [API] turn left speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822750665 HTTP/1.1" 200 OK
+21:05:50 [INFO] [IDLE] look_left
+21:05:50 [INFO] [FACE] sequence look_left
+21:05:50 [INFO] [API] command move left
+21:05:50 [INFO] [API] turn left speed=None
+21:05:50 [INFO] [API] command move stop
+21:05:50 [INFO] [API] stop
+21:05:50 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822750998 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822751331 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822751665 HTTP/1.1" 200 OK
+21:05:51 [INFO] [API] command move left
+21:05:51 [INFO] [API] turn left speed=None
+21:05:51 [INFO] [MOTORS] left left=-0.25 right=0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:51 [INFO] [API] command move stop
+21:05:51 [INFO] [API] stop
+21:05:51 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822751997 HTTP/1.1" 200 OK
+21:05:52 [INFO] [API] command move left
+21:05:52 [INFO] [API] turn left speed=None
+21:05:52 [INFO] [MOTORS] left left=-0.25 right=0.25
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822752330 HTTP/1.1" 200 OK
+21:05:52 [INFO] [API] command move stop
+21:05:52 [INFO] [API] stop
+21:05:52 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:52 [INFO] [API] command move forward
+21:05:52 [INFO] [API] move forward speed=None
+21:05:52 [INFO] [MOTORS] forward left=0.30 right=0.30
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822752663 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:52 [INFO] [API] command move forward
+21:05:52 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822752996 HTTP/1.1" 200 OK
+21:05:53 [INFO] [MOTOR CTRL] forward pulses L=97 R=108 dt=0.49s pwm L=0.311 R=0.289 correction=+0.011
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:53 [INFO] [API] command move forward
+21:05:53 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822753329 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+21:05:53 [INFO] [MOTOR CTRL] forward pulses L=115 R=123 dt=0.48s pwm L=0.307 R=0.293 correction=+0.007
+21:05:53 [INFO] [FACE] sequence neutral
+21:05:53 [INFO] [API] command move forward
+21:05:53 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822753662 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+21:05:53 [INFO] [API] command move forward
+21:05:53 [INFO] [API] move forward speed=None
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822753995 HTTP/1.1" 200 OK
+21:05:54 [INFO] [MOTOR CTRL] forward pulses L=118 R=132 dt=0.47s pwm L=0.311 R=0.289 correction=+0.011
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:05:54 [INFO] [API] command move stop
+21:05:54 [INFO] [API] stop
+21:05:54 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822754328 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822754662 HTTP/1.1" 200 OK
+21:05:54 [INFO] [API] command move backward
+21:05:54 [INFO] [API] move backward speed=None
+21:05:54 [INFO] [MOTORS] backward left=-0.30 right=-0.30
+21:05:54 [INFO] [API] command move stop
+21:05:54 [INFO] [API] stop
+21:05:54 [INFO] [MOTORS] stop left=0.00 right=0.00
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "POST /command HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822754994 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822755327 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822755661 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822755993 HTTP/1.1" 200 OK
+21:05:56 [INFO] [IDLE] blink
+21:05:56 [INFO] [FACE] sequence blink
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822756327 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /admin/wifi HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822756659 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822756992 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822757448 HTTP/1.1" 200 OK
+21:05:58 [INFO] [FACE] sequence neutral
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822758449 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822759448 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822760483 HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /state HTTP/1.1" 200 OK
+21:06:02 [INFO] [IDLE] look_high
+21:06:02 [INFO] [FACE] sequence look_high
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /vision/status HTTP/1.1" 200 OK
+INFO:     2a02:21b4:bc5d:7f00:ab07:a377:6081:b374:0 - "GET /camera/frame?t=1793822762818 HTTP/1.1" 200 OK
+21:06:04 [INFO] [FACE] sequence neutral
+21:06:05 [INFO] [IDLE] blink
+21:06:05 [INFO] [FACE] sequence blink
+21:06:07 [INFO] [FACE] sequence neutral
+21:06:08 [INFO] [IDLE] blink
+21:06:08 [INFO] [FACE] sequence blink
+21:06:09 [INFO] [FACE] sequence neutral
+21:06:11 [INFO] [IDLE] blink
+21:06:11 [INFO] [FACE] sequence blink
+21:06:13 [INFO] [FACE] sequence neutral
+21:06:14 [INFO] [HEALTH] battery=83.0% voltage=16.123V current=-326.0A power=-5256.098W cells_mv=4028,4031,4032,4031 charging=no usb=no temp=49.6C memory=7.7% load=0.95 throttled=0x0
+21:06:14 [INFO] [HEARTBEAT] alive uptime=00:02:01
+21:06:14 [INFO] [IDLE] yawn
+21:06:14 [INFO] [FACE] sequence yawn
+21:06:18 [INFO] [FACE] sequence neutral
+21:06:21 [INFO] [IDLE] blink
+21:06:21 [INFO] [FACE] sequence blink
+21:06:23 [INFO] [FACE] sequence neutral
+21:06:27 [INFO] [IDLE] blink
+21:06:27 [INFO] [FACE] sequence blink
+21:06:29 [INFO] [FACE] sequence neutral
+21:06:33 [INFO] [IDLE] double blink
+21:06:33 [INFO] [FACE] sequence double_blink
+21:06:37 [INFO] [FACE] sequence neutral
+21:06:38 [INFO] [IDLE] blink
+21:06:38 [INFO] [FACE] sequence blink
+21:06:40 [INFO] [FACE] sequence neutral
+21:06:42 [INFO] [IDLE] blink
+21:06:42 [INFO] [FACE] sequence blink
+21:06:44 [INFO] [FACE] sequence neutral
+21:06:45 [INFO] [HEARTBEAT] alive uptime=00:02:31
+21:06:46 [INFO] [IDLE] blink
+21:06:46 [INFO] [FACE] sequence blink
+21:06:48 [INFO] [FACE] sequence neutral
+21:06:52 [INFO] [IDLE] look_right
+21:06:52 [INFO] [FACE] sequence look_right
+21:06:54 [INFO] [FACE] sequence neutral
+21:06:56 [INFO] [IDLE] blink
+21:06:56 [INFO] [FACE] sequence blink
+21:06:58 [INFO] [FACE] sequence neutral
+21:07:00 [INFO] [IDLE] look_left
+21:07:00 [INFO] [FACE] sequence look_left
+21:07:02 [INFO] [FACE] sequence neutral
+21:07:05 [INFO] [IDLE] blink
+21:07:05 [INFO] [FACE] sequence blink
+21:07:07 [INFO] [FACE] sequence neutral
+21:07:10 [INFO] [IDLE] blink
+21:07:10 [INFO] [FACE] sequence blink
+21:07:12 [INFO] [FACE] sequence neutral
+21:07:14 [INFO] [HEALTH] battery=83.0% voltage=16.121V current=-331.0A power=-5336.051W cells_mv=4027,4031,4033,4030 charging=no usb=no temp=50.7C memory=7.6% load=0.83 throttled=0x0
+21:07:15 [INFO] [HEARTBEAT] alive uptime=00:03:01
+21:07:17 [INFO] [IDLE] blink
+21:07:17 [INFO] [FACE] sequence blink
+21:07:18 [INFO] [FACE] sequence neutral
+21:07:22 [INFO] [IDLE] look_down
+21:07:22 [INFO] [FACE] sequence look_down
+21:07:25 [INFO] [FACE] sequence neutral
+21:07:28 [INFO] [IDLE] blink
+21:07:28 [INFO] [FACE] sequence blink
+21:07:29 [INFO] [FACE] sequence neutral
+21:07:31 [INFO] [IDLE] look_high
+21:07:31 [INFO] [FACE] sequence look_high
+21:07:34 [INFO] [FACE] sequence neutral
+21:07:35 [INFO] [IDLE] yawn
+21:07:35 [INFO] [FACE] sequence yawn
+21:07:39 [INFO] [FACE] sequence neutral
+21:07:40 [INFO] [IDLE] blink
+21:07:40 [INFO] [FACE] sequence blink
+21:07:42 [INFO] [FACE] sequence neutral
+21:07:43 [INFO] [IDLE] double blink
+21:07:43 [INFO] [FACE] sequence double_blink
+21:07:45 [INFO] [HEARTBEAT] alive uptime=00:03:31
+21:07:47 [INFO] [FACE] sequence neutral
+21:07:48 [INFO] [IDLE] double blink
+21:07:48 [INFO] [FACE] sequence double_blink
+21:07:52 [INFO] [FACE] sequence neutral
+21:07:53 [INFO] [IDLE] blink
+21:07:53 [INFO] [FACE] sequence blink
+21:07:54 [INFO] [FACE] sequence neutral
+21:07:56 [INFO] [IDLE] look_left
+21:07:56 [INFO] [FACE] sequence look_left
+21:07:59 [INFO] [FACE] sequence neutral
+21:08:01 [INFO] [IDLE] double blink
+21:08:01 [INFO] [FACE] sequence double_blink
+21:08:05 [INFO] [IDLE] look_down
+21:08:05 [INFO] [FACE] sequence neutral
+21:08:09 [INFO] [IDLE] blink
+21:08:09 [INFO] [FACE] sequence blink
+21:08:11 [INFO] [FACE] sequence neutral
+21:08:13 [INFO] [IDLE] look_right
+21:08:13 [INFO] [FACE] sequence look_right
+21:08:14 [INFO] [HEALTH] battery=83.0% voltage=16.116V current=-333.0A power=-5366.628W cells_mv=4027,4030,4031,4029 charging=no usb=no temp=50.7C memory=7.6% load=0.94 throttled=0x0
+21:08:15 [INFO] [HEARTBEAT] alive uptime=00:04:02
+21:08:16 [INFO] [FACE] sequence neutral
+21:08:20 [INFO] [IDLE] yawn
+21:08:20 [INFO] [FACE] sequence yawn
+21:08:23 [INFO] [IDLE] yawn
+21:08:23 [INFO] [FACE] sequence neutral
+21:08:27 [INFO] [IDLE] blink
+21:08:27 [INFO] [FACE] sequence blink
+21:08:29 [INFO] [FACE] sequence neutral
+21:08:32 [INFO] [IDLE] look_down
+21:08:32 [INFO] [FACE] sequence look_down
+21:08:35 [INFO] [IDLE] blink
+21:08:35 [INFO] [FACE] sequence blink
+21:08:37 [INFO] [FACE] sequence neutral
+21:08:41 [INFO] [IDLE] blink
+21:08:41 [INFO] [FACE] sequence blink
+21:08:43 [INFO] [FACE] sequence neutral
+21:08:46 [INFO] [HEARTBEAT] alive uptime=00:04:32
+21:08:48 [INFO] [IDLE] look_high
+21:08:48 [INFO] [FACE] sequence look_high
+21:08:51 [INFO] [FACE] sequence neutral
+21:08:53 [INFO] [IDLE] blink
+21:08:53 [INFO] [FACE] sequence blink
+21:08:55 [INFO] [FACE] sequence neutral
+21:08:58 [INFO] [IDLE] yawn
+21:08:58 [INFO] [FACE] sequence yawn
+21:09:01 [INFO] [IDLE] blink
+21:09:01 [INFO] [FACE] sequence neutral
+21:09:04 [INFO] [IDLE] blink
+21:09:04 [INFO] [FACE] sequence blink
+21:09:06 [INFO] [FACE] sequence neutral
