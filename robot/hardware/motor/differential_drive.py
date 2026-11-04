@@ -52,17 +52,35 @@ class DifferentialDrive:
         self.left_speed=clamp(left,-1,1);self.right_speed=clamp(right,-1,1)
         self.left_motor.set_speed(self.left_speed);self.right_motor.set_speed(self.right_speed)
 
+    def _correction_eligible(self,motion,left,right):
+        if not self._enabled() or motion not in ("forward","backward","joystick"):return False
+        if left*right<=0:return False
+        low=min(abs(left),abs(right));high=max(abs(left),abs(right))
+        return high>=settings.MOTOR_MIN_SPEED and low/high>=0.65
+
+    def _corrected_speeds(self):
+        left=self.target_left_speed;right=self.target_right_speed
+        if not self._correction_eligible(self.motion,left,right):return left,right
+        sign=1 if left>0 else -1
+        return sign*clamp(abs(left)+self._correction,0,1),sign*clamp(abs(right)-self._correction,0,1)
+
     def _set_motion(self,motion,left,right):
         with self._lock:
             left=clamp(left,-1,1);right=clamp(right,-1,1)
             changed=(motion!=self.motion or left!=self.target_left_speed or right!=self.target_right_speed)
-            self.motion=motion
-            self.target_left_speed=left;self.target_right_speed=right
-            if changed:self._reset_correction()
-            if motion in ("forward","backward") and self._enabled() and not changed:
-                sign=1 if motion=="forward" else -1
-                self._apply_speeds(sign*clamp(abs(left)+self._correction,0,1),sign*clamp(abs(right)-self._correction,0,1))
-            else:self._apply_speeds(left,right)
+            was_eligible=self._correction_eligible(self.motion,self.target_left_speed,self.target_right_speed)
+            eligible=self._correction_eligible(motion,left,right)
+            direction_changed=(left>0)!=(self.target_left_speed>0) or (right>0)!=(self.target_right_speed>0)
+            if eligible and was_eligible and not direction_changed:
+                # Keep encoder sampling across joystick heartbeat and small steering changes.
+                # Reset after a significant change in requested wheel-speed ratio.
+                old_ratio=abs(self.target_left_speed)/(abs(self.target_left_speed)+abs(self.target_right_speed))
+                new_ratio=abs(left)/(abs(left)+abs(right))
+                reset=abs(new_ratio-old_ratio)>0.10
+            else:reset=True
+            self.motion=motion;self.target_left_speed=left;self.target_right_speed=right
+            if reset:self._reset_correction()
+            self._apply_speeds(*self._corrected_speeds())
             if changed:log.info(f"[MOTORS] {motion} left={left:.2f} right={right:.2f}")
 
     def set_left_speed(self,speed):
@@ -105,26 +123,27 @@ class DifferentialDrive:
     def update(self):
         if not self._enabled():return
         with self._lock:
-            if self.motion not in ("forward","backward"):return
-            now=time.monotonic()
-            dt=now-self._last_sample
+            left_target=self.target_left_speed;right_target=self.target_right_speed
+            if not self._correction_eligible(self.motion,left_target,right_target):return
+            now=time.monotonic();dt=now-self._last_sample
             if dt<max(0.02,float(settings.MOTOR_ENCODER_CORRECTION_INTERVAL)):return
             counts=self._counts()
             left=abs(counts[0]-self._last_counts[0]);right=abs(counts[1]-self._last_counts[1])
             self._last_counts=counts;self._last_sample=now
             total=left+right
             if total>=max(1,int(settings.MOTOR_ENCODER_CORRECTION_MIN_PULSES)):
-                error=(right-left)/total
+                # Compare measured wheel proportions with requested wheel proportions.
+                # Positive error means right wheel is faster than requested.
+                target_total=abs(left_target)+abs(right_target)
+                expected_right=abs(right_target)/target_total
+                error=2*(right/total-expected_right)
                 self._correction=clamp(error*settings.MOTOR_ENCODER_CORRECTION_KP,-settings.MOTOR_ENCODER_CORRECTION_MAX,settings.MOTOR_ENCODER_CORRECTION_MAX)
             else:self._correction=0.0
-            sign=1 if self.motion=="forward" else -1
-            left_pwm=clamp(abs(self.target_left_speed)+self._correction,0,1)
-            right_pwm=clamp(abs(self.target_right_speed)-self._correction,0,1)
-            self._apply_speeds(sign*left_pwm,sign*right_pwm)
+            self._apply_speeds(*self._corrected_speeds())
             interval=float(getattr(settings,"MOTOR_ENCODER_CORRECTION_LOG_INTERVAL",2.0))
             if interval>0 and now-self._last_log>=interval:
                 self._last_log=now
-                log.info(f"[MOTOR CTRL] {self.motion} pulses L={left} R={right} dt={dt:.2f}s pwm L={left_pwm:.3f} R={right_pwm:.3f} correction={self._correction:+.3f}")
+                log.info(f"[MOTOR CTRL] {self.motion} pulses L={left} R={right} dt={dt:.2f}s pwm L={self.left_speed:.3f} R={self.right_speed:.3f} correction={self._correction:+.3f}")
 
     def reset_encoders(self):
         with self._lock:
