@@ -3,7 +3,7 @@
     if(!pad||!knob||!toggle||!dpad)return;
     const TURN_SENSITIVITY=0.25; // 25% of original steering sensitivity
     const JOYSTICK_DEADZONE=0.12; // no movement within 12% of radius
-    const JOYSTICK_MIN_OUTPUT=0.33; // minimum motor command after deadzone
+    const JOYSTICK_MIN_OUTPUT=0.67; // 0.67 * 0.30 = 0.20 PWM at first movement
     let active=false,pointer=null,timer=null,x=0,y=0,busy=false;
     const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
     function render(){knob.style.transform=`translate(calc(-50% + ${x*100}%),calc(-50% + ${-y*100}%))`;knob.style.left=`${50+x*34}%`;knob.style.top=`${50-y*34}%`;knob.style.transform="translate(-50%,-50%)"}
@@ -12,9 +12,10 @@
         if(magnitude<=JOYSTICK_DEADZONE)return [0,0];
         const scale=JOYSTICK_MIN_OUTPUT+(1-JOYSTICK_MIN_OUTPUT)*(magnitude-JOYSTICK_DEADZONE)/(1-JOYSTICK_DEADZONE);
         const steering=x*TURN_SENSITIVITY;
-        const left=clamp((y+steering)/Math.max(1,Math.abs(y+steering),Math.abs(y-steering)),-1,1)*scale;
-        const right=clamp((y-steering)/Math.max(1,Math.abs(y+steering),Math.abs(y-steering)),-1,1)*scale;
-        return [left,right].map(v=>Math.round(v*1000)/1000);
+        const rawLeft=y+steering,rawRight=y-steering;
+        const maximum=Math.max(Math.abs(rawLeft),Math.abs(rawRight));
+        if(maximum<0.0001)return [0,0];
+        return [rawLeft,rawRight].map(v=>Math.round(clamp(v/maximum*scale,-1,1)*1000)/1000);
     }
     async function tick(){
         if(!active||busy)return;
