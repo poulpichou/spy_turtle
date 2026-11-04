@@ -11,7 +11,10 @@
         const magnitude=Math.hypot(x,y);
         if(magnitude<=JOYSTICK_DEADZONE)return [0,0];
         const scale=JOYSTICK_MIN_OUTPUT+(1-JOYSTICK_MIN_OUTPUT)*(magnitude-JOYSTICK_DEADZONE)/(1-JOYSTICK_DEADZONE);
-        const steering=x*TURN_SENSITIVITY;
+        // No steering inside the +/-45 degree forward/backward corridors.
+        // Outside them, steering grows smoothly from zero to full at the sides.
+        const side=Math.max(0,Math.abs(x)-Math.abs(y));
+        const steering=Math.sign(x)*side*TURN_SENSITIVITY;
         const rawLeft=y+steering,rawRight=y-steering;
         const maximum=Math.max(Math.abs(rawLeft),Math.abs(rawRight));
         if(maximum<0.0001)return [0,0];

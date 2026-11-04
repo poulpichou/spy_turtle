@@ -22,3 +22,9 @@
 #drive-joystick::before,#drive-joystick::after{content:"";position:absolute;pointer-events:none;background:#5b8177;opacity:.5}
 #drive-joystick::before{width:1px;top:12%;bottom:12%;left:50%}
 #drive-joystick::after{height:1px;left:12%;right:12%;top:50%}
+
+/* V8: monochrome joystick only */
+#drive-mode-toggle[aria-pressed="true"]{background:#555;border-color:#aaa}
+#drive-joystick{background:radial-gradient(circle,#333 0%,#202020 70%);border-color:#777}
+#drive-joystick::before,#drive-joystick::after{background:#999}
+#drive-knob{background:#aaa;border-color:#e5e5e5}
