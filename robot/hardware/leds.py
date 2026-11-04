@@ -78,7 +78,8 @@ class LEDController:
         if now-self.last_frame_at<self.frame_interval:return False
         self.last_frame_at=now
         frame,brightness=self._render(self.animations[self.animation_name],now-self.started_at)
-        self._show(self._scale(frame,self.global_brightness*self.user_brightness*brightness))
+        if self.animation_name=="headlights":self._show(frame) # Full white, bypass normal brightness limits
+        else:self._show(self._scale(frame,self.global_brightness*self.user_brightness*brightness))
         return True
 
     def get_brightness_percent(self): return round(self.user_brightness*100)
@@ -95,6 +96,9 @@ class LEDController:
         effect=animation.get("type",animation.get("effect","off"))
         brightness=float(animation.get("brightness",1.0))
         if effect=="sequence":return self._render_sequence(animation,elapsed)
+        if effect=="headlights":
+            start=int(animation.get("start",15));end=int(animation.get("end",26))
+            return [(255,255,255) if start<=i<=end else (0,0,0) for i in range(self.count)],1.0
         if effect=="off":return [(0,0,0)]*self.count,brightness
         if effect=="solid":return [self._color(animation.get("color",[255,255,255]))]*self.count,brightness
         if effect=="rainbow":

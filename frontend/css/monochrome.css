@@ -1,0 +1,15 @@
+/* Neutral monochrome UI accents; keep actual LED modes and error indicators distinct. */
+#face-overlay rect{stroke:#e5e5e5}
+#thermal-face-overlay rect{stroke:#e5e5e5}
+#thermal-face-overlay text{fill:#f2f2f2}
+#admin-panel input[type="range"]{accent-color:#c9c9c9}
+#admin-panel input.admin-switch:checked{background:#777;border-color:#aaa}
+.admin-log-options label:has(input:checked){background:#484848;border-color:#bbb;color:#fff}
+.admin-log-options label:focus-within{outline-color:#ccc}
+.wifi-network.active{background:#333;border-color:#777}
+#robot-log{color:#ddd}
+.connection-dot.connected{background:#ddd;box-shadow:0 0 5px #aaa}
+#drive-mode-toggle[aria-pressed="true"]{background:#555;border-color:#aaa}
+#drive-joystick{background:radial-gradient(circle,#333 0%,#202020 70%);border-color:#777}
+#drive-joystick::before,#drive-joystick::after{background:#999}
+#drive-knob{background:#aaa;border-color:#e5e5e5}
