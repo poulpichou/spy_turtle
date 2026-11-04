@@ -1,0 +1,12 @@
+
+/* Touch controls: prevent text selection, callouts and browser gestures. */
+#drive-dpad,#drive-dpad *,#right-panel .dpad-card,#right-panel .dpad-card *,#drive-joystick,#drive-joystick *{
+    user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:none;
+}
+#drive-mode-toggle{width:auto;min-width:58px;height:24px;padding:0 6px;font-size:.6rem}
+#drive-joystick[hidden],#drive-dpad[hidden]{display:none!important}
+#drive-joystick{position:fixed;z-index:80;left:20vw;bottom:14px;width:clamp(135px,22vw,210px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#263e39 0%,#1a2927 70%);border:3px solid #4a9d87;box-shadow:0 4px 25px #0009;touch-action:none;user-select:none;-webkit-user-select:none}
+#drive-joystick::before,#drive-joystick::after{content:"";position:absolute;pointer-events:none;background:#5b8177;opacity:.5}
+#drive-joystick::before{width:1px;top:12%;bottom:12%;left:50%}
+#drive-joystick::after{height:1px;left:12%;right:12%;top:50%}
+#drive-knob{position:absolute;z-index:1;left:50%;top:50%;width:34%;height:34%;border-radius:50%;transform:translate(-50%,-50%);background:#6cc9a3;border:3px solid #d0f9e3;box-shadow:0 2px 12px #0008;pointer-events:none}

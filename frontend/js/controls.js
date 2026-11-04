@@ -19,6 +19,7 @@ function startMove(direction){
 function stopMove(){releaseMovement()}
 function setupMovementButton(id,direction){
     const button=document.getElementById(id);
+    button.addEventListener("contextmenu",event=>event.preventDefault());
     button.addEventListener("pointerdown",event=>{event.preventDefault();button.setPointerCapture(event.pointerId);startMove(direction)});
     button.addEventListener("pointerup",stopMove);
     button.addEventListener("pointercancel",stopMove);

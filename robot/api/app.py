@@ -211,7 +211,8 @@ def command(cmd:Command):
         if cmd.type=="move":
             speed=cmd.extra.get("speed")
             if speed is not None:speed=float(speed)
-            if cmd.value=="forward":actions.move_forward(speed)
+            if cmd.value=="joystick":actions.move_joystick(cmd.extra["left"],cmd.extra["right"])
+            elif cmd.value=="forward":actions.move_forward(speed)
             elif cmd.value=="backward":actions.move_backward(speed)
             elif cmd.value=="left":actions.turn_left(speed)
             elif cmd.value=="right":actions.turn_right(speed)

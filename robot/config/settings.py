@@ -155,3 +155,6 @@ ST7796_CTP_INVERT_Y=False
 
 # V5: keep 60 for known-good BLE notifications. Try 80/100/120 only if phone receives complete images.
 
+
+# Maximum absolute motor PWM at full joystick deflection (0..1)
+MOTOR_JOYSTICK_MAX_SPEED=0.65

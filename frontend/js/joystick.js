@@ -1,0 +1,54 @@
+(() => {
+    const pad=document.getElementById("drive-joystick"),knob=document.getElementById("drive-knob"),toggle=document.getElementById("drive-mode-toggle"),dpad=document.getElementById("drive-dpad");
+    if(!pad||!knob||!toggle||!dpad)return;
+    let active=false,pointer=null,timer=null,x=0,y=0,busy=false;
+    const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+    function render(){knob.style.transform=`translate(calc(-50% + ${x*100}%),calc(-50% + ${-y*100}%))`;knob.style.left=`${50+x*34}%`;knob.style.top=`${50-y*34}%`;knob.style.transform="translate(-50%,-50%)"}
+    function speeds(){
+        const magnitude=Math.hypot(x,y);
+        if(magnitude<.12)return [0,0];
+        const scale=(magnitude-.12)/.88;
+        const left=clamp((y+x)/Math.max(1,Math.abs(y+x),Math.abs(y-x)),-1,1)*scale;
+        const right=clamp((y-x)/Math.max(1,Math.abs(y+x),Math.abs(y-x)),-1,1)*scale;
+        return [left,right].map(v=>Math.round(v*1000)/1000);
+    }
+    async function tick(){
+        if(!active||busy)return;
+        if(transportMode==="bluetooth"&&bluetoothPending>1)return;
+        const [left,right]=speeds();
+        busy=true;
+        try{await sendCommand("move","joystick",{left,right})}
+        catch(error){console.warn("[JOYSTICK] Command failed",error);release()}
+        finally{busy=false}
+    }
+    function move(event){
+        const rect=pad.getBoundingClientRect(),radius=rect.width/2;
+        let dx=(event.clientX-(rect.left+radius))/radius,dy=((rect.top+radius)-event.clientY)/radius;
+        const length=Math.hypot(dx,dy);
+        if(length>1){dx/=length;dy/=length}
+        x=dx;y=dy;render();
+    }
+    function release(){
+        if(timer){clearInterval(timer);timer=null}
+        const wasActive=active;active=false;pointer=null;x=0;y=0;render();
+        if(wasActive)sendCommand("move","stop").catch(error=>console.warn("[SAFETY] Joystick stop failed; watchdog fallback",error));
+    }
+    pad.addEventListener("pointerdown",event=>{
+        if(pointer!==null)return;
+        event.preventDefault();if(typeof releaseMovement==="function"&&heldDirection)releaseMovement();
+        pointer=event.pointerId;active=true;pad.setPointerCapture(pointer);move(event);tick();timer=setInterval(tick,300);
+    });
+    pad.addEventListener("pointermove",event=>{if(pointer===event.pointerId){event.preventDefault();move(event)}});
+    pad.addEventListener("pointerup",event=>{if(pointer===event.pointerId)release()});
+    pad.addEventListener("pointercancel",event=>{if(pointer===event.pointerId)release()});
+    pad.addEventListener("lostpointercapture",()=>release());
+    toggle.addEventListener("click",()=>{
+        release();if(typeof releaseMovement==="function"&&heldDirection)releaseMovement();
+        const enabled=pad.hidden;pad.hidden=!enabled;dpad.hidden=enabled;
+        toggle.textContent=enabled?"D-pad":"Joystick";toggle.setAttribute("aria-pressed",String(enabled));
+    });
+    window.addEventListener("blur",release);
+    document.addEventListener("visibilitychange",()=>{if(document.hidden)release()});
+    document.addEventListener("transportchange",release);
+    render();
+})();

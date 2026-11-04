@@ -72,6 +72,7 @@ class DifferentialDrive:
         with self._lock:self._set_motion("manual",self.target_left_speed,speed)
 
     def set_speeds(self,left,right):self._set_motion("manual",left,right)
+    def joystick(self,left,right):self._set_motion("joystick",left,right)
     def set_speed_percent(self,percent):
         with self._lock:self.speed_multiplier=clamp(float(percent)/100.0,1.0,3.0)
         return self.get_speed_percent()

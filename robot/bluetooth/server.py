@@ -52,7 +52,8 @@ def dispatch(command):
     if kind=="move":
         speed=extra.get("speed")
         if speed is not None:speed=float(speed)
-        if value=="forward":actions.move_forward(speed)
+        if value=="joystick":actions.move_joystick(extra["left"],extra["right"])
+        elif value=="forward":actions.move_forward(speed)
         elif value=="backward":actions.move_backward(speed)
         elif value=="left":actions.turn_left(speed)
         elif value=="right":actions.turn_right(speed)

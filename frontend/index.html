@@ -4,11 +4,12 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#181818">
 <title>Spy Turtle</title>
 <link rel="stylesheet" href="/css/style.css?v=27"><link rel="stylesheet" href="/css/mobile.css?v=27"><link rel="stylesheet" href="/css/admin.css?v=30"><link rel="stylesheet" href="/css/media.css?v=27">
-<link rel="manifest" href="/manifest.webmanifest?v=27"><link rel="icon" href="/icons/turtle-192.png"><link rel="apple-touch-icon" href="/icons/turtle-192.png">
+<link rel="stylesheet" href="/css/joystick.css?v=1"><link rel="manifest" href="/manifest.webmanifest?v=27"><link rel="icon" href="/icons/turtle-192.png"><link rel="apple-touch-icon" href="/icons/turtle-192.png">
 </head>
 <body><main>
 <section id="left-panel">
-<div class="card dpad-card"><h2>Movement</h2><button id="forward">▲</button><div class="button-row"><button id="left">◀</button><button id="stop">■</button><button id="right">▶</button></div><button id="backward">▼</button></div>
+<div class="card dpad-card" id="drive-dpad"><h2>Movement</h2><button id="forward">▲</button><div class="button-row"><button id="left">◀</button><button id="stop">■</button><button id="right">▶</button></div><button id="backward">▼</button></div>
+<button id="drive-mode-toggle" type="button" aria-pressed="false">Joystick</button><div id="drive-joystick" role="group" aria-label="Drive joystick" hidden><div id="drive-knob"></div></div>
 <button id="idle-toggle" class="side-idle-button">🌿 <span>Idle mode</span></button>
 <div class="card side-control-card animation-card"><div class="control-line"><button id="animation-toggle" class="feature-icon active" type="button" title="Enable/disable animations">🐢</button><select id="animation-select"><option value="">Select</option><option value="hello">Wave hello</option><option value="happy">Happy</option><option value="party">Dance party</option><option value="rocket">Rocket</option><option value="sleep">Sleep</option><option value="fart">Fart</option></select></div></div>
 <div class="card side-control-card sound-card"><div class="control-line"><button id="sound-toggle" class="feature-icon active" type="button" title="Enable/disable sounds">🔊</button><select id="sound-select"><option value="">Loading sounds...</option></select></div></div>
@@ -51,5 +52,5 @@
 </section>
 </main>
 <div id="message-modal" class="message-modal" hidden><div class="message-editor"><textarea id="message" placeholder="Message..."></textarea><div class="message-editor-actions"><span>Enter to send · Esc to close</span><button id="message-close">×</button></div></div></div>
-<script src="/js/transport.js?v=53"></script><script src="/js/api.js?v=27"></script><script src="/js/dashboard.js?v=41"></script><script src="/js/controls.js?v=41"></script><script src="/js/dropdowns.js?v=27"></script><script src="/js/camera.js?v=53"></script><script src="/js/bluetooth-vision.js?v=61"></script><script src="/js/center.js?v=30"></script><script src="/js/admin.js?v=61"></script><script src="/js/voice.js?v=31"></script><script src="/js/pwa.js?v=27"></script><script src="/js/face-vision.js?v=62"></script>
+<script src="/js/transport.js?v=53"></script><script src="/js/api.js?v=27"></script><script src="/js/dashboard.js?v=41"></script><script src="/js/controls.js?v=41"></script><script src="/js/joystick.js?v=1"></script><script src="/js/dropdowns.js?v=27"></script><script src="/js/camera.js?v=53"></script><script src="/js/bluetooth-vision.js?v=61"></script><script src="/js/center.js?v=30"></script><script src="/js/admin.js?v=61"></script><script src="/js/voice.js?v=31"></script><script src="/js/pwa.js?v=27"></script><script src="/js/face-vision.js?v=62"></script>
 </body></html>

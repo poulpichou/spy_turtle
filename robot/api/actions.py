@@ -52,6 +52,18 @@ def turn_right(speed=None):
 def stop():
     instance=interact("stop");log.info("[API] stop");disarm_motion();instance.motors.stop();instance.state.motion="stop"
 
+def move_joystick(left,right):
+    import math
+    left=float(left);right=float(right)
+    if not math.isfinite(left) or not math.isfinite(right) or not (-1<=left<=1 and -1<=right<=1):raise ValueError("Joystick speeds must be finite and between -1 and 1")
+    instance=interact("move_joystick")
+    if abs(left)<0.01 and abs(right)<0.01:
+        disarm_motion();instance.motors.stop();instance.state.motion="stop";return
+    arm_motion()
+    scale=float(getattr(settings,"MOTOR_JOYSTICK_MAX_SPEED",0.65))
+    instance.motors.joystick(left*scale,right*scale)
+    instance.state.motion="joystick"
+
 def set_emotion(emotion):
     instance=interact(f"face:{emotion}")
     log.info(f"[API] face {emotion}")
