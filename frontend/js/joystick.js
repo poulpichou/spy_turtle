@@ -13,12 +13,13 @@
         const scale=JOYSTICK_MIN_OUTPUT+(1-JOYSTICK_MIN_OUTPUT)*(magnitude-JOYSTICK_DEADZONE)/(1-JOYSTICK_DEADZONE);
         // No steering inside the +/-45 degree forward/backward corridors.
         // Outside them, steering grows smoothly from zero to full at the sides.
+        // +/-45 degrees: equal wheel speeds. Outside: gradual steering.
+        // Never normalize small steering into full motor power.
         const side=Math.max(0,Math.abs(x)-Math.abs(y));
         const steering=Math.sign(x)*side*TURN_SENSITIVITY;
-        const rawLeft=y+steering,rawRight=y-steering;
-        const maximum=Math.max(Math.abs(rawLeft),Math.abs(rawRight));
-        if(maximum<0.0001)return [0,0];
-        return [rawLeft,rawRight].map(v=>Math.round(clamp(v/maximum*scale,-1,1)*1000)/1000);
+        const forward=Math.sign(y)*scale*Math.min(1,Math.abs(y)/Math.max(JOYSTICK_DEADZONE,magnitude));
+        const turn=steering*(0.25/(0.30*TURN_SENSITIVITY)); // cap pure turning at D-pad 0.25 PWM
+        return [forward+turn,forward-turn].map(v=>Math.round(clamp(v,-1,1)*1000)/1000);
     }
     async function tick(){
         if(!active||busy)return;
