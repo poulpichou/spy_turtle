@@ -10,7 +10,7 @@ CONFIG=Path(__file__).resolve().parents[1]/"config"/"sentinel.json"
 
 class Sentinel:
     def __init__(self):
-        self.config=json.loads(CONFIG.read_text(encoding="utf-8"));self.seen=set();self.last_greet={};self.restore_at=0;self.restore_target=None
+        self.config=json.loads(CONFIG.read_text(encoding="utf-8"));self.seen=set();self.last_greet={};
     def status(self):return {"enabled":bool(self.config["enabled"]),"cooldown_seconds":self.config["cooldown_seconds"]}
     def set_enabled(self,enabled):
         self.config["enabled"]=bool(enabled)
@@ -18,11 +18,6 @@ class Sentinel:
         self.seen.clear();return self.status()
     def update(self,robot):
         now=time.monotonic()
-        if self.restore_at and now>=self.restore_at:
-            if robot.servo and hasattr(robot.servo,"tilt") and self.restore_target is not None:
-                try:robot.servo.tilt.set_target(self.restore_target)
-                except Exception as error:log.warn(f"[SENTINEL] restore head: {error}")
-            self.restore_at=0;self.restore_target=None
         if not self.config["enabled"]:return
         # Only greet newly added names in detected_recent, not every timestamp refresh.
         current={str(item.get("name","")).strip() for item in robot.state.vision.get("detected_recent",[])}
@@ -38,13 +33,6 @@ class Sentinel:
         if robot.face:
             try:robot.face.play("blink")
             except Exception as error:log.warn(f"[SENTINEL] blink: {error}")
-        if robot.servo and hasattr(robot.servo,"tilt") and not self.restore_at:
-            try:
-                axis=robot.servo.tilt;self.restore_target=axis.target
-                # Same sign as ServoController.look_up(): negative tilt is upward.
-                axis.set_target(axis.target-abs(float(self.config["head_lift_degrees"])))
-                self.restore_at=time.monotonic()+float(self.config["head_hold_seconds"])
-            except Exception as error:log.warn(f"[SENTINEL] head: {error}")
         Thread(target=self._speak,args=(phrase,lang),daemon=True).start()
     @staticmethod
     def _speak(phrase,lang):

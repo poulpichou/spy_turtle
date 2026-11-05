@@ -3,8 +3,8 @@ from pydantic import BaseModel,Field
 from robot.speech import tts
 
 router=APIRouter(prefix="/speech",tags=["speech"])
-
 class LanguageRequest(BaseModel):language:str
+class VoiceRequest(BaseModel):language:str;voice:str
 class SayRequest(BaseModel):
     text:str=Field(min_length=1,max_length=500)
     language:str|None=None
@@ -15,6 +15,11 @@ def get_settings():return tts.status()
 @router.post("/language")
 def set_language(value:LanguageRequest):
     try:tts.set_language(value.language);return tts.status()
+    except ValueError as error:raise HTTPException(status_code=400,detail=str(error)) from error
+
+@router.post("/voice")
+def set_voice(value:VoiceRequest):
+    try:return tts.set_voice(value.language,value.voice)
     except ValueError as error:raise HTTPException(status_code=400,detail=str(error)) from error
 
 @router.post("/say")
