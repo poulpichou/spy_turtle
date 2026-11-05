@@ -155,6 +155,13 @@ class DifferentialDrive:
         with self._lock:
             return {"motion":self.motion,"left_speed":round(self.left_speed,3),"right_speed":round(self.right_speed,3),"left_inverted":settings.MOTOR_LEFT_INVERTED,"right_inverted":settings.MOTOR_RIGHT_INVERTED,"encoders":{"enabled":self._encoders_ready(),"correction_enabled":self._enabled(),"correction":round(self._correction,4),"left":self.left_encoder.status() if self.left_encoder else None,"right":self.right_encoder.status() if self.right_encoder else None}}
 
+    def reset_pwm(self):
+        with self._lock:
+            self.stop()
+            result=self.driver.reset_pwm()
+            self._reset_correction()
+            return result
+
     def close(self):
         with self._lock:
             self.stop()
