@@ -5,7 +5,9 @@ from robot.speech import tts
 router=APIRouter(prefix="/speech",tags=["speech"])
 
 class LanguageRequest(BaseModel):language:str
-class SayRequest(BaseModel):text:str=Field(min_length=1,max_length=500)
+class SayRequest(BaseModel):
+    text:str=Field(min_length=1,max_length=500)
+    language:str|None=None
 
 @router.get("/settings")
 def get_settings():return tts.status()
@@ -17,6 +19,6 @@ def set_language(value:LanguageRequest):
 
 @router.post("/say")
 def say(value:SayRequest):
-    try:return tts.say(value.text)
+    try:return tts.say(value.text,language=value.language)
     except ValueError as error:raise HTTPException(status_code=400,detail=str(error)) from error
     except Exception as error:raise HTTPException(status_code=503,detail=str(error)) from error

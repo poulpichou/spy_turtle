@@ -1,0 +1,9 @@
+/* Unified message editor: screen, speech and local chatbot */
+.message-editor{max-width:min(94vw,850px)!important;width:850px!important}
+.message-editor-main{display:flex;gap:12px;align-items:stretch}
+.message-editor-main textarea{flex:1;min-width:0;min-height:150px;resize:vertical}
+.message-editor-side{display:flex;flex-direction:column;gap:8px;min-width:142px}
+.message-editor-side button,.message-editor-side select{width:100%;min-height:36px}
+.message-editor-side label{font-size:12px;display:flex;flex-direction:column;gap:4px}
+#message-status{min-height:1.2em;overflow-wrap:anywhere;font-size:12px;max-height:120px;overflow-y:auto}
+@media(max-width:520px){.message-editor-main{gap:8px}.message-editor-side{min-width:112px}.message-editor-side button{font-size:12px}}
