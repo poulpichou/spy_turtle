@@ -1,3 +1,11 @@
+# Speech (Piper local TTS)
+TURTLE_LANGUAGE="fr"
+TTS_ENABLED=True
+TTS_PIPER_COMMAND="piper"
+TTS_VOICES={"fr":"models/voices/fr_FR-siwis-medium.onnx","en":"models/voices/en_US-lessac-medium.onnx"}
+TTS_MAX_CHARS=500
+TTS_TIMEOUT=90
+
 # Runtime
 DEBUG=True
 SIMULATION=False
