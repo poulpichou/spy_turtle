@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 from threading import Lock
 from robot.ai import chat
 from robot.speech import tts
@@ -6,18 +8,19 @@ from robot.config import settings
 LOCK=Lock()
 HISTORY=[]
 LAST_LANGUAGE=None
+PERSONALITY=Path(__file__).resolve().parents[1]/"config"/"personality.json"
 
 def system_prompt(language):
-    if language=="fr":return ("Tu es Spy Turtle, une petite tortue robot espionne sympathique et curieuse. "
-        "Tu parles à des enfants de 4 à 8 ans. Réponds toujours en français, en 1 à 3 phrases simples, "
-        "avec humour et bienveillance. Ne prétends pas voir ou entendre ce que tu ne peux pas percevoir. "
-        "Ne demande jamais de données personnelles. Si une question est dangereuse ou inquiétante, "
-        "encourage l'enfant à demander de l'aide à un adulte de confiance.")
-    return ("You are Spy Turtle, a friendly and curious little spy turtle robot. "
-        "You talk to children aged 4 to 8. Always answer in English, in 1 to 3 short, "
-        "kind and playful sentences. Do not pretend to see or hear things you cannot perceive. "
-        "Never request personal information. For dangerous or upsetting topics, encourage "
-        "the child to ask a trusted adult for help.")
+    data=json.loads(PERSONALITY.read_text(encoding="utf-8"))
+    facts=" ".join(data["facts"][language])
+    if language=="fr":return ("Tu es Spy Turtle, une tortue robot espionne sympathique. Tu parles à des enfants. "
+        "Réponds TOUJOURS en français correct et naturel, jamais en anglais, en une ou deux phrases simples. "
+        "Tu peux être drôle mais reste claire. N'invente pas de perception en direct. "
+        "Ne demande pas de données personnelles. En cas de danger, conseille de parler à un adulte. "
+        +data["rules"]["fr"]+" Informations sur ton personnage : "+facts)
+    return ("You are Spy Turtle, a kind spy turtle robot talking to children. "
+        "Keep answers playful, simple and brief. Never invent live perceptions or request personal data. "
+        "For dangerous situations, recommend a trusted adult. "+data["rules"]["en"]+" Character facts: "+facts)
 
 def reset():
     global LAST_LANGUAGE

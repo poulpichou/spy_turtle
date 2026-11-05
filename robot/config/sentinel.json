@@ -1,0 +1,20 @@
+{
+  "enabled": false,
+  "cooldown_seconds": 90,
+  "head_lift_degrees": 10,
+  "head_hold_seconds": 0.65,
+  "phrases": {
+    "fr": [
+      "Salut {name} !",
+      "Coucou {name} !",
+      "{name}, je t’ai vu !",
+      "Bonjour {name}, content de te voir !"
+    ],
+    "en": [
+      "Hi {name}!",
+      "Hey {name}!",
+      "I spotted you, {name}!",
+      "Hello {name}, nice to see you!"
+    ]
+  }
+}

@@ -10,6 +10,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel,Field
 from robot.api import actions
 from robot.api.admin import router as admin_router
+from robot.api.sentinel_api import router as sentinel_router
 from robot.api.speech_api import router as speech_router
 from robot.api.conversation_api import router as conversation_router
 from robot.assets.assets import get_assets
@@ -21,6 +22,7 @@ from robot.vision.face_recognition import vision
 
 app=FastAPI()
 app.include_router(admin_router)
+app.include_router(sentinel_router)
 app.include_router(speech_router)
 app.include_router(conversation_router)
 ROOT=Path(__file__).parent.parent.parent

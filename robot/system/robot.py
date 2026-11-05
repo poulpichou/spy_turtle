@@ -1,6 +1,7 @@
 import time
 from robot.system.state import TurtleState
 from robot.system.power import PowerManager
+from robot.brain.sentinel import Sentinel
 
 class Robot:
     BATTERY_UPDATE_INTERVAL=2.0
@@ -22,6 +23,7 @@ class Robot:
         self.brain=None
         self._last_battery_update=0.0
         self.power=PowerManager(self)
+        self.sentinel=Sentinel()
         self._update_battery(force=True)
         if self.face:self.face.play('neutral')
         print('[Robot] initialized')
@@ -35,6 +37,7 @@ class Robot:
             if self.shell and hasattr(self.shell,'update_touch_only'):self.shell.update_touch_only()
             return
         self._update_battery()
+        self.sentinel.update(self)
         if self.brain:self.brain.update()
         if self.servo:self.servo.update()
         if self.leds:self.leds.update()

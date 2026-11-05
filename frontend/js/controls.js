@@ -78,7 +78,7 @@ function openMessageEditor(){messageModal.hidden=false;messageInput.focus()}
 function closeMessageEditor(){messageModal.hidden=true;document.getElementById("message-status").textContent=""}
 async function sendMessage(){const message=messageInput.value.trim();if(!message)return;try{await sendCommand("shell_text",message);document.getElementById("message-status").textContent="Sent to screen"}catch(error){showCommandError(error)}}
 document.getElementById("screen-message-button").onclick=openMessageEditor;
-document.getElementById("message-close").onclick=closeMessageEditor;
+
 document.getElementById("message-send-screen").onclick=sendMessage;
 messageModal.addEventListener("click",event=>{if(event.target===messageModal)closeMessageEditor()});
 messageInput.addEventListener("keydown",event=>{if(event.key==="Enter"&&!event.shiftKey){event.preventDefault();sendMessage()}else if(event.key==="Escape"){event.preventDefault();closeMessageEditor()}});
