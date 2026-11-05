@@ -1,9 +1,13 @@
-/* Unified message editor: screen, speech and local chatbot */
-.message-editor{max-width:min(94vw,850px)!important;width:850px!important}
-.message-editor-main{display:flex;gap:12px;align-items:stretch}
-.message-editor-main textarea{flex:1;min-width:0;min-height:150px;resize:vertical}
-.message-editor-side{display:flex;flex-direction:column;gap:8px;min-width:142px}
-.message-editor-side button,.message-editor-side select{width:100%;min-height:36px}
-.message-editor-side label{font-size:12px;display:flex;flex-direction:column;gap:4px}
-#message-status{min-height:1.2em;overflow-wrap:anywhere;font-size:12px;max-height:120px;overflow-y:auto}
-@media(max-width:520px){.message-editor-main{gap:8px}.message-editor-side{min-width:112px}.message-editor-side button{font-size:12px}}
+/* Compact mobile message editor, including when the software keyboard is open. */
+.message-modal{align-items:flex-start!important;justify-content:center!important;padding:8px!important;overflow:hidden}
+.message-editor{box-sizing:border-box!important;width:min(96vw,680px)!important;max-width:96vw!important;max-height:min(40svh,calc(var(--spy-visible-height,100dvh) - 16px))!important;overflow:auto!important;padding:8px!important}
+.message-editor-main{display:grid!important;grid-template-columns:minmax(0,3fr) minmax(84px,1fr)!important;gap:6px!important;align-items:stretch!important}
+.message-editor-main textarea{box-sizing:border-box;min-width:0!important;width:100%!important;height:clamp(70px,20svh,135px)!important;min-height:0!important;resize:none!important;font-size:16px!important}
+.message-editor-side{min-width:0!important;display:flex!important;flex-direction:column!important;gap:5px!important}
+.message-editor-side .message-icon-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px}
+.message-editor-side .message-icon-actions button{width:100%!important;min-width:0!important;min-height:32px!important;height:32px!important;padding:0!important;font-size:16px!important}
+.message-editor-side label{display:flex!important;flex-direction:column!important;gap:2px!important;font-size:10px!important}
+.message-editor-side select{width:100%!important;min-width:0!important;min-height:30px!important;font-size:12px!important}
+#message-status{min-height:0!important;max-height:38px!important;overflow:auto!important;overflow-wrap:anywhere;font-size:11px!important;margin-top:3px}
+.message-editor-actions{margin-top:2px!important}
+@media(max-width:420px){.message-editor{padding:6px!important}.message-editor-main{grid-template-columns:minmax(0,3fr) minmax(78px,1fr)!important;gap:5px!important}.message-editor-actions span{font-size:10px}}
