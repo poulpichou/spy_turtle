@@ -22,3 +22,9 @@
 
 /* Speech choice buttons and inline Sentinel */
 .admin-choice{display:grid;gap:7px;min-width:0;font-size:.73rem;color:#ddd}.admin-choice-buttons{display:flex;flex-wrap:wrap;gap:6px}.admin-choice-buttons button{border:1px solid #484848;border-radius:7px;background:#303030;color:#ddd;min-height:36px;padding:6px 10px;font-size:.69rem;cursor:pointer}.admin-choice-buttons button.selected{border-color:#59e5a0;background:#245c49;color:white}.admin-choice-buttons button.voice-missing{opacity:.62}.admin-choice-buttons button:focus-visible{outline:2px solid #59e5a0;outline-offset:2px}.admin-sentinel{border-top:1px solid #393939;padding-top:10px;display:grid;gap:7px}.admin-sentinel #sentinel-status,#speech-status{font-size:.65rem;color:#aaa;overflow-wrap:anywhere}
+
+/* Speech wide choice buttons V3 */
+#admin-panel .admin-choice{width:100%;min-width:0}
+#admin-panel .admin-choice-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:8px}
+#admin-panel .admin-choice-buttons button{width:100%;min-width:0;min-height:43px;padding:8px 10px;text-align:center;white-space:normal;overflow-wrap:anywhere;font-size:.73rem;line-height:1.2}
+@media(max-width:420px){#admin-panel .admin-choice-buttons{gap:6px}#admin-panel .admin-choice-buttons button{font-size:.69rem;padding:7px 5px}}
