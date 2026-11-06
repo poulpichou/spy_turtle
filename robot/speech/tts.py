@@ -7,6 +7,7 @@ import sys
 import tempfile
 from pathlib import Path
 from threading import RLock
+from robot.speech import cache as speech_cache
 from robot.config import settings
 from robot.system.runtime import get_robot
 
@@ -16,9 +17,9 @@ LOCK=RLock()
 SYNTHESIS_LOCK=RLock()
 LANGUAGES=("fr","en")
 VOICES={"en":{"bryce":"en_US-bryce","amy":"en_US-amy","alba":"en_GB-alba","northern_english_male":"en_GB-northern_english_male"},"fr":{"gilles":"fr_FR-gilles","tom":"fr_FR-tom","upmc":"fr_FR-upmc"}}
-DEFAULT_VOICES={"en":"bryce","fr":"gilles"}
+DEFAULT_VOICES={"en":"bryce","fr":"upmc"}
 DEFAULT_PITCH=3.0
-DEFAULT_SPEED=1.05
+DEFAULT_SPEED=1.00
 
 def _preferences():
     try:
@@ -123,11 +124,14 @@ def say(text,language=None):
     with SYNTHESIS_LOCK:
         with tempfile.NamedTemporaryFile(prefix="spyturtle_tts_",suffix=".wav",delete=False) as file:path=Path(file.name)
         try:
-            command=[sys.executable,"-m","piper","-m",str(model),"-f",str(path),"--",text]
-            result=subprocess.run(command,capture_output=True,text=True,timeout=settings.TTS_TIMEOUT)
-            if result.returncode:raise RuntimeError((result.stderr or "Piper failed").strip()[-400:])
-            if not path.is_file() or path.stat().st_size<44:raise RuntimeError("Piper produced no audio")
-            effects=tuning();process_audio(path,effects["pitch"],effects["speed"])
+            effects=tuning();key=speech_cache.key(text,lang,model,effects)
+            if not speech_cache.restore(key,path):
+                command=[sys.executable,"-m","piper","-m",str(model),"-f",str(path),"--",text]
+                result=subprocess.run(command,capture_output=True,text=True,timeout=settings.TTS_TIMEOUT)
+                if result.returncode:raise RuntimeError((result.stderr or "Piper failed").strip()[-400:])
+                if not path.is_file() or path.stat().st_size<44:raise RuntimeError("Piper produced no audio")
+                process_audio(path,effects["pitch"],effects["speed"])
+                speech_cache.store(key,path)
             if not robot.speaker.play_file(path,"tts",delete_after=True):raise RuntimeError("Speaker playback failed")
             return {"ok":True,"language":lang,"voice":selected_voice(lang),"text":text}
         except Exception:

@@ -31,3 +31,6 @@
 
 /* Voice tuning controls */
 #admin-panel #speech-pitch,#admin-panel #speech-speed{width:100%}
+
+/* V6 compact voice controls and status bar */
+#speech-voice-en{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px}#speech-voice-en button,#speech-voice-fr button,#speech-language-options button{min-width:0;width:100%;font-size:.61rem;padding:3px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#speech-voice-en{min-width:0}#admin-panel .admin-choice{min-width:0}#robot-status{display:flex;align-items:center;justify-content:space-between;gap:4px;flex-wrap:wrap}#robot-status>div{white-space:nowrap;font-size:.6rem}#robot-status b{font-weight:600}#robot-status .v6-connection-label{display:none}#robot-status #battery-status[hidden],#robot-status #shell-mode[hidden],#robot-status #led-mode[hidden],#robot-status #motion[hidden]{display:none!important}#sensor-status{display:none!important}.message-language-buttons{display:flex;gap:4px}.message-language-buttons button{font-size:.8rem;width:39px;height:28px;border:1px solid #555}.message-language-buttons button.selected{background:#236747;border-color:#5de5a0}

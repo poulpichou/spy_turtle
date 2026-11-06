@@ -24,13 +24,17 @@
         if(pitch&&data.pitch!==undefined)pitch.value=data.pitch;
         if(speed&&data.speed!==undefined)speed.value=data.speed;
         displayTuning();
-        modalLanguage.value=data.language;select(groups.language,data.language);select(groups.en,data.selected_voices?.en,data.available_voices?.en);select(groups.fr,data.selected_voices?.fr,data.available_voices?.fr);
+        modalLanguage.value=data.language;updateFlags();select(groups.language,data.language);select(groups.en,data.selected_voices?.en,data.available_voices?.en);select(groups.fr,data.selected_voices?.fr,data.available_voices?.fr);
         const active=data.selected_voices?.[data.language];status.textContent=data.voice_available?`Ready: ${active}`:`Model missing: ${data.voice}`;
     }
     async function refresh(){try{render(await request("/speech/settings"))}catch(error){status.textContent=error.message}}
     async function setLanguage(value){const data=await request("/speech/language",{language:value});render(data);document.dispatchEvent(new CustomEvent("turtlelanguagechange",{detail:{language:data.language}}));return data}
     groups.language.onclick=async event=>{const button=event.target.closest("button[data-value]");if(!button)return;try{await setLanguage(button.dataset.value)}catch(error){status.textContent=error.message;await refresh()}};
     for(const lang of ["en","fr"])groups[lang].onclick=async event=>{const button=event.target.closest("button[data-value]");if(!button)return;try{render(await request("/speech/voice",{language:lang,voice:button.dataset.value}))}catch(error){status.textContent=error.message;await refresh()}};
+    const flagButtons=document.querySelectorAll("#message-language-buttons button[data-lang]");
+    function updateFlags(){flagButtons.forEach(button=>{const selected=button.dataset.lang===modalLanguage.value;button.classList.toggle("selected",selected);button.setAttribute("aria-pressed",String(selected))})}
+    flagButtons.forEach(button=>button.addEventListener("click",async()=>{try{await setLanguage(button.dataset.lang);modalStatus.textContent="";updateFlags()}catch(error){modalStatus.textContent=error.message}}));
+    document.addEventListener("turtlelanguagechange",updateFlags);updateFlags();
     modalLanguage.onchange=async()=>{try{await setLanguage(modalLanguage.value);modalStatus.textContent=""}catch(error){modalStatus.textContent=error.message;await refresh()}};
     async function act(path,content,target){target.textContent=path.includes("ask")?"Thinking...":"Generating speech...";const data=await request(path,content);target.textContent=data.answer?`Spy Turtle: ${data.answer}`:"Audio sent to speaker";return data}
     const speak=document.getElementById("message-speak"),ask=document.getElementById("message-ask"),screen=document.getElementById("message-send-screen"),message=document.getElementById("message");
