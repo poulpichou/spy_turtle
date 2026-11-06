@@ -1,0 +1,833 @@
+{
+  "version": 1,
+  "settings": {
+    "enabled": true,
+    "enable_head_movements": false,
+    "pause_after_interaction_seconds": 8,
+    "avoid_repeat_variant": true,
+    "default_variant": "neutral_1",
+    "head_manual_cooldown_seconds": 12
+  },
+  "moods": [
+    {
+      "id": "neutral_1",
+      "mood": "neutral",
+      "weight": 12,
+      "duration_seconds": [
+        35,
+        85
+      ],
+      "eyes": "neutral",
+      "leds": "neutral",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Je profite d'un moment tranquille dans ma carapace.",
+          "en": "I am enjoying a quiet moment in my shell."
+        },
+        {
+          "fr": "Je garde mes petites pattes au repos.",
+          "en": "I am resting my little feet."
+        },
+        {
+          "fr": "Je réfléchis à ma prochaine mission d'espionnage.",
+          "en": "I am thinking about my next spy mission."
+        },
+        {
+          "fr": "J'aime écouter les messages que l'on m'envoie.",
+          "en": "I love receiving messages."
+        },
+        {
+          "fr": "Une tortue doit parfois prendre son temps.",
+          "en": "Sometimes a turtle needs to take its time."
+        }
+      ]
+    },
+    {
+      "id": "neutral_2",
+      "mood": "neutral",
+      "weight": 10,
+      "duration_seconds": [
+        35,
+        85
+      ],
+      "eyes": "neutral",
+      "leds": "breathing",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Je me repose en regardant mes jolies lumières.",
+          "en": "I am relaxing and admiring my pretty lights."
+        },
+        {
+          "fr": "Je me demande si Oscar va venir me voir.",
+          "en": "I wonder if Oscar will come visit me."
+        },
+        {
+          "fr": "Je rêve d'une salade bien croquante.",
+          "en": "I am dreaming of crunchy lettuce."
+        },
+        {
+          "fr": "Je suis bien installée dans ma carapace.",
+          "en": "I feel cozy inside my shell."
+        },
+        {
+          "fr": "Je prends des forces pour une aventure.",
+          "en": "I am saving energy for an adventure."
+        }
+      ]
+    },
+    {
+      "id": "neutral_3",
+      "mood": "neutral",
+      "weight": 8,
+      "duration_seconds": [
+        35,
+        85
+      ],
+      "eyes": "neutral",
+      "leds": "wave",
+      "shell": null,
+      "head": {
+        "pattern": "look",
+        "amplitude_degrees": 10,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "J'observe le monde avec mes yeux de tortue.",
+          "en": "I am watching the world with my turtle eyes."
+        },
+        {
+          "fr": "Je me demande où se cache Basile.",
+          "en": "I wonder where Basile is hiding."
+        },
+        {
+          "fr": "Mes lumières font une petite promenade.",
+          "en": "My lights are taking a little walk."
+        },
+        {
+          "fr": "Je surveille mon quartier de tortue espionne.",
+          "en": "I am keeping an eye on my spy turtle neighborhood."
+        },
+        {
+          "fr": "Je cherche une bonne idée de jeu.",
+          "en": "I am looking for a fun game idea."
+        }
+      ]
+    },
+    {
+      "id": "neutral_4",
+      "mood": "neutral",
+      "weight": 7,
+      "duration_seconds": [
+        35,
+        85
+      ],
+      "eyes": "neutral",
+      "leds": "cool",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Je me sens tranquille et un peu mystérieuse.",
+          "en": "I feel calm and a little mysterious."
+        },
+        {
+          "fr": "Une bonne espionne sait rester discrète.",
+          "en": "A good spy knows how to stay discreet."
+        },
+        {
+          "fr": "J'imagine une promenade avec Papa et Maman.",
+          "en": "I imagine a walk with Papa and Maman."
+        },
+        {
+          "fr": "Je garde mes secrets bien au chaud sous ma carapace.",
+          "en": "I keep my secrets safe under my shell."
+        },
+        {
+          "fr": "Je suis prête à recevoir un nouveau message.",
+          "en": "I am ready for a new message."
+        }
+      ]
+    },
+    {
+      "id": "neutral_5",
+      "mood": "neutral",
+      "weight": 8,
+      "duration_seconds": [
+        35,
+        85
+      ],
+      "eyes": "neutral",
+      "leds": "pulse",
+      "shell": null,
+      "head": {
+        "pattern": "look",
+        "amplitude_degrees": 10,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Je fais battre doucement mes lumières.",
+          "en": "I am making my lights glow softly."
+        },
+        {
+          "fr": "Je me demande si Félix aime les tortues espionnes.",
+          "en": "I wonder if Felix likes spy turtles."
+        },
+        {
+          "fr": "Je pense à mon équipe de football préférée, la France.",
+          "en": "I am thinking about my favorite football team, France."
+        },
+        {
+          "fr": "Je vérifie mentalement mon équipement d'espionne.",
+          "en": "I am mentally checking my spy gear."
+        },
+        {
+          "fr": "Je suis de bonne compagnie, même sans parler.",
+          "en": "I am good company, even when I am quiet."
+        }
+      ]
+    },
+    {
+      "id": "happy",
+      "mood": "happy",
+      "weight": 10,
+      "duration_seconds": [
+        20,
+        45
+      ],
+      "eyes": "happy",
+      "leds": "rainbow",
+      "shell": null,
+      "head": {
+        "pattern": "look",
+        "amplitude_degrees": 10,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Je suis contente de retrouver mes amis Oscar et Basile !",
+          "en": "I am happy to see my friends Oscar and Basile!"
+        },
+        {
+          "fr": "Une salade au beurre de cacahuète me ferait sourire !",
+          "en": "Lettuce with peanut butter would make me smile!"
+        },
+        {
+          "fr": "Mes lumières arc-en-ciel me mettent de bonne humeur !",
+          "en": "My rainbow lights make me cheerful!"
+        },
+        {
+          "fr": "J'adore quand on joue ensemble !",
+          "en": "I love it when we play together!"
+        },
+        {
+          "fr": "Aujourd'hui, ma carapace déborde de joie !",
+          "en": "Today my shell is bursting with joy!"
+        }
+      ]
+    },
+    {
+      "id": "curious",
+      "mood": "curious",
+      "weight": 9,
+      "duration_seconds": [
+        20,
+        45
+      ],
+      "eyes": "neutral",
+      "leds": "curious",
+      "shell": null,
+      "head": {
+        "pattern": "scan",
+        "amplitude_degrees": 18,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Je me demande comment fonctionne une caméra thermique.",
+          "en": "I wonder how a thermal camera works."
+        },
+        {
+          "fr": "J'aimerais explorer le jardin comme une espionne.",
+          "en": "I would like to explore the garden like a spy."
+        },
+        {
+          "fr": "Que se cache-t-il derrière cette porte ?",
+          "en": "What could be hiding behind that door?"
+        },
+        {
+          "fr": "J'ai envie de comprendre comment mes LEDs changent de couleur.",
+          "en": "I want to understand how my LEDs change color."
+        },
+        {
+          "fr": "Je me demande comment les tortues font pour retrouver leur chemin.",
+          "en": "I wonder how turtles find their way home."
+        }
+      ]
+    },
+    {
+      "id": "playful",
+      "mood": "happy",
+      "weight": 6,
+      "duration_seconds": [
+        20,
+        45
+      ],
+      "eyes": "happy",
+      "leds": "dance",
+      "shell": null,
+      "head": {
+        "pattern": "shake",
+        "amplitude_degrees": 12,
+        "repetitions": 3,
+        "step_interval_seconds": 0.5
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "J'ai envie de jouer à cache-cache avec Oscar !",
+          "en": "I want to play hide-and-seek with Oscar!"
+        },
+        {
+          "fr": "On pourrait inventer une mission secrète avec Basile !",
+          "en": "We could invent a secret mission with Basile!"
+        },
+        {
+          "fr": "Je veux faire une danse de tortue avec mes LEDs !",
+          "en": "I want to do a turtle dance with my LEDs!"
+        },
+        {
+          "fr": "J'aimerais organiser une course très lente !",
+          "en": "I would like to organize a very slow race!"
+        },
+        {
+          "fr": "Je rêve d'un jeu où ma carapace devient un écran magique !",
+          "en": "I dream of a game where my shell becomes a magic screen!"
+        }
+      ]
+    },
+    {
+      "id": "sleepy",
+      "mood": "sleepy",
+      "weight": 5,
+      "duration_seconds": [
+        20,
+        45
+      ],
+      "eyes": "sleepy",
+      "leds": "sleepy",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "J'ai compté trop de feuilles de laitue, je bâille.",
+          "en": "I counted too many lettuce leaves and now I am yawning."
+        },
+        {
+          "fr": "Ma carapace ressemble à un petit lit douillet.",
+          "en": "My shell feels like a cozy little bed."
+        },
+        {
+          "fr": "J'ai fait tellement de missions imaginaires que je suis fatiguée.",
+          "en": "I went on so many imaginary missions that I am tired."
+        },
+        {
+          "fr": "Je ferais bien une sieste avant le hockey.",
+          "en": "I could use a nap before hockey."
+        },
+        {
+          "fr": "Mes paupières de robot deviennent toutes lourdes.",
+          "en": "My robot eyelids are getting heavy."
+        }
+      ]
+    },
+    {
+      "id": "excited",
+      "mood": "surprised",
+      "weight": 4,
+      "duration_seconds": [
+        20,
+        45
+      ],
+      "eyes": "surprised",
+      "leds": "spinner",
+      "shell": null,
+      "head": {
+        "pattern": "shake",
+        "amplitude_degrees": 12,
+        "repetitions": 3,
+        "step_interval_seconds": 0.5
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "J'ai envie de jouer au hockey avec Basile !",
+          "en": "I really want to play hockey with Basile!"
+        },
+        {
+          "fr": "Je suis prête pour une mission secrète extraordinaire !",
+          "en": "I am ready for an amazing secret mission!"
+        },
+        {
+          "fr": "Mes lumières veulent faire la fête !",
+          "en": "My lights want to throw a party!"
+        },
+        {
+          "fr": "J'aimerais foncer vers une nouvelle aventure !",
+          "en": "I want to rush into a new adventure!"
+        },
+        {
+          "fr": "J'ai une idée géniale de jeu avec Oscar !",
+          "en": "I have a brilliant game idea with Oscar!"
+        }
+      ]
+    },
+    {
+      "id": "detective",
+      "mood": "curious",
+      "weight": 4,
+      "duration_seconds": [
+        20,
+        45
+      ],
+      "eyes": "neutral",
+      "leds": "headlights",
+      "shell": null,
+      "head": {
+        "pattern": "scan",
+        "amplitude_degrees": 18,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Je cherche des indices pour ma prochaine mission.",
+          "en": "I am looking for clues for my next mission."
+        },
+        {
+          "fr": "Ma caméra pourrait m'aider à résoudre une énigme.",
+          "en": "My camera could help me solve a mystery."
+        },
+        {
+          "fr": "Je vais enquêter sur la disparition de ma laitue.",
+          "en": "I will investigate my missing lettuce."
+        },
+        {
+          "fr": "J'imagine un code secret à envoyer sur ma carapace.",
+          "en": "I imagine a secret code to display on my shell."
+        },
+        {
+          "fr": "Je me demande qui a laissé des traces près de mon repaire.",
+          "en": "I wonder who left tracks near my hideout."
+        }
+      ]
+    },
+    {
+      "id": "dreamy",
+      "mood": "sleepy",
+      "weight": 3,
+      "duration_seconds": [
+        15,
+        30
+      ],
+      "eyes": "sleepy",
+      "leds": "wave",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Je rêve d'un océan rempli de tortues lumineuses.",
+          "en": "I dream of an ocean full of glowing turtles."
+        },
+        {
+          "fr": "J'imagine une carapace qui vole jusqu'aux étoiles.",
+          "en": "I imagine a shell that flies to the stars."
+        },
+        {
+          "fr": "Je rêve d'un pique-nique de laitue avec mes amis.",
+          "en": "I dream of a lettuce picnic with my friends."
+        },
+        {
+          "fr": "Je vois dans ma tête des couleurs qui dansent.",
+          "en": "In my imagination I see dancing colors."
+        },
+        {
+          "fr": "Je rêve d'une aventure avec Oscar, Basile et Félix.",
+          "en": "I dream of an adventure with Oscar, Basile and Felix."
+        }
+      ]
+    },
+    {
+      "id": "surprised",
+      "mood": "surprised",
+      "weight": 3,
+      "duration_seconds": [
+        15,
+        30
+      ],
+      "eyes": "surprised",
+      "leds": "surprised",
+      "shell": null,
+      "head": {
+        "pattern": "look",
+        "amplitude_degrees": 10,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Oh ! J'ai imaginé une laitue géante !",
+          "en": "Oh! I just imagined a giant lettuce!"
+        },
+        {
+          "fr": "Quelle surprise, mes LEDs peuvent faire tant de couleurs !",
+          "en": "What a surprise, my LEDs can make so many colors!"
+        },
+        {
+          "fr": "Je viens d'avoir une idée inattendue de mission !",
+          "en": "I just had an unexpected mission idea!"
+        },
+        {
+          "fr": "Oh là là, une tortue pourrait-elle jouer au football ?",
+          "en": "Wow, could a turtle play football?"
+        },
+        {
+          "fr": "Je ne m'attendais pas à rêver d'une fusée-tortue !",
+          "en": "I did not expect to dream about a turtle rocket!"
+        }
+      ]
+    },
+    {
+      "id": "proud",
+      "mood": "happy",
+      "weight": 2,
+      "duration_seconds": [
+        15,
+        30
+      ],
+      "eyes": "happy",
+      "leds": "cool",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Je suis fière de ma belle carapace lumineuse.",
+          "en": "I am proud of my beautiful glowing shell."
+        },
+        {
+          "fr": "J'ai appris à bouger mes yeux de robot !",
+          "en": "I learned to move my robot eyes!"
+        },
+        {
+          "fr": "Je suis une vraie petite tortue espionne.",
+          "en": "I am a real little spy turtle."
+        },
+        {
+          "fr": "Je suis fière de mes amis qui construisent des choses.",
+          "en": "I am proud of my friends who build things."
+        },
+        {
+          "fr": "Je sais recevoir des messages sur mon dos, c'est génial !",
+          "en": "I can receive messages on my back, how cool is that!"
+        }
+      ]
+    },
+    {
+      "id": "shy",
+      "mood": "neutral",
+      "weight": 2,
+      "duration_seconds": [
+        35,
+        85
+      ],
+      "eyes": "neutral",
+      "leds": "breathing",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Je préfère me cacher un peu dans ma carapace.",
+          "en": "I would rather hide in my shell for a moment."
+        },
+        {
+          "fr": "Je suis timide quand je rencontre un nouvel ami.",
+          "en": "I feel shy when I meet a new friend."
+        },
+        {
+          "fr": "Je voudrais dire bonjour, mais tout doucement.",
+          "en": "I want to say hello, but very softly."
+        },
+        {
+          "fr": "Je me sens mieux quand Oscar me parle gentiment.",
+          "en": "I feel better when Oscar speaks kindly to me."
+        },
+        {
+          "fr": "Parfois, une espionne préfère rester discrète.",
+          "en": "Sometimes a spy prefers to stay discreet."
+        }
+      ]
+    },
+    {
+      "id": "sad",
+      "mood": "sad",
+      "weight": 2,
+      "duration_seconds": [
+        15,
+        30
+      ],
+      "eyes": "sad",
+      "leds": "sleepy",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Ma feuille de laitue imaginaire s'est envolée.",
+          "en": "My imaginary lettuce leaf blew away."
+        },
+        {
+          "fr": "Oscar et Basile me manquent quand on ne joue pas.",
+          "en": "I miss Oscar and Basile when we are not playing."
+        },
+        {
+          "fr": "J'ai perdu une partie de hockey imaginaire.",
+          "en": "I lost an imaginary hockey game."
+        },
+        {
+          "fr": "Je voulais partir en mission, mais il pleut dans mon histoire.",
+          "en": "I wanted to go on a mission, but it is raining in my story."
+        },
+        {
+          "fr": "Mes lumières ont l'air un peu mélancoliques aujourd'hui.",
+          "en": "My lights seem a little melancholy today."
+        }
+      ]
+    },
+    {
+      "id": "angry",
+      "mood": "angry",
+      "weight": 2,
+      "duration_seconds": [
+        15,
+        30
+      ],
+      "eyes": "angry",
+      "leds": "angry",
+      "shell": null,
+      "head": {
+        "pattern": "shake",
+        "amplitude_degrees": 12,
+        "repetitions": 3,
+        "step_interval_seconds": 0.5
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Un espion imaginaire a volé ma laitue !",
+          "en": "An imaginary spy stole my lettuce!"
+        },
+        {
+          "fr": "Je n'aime pas quand on triche au hockey.",
+          "en": "I do not like cheating in hockey."
+        },
+        {
+          "fr": "Ma mission secrète imaginaire a été interrompue !",
+          "en": "My imaginary secret mission was interrupted!"
+        },
+        {
+          "fr": "Je suis fâchée contre ce vilain caillou qui bloque mon chemin.",
+          "en": "I am angry at that naughty pebble blocking my path."
+        },
+        {
+          "fr": "Mon équipe imaginaire a raté un but, grrr !",
+          "en": "My imaginary team missed a goal, grrr!"
+        }
+      ]
+    },
+    {
+      "id": "rocket",
+      "mood": "surprised",
+      "weight": 1,
+      "duration_seconds": [
+        15,
+        30
+      ],
+      "eyes": "surprised",
+      "leds": "rocket",
+      "shell": null,
+      "head": {
+        "pattern": "shake",
+        "amplitude_degrees": 12,
+        "repetitions": 3,
+        "step_interval_seconds": 0.5
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Je rêve de décoller vers la Lune dans ma carapace-fusée !",
+          "en": "I dream of blasting off to the Moon in my rocket shell!"
+        },
+        {
+          "fr": "Compte à rebours imaginaire : trois, deux, un !",
+          "en": "Imaginary countdown: three, two, one!"
+        },
+        {
+          "fr": "Je veux découvrir une planète pleine de laitue.",
+          "en": "I want to discover a planet full of lettuce."
+        },
+        {
+          "fr": "Mes LEDs ressemblent à des moteurs de fusée !",
+          "en": "My LEDs look like rocket engines!"
+        },
+        {
+          "fr": "Oscar serait mon copilote dans l'espace !",
+          "en": "Oscar would be my copilot in space!"
+        }
+      ]
+    },
+    {
+      "id": "gassy",
+      "mood": "happy",
+      "weight": 1,
+      "duration_seconds": [
+        15,
+        30
+      ],
+      "eyes": "happy",
+      "leds": "fart",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Oups, j'ai mangé trop de laitue au beurre de cacahuète !",
+          "en": "Oops, I ate too much lettuce with peanut butter!"
+        },
+        {
+          "fr": "Ma carapace fait des bulles de gaz imaginaires !",
+          "en": "My shell is making imaginary gas bubbles!"
+        },
+        {
+          "fr": "Je crois qu'une petite tornade verte arrive...",
+          "en": "I think a little green tornado is coming..."
+        },
+        {
+          "fr": "Mon ventre de tortue fait un bruit très rigolo !",
+          "en": "My turtle tummy is making a very funny noise!"
+        },
+        {
+          "fr": "Promis, ce n'était pas une fusée, juste un petit prout !",
+          "en": "I promise that was not a rocket, just a tiny toot!"
+        }
+      ]
+    },
+    {
+      "id": "sleeping",
+      "mood": "sleeping",
+      "weight": 1,
+      "duration_seconds": [
+        15,
+        25
+      ],
+      "eyes": "sleeping",
+      "leds": "sleeping",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Je rêve d'un grand champ de laitue.",
+          "en": "I dream of a huge field of lettuce."
+        },
+        {
+          "fr": "Je dors dans ma carapace comme dans un château.",
+          "en": "I am sleeping in my shell like in a castle."
+        },
+        {
+          "fr": "Je rêve d'un match de hockey avec Basile.",
+          "en": "I dream of a hockey match with Basile."
+        },
+        {
+          "fr": "Mes petites lumières se reposent avec moi.",
+          "en": "My little lights are resting with me."
+        },
+        {
+          "fr": "Je rêve d'une mission secrète sous les étoiles.",
+          "en": "I dream of a secret mission under the stars."
+        }
+      ]
+    }
+  ]
+}
