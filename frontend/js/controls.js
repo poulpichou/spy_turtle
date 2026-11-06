@@ -57,21 +57,23 @@ async function loadAssetControls(){
 }
 loadAssetControls();
 
-const animations={
-    hello:{face:"happy",shell:"turtle_happy",led:"wave"},
-    happy:{face:"happy",shell:"turtle_happy",led:"breathing"},
-    party:{face:"happy",shell:"dance",led:"dance"},
-    rocket:{face:"surprised",shell:"rocket",led:"rocket"},
-    sleep:{face:"sleeping",shell:"sleep",led:"off"},
-    fart:{face:"surprised",shell:"smoke",led:"fart",sound:"fart1"}
-};
-async function playAnimation(name){
-    const animation=animations[name];if(!animation)return;
-    const commands=[["face",animation.face],["shell",animation.shell],["led",animation.led]];
-    if(animation.sound)commands.push(["sound",animation.sound]);
-    await Promise.all(commands.map(([type,value])=>sendCommand(type,value)));
+async function loadMoodControls(){
+    const select=document.getElementById("animation-select");
+    try{
+        const response=await fetch("/brain/moods",{cache:"no-store"});if(!response.ok)throw Error(`HTTP ${response.status}`);
+        const data=await response.json(),entries=data.variants||data.moods||[];
+        const moods=entries.map(item=>typeof item==="string"?{id:item,mood:item}:item);
+        select.replaceChildren(assetOption("","Choose mood..."));
+        for(const mood of moods)select.appendChild(assetOption(mood.id||mood.mood,mood.label||mood.mood||mood.id));
+        if(!moods.length){select.replaceChildren(assetOption("","Mood API unavailable"));select.disabled=true}
+    }catch(error){select.replaceChildren(assetOption("","Mood API unavailable"));select.disabled=true;console.warn("[MOODS]",error)}
 }
-document.getElementById("animation-select").onchange=event=>{if(event.target.value)playAnimation(event.target.value).catch(showCommandError)};
+document.getElementById("animation-select").onchange=async event=>{
+    if(!event.target.value)return;
+    try{const response=await fetch("/brain/moods/select",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({variant:event.target.value})});if(!response.ok)throw Error((await response.text()).slice(0,200))}
+    catch(error){showCommandError(error)}
+};
+loadMoodControls();
 
 const messageModal=document.getElementById("message-modal"),messageInput=document.getElementById("message");
 function openMessageEditor(){messageModal.hidden=false;messageInput.focus()}

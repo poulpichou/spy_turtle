@@ -32,7 +32,7 @@ class MoodEngine:
         self.config['settings']=self.options
         temp=self.path.with_suffix('.tmp');temp.write_text(json.dumps(self.config,ensure_ascii=False,indent=2)+'\n',encoding='utf-8');temp.replace(self.path)
 
-    def status(self):return {'enable_head_movements':bool(self.options.get('enable_head_movements',False)),'mood':self.robot.state.mood,'mood_variant':self.robot.state.mood_variant,'mood_remaining_seconds':round(max(0,self.deadline-time.monotonic()),1)}
+    def status(self):return {'enable_head_movements':bool(self.options.get('enable_head_movements',False)),'mood':self.robot.state.mood,'mood_variant':self.robot.state.mood_variant,'mood_remaining_seconds':round(max(0,self.deadline-time.monotonic()),1),'variants':[{'id':v['id'],'mood':v['mood']} for v in self.variants.values()]}
 
     def choose(self,variant=None):
         if variant is None:

@@ -120,6 +120,17 @@ def set_head_movements(value:HeadMovements):
     if not robot or not robot.brain:raise HTTPException(status_code=503,detail="Brain unavailable")
     return robot.brain.moods.set_head_enabled(value.enabled)
 
+class MoodSelect(BaseModel):
+    variant:str
+
+@app.post("/brain/moods/select")
+def select_mood(value:MoodSelect):
+    robot=get_robot()
+    if not robot or not robot.brain or not getattr(robot.brain,"moods",None):raise HTTPException(status_code=503,detail="Mood Engine unavailable")
+    try:robot.brain.moods.choose(value.variant)
+    except ValueError as error:raise HTTPException(status_code=400,detail=str(error)) from error
+    return robot.brain.moods.status()
+
 @app.get("/state")
 def get_state():return state()
 
