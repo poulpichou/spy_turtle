@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#181818">
 <title>Spy Turtle</title>
-<link rel="stylesheet" href="/css/style.css?v=88"><link rel="stylesheet" href="/css/mobile.css?v=27"><link rel="stylesheet" href="/css/admin.css?v=100"><link rel="stylesheet" href="/css/media.css?v=13">
+<link rel="stylesheet" href="/css/style.css?v=88"><link rel="stylesheet" href="/css/mobile.css?v=27"><link rel="stylesheet" href="/css/admin.css?v=14"><link rel="stylesheet" href="/css/media.css?v=14">
 <link rel="stylesheet" href="/css/joystick.css?v=1"><link rel="stylesheet" href="/css/message-actions.css?v=3"><link rel="manifest" href="/manifest.webmanifest?v=27"><link rel="icon" href="/icons/turtle-192.png"><link rel="apple-touch-icon" href="/icons/turtle-192.png">
 </head>
 <body><main>
@@ -35,11 +35,12 @@
 <div class="admin-slider"><label for="camera-fps-slider">Camera <strong id="camera-fps-value">6 fps</strong></label><input id="camera-fps-slider" type="range" min="2" max="10" step="1" value="6"></div>
 
 <div class="admin-slider"><label for="face-interval-slider">Recognition interval <strong id="face-interval-value">2 s</strong></label><input id="face-interval-slider" type="range" min="1" max="5" step="1" value="2"><div class="admin-ticks"><span>1s</span><span>2s</span><span>3s</span><span>4s</span><span>5s</span></div></div>
+<div class="admin-face-heading"><label for="face-enabled">Face recognition</label><input type="checkbox" id="face-enabled" class="admin-switch" role="switch" aria-label="Face recognition"></div>
 <div id="face-performance">Face recognition OFF</div>
 
 <div class="admin-log-level"><span>Logger display level</span><div class="admin-log-options" role="radiogroup" aria-label="Logger display level"><label><input type="radio" name="log-level-choice" value="DEBUG">Debug</label><label><input type="radio" name="log-level-choice" value="INFO" checked>Info</label><label><input type="radio" name="log-level-choice" value="WARNING">Warn</label><label><input type="radio" name="log-level-choice" value="ERROR">Error</label></div></div>
 </section>
-<section class="admin-section" id="vision-section"><h3>Vision</h3><div class="admin-face-heading"><label for="face-enabled">Face recognition</label><input type="checkbox" id="face-enabled" class="admin-switch" role="switch" aria-label="Face recognition"></div></section>
+
 <section class="admin-section" id="automation-section"><h3>Automation</h3><div class="admin-face-heading"><label for="automation-master-admin">Enable automation</label><input type="checkbox" id="automation-master-admin" class="admin-switch" role="switch" checked></div><div class="admin-sentinel"><div class="admin-face-heading"><label for="sentinel-enabled">Greet recognized people</label><input type="checkbox" id="sentinel-enabled" class="admin-switch" role="switch"></div><div id="sentinel-status" role="status" hidden></div></div><div class="admin-face-heading"><label for="automation-sounds">Automation sounds</label><input type="checkbox" id="automation-sounds" class="admin-switch" role="switch"></div><div class="admin-face-heading"><label for="automation-head">Enable head movements</label><input type="checkbox" id="automation-head" class="admin-switch" role="switch"></div><div class="admin-face-heading"><label for="automation-movement">Enable automatic movements</label><input type="checkbox" id="automation-movement" class="admin-switch" role="switch" disabled></div><div id="automation-status" role="status" hidden></div></section>
 <section class="admin-section"><h3>Speech</h3>
 <div class="admin-choice"><span>Robot language</span><div class="admin-choice-buttons" id="speech-language-options" role="group" aria-label="Robot language"><button type="button" data-value="fr">🇫🇷 Français</button><button type="button" data-value="en">🇬🇧 English</button></div></div>

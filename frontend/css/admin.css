@@ -61,3 +61,7 @@
 #robot-status #transport-toggle{border:0!important;box-shadow:none!important;outline-offset:1px!important;margin-right:5px!important}
 #robot-status #transport-toggle::before,#robot-status #transport-toggle::after{content:none!important;display:none!important}
 #robot-status::before{content:"";position:absolute;left:34px;top:0;bottom:0;width:1px;background:#444;pointer-events:none;z-index:1}
+/* V14 vertically centered transport icon */
+#robot-status{top:0!important;height:100%!important;min-height:0!important;align-items:center!important}
+#robot-status #transport-toggle{align-self:center!important;display:flex!important;align-items:center!important;justify-content:center!important;transform:none!important}
+#robot-status::before{top:0!important;bottom:0!important}
