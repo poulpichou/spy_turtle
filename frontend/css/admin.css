@@ -52,3 +52,7 @@
 #automation-section .admin-face-heading{min-height:29px}
 #automation-section small{font-size:.6rem;color:#aaa}
 @media(max-width:720px) and (orientation:landscape){#center-panel{grid-template-rows:30px 7% minmax(0,1fr)!important}#status-bar{height:30px!important;min-height:30px!important}#robot-status{height:28px!important;min-height:28px!important}#robot-status>div{height:28px!important;font-size:8px!important}}
+
+/* V9: transport separator */
+#robot-status #transport-toggle{position:relative!important;margin-right:5px!important;overflow:visible!important}
+#robot-status #transport-toggle:after{content:"";position:absolute;right:-5px;top:-5px;bottom:-5px;width:1px;background:#414141;pointer-events:none}

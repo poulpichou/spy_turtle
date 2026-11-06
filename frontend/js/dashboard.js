@@ -32,6 +32,7 @@ async function updateDashboard(){
         setConnection('connected');
         document.getElementById('battery').innerText=battery.level===null||battery.level===undefined?'--':Math.round(battery.level);
         document.getElementById('battery-status').innerText=battery.status||'unknown';
+        const batteryIcon=document.getElementById('battery-icon');if(batteryIcon){const charging=battery.charging||battery.status==='charging';batteryIcon.textContent=charging?'⚡':battery.level!=null&&battery.level<=20?'🪫':'🔋';batteryIcon.title=charging?'Charging':battery.level!=null&&battery.level<=20?'Low battery':'Battery'}
         document.getElementById('emotion').innerText=status.brain?.mood||status.brain?.mood||status.brain?.emotion||'neutral';
         document.getElementById('shell-mode').innerText=status.shell?.mode||'status';
         document.getElementById('led-mode').innerText=status.leds?.mode||'off';

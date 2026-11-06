@@ -64,7 +64,7 @@ async function loadMoodControls(){
         const data=await response.json(),entries=data.variants||data.moods||[];
         const moods=entries.map(item=>typeof item==="string"?{id:item,mood:item}:item);
         select.replaceChildren(assetOption("","Choose mood..."));
-        for(const mood of moods)select.appendChild(assetOption(mood.id||mood.mood,mood.label||mood.mood||mood.id));
+        for(const mood of moods)select.appendChild(assetOption(mood.id||mood.mood,mood.label||(String(mood.id||"").match(/^neutral_(\d+)$/)?`Neutral ${String(mood.id).split("_")[1]}`:mood.mood||mood.id)));
         if(!moods.length){select.replaceChildren(assetOption("","Mood API unavailable"));select.disabled=true}
     }catch(error){select.replaceChildren(assetOption("","Mood API unavailable"));select.disabled=true;console.warn("[MOODS]",error)}
 }

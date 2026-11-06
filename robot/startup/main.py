@@ -23,6 +23,12 @@ def main():
     log.info("Starting Spy Turtle")
     robot=RobotFactory(simulation=settings.SIMULATION).create()
     set_robot(robot)
+    # Default ON at startup; Admin can disable recognition for this session.
+    if not settings.SIMULATION:
+        try:
+            from robot.vision.face_recognition import vision
+            vision.enable(True)
+        except Exception as exc:log.warn(f"[FACE] Auto-enable failed: {exc}")
     health=HealthMonitor(robot)
     log.info("Robot ready")
     threading.Thread(target=start_api,daemon=True).start()
