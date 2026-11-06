@@ -53,6 +53,8 @@ class PowerManager:
         enabled=bool(enabled)
         if enabled==self.idle_mode:return self.status()
         if enabled:
+            # Headlights must never remain active while Idle mode powers LEDs down.
+            if self.robot.brain and getattr(self.robot.brain,'moods',None) and self.robot.brain.moods.headlights_enabled:self.robot.brain.moods.set_headlights(False)
             self.data["before_idle"]={name:bool(self.data[name]) for name in self.COMPONENTS}
             self._enter_cpu_powersave()
             self.data["idle_mode"]=True

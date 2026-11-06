@@ -539,7 +539,7 @@
     },
     "headlights": {
       "type": "headlights",
-      "start": 15,
+      "start": 13,
       "end": 26
     }
   }

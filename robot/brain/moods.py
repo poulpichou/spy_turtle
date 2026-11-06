@@ -11,7 +11,7 @@ class MoodEngine:
         self.robot=robot;self.path=Path(config_path);self.config=json.loads(self.path.read_text(encoding='utf-8'))
         self.options=self.config['settings'];self.variants={entry['id']:entry for entry in self.config['moods']}
         self._validate();self.current=None;self.deadline=0.0;self.head_steps=[];self.next_head_at=0.0
-        self.manual_head_until=0.0;self._last_motion=None
+        self.manual_head_until=0.0;self._last_motion=None;self.headlights_enabled=False
         self.choose(self.options['default_variant'])
 
     def _validate(self):
@@ -32,7 +32,7 @@ class MoodEngine:
         self.config['settings']=self.options
         temp=self.path.with_suffix('.tmp');temp.write_text(json.dumps(self.config,ensure_ascii=False,indent=2)+'\n',encoding='utf-8');temp.replace(self.path)
 
-    def status(self):return {'enable_head_movements':bool(self.options.get('enable_head_movements',False)),'mood':self.robot.state.mood,'mood_variant':self.robot.state.mood_variant,'mood_remaining_seconds':round(max(0,self.deadline-time.monotonic()),1),'variants':[{'id':v['id'],'mood':v['mood']} for v in self.variants.values()]}
+    def status(self):return {'enable_head_movements':bool(self.options.get('enable_head_movements',False)),'headlights_enabled':self.headlights_enabled,'mood':self.robot.state.mood,'mood_variant':self.robot.state.mood_variant,'mood_remaining_seconds':round(max(0,self.deadline-time.monotonic()),1),'variants':[{'id':v['id'],'mood':v['mood']} for v in self.variants.values()]}
 
     def choose(self,variant=None):
         if variant is None:
@@ -53,11 +53,26 @@ class MoodEngine:
         if self.robot.face and not self.robot.face.is_user_locked():
             try:self.robot.face.play(entry['eyes'])
             except Exception as exc:log.warn(f'[MOOD] eyes {entry["eyes"]}: {exc}')
-        if self.robot.leds:
+        if self.robot.leds and not self.headlights_enabled:
             try:self.robot.leds.set_mode(entry['leds']);state.led_mode=entry['leds']
             except Exception as exc:log.warn(f'[MOOD] leds {entry["leds"]}: {exc}')
         # shell=None intentionally leaves the existing status/user content untouched.
         log.info(f'[MOOD] {entry["id"]} ({entry["mood"]})')
+        return self.status()
+
+    def set_headlights(self,enabled):
+        enabled=bool(enabled)
+        if enabled and self.robot.power.idle_mode:raise ValueError('Disable Idle mode before using headlights')
+        if enabled and not self.robot.power.data.get('shell_light',True):raise ValueError('Enable shell LEDs before using headlights')
+        if not self.robot.leds:raise ValueError('LED controller unavailable')
+        if enabled==self.headlights_enabled:return self.status()
+        if enabled:
+            self.robot.leds.set_mode('headlights');self.robot.state.led_mode='headlights';self.headlights_enabled=True
+        else:
+            self.headlights_enabled=False
+            mode=self.current['leds'] if self.current else 'neutral'
+            self.robot.leds.set_mode(mode);self.robot.state.led_mode=mode
+        log.info(f'[LIGHTS] headlights={"on" if enabled else "off"}')
         return self.status()
 
     def manual_head_override(self):
