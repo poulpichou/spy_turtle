@@ -28,3 +28,6 @@
 #admin-panel .admin-choice-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:8px}
 #admin-panel .admin-choice-buttons button{width:100%;min-width:0;min-height:43px;padding:8px 10px;text-align:center;white-space:normal;overflow-wrap:anywhere;font-size:.73rem;line-height:1.2}
 @media(max-width:420px){#admin-panel .admin-choice-buttons{gap:6px}#admin-panel .admin-choice-buttons button{font-size:.69rem;padding:7px 5px}}
+
+/* Voice tuning controls */
+#admin-panel #speech-pitch,#admin-panel #speech-speed{width:100%}

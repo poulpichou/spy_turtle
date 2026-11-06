@@ -16,7 +16,14 @@
             if(available){const installed=!!available[button.dataset.value];button.title=installed?"Piper model installed":"Piper model not installed yet";button.classList.toggle("voice-missing",!installed)}
         });
     }
+    const pitch=document.getElementById("speech-pitch"),speed=document.getElementById("speech-speed"),pitchValue=document.getElementById("speech-pitch-value"),speedValue=document.getElementById("speech-speed-value");
+    function displayTuning(){if(pitch&&pitchValue)pitchValue.textContent=`${Number(pitch.value)>0?"+":""}${pitch.value} st`;if(speed&&speedValue)speedValue.textContent=`${Number(speed.value).toFixed(2)}×`}
+    async function saveTuning(){try{render(await request("/speech/tuning",{pitch:Number(pitch.value),speed:Number(speed.value)}))}catch(error){status.textContent=error.message;await refresh()}}
+    for(const slider of [pitch,speed])if(slider){slider.addEventListener("input",displayTuning);slider.addEventListener("change",saveTuning)}
     function render(data){
+        if(pitch&&data.pitch!==undefined)pitch.value=data.pitch;
+        if(speed&&data.speed!==undefined)speed.value=data.speed;
+        displayTuning();
         modalLanguage.value=data.language;select(groups.language,data.language);select(groups.en,data.selected_voices?.en,data.available_voices?.en);select(groups.fr,data.selected_voices?.fr,data.available_voices?.fr);
         const active=data.selected_voices?.[data.language];status.textContent=data.voice_available?`Ready: ${active}`:`Model missing: ${data.voice}`;
     }

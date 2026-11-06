@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="theme-color" content="#181818">
 <title>Spy Turtle</title>
-<link rel="stylesheet" href="/css/style.css?v=27"><link rel="stylesheet" href="/css/mobile.css?v=27"><link rel="stylesheet" href="/css/admin.css?v=73"><link rel="stylesheet" href="/css/media.css?v=27">
+<link rel="stylesheet" href="/css/style.css?v=27"><link rel="stylesheet" href="/css/mobile.css?v=27"><link rel="stylesheet" href="/css/admin.css?v=74"><link rel="stylesheet" href="/css/media.css?v=27">
 <link rel="stylesheet" href="/css/joystick.css?v=1"><link rel="stylesheet" href="/css/message-actions.css?v=3"><link rel="manifest" href="/manifest.webmanifest?v=27"><link rel="icon" href="/icons/turtle-192.png"><link rel="apple-touch-icon" href="/icons/turtle-192.png">
 </head>
 <body><main>
@@ -43,6 +43,8 @@
 <div class="admin-choice"><span>Robot language</span><div class="admin-choice-buttons" id="speech-language-options" role="group" aria-label="Robot language"><button type="button" data-value="fr">🇫🇷 Français</button><button type="button" data-value="en">🇬🇧 English</button></div></div>
 <div class="admin-choice"><span>Voice English</span><div class="admin-choice-buttons" id="speech-voice-en" role="group" aria-label="Voice English"><button type="button" data-value="bryce">Bryce · US</button><button type="button" data-value="amy">Amy · US</button><button type="button" data-value="alba">Alba · UK</button><button type="button" data-value="northern_english_male">Northern Male · UK</button></div></div>
 <div class="admin-choice"><span>Voice French</span><div class="admin-choice-buttons" id="speech-voice-fr" role="group" aria-label="Voice French"><button type="button" data-value="gilles">Gilles</button><button type="button" data-value="tom">Tom</button><button type="button" data-value="upmc">UPMC</button></div></div>
+<div class="admin-slider"><label for="speech-pitch">Voice pitch <strong id="speech-pitch-value">+3 st</strong></label><input id="speech-pitch" type="range" min="-2" max="8" step="0.5" value="3"></div>
+<div class="admin-slider"><label for="speech-speed">Voice speed <strong id="speech-speed-value">1.05×</strong></label><input id="speech-speed" type="range" min="0.8" max="1.3" step="0.05" value="1.05"></div>
 <div id="speech-status" role="status"></div></section>
 
 <section class="admin-section"><h3>Wi-Fi</h3><div class="wifi-row"><input id="wifi-ssid" placeholder="Wi-Fi SSID"><input id="wifi-password" type="password" placeholder="Wi-Fi password"><button id="wifi-add">Add Wi-Fi</button></div></section>
@@ -58,6 +60,6 @@
 </section>
 </main>
 <div id="message-modal" class="message-modal" hidden><div class="message-editor"><div class="message-editor-main"><textarea id="message" placeholder="Message..."></textarea><div class="message-editor-side"><div class="message-icon-actions"><button id="message-send-screen" type="button" title="Send screen" aria-label="Send screen">📺</button><button id="message-speak" type="button" title="Speak" aria-label="Speak">🔊</button><button id="message-ask" type="button" title="Ask Spy Turtle" aria-label="Ask Spy Turtle">🐢</button></div><label>Language<select id="message-language"><option value="fr">Français</option><option value="en">English</option></select></label></div></div><div id="message-status" role="status"></div></div></div>
-<script src="/js/transport.js?v=53"></script><script src="/js/api.js?v=27"></script><script src="/js/dashboard.js?v=41"></script><script src="/js/controls.js?v=41"></script><script src="/js/joystick.js?v=9"></script><script src="/js/dropdowns.js?v=27"></script><script src="/js/camera.js?v=53"></script><script src="/js/bluetooth-vision.js?v=61"></script><script src="/js/center.js?v=30"></script><script src="/js/admin.js?v=61"></script><script src="/js/voice.js?v=31"></script><script src="/js/message-layout.js?v=3"></script><script src="/js/pwa.js?v=27"></script><script src="/js/speech.js?v=72"></script><script src="/js/face-vision.js?v=62"></script>
+<script src="/js/transport.js?v=53"></script><script src="/js/api.js?v=27"></script><script src="/js/dashboard.js?v=41"></script><script src="/js/controls.js?v=41"></script><script src="/js/joystick.js?v=9"></script><script src="/js/dropdowns.js?v=27"></script><script src="/js/camera.js?v=53"></script><script src="/js/bluetooth-vision.js?v=61"></script><script src="/js/center.js?v=30"></script><script src="/js/admin.js?v=61"></script><script src="/js/voice.js?v=31"></script><script src="/js/message-layout.js?v=3"></script><script src="/js/pwa.js?v=27"></script><script src="/js/speech.js?v=74"></script><script src="/js/face-vision.js?v=62"></script>
 <script src="/js/sentinel.js?v=4"></script>
 </body></html>

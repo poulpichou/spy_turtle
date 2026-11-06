@@ -1,4 +1,7 @@
 import json
+import math
+import shutil
+import wave
 import subprocess
 import sys
 import tempfile
@@ -14,6 +17,8 @@ SYNTHESIS_LOCK=RLock()
 LANGUAGES=("fr","en")
 VOICES={"en":{"bryce":"en_US-bryce","amy":"en_US-amy","alba":"en_GB-alba","northern_english_male":"en_GB-northern_english_male"},"fr":{"gilles":"fr_FR-gilles","tom":"fr_FR-tom","upmc":"fr_FR-upmc"}}
 DEFAULT_VOICES={"en":"bryce","fr":"gilles"}
+DEFAULT_PITCH=3.0
+DEFAULT_SPEED=1.05
 
 def _preferences():
     try:
@@ -26,6 +31,39 @@ def _save(data):
     temp=PREFERENCE_PATH.with_suffix(".tmp")
     temp.write_text(json.dumps(data,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     temp.replace(PREFERENCE_PATH)
+
+def tuning():
+    with LOCK:data=_preferences()
+    def number(key,default,low,high):
+        try:value=float(data.get(key,default))
+        except (ValueError,TypeError):return default
+        return value if math.isfinite(value) and low<=value<=high else default
+    return {"pitch":number("pitch",DEFAULT_PITCH,-2,8),"speed":number("speed",DEFAULT_SPEED,0.8,1.3)}
+
+def set_tuning(pitch,speed):
+    try:pitch=float(pitch);speed=float(speed)
+    except (TypeError,ValueError):raise ValueError("Pitch and speed must be numbers")
+    if not math.isfinite(pitch) or not -2<=pitch<=8:raise ValueError("Pitch must be between -2 and +8 semitones")
+    if not math.isfinite(speed) or not 0.8<=speed<=1.3:raise ValueError("Speed must be between 0.8 and 1.3")
+    with LOCK:
+        data=_preferences();data.update(pitch=round(pitch,2),speed=round(speed,2));_save(data)
+    return status()
+
+def process_audio(path,pitch,speed):
+    if abs(pitch)<0.001 and abs(speed-1)<0.001:return
+    if not shutil.which("ffmpeg"):raise RuntimeError("FFmpeg is required for voice pitch/speed (sudo apt install ffmpeg)")
+    factor=2**(pitch/12)
+    with wave.open(str(path),"rb") as wav:rate=wav.getframerate()
+    # Prefer Rubber Band (preserves duration/formants better); fall back to built-in filters.
+    filters=subprocess.run(["ffmpeg","-hide_banner","-filters"],capture_output=True,text=True,timeout=10)
+    if " rubberband " in filters.stdout:effect=f"rubberband=pitch={factor:.6f}:tempo={speed:.6f}"
+    else:effect=f"asetrate={round(rate*factor)},aresample={rate},atempo={speed/factor:.6f}"
+    target=path.with_name(path.stem+"_processed.wav")
+    try:
+        result=subprocess.run(["ffmpeg","-nostdin","-hide_banner","-loglevel","error","-y","-i",str(path),"-af",effect,str(target)],capture_output=True,text=True,timeout=settings.TTS_TIMEOUT)
+        if result.returncode or not target.is_file() or target.stat().st_size<44:raise RuntimeError("FFmpeg voice effect failed: "+result.stderr[-400:])
+        target.replace(path)
+    finally:target.unlink(missing_ok=True)
 
 def language():
     with LOCK:
@@ -63,7 +101,7 @@ def voice_path(lang):
 def status():
     lang=language();model=voice_path(lang)
     available={key:{voice:voice_path_for(key,voice).is_file() for voice in VOICES[key]} for key in LANGUAGES}
-    return {"language":lang,"languages":list(LANGUAGES),"enabled":settings.TTS_ENABLED,"voice_available":model.is_file(),"voice":model.name,"selected_voices":{key:selected_voice(key) for key in LANGUAGES},"available_voices":available,"voice_options":{key:list(VOICES[key]) for key in LANGUAGES}}
+    return {"language":lang,"languages":list(LANGUAGES),"enabled":settings.TTS_ENABLED,"voice_available":model.is_file(),"voice":model.name,"selected_voices":{key:selected_voice(key) for key in LANGUAGES},"available_voices":available,"voice_options":{key:list(VOICES[key]) for key in LANGUAGES},**tuning()}
 
 def voice_path_for(lang,voice):
     prefix=VOICES[lang][voice];folder=ROOT/"models"/"voices"
@@ -89,6 +127,7 @@ def say(text,language=None):
             result=subprocess.run(command,capture_output=True,text=True,timeout=settings.TTS_TIMEOUT)
             if result.returncode:raise RuntimeError((result.stderr or "Piper failed").strip()[-400:])
             if not path.is_file() or path.stat().st_size<44:raise RuntimeError("Piper produced no audio")
+            effects=tuning();process_audio(path,effects["pitch"],effects["speed"])
             if not robot.speaker.play_file(path,"tts",delete_after=True):raise RuntimeError("Speaker playback failed")
             return {"ok":True,"language":lang,"voice":selected_voice(lang),"text":text}
         except Exception:

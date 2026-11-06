@@ -27,3 +27,12 @@ def say(value:SayRequest):
     try:return tts.say(value.text,language=value.language)
     except ValueError as error:raise HTTPException(status_code=400,detail=str(error)) from error
     except Exception as error:raise HTTPException(status_code=503,detail=str(error)) from error
+
+class TuningRequest(BaseModel):
+    pitch:float
+    speed:float
+
+@router.post("/tuning")
+def set_tuning(value:TuningRequest):
+    try:return tts.set_tuning(value.pitch,value.speed)
+    except ValueError as error:raise HTTPException(status_code=400,detail=str(error)) from error
