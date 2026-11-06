@@ -46,6 +46,7 @@ class LEDController:
 
     def set_mode(self,name):
         if name not in self.modes:raise ValueError(f"Unknown LED mode: {name}")
+        if self.mode==name:return False # Avoid duplicate log and animation reset.
         self.mode=name
         self.animation_name=self.modes[name]["animation"]
         if self.animation_name not in self.animations:raise ValueError(f"Unknown LED animation: {self.animation_name}")

@@ -2,6 +2,7 @@ import os
 import shutil
 import subprocess
 import tempfile
+import time
 from datetime import datetime
 from pathlib import Path
 from fastapi import FastAPI,HTTPException,Query,Request
@@ -35,12 +36,21 @@ STARTED_AT=datetime.now().isoformat()
 
 @app.middleware("http")
 async def no_cache(request,call_next):
+    started=time.perf_counter()
     response=await call_next(request)
     path=request.url.path
     if path=="/" or path.endswith((".html",".css",".js",".webmanifest","service-worker.js")):
         response.headers["Cache-Control"]="no-store, no-cache, must-revalidate, max-age=0"
         response.headers["Pragma"]="no-cache"
         response.headers["Expires"]="0"
+    # Uvicorn's default access log is disabled: HTTP requests use the robot logger.
+    elapsed_ms=round((time.perf_counter()-started)*1000)
+    code=response.status_code
+    ip=request.client.host if request.client else "unknown"
+    message=f"[HTTP] {request.method} {path} {code} {elapsed_ms}ms ip={ip}"
+    if code>=500:log.error(message)
+    elif code>=400:log.warn(message)
+    else:log.debug(message)
     return response
 
 class Command(BaseModel):

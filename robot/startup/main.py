@@ -11,7 +11,7 @@ from robot.utils.logger import log
 def start_api():
     import uvicorn
     log.info("Starting API")
-    uvicorn.run(app,host=settings.API_HOST,port=settings.API_PORT)
+    uvicorn.run(app,host=settings.API_HOST,port=settings.API_PORT,access_log=False)
 
 def start_bluetooth():
     try:

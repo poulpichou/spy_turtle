@@ -56,3 +56,8 @@
 /* V9: transport separator */
 #robot-status #transport-toggle{position:relative!important;margin-right:5px!important;overflow:visible!important}
 #robot-status #transport-toggle:after{content:"";position:absolute;right:-5px;top:-5px;bottom:-5px;width:1px;background:#414141;pointer-events:none}
+/* V10: exactly one full-height transport separator */
+#robot-status{position:absolute!important}
+#robot-status #transport-toggle{border:0!important;box-shadow:none!important;outline-offset:1px!important;margin-right:5px!important}
+#robot-status #transport-toggle::before,#robot-status #transport-toggle::after{content:none!important;display:none!important}
+#robot-status::before{content:"";position:absolute;left:34px;top:0;bottom:0;width:1px;background:#444;pointer-events:none;z-index:1}
