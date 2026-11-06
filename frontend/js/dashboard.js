@@ -32,16 +32,16 @@ async function updateDashboard(){
         setConnection('connected');
         document.getElementById('battery').innerText=battery.level===null||battery.level===undefined?'--':Math.round(battery.level);
         document.getElementById('battery-status').innerText=battery.status||'unknown';
-        document.getElementById('emotion').innerText=status.brain?.emotion||'neutral';
+        document.getElementById('emotion').innerText=status.brain?.mood||status.brain?.emotion||'neutral';
         document.getElementById('shell-mode').innerText=status.shell?.mode||'status';
         document.getElementById('led-mode').innerText=status.leds?.mode||'off';
         document.getElementById('motion').innerText=status.motion?.state||'stop';
         const distance=status.sensors?.distance?.distance_mm;
         const environment=status.sensors?.environment||{};
         document.getElementById('sensor-temperature').innerText=environment.temperature_c==null?'--':`${environment.temperature_c.toFixed(1)}°C`;
-        document.getElementById('sensor-humidity').innerText=environment.humidity_percent==null?'--':`${environment.humidity_percent.toFixed(1)}%`;
-        document.getElementById('sensor-pressure').innerText=environment.pressure_hpa==null?'--':`${environment.pressure_hpa.toFixed(1)} hPa | ${environment.pressure_atm?.toFixed(3)??'--'} atm`;
-        document.getElementById('sensor-gas').innerText=environment.gas_ohms==null?'--':`${(environment.gas_ohms/1000).toFixed(1)} kΩ | ${environment.air_quality?.toFixed(1)??'--'}/10`;
+        document.getElementById('sensor-humidity').innerText=environment.humidity_percent==null?'--':`${Math.round(environment.humidity_percent)}%`;
+        document.getElementById('sensor-pressure').innerText=environment.pressure_hpa==null?'--':`${Math.round(environment.pressure_hpa)} hPa`;
+        document.getElementById('sensor-gas').innerText=environment.air_quality==null?'--':`${Number(environment.air_quality).toFixed(1)}/10`;
         document.getElementById('sensor-distance').innerText=distance==null?'--':status.sensors?.distance?.out_of_range?'∞':`${(distance/10).toFixed(1)} cm`;
     }catch(error){setConnection('disconnected')}
     scheduleDashboard();
