@@ -1,5 +1,5 @@
 {
-  "enabled": false,
+  "enabled": true,
   "cooldown_seconds": 90,
   "head_lift_degrees": 10,
   "head_hold_seconds": 0.65,
