@@ -42,7 +42,6 @@ class Robot:
         if self.servo:self.servo.update()
         if self.leds:self.leds.update()
         if self.face and self.face.update():
-            self.state.emotion='neutral'
             self.state.face_event_until=0.0
         if self.shell:
             self.shell.update()
@@ -88,6 +87,9 @@ class Robot:
     def stop(self): self.motors.stop()
 
     def set_emotion(self,emotion):
+        if self.brain and hasattr(self.brain,'moods'):
+            try:self.brain.moods.choose(emotion);return
+            except ValueError:pass
         self.state.emotion=emotion
         if self.face:self.face.play(emotion)
 

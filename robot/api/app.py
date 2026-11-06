@@ -105,6 +105,21 @@ def uptime_seconds():
     if not path.exists():return None
     return round(float(path.read_text().split()[0]),1)
 
+class HeadMovements(BaseModel):
+    enabled:bool
+
+@app.get("/brain/moods")
+def get_moods():
+    robot=get_robot()
+    if not robot or not robot.brain:raise HTTPException(status_code=503,detail="Brain unavailable")
+    return robot.brain.moods.status()
+
+@app.post("/brain/head-movements")
+def set_head_movements(value:HeadMovements):
+    robot=get_robot()
+    if not robot or not robot.brain:raise HTTPException(status_code=503,detail="Brain unavailable")
+    return robot.brain.moods.set_head_enabled(value.enabled)
+
 @app.get("/state")
 def get_state():return state()
 

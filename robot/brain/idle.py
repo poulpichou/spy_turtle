@@ -40,7 +40,8 @@ class IdleBehaviour:
         reason="interaction" if interrupted else "timer"
         log.info(f"[IDLE] wake up ({reason})")
         state.sleeping_until=0.0
-        state.emotion="neutral"
+        if self.robot.brain and hasattr(self.robot.brain,"moods"):self.robot.brain.moods.choose("neutral")
+        else:state.emotion="neutral"
         self.robot.face.play("wake_up",force=True)
         self.next_action=time.monotonic()+self.random_delay()
 
@@ -62,6 +63,7 @@ class IdleBehaviour:
         duration=random.uniform(10.0,20.0)
         self.sleep_started_at=time.time()
         self.robot.state.sleeping_until=self.sleep_started_at+duration
-        self.robot.state.emotion="sleeping"
+        if self.robot.brain and hasattr(self.robot.brain,"moods"):self.robot.brain.moods.choose("sleeping")
+        else:self.robot.state.emotion="sleeping"
         log.info(f"[IDLE] sleep for {duration:.1f}s")
         self.robot.face.play("sleeping",force=True)

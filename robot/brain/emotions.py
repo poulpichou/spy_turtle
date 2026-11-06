@@ -14,7 +14,10 @@ class EmotionManager:
         self.last_change = time.time()
 
     def set_emotion(self, emotion):
-        self.robot.state.emotion = emotion
+        if self.robot.brain and hasattr(self.robot.brain,"moods"):
+            try:self.robot.brain.moods.choose(emotion)
+            except ValueError:self.robot.state.emotion=emotion
+        else:self.robot.state.emotion=emotion
         self.last_change = time.time()
 
         print(f"[Emotion] {emotion}")

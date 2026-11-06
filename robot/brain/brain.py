@@ -1,5 +1,6 @@
 from robot.brain.idle import IdleBehaviour
 from robot.brain.emotions import EmotionManager
+from robot.brain.moods import MoodEngine
 from robot.brain.commands import CommandManager
 from robot.brain.planner import Planner
 
@@ -15,6 +16,7 @@ class Brain:
         self.robot = robot
 
         self.commands = CommandManager(robot)
+        self.moods = MoodEngine(robot)
         self.emotions = EmotionManager(robot)
         self.idle = IdleBehaviour(robot)
 
@@ -26,6 +28,7 @@ class Brain:
 
         self.commands.update()
         self.emotions.update()
+        self.moods.update()
 
         priority = self.planner.get_priority()
 

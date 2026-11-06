@@ -15,7 +15,8 @@ def interact(kind):
     instance.state.touch(kind)
     if instance.state.sleeping_until:
         instance.state.sleeping_until=0.0
-        instance.state.emotion="neutral"
+        if instance.brain and hasattr(instance.brain,"moods"):instance.brain.moods.choose("neutral")
+        else:instance.state.emotion="neutral"
         if instance.face:instance.face.play("wake_up",force=True)
     return instance
 
@@ -69,7 +70,6 @@ def set_emotion(emotion):
     log.info(f"[API] face {emotion}")
     if not instance.face:raise RuntimeError("Face controller is unavailable")
     instance.face.user_event(emotion,10.0)
-    instance.state.emotion=emotion
     instance.state.face_event_until=instance.face.manual_until
 
 def set_led(mode):
@@ -93,11 +93,26 @@ def speak(text):
     instance=interact(f"sound:{text}");log.info(f"[API] speak {text}")
     if instance.speaker:instance.speaker.play(text)
 
-def look_left(): log.info("[API] camera left");interact("head_left").servo.look_left()
-def look_right(): log.info("[API] camera right");interact("head_right").servo.look_right()
-def look_up(): log.info("[API] camera up");interact("head_up").servo.look_up()
-def look_down(): log.info("[API] camera down");interact("head_down").servo.look_down()
-def camera_center(): log.info("[API] camera center");interact("head_center").servo.center()
+def look_left():
+    log.info("[API] camera left");instance=interact("head_left")
+    if instance.brain:instance.brain.moods.manual_head_override()
+    instance.servo.look_left()
+def look_right():
+    log.info("[API] camera right");instance=interact("head_right")
+    if instance.brain:instance.brain.moods.manual_head_override()
+    instance.servo.look_right()
+def look_up():
+    log.info("[API] camera up");instance=interact("head_up")
+    if instance.brain:instance.brain.moods.manual_head_override()
+    instance.servo.look_up()
+def look_down():
+    log.info("[API] camera down");instance=interact("head_down")
+    if instance.brain:instance.brain.moods.manual_head_override()
+    instance.servo.look_down()
+def camera_center():
+    log.info("[API] camera center");instance=interact("head_center")
+    if instance.brain:instance.brain.moods.manual_head_override()
+    instance.servo.center()
 
 def shell_show(value):
     instance=interact(f"shell:{value}")

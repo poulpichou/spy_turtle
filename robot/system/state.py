@@ -10,6 +10,11 @@ class TurtleState:
     })
     vision:dict=field(default_factory=lambda:{'detected_current':[],'detected_recent':[]})
     emotion:str='neutral'
+    mood:str='neutral'
+    mood_variant:str='neutral_1'
+    mood_context_fr:str=''
+    mood_context_en:str=''
+    mood_deadline_monotonic:float=0.0
     led_mode:str='off'
     camera_on:bool=False
     motion:str='stop'
@@ -37,7 +42,7 @@ class TurtleState:
         return {
             'battery':self.battery.copy(),
             'vision':{'detected_current':[f.copy() for f in self.vision['detected_current']],'detected_recent':[p.copy() for p in self.vision['detected_recent']]},
-            'brain':{'emotion':self.emotion,'idle_seconds':self.idle_seconds(),'last_interaction_type':self.last_interaction_type,'interaction_count':self.interaction_count,'face_event_until':self.face_event_until,'sleeping_until':self.sleeping_until},
+            'brain':{'emotion':self.emotion,'mood':self.mood,'mood_variant':self.mood_variant,'mood_context_fr':self.mood_context_fr,'mood_context_en':self.mood_context_en,'mood_remaining_seconds':round(max(0,self.mood_deadline_monotonic-time.monotonic()),1),'idle_seconds':self.idle_seconds(),'last_interaction_type':self.last_interaction_type,'interaction_count':self.interaction_count,'face_event_until':self.face_event_until,'sleeping_until':self.sleeping_until},
             'camera':{'on':self.camera_on},
             'motion':{'state':self.motion,'x':self.x,'y':self.y,'angle':self.angle},
             'shell':{'mode':self.shell_mode,'event':self.shell_event},
