@@ -16,3 +16,10 @@ photos/
 # Private face photos and downloaded models
 /robot/assets/faces/
 /robot/assets/models/
+
+# Logs
+logs/
+*.log
+
+# Generated cache
+cache/
