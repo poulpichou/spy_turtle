@@ -1,7 +1,7 @@
 (() => {
     const button=document.getElementById('headlights-toggle');if(!button)return;
     let enabled=false,idle=false,busy=false;
-    function render(){button.disabled=idle||busy;button.classList.toggle('active',enabled&&!idle);button.setAttribute('aria-pressed',String(enabled&&!idle));button.title=idle?'Disable Idle mode to use headlights':'Headlights (LEDs 13–26)'}
+    function render(){button.disabled=idle||busy;button.classList.toggle('active',enabled&&!idle);button.setAttribute('aria-pressed',String(enabled&&!idle));button.title=idle?'Disable Idle mode to use headlights':'Headlights (LEDs 14–25)'}
     async function request(enabled){
         if(typeof transportMode!=='undefined'&&transportMode==='bluetooth')throw Error('Headlights require Wi-Fi');
         const response=await fetch('/brain/headlights',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({enabled})});
