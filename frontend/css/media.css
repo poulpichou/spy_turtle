@@ -30,3 +30,12 @@
 .idle-lights-row #headlights-toggle.active{background:#655b31!important;border-color:#e5ca63!important}
 .idle-lights-row #automation-master:disabled,.idle-lights-row #headlights-toggle:disabled{opacity:.35!important}
 @media(max-width:720px){.idle-lights-row{gap:3px!important}.idle-lights-row .side-idle-button{height:28px!important;min-height:28px!important;font-size:.55rem!important;padding:0 2px!important}}
+/* V13: compact controls and bottom cards */
+/* Stretch only the two bottom action cards; keep all controls above unchanged. */
+#left-panel,#right-panel{min-height:0}
+#left-panel>.bottom-action-card,#right-panel>.bottom-action-card{flex:1 1 72px!important;height:auto!important;min-height:72px!important;align-self:stretch!important;justify-content:center!important;align-content:center!important}
+#left-panel>.bottom-action-card>*:is(button),#right-panel>.bottom-action-card>*:is(button){align-self:center!important;justify-self:center!important}
+#left-panel>.bottom-action-card #record-status{bottom:3px}
+.idle-lights-row #automation-master.active{background:#505050!important;border-color:#777!important}
+.idle-lights-row #idle-toggle.active{background:#5a5a5a!important;border-color:#888!important;box-shadow:inset 0 0 0 1px #777!important}
+.idle-lights-row #automation-master:disabled{background:#252525!important;border-color:#444!important;color:#888!important;filter:grayscale(1)!important;opacity:.35!important}
