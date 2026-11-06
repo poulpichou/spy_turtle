@@ -60,20 +60,29 @@ loadAssetControls();
 async function loadMoodControls(){
     const select=document.getElementById("animation-select");
     try{
-        const response=await fetch("/brain/moods",{cache:"no-store"});if(!response.ok)throw Error(`HTTP ${response.status}`);
-        const data=await response.json(),entries=data.variants||data.moods||[];
+        let entries=[];
+        if(transportMode==="bluetooth"){
+            for(let offset=0;offset<100;offset+=5){
+                const data=await turtleRequest("/brain/moods/list",{offset});
+                entries.push(...(data.variants||[]));
+                if(entries.length>=data.total||!(data.variants||[]).length)break;
+            }
+        }else{
+            const data=await turtleRequest("/brain/moods");entries=data.variants||data.moods||[];
+        }
         const moods=entries.map(item=>typeof item==="string"?{id:item,mood:item}:item);
         select.replaceChildren(assetOption("","Choose mood..."));
         for(const mood of moods)select.appendChild(assetOption(mood.id||mood.mood,mood.label||(String(mood.id||"").match(/^neutral_(\d+)$/)?`Neutral ${String(mood.id).split("_")[1]}`:mood.mood||mood.id)));
-        if(!moods.length){select.replaceChildren(assetOption("","Mood API unavailable"));select.disabled=true}
+        select.disabled=!moods.length;
+        if(!moods.length)select.replaceChildren(assetOption("","Mood API unavailable"));
     }catch(error){select.replaceChildren(assetOption("","Mood API unavailable"));select.disabled=true;console.warn("[MOODS]",error)}
 }
 document.getElementById("animation-select").onchange=async event=>{
     if(!event.target.value)return;
-    try{const response=await fetch("/brain/moods/select",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({variant:event.target.value})});if(!response.ok)throw Error((await response.text()).slice(0,200))}
+    try{await turtleRequest("/brain/moods/select",{variant:event.target.value})}
     catch(error){showCommandError(error)}
 };
-loadMoodControls();
+loadMoodControls();document.addEventListener("transportchange",loadMoodControls);
 
 const messageModal=document.getElementById("message-modal"),messageInput=document.getElementById("message");
 function openMessageEditor(){messageModal.hidden=false;messageInput.focus()}

@@ -6,14 +6,9 @@
     let enabled=localStorage.getItem(KEY)!=="false",idle=false,busy=false,previous=null;
     if(sound)sound.checked=localStorage.getItem(SOUND)!=="false";
     function errorMessage(error){if(status){status.hidden=false;status.textContent=error.message}console.error("[AUTOMATION]",error)}
-    async function api(path,enabled){
-        if(typeof transportMode!=="undefined"&&transportMode==="bluetooth")throw Error("Automation settings require Wi-Fi");
-        const r=await fetch(path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({enabled}),cache:"no-store"});
-        const data=await r.json();if(!r.ok)throw Error(data.detail||`HTTP ${r.status}`);return data;
-    }
+    async function api(path,enabled){return turtleRequest(path,{enabled})}
     async function current(){
-        const get=async path=>{const r=await fetch(path,{cache:"no-store"});if(!r.ok)throw Error(`${path}: HTTP ${r.status}`);return r.json()};
-        const [s,m]=await Promise.all([get("/sentinel/status"),get("/brain/moods")]);
+        const [s,m]=await Promise.all([turtleRequest("/sentinel/status"),turtleRequest("/brain/moods")]);
         return {greet:!!s.enabled,head:!!m.enable_head_movements};
     }
     function render(){

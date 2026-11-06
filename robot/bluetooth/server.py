@@ -26,8 +26,8 @@ def compact_state():
     servo=safe_status(robot.servo)
     # Only the fields used by the dashboard; preserve REST field names.
     return {
-        "battery":{"level":data["battery"].get("level"),"status":data["battery"].get("status")},
-        "brain":{"emotion":data["brain"].get("emotion","neutral")},
+        "battery":{"level":data["battery"].get("level"),"status":data["battery"].get("status"),"charging":data["battery"].get("charging")},
+        "brain":{"emotion":data["brain"].get("emotion","neutral"),"mood":data["brain"].get("mood")},
         "shell":{"mode":data["shell"].get("mode","status")},
         "leds":{"mode":data["leds"].get("mode","off")},
         "motion":{"state":data["motion"].get("state","stop")},
@@ -87,6 +87,19 @@ def admin_dispatch(request):
     if action=="wifi_delete":
         wifi_manager.delete(str(data.get("ssid","")));return {"ok":True,"message":"Wi-Fi network deleted"}
     if robot is None:raise RuntimeError("Robot unavailable")
+    if action=="mood_status":
+        return {"ok":True,**{k:v for k,v in robot.brain.moods.status().items() if k!="variants"}}
+    if action=="mood_list":
+        entries=robot.brain.moods.status()["variants"];offset=max(0,int(data.get("offset",0)))
+        return {"ok":True,"variants":entries[offset:offset+5],"total":len(entries)}
+    if action=="mood_select":
+        return {"ok":True,**{k:v for k,v in robot.brain.moods.choose(str(data.get("variant",""))).items() if k!="variants"}}
+    if action=="head_movements":
+        return {"ok":True,**{k:v for k,v in robot.brain.moods.set_head_enabled(bool(data.get("enabled"))).items() if k!="variants"}}
+    if action=="headlights":
+        return {"ok":True,**{k:v for k,v in robot.brain.moods.set_headlights(bool(data.get("enabled"))).items() if k!="variants"}}
+    if action=="sentinel_status":return {"ok":True,"enabled":bool(robot.sentinel.status().get("enabled",False))}
+    if action=="sentinel_enable":return {"ok":True,"enabled":bool(robot.sentinel.set_enabled(bool(data.get("enabled"))).get("enabled",False))}
     if action=="vision_status":
         status=face_vision.status()
         return {"ok":True,"enabled":status["enabled"],"interval":status["interval"],"faces":[{k:round(f[k],3) if k!="name" else str(f[k])[:24] for k in ("x","y","w","h","name")} for f in status["faces"][:4]],"references":status["references"],"errors":status["errors"],"last_ms":status.get("last_ms")}

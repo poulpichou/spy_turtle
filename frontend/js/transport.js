@@ -107,3 +107,13 @@ document.addEventListener("DOMContentLoaded",()=>{
         finally{button.disabled=false}
     };
 });
+
+async function turtleRequest(path,body=null){
+    if(transportMode==="bluetooth"){
+        const actions={"/brain/moods":"mood_status","/brain/moods/list":"mood_list","/brain/moods/select":"mood_select","/brain/headlights":"headlights","/brain/head-movements":"head_movements","/sentinel/status":"sentinel_status","/sentinel/enable":"sentinel_enable"};
+        const action=actions[path];if(!action)throw Error(`Unsupported Bluetooth feature: ${path}`);
+        return bluetoothAdminRequest(action,body||{});
+    }
+    const response=await fetch(path,{method:body===null?"GET":"POST",headers:{"Content-Type":"application/json"},body:body===null?undefined:JSON.stringify(body),cache:"no-store"});
+    const data=await response.json();if(!response.ok)throw Error(data.detail||`HTTP ${response.status}`);return data;
+}
