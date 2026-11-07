@@ -1,16 +1,17 @@
-/* V26 — Bulle: 1 / flexible / 3 button-unit columns. */
+/* V27 — Bulle: equal-sized action buttons, compact message field. */
 .message-modal{align-items:flex-start!important;justify-content:center!important;padding:6px!important;overflow:hidden}
 .message-editor{box-sizing:border-box!important;width:min(96vw,680px)!important;max-height:min(40svh,calc(var(--spy-visible-height,100dvh) - 12px))!important;overflow:auto!important;padding:7px!important}
-.message-editor-main{display:grid!important;grid-template-columns:minmax(32px,1fr) minmax(0,8fr) minmax(104px,3fr)!important;gap:5px!important;align-items:stretch!important}
-.message-editor-main textarea{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:clamp(115px,18svh,155px)!important;min-height:0!important;resize:none!important;font-size:15px!important}
-.message-compose-actions{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:5px!important;min-width:0!important}
-.message-compose-actions button,.message-icon-actions button{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:46px!important;min-height:46px!important;padding:0!important;font-size:17px!important}
+/* The right column contains three button widths plus two internal gaps. */
+.message-editor-main{--message-gap:5px;--message-unit:calc((100% - 4 * var(--message-gap)) / 12);display:grid!important;grid-template-columns:minmax(0,var(--message-unit)) minmax(0,1fr) minmax(0,calc(3 * var(--message-unit) + 2 * var(--message-gap)))!important;gap:var(--message-gap)!important;align-items:stretch!important}
+.message-editor-main textarea{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:clamp(86px,13.5svh,116px)!important;min-height:0!important;resize:none!important;font-size:15px!important}
+.message-compose-actions{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:var(--message-gap)!important;min-width:0!important}
 .message-editor-side{display:flex!important;flex-direction:column!important;gap:6px!important;min-width:0!important}
-.message-icon-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}
-.message-language-buttons{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px!important;width:100%!important}
-.message-language-buttons button{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:42px!important;padding:0!important}
-/* Internal language value is still used by speech.js; never render it as a dropdown. */
+.message-icon-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:var(--message-gap)!important}
+.message-compose-actions button,.message-icon-actions button{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:35px!important;min-height:35px!important;padding:0!important;font-size:17px!important}
+.message-language-buttons{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:var(--message-gap)!important;width:100%!important}
+.message-language-buttons button{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:32px!important;min-height:32px!important;padding:0!important}
+/* The language is controlled by FR/GB buttons; no dropdown. */
 #message-language,.message-editor-side select,.message-editor-side label{display:none!important;visibility:hidden!important;position:absolute!important;width:0!important;height:0!important;overflow:hidden!important}
 #message-status{min-height:0!important;max-height:38px!important;overflow:auto!important;overflow-wrap:anywhere;font-size:11px!important;margin-top:3px}
 .message-editor-actions{display:none!important}
-@media(max-width:420px){.message-editor{padding:6px!important}.message-editor-main{grid-template-columns:minmax(30px,1fr) minmax(0,7fr) minmax(100px,3fr)!important;gap:4px!important}.message-icon-actions,.message-language-buttons,.message-compose-actions{gap:4px!important}.message-compose-actions button,.message-icon-actions button{height:40px!important;min-height:40px!important}.message-language-buttons button{height:38px!important}}
+@media(max-width:420px){.message-editor{padding:6px!important}.message-editor-main{--message-gap:4px}.message-compose-actions button,.message-icon-actions button{height:30px!important;min-height:30px!important}.message-language-buttons button{height:29px!important;min-height:29px!important}}
