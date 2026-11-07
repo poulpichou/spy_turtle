@@ -23,6 +23,7 @@ class Speaker:
         self.reference_volume=max(1,int(self.config.get("reference_volume",60)))
         self.process=None
         self.last_audio_stats={}
+        self.output_headroom=float(self.config.get("output_headroom",0.92))
         self.adaptive_enabled=False
         self.adaptive_boost=0
         self.adaptive_max_boost=15
@@ -89,7 +90,7 @@ class Speaker:
             return False
         play_path=path
         cleanup_path=path if delete_after else None
-        if extension==".wav" and self._gain()!=1.0:
+        if extension==".wav":
             try:
                 play_path=self._scaled_wav(path,self._gain())
                 if delete_after:
@@ -99,7 +100,8 @@ class Speaker:
             except Exception as error:
                 log.warn(f"[SPEAKER] WAV volume scaling failed, playing original: {error}")
         if extension==".wav":
-            try:self.last_audio_stats=self.analyze_wav(path if path.exists() else play_path)
+            try:
+                self.last_audio_stats={"source":self.analyze_wav(path if path.exists() else play_path),"output":self.analyze_wav(play_path),"gain_requested":round(self._gain(),3)}
             except Exception as error:log.warn(f"[AUDIO DIAG] {error}")
         command=self._command(play_path,extension)
         with self.lock:
@@ -130,7 +132,8 @@ class Speaker:
 
     def _command(self,path,extension):
         if extension==".wav":return ["aplay","-q","-D",self.device,str(path)]
-        scale=max(0,min(65535,round(32768*self._gain())))
+        # MP3 playback cannot use the WAV peak limiter; cap decoder gain at unity.
+        scale=max(0,min(32768,round(32768*self._gain()*self.output_headroom)))
         return ["mpg123","-q","-o","alsa","-a",self.mp3_device,"-f",str(scale),str(path)]
 
     def _scaled_wav(self,path,gain):
@@ -139,7 +142,13 @@ class Speaker:
             if params.sampwidth!=2:raise ValueError(f"unsupported WAV sample width: {params.sampwidth}")
             samples=array("h",source.readframes(params.nframes))
         if sys.byteorder!="little":samples.byteswap()
-        for index,value in enumerate(samples):samples[index]=max(-32768,min(32767,round(value*gain)))
+        # Peak normalization prevents hard clipping when software volume exceeds reference.
+        # Headroom also avoids sending full-scale samples to the I2S amplifier.
+        peak=max((abs(v) for v in samples),default=0)
+        ceiling=max(0.1,min(0.98,self.output_headroom))*32767
+        applied=min(max(0.0,gain),ceiling/peak) if peak else max(0.0,gain)
+        for index,value in enumerate(samples):samples[index]=max(-32768,min(32767,round(value*applied)))
+        log.info(f"[AUDIO LIMITER] requested={gain:.3f} applied={applied:.3f} peak={peak}/32768 headroom={self.output_headroom:.2f}")
         if sys.byteorder!="little":samples.byteswap()
         temp=tempfile.NamedTemporaryFile(prefix="spyturtle_",suffix=".wav",delete=False)
         temp.close()
@@ -175,4 +184,4 @@ class Speaker:
         self.volume=max(0,min(100,int(volume)))
         log.info(f"[SPEAKER] volume {self.volume}%")
 
-    def status(self): return {"volume":self.volume,"reference_volume":self.reference_volume,"device":self.device,"audio_stats":self.last_audio_stats,"adaptive":self.adaptive_status()}
+    def status(self): return {"volume":self.volume,"reference_volume":self.reference_volume,"device":self.device,"audio_stats":self.last_audio_stats,"adaptive":self.adaptive_status(),"output_headroom":self.output_headroom}
