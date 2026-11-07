@@ -50,18 +50,9 @@ class FaceVision:
         t=time.perf_counter();models=ROOT/'models'
         detector=cv2.FaceDetectorYN.create(str(models/'face_detection_yunet_2023mar.onnx'),'',(320,320))
         recognizer=cv2.FaceRecognizerSF.create(str(models/'face_recognition_sface_2021dec.onnx'),'')
-        refs=[];skipped=0
-        for folder in sorted((ROOT/'faces').iterdir()) if (ROOT/'faces').exists() else []:
-            if not folder.is_dir():continue
-            for path in sorted(folder.iterdir()):
-                if path.suffix.lower() not in ('.jpg','.jpeg','.png','.webp'):continue
-                img=cv2.imread(str(path))
-                if img is None:skipped+=1;log.warn(f'[FACE] cannot read reference: {folder.name}/{path.name}');continue
-                detector.setInputSize((img.shape[1],img.shape[0]))
-                _,faces=detector.detect(img)
-                if faces is None or len(faces)!=1:skipped+=1;log.warn(f'[FACE] reference needs exactly one face: {folder.name}/{path.name}');continue
-                try:refs.append((folder.name,recognizer.feature(recognizer.alignCrop(img,faces[0]))))
-                except Exception as exc:skipped+=1;log.warn(f'[FACE] reference failed: {folder.name}/{path.name}: {exc}')
+        from robot.tools.vision_cache import load_or_build
+        refs,skipped,cache_hit=load_or_build(detector,recognizer,[models/'face_detection_yunet_2023mar.onnx',models/'face_recognition_sface_2021dec.onnx'],ROOT/'faces')
+        log.info('[FACE] embeddings cache='+('hit' if cache_hit else 'rebuilt'))
         self.detector=detector;self.recognizer=recognizer;self.references=refs
         log.info(f'[FACE] models loaded in {(time.perf_counter()-t)*1000:.0f}ms; references={len(refs)} skipped={skipped}')
     def submit(self,jpeg):

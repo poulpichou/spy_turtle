@@ -123,6 +123,30 @@
     "neutral_ola": {
       "label": "Blue Ola",
       "animation": "neutral_ola"
+    },
+    "playful": {
+      "label": "Playful",
+      "animation": "playful"
+    },
+    "excited": {
+      "label": "Excited",
+      "animation": "excited"
+    },
+    "detective": {
+      "label": "Detective",
+      "animation": "detective"
+    },
+    "dreamy": {
+      "label": "Dreamy",
+      "animation": "dreamy"
+    },
+    "proud": {
+      "label": "Proud",
+      "animation": "proud"
+    },
+    "shy": {
+      "label": "Shy",
+      "animation": "shy"
     }
   },
   "animations": {
@@ -566,13 +590,13 @@
       "brightness": 0.6
     },
     "neutral_dot": {
-      "type": "spinner",
+      "type": "ola",
       "color": [
         0,
         160,
         255
       ],
-      "tail": 1,
+      "width": 2.0,
       "period": 4.0,
       "brightness": 0.65
     },
@@ -583,9 +607,88 @@
         120,
         255
       ],
-      "width": 8,
+      "width": 5.0,
       "period": 4.2,
       "brightness": 0.65
+    },
+    "playful": {
+      "type": "sequence",
+      "loop": true,
+      "steps": [
+        {
+          "effect": "spinner",
+          "color": [
+            255,
+            40,
+            175
+          ],
+          "tail": 7,
+          "period": 0.85,
+          "duration": 1.8
+        },
+        {
+          "effect": "wave",
+          "color": [
+            0,
+            215,
+            255
+          ],
+          "tail": 10,
+          "period": 1.1,
+          "duration": 1.8
+        }
+      ]
+    },
+    "excited": {
+      "type": "pulse",
+      "color": [
+        0,
+        165,
+        255
+      ],
+      "period": 0.65,
+      "brightness": 0.95
+    },
+    "detective": {
+      "type": "wave",
+      "color": [
+        20,
+        85,
+        180
+      ],
+      "tail": 12,
+      "period": 5.5,
+      "brightness": 0.45
+    },
+    "dreamy": {
+      "type": "breathing",
+      "color": [
+        85,
+        45,
+        180
+      ],
+      "period": 7,
+      "brightness": 0.35
+    },
+    "proud": {
+      "type": "breathing",
+      "color": [
+        30,
+        140,
+        255
+      ],
+      "period": 3,
+      "brightness": 0.85
+    },
+    "shy": {
+      "type": "breathing",
+      "color": [
+        20,
+        55,
+        135
+      ],
+      "period": 5.5,
+      "brightness": 0.28
     }
   }
 }

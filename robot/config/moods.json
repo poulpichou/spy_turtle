@@ -298,14 +298,14 @@
     },
     {
       "id": "playful",
-      "mood": "happy",
+      "mood": "playful",
       "weight": 6,
       "duration_seconds": [
         20,
         45
       ],
       "eyes": "happy",
-      "leds": "dance",
+      "leds": "playful",
       "shell": null,
       "head": {
         "pattern": "shake",
@@ -380,14 +380,14 @@
     },
     {
       "id": "excited",
-      "mood": "surprised",
+      "mood": "excited",
       "weight": 4,
       "duration_seconds": [
         20,
         45
       ],
       "eyes": "surprised",
-      "leds": "spinner",
+      "leds": "excited",
       "shell": null,
       "head": {
         "pattern": "shake",
@@ -421,14 +421,14 @@
     },
     {
       "id": "detective",
-      "mood": "curious",
+      "mood": "detective",
       "weight": 4,
       "duration_seconds": [
         20,
         45
       ],
       "eyes": "neutral",
-      "leds": "curious",
+      "leds": "detective",
       "shell": null,
       "head": {
         "pattern": "scan",
@@ -462,14 +462,14 @@
     },
     {
       "id": "dreamy",
-      "mood": "sleepy",
+      "mood": "dreamy",
       "weight": 3,
       "duration_seconds": [
         15,
         30
       ],
       "eyes": "sleepy",
-      "leds": "wave",
+      "leds": "dreamy",
       "shell": null,
       "head": {
         "pattern": "none",
@@ -544,14 +544,14 @@
     },
     {
       "id": "proud",
-      "mood": "happy",
+      "mood": "proud",
       "weight": 2,
       "duration_seconds": [
         15,
         30
       ],
       "eyes": "happy",
-      "leds": "cool",
+      "leds": "proud",
       "shell": null,
       "head": {
         "pattern": "none",
@@ -585,14 +585,14 @@
     },
     {
       "id": "shy",
-      "mood": "neutral",
+      "mood": "shy",
       "weight": 2,
       "duration_seconds": [
         35,
         85
       ],
       "eyes": "neutral",
-      "leds": "breathing",
+      "leds": "shy",
       "shell": null,
       "head": {
         "pattern": "none",
@@ -708,7 +708,7 @@
     },
     {
       "id": "rocket",
-      "mood": "surprised",
+      "mood": "rocket",
       "weight": 1,
       "duration_seconds": [
         15,
@@ -749,7 +749,7 @@
     },
     {
       "id": "gassy",
-      "mood": "happy",
+      "mood": "gassy",
       "weight": 1,
       "duration_seconds": [
         15,

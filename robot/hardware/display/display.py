@@ -79,6 +79,11 @@ class Display:
         self.buffer=canvas
         self.draw=ImageDraw.Draw(self.buffer)
 
+    def show_raw(self,pixels):
+        if len(pixels)!=self.driver.width*self.driver.height*2:raise ValueError("Invalid RGB565 frame size")
+        self.driver.set_window(0,0,self.driver.width-1,self.driver.height-1)
+        self.driver.push_pixels(pixels)
+
     def show(self):
         pixels=[]
 

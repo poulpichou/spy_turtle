@@ -24,7 +24,8 @@ class ST7796:
 
     def data(self,values):
         lgpio.gpio_write(self.gpio,self.dc,1)
-        self.spi.writebytes(values)
+        if hasattr(self.spi,"writebytes2"):self.spi.writebytes2(values)
+        else:self.spi.writebytes(values)
 
     def reset(self):
         lgpio.gpio_write(self.gpio,self.rst,0)
