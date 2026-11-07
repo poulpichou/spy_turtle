@@ -304,7 +304,7 @@
         20,
         45
       ],
-      "eyes": "happy",
+      "eyes": "playful",
       "leds": "playful",
       "shell": null,
       "head": {
@@ -386,7 +386,7 @@
         20,
         45
       ],
-      "eyes": "surprised",
+      "eyes": "excited",
       "leds": "excited",
       "shell": null,
       "head": {
@@ -427,7 +427,7 @@
         20,
         45
       ],
-      "eyes": "neutral",
+      "eyes": "detective",
       "leds": "detective",
       "shell": null,
       "head": {
@@ -468,7 +468,7 @@
         15,
         30
       ],
-      "eyes": "sleepy",
+      "eyes": "dreamy",
       "leds": "dreamy",
       "shell": null,
       "head": {
@@ -550,7 +550,7 @@
         15,
         30
       ],
-      "eyes": "happy",
+      "eyes": "proud",
       "leds": "proud",
       "shell": null,
       "head": {
@@ -591,7 +591,7 @@
         35,
         85
       ],
-      "eyes": "neutral",
+      "eyes": "shy",
       "leds": "shy",
       "shell": null,
       "head": {
@@ -714,7 +714,7 @@
         15,
         30
       ],
-      "eyes": "surprised",
+      "eyes": "rocket",
       "leds": "rocket",
       "shell": null,
       "head": {
@@ -755,7 +755,7 @@
         15,
         30
       ],
-      "eyes": "happy",
+      "eyes": "gassy",
       "leds": "gassy",
       "shell": null,
       "head": {
