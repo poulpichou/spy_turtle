@@ -716,7 +716,7 @@
       ],
       "eyes": "rocket",
       "leds": "rocket",
-      "shell": null,
+      "shell": "rocket",
       "head": {
         "pattern": "shake",
         "amplitude_degrees": 12,
@@ -757,14 +757,14 @@
       ],
       "eyes": "gassy",
       "leds": "gassy",
-      "shell": null,
+      "shell": "smoke",
       "head": {
         "pattern": "none",
         "amplitude_degrees": 0,
         "repetitions": 1,
         "step_interval_seconds": 1.2
       },
-      "sound": null,
+      "sound": "fart1",
       "contexts": [
         {
           "fr": "Oups, j'ai mangé trop de laitue au beurre de cacahuète !",

@@ -56,9 +56,27 @@ class MoodEngine:
         if self.robot.leds and not self.headlights_enabled and self.robot.power.data.get("shell_light",True):
             try:self.robot.leds.set_mode(entry['leds']);state.led_mode=entry['leds']
             except Exception as exc:log.warn(f'[MOOD] leds {entry["leds"]}: {exc}')
-        # shell=None intentionally leaves the existing status/user content untouched.
+        self._apply_media(entry)
         log.info(f'[MOOD] {entry["id"]} ({entry["mood"]})')
         return self.status()
+
+    def _apply_media(self,entry):
+        from robot.assets.assets import get_asset_names
+        shell=entry.get('shell')
+        if shell and self.robot.shell and self.robot.power.data.get('back_screen',True):
+            if self.robot.shell.active_mode=='status':
+                try:self.robot.shell.show_image(shell)
+                except Exception as error:log.warn(f'[MOOD] shell {shell}: {error}')
+            else:log.info(f'[MOOD] shell skipped active={self.robot.shell.active_mode}')
+        sound=entry.get('sound')
+        if not sound or not self.robot.speaker:return
+        if not self.robot.power.data.get('automation_sounds',True) or not self.robot.power.data.get('automation_enabled',True) or self.robot.power.idle_mode:return
+        try:
+            if sound not in get_asset_names('audio'):
+                log.warn(f'[MOOD] sound asset missing: {sound}')
+                return
+            self.robot.speaker.play(sound)
+        except Exception as error:log.warn(f'[MOOD] sound {sound}: {error}')
 
     def set_headlights(self,enabled):
         enabled=bool(enabled)

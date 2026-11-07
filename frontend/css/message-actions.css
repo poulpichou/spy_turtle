@@ -18,3 +18,11 @@
 .message-icon-actions{grid-template-columns:repeat(3,minmax(0,1fr))!important}
 .message-language-buttons{display:flex;gap:3px}.message-language-buttons button{flex:1;min-width:0}
 @media(max-width:420px){.message-editor-main{grid-template-columns:minmax(28px,10fr) minmax(0,65fr) minmax(65px,25fr)!important}}
+
+/* V25: matching action button sizes, hidden redundant dropdown */
+.message-editor-main{grid-template-columns:minmax(72px,1fr) minmax(0,7fr) minmax(72px,1fr)!important;gap:5px!important}
+.message-compose-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:32px!important;gap:2px!important;align-content:start!important}
+.message-compose-actions button{height:32px!important;width:100%!important;min-width:0!important;font-size:15px!important;padding:0!important}
+.message-icon-actions button{height:32px!important}
+#message-language,.message-editor-side>select,.message-editor-side label select{display:none!important}
+@media(max-width:420px){.message-editor-main{grid-template-columns:minmax(66px,1fr) minmax(0,7fr) minmax(66px,1fr)!important}}
