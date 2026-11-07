@@ -42,14 +42,21 @@ def motion_watchdog():
         instance.motors.stop();instance.state.motion="stop"
         log.warn("[SAFETY] Motion timeout: motors stopped")
 
+def trace_actuator(kind,action):
+    from robot.system.actuator_diagnostics import record
+    r=robot();device=r.servo if kind=="SERVO" else r.motors
+    try:status=device.status() if device else None
+    except Exception as error:status={"error":str(error)}
+    record(kind,f"{action} idle={r.power.idle_mode} status={status}")
+
 def move_forward(speed=None):
-    instance=interact("move_forward");log.info(f"[API] move forward speed={speed}");arm_motion();instance.motors.forward(speed);instance.state.motion="forward";instance.state.x+=settings.MOTOR_DISTANCE_STEP_MM
+    instance=interact("move_forward");log.info(f"[API] move forward speed={speed}");arm_motion();instance.motors.forward(speed);instance.state.motion="forward";trace_actuator("MOTOR","forward");instance.state.x+=settings.MOTOR_DISTANCE_STEP_MM
 def move_backward(speed=None):
-    instance=interact("move_backward");log.info(f"[API] move backward speed={speed}");arm_motion();instance.motors.backward(speed);instance.state.motion="backward";instance.state.x-=settings.MOTOR_DISTANCE_STEP_MM
+    instance=interact("move_backward");log.info(f"[API] move backward speed={speed}");arm_motion();instance.motors.backward(speed);instance.state.motion="backward";trace_actuator("MOTOR","backward");instance.state.x-=settings.MOTOR_DISTANCE_STEP_MM
 def turn_left(speed=None):
-    instance=interact("turn_left");log.info(f"[API] turn left speed={speed}");arm_motion();instance.motors.turn_left(speed);instance.state.motion="left";instance.state.angle-=settings.MOTOR_TURN_STEP_DEGREES
+    instance=interact("turn_left");log.info(f"[API] turn left speed={speed}");arm_motion();instance.motors.turn_left(speed);instance.state.motion="left";trace_actuator("MOTOR","left");instance.state.angle-=settings.MOTOR_TURN_STEP_DEGREES
 def turn_right(speed=None):
-    instance=interact("turn_right");log.info(f"[API] turn right speed={speed}");arm_motion();instance.motors.turn_right(speed);instance.state.motion="right";instance.state.angle+=settings.MOTOR_TURN_STEP_DEGREES
+    instance=interact("turn_right");log.info(f"[API] turn right speed={speed}");arm_motion();instance.motors.turn_right(speed);instance.state.motion="right";trace_actuator("MOTOR","right");instance.state.angle+=settings.MOTOR_TURN_STEP_DEGREES
 def stop():
     instance=interact("stop");log.info("[API] stop");disarm_motion();instance.motors.stop();instance.state.motion="stop"
 
@@ -96,23 +103,23 @@ def speak(text):
 def look_left():
     log.info("[API] camera left");instance=interact("head_left")
     if instance.brain:instance.brain.moods.manual_head_override()
-    instance.servo.look_left()
+    instance.servo.look_left();trace_actuator("SERVO","left")
 def look_right():
     log.info("[API] camera right");instance=interact("head_right")
     if instance.brain:instance.brain.moods.manual_head_override()
-    instance.servo.look_right()
+    instance.servo.look_right();trace_actuator("SERVO","right")
 def look_up():
     log.info("[API] camera up");instance=interact("head_up")
     if instance.brain:instance.brain.moods.manual_head_override()
-    instance.servo.look_up()
+    instance.servo.look_up();trace_actuator("SERVO","up")
 def look_down():
     log.info("[API] camera down");instance=interact("head_down")
     if instance.brain:instance.brain.moods.manual_head_override()
-    instance.servo.look_down()
+    instance.servo.look_down();trace_actuator("SERVO","down")
 def camera_center():
     log.info("[API] camera center");instance=interact("head_center")
     if instance.brain:instance.brain.moods.manual_head_override()
-    instance.servo.center()
+    instance.servo.center();trace_actuator("SERVO","center")
 
 def shell_show(value):
     instance=interact(f"shell:{value}")

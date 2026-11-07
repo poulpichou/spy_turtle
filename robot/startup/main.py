@@ -35,9 +35,15 @@ def main():
     if settings.BLUETOOTH_ENABLED and not settings.SIMULATION:threading.Thread(target=start_bluetooth,daemon=True).start()
     delay=1/settings.UPDATE_RATE
     log.info("Main loop started")
+    from robot.system.actuator_diagnostics import tick,record
     while True:
-        robot.update()
-        health.update()
+        try:
+            robot.update()
+            health.update()
+        except Exception as error:
+            record("LOOP",f"EXCEPTION {type(error).__name__}: {error}")
+            raise
+        finally:tick()
         time.sleep(delay)
 
 if __name__=="__main__":main()

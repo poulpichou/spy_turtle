@@ -173,6 +173,10 @@ def select_mood(value:MoodSelect):
 
 @app.get("/state")
 def get_state():return state()
+@app.get("/diagnostics/actuators")
+def actuator_diagnostics():
+    from robot.system.actuator_diagnostics import snapshot
+    return snapshot()
 
 @app.get("/version")
 def get_version():return {"frontend":"2026.08.09.media1","started_at":STARTED_AT}

@@ -62,7 +62,11 @@ class ServoAxis:
         pulse=round(self.center_pulse+offset*self.microseconds_per_degree)
         pulse=max(self.minimum_pulse,min(self.maximum_pulse,pulse))
         if not force and self.last_pulse is not None and abs(pulse-self.last_pulse)<self.minimum_pulse_change:return False
-        lgpio.tx_servo(self.chip,self.gpio,pulse,50);self.last_pulse=pulse;self.last_write=now;self.attached=True
+        try:lgpio.tx_servo(self.chip,self.gpio,pulse,50)
+        except Exception as error:
+            log.error(f"[SERVO GPIO] {self.name} gpio={self.gpio} pulse={pulse}: {error}")
+            raise
+        self.last_pulse=pulse;self.last_write=now;self.attached=True
         log.debug(f"[SERVO] {self.name} angle={angle:.1f}deg pulse={pulse}us")
         return True
 
