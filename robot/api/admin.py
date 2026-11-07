@@ -77,6 +77,22 @@ def set_volume(data:VolumeRequest,request:Request):
     robot.speaker.set_volume(data.volume);log.info(f'[ADMIN] speaker volume={data.volume}% {source(request)}')
     return {'ok':True,'volume':robot.speaker.volume,'message':f'Volume set to {robot.speaker.volume}%'}
 
+@router.get('/audio/diagnostics')
+def audio_diagnostics():
+    speaker=robot_or_503().speaker
+    if not speaker:raise HTTPException(status_code=503,detail="Speaker unavailable")
+    return {'ok':True,**speaker.status()}
+@router.get('/audio/adaptive')
+def get_adaptive():
+    speaker=robot_or_503().speaker
+    if not speaker:raise HTTPException(status_code=503,detail="Speaker unavailable")
+    return {'ok':True,**speaker.adaptive_status()}
+@router.post('/audio/adaptive')
+def set_adaptive(data:ToggleRequest):
+    speaker=robot_or_503().speaker
+    if not speaker:raise HTTPException(status_code=503,detail="Speaker unavailable")
+    return {'ok':True,**speaker.set_adaptive(data.enabled)}
+
 class LedBrightnessRequest(BaseModel): brightness:int=Field(ge=0,le=100)
 @router.get('/leds/brightness')
 def get_led_brightness():

@@ -25,6 +25,8 @@ class Robot:
         self.brain=None
         self._last_battery_update=0.0
         self._last_background_vision=0.0
+        self._last_ambient_sample=0.0
+        self._ambient_sample_running=False
         self._background_vision_running=False
         self.power=PowerManager(self)
         self.sentinel=Sentinel()
@@ -42,6 +44,7 @@ class Robot:
             return
         self._update_battery()
         self._update_background_vision()
+        self._update_ambient_audio()
         self.state.vision=face_vision.observations()
         self.sentinel.update(self)
         if self.brain:self.brain.update()
@@ -52,6 +55,16 @@ class Robot:
         if self.shell:
             self.shell.update()
             if hasattr(self.shell.screen,'update'):self.shell.screen.update()
+
+    def _update_ambient_audio(self):
+        if not self.speaker or not getattr(self.speaker,"adaptive_enabled",False):return
+        now=time.monotonic()
+        if self._ambient_sample_running or now-self._last_ambient_sample<30:return
+        self._last_ambient_sample=now;self._ambient_sample_running=True
+        def measure():
+            try:self.speaker.sample_ambient()
+            finally:self._ambient_sample_running=False
+        Thread(target=measure,daemon=True,name="ambient-audio").start()
 
     def _update_background_vision(self):
         if not self.power.data.get("automation_enabled",True) or not self.sentinel.config.get("enabled",False) or not face_vision.enabled or not self.camera:return

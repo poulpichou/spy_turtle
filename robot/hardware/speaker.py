@@ -1,4 +1,6 @@
 import json
+import math
+import time
 import subprocess
 import sys
 import tempfile
@@ -20,10 +22,53 @@ class Speaker:
         self.volume=int(self.config.get("volume",60))
         self.reference_volume=max(1,int(self.config.get("reference_volume",60)))
         self.process=None
+        self.last_audio_stats={}
+        self.adaptive_enabled=False
+        self.adaptive_boost=0
+        self.adaptive_max_boost=15
+        self.adaptive_last_level=None
+        self.adaptive_last_error=None
         self.lock=threading.Lock()
         log.info(f"[SPEAKER] ready device={self.device} volume={self.volume}%")
 
-    def _gain(self): return self.volume/self.reference_volume
+    def _gain(self):
+        # Adaptive boost is bounded by the admin volume ceiling (100%).
+        effective=min(100,self.volume+(self.adaptive_boost if self.adaptive_enabled else 0))
+        return effective/self.reference_volume
+
+    def adaptive_status(self):
+        return {"enabled":self.adaptive_enabled,"boost":self.adaptive_boost,"max_boost":self.adaptive_max_boost,"ambient_rms":self.adaptive_last_level,"error":self.adaptive_last_error}
+
+    def set_adaptive(self,enabled):
+        self.adaptive_enabled=bool(enabled)
+        if not enabled:self.adaptive_boost=0
+        log.info(f"[AUDIO ADAPTIVE] enabled={self.adaptive_enabled}")
+        return self.adaptive_status()
+
+    def sample_ambient(self):
+        # One short PCM measurement; never stores or uploads microphone recordings.
+        if not self.adaptive_enabled:return self.adaptive_status()
+        with self.lock:
+            if self.process and self.process.poll() is None:return self.adaptive_status()
+        try:
+            result=subprocess.run(["arecord","-q","-D","default","-f","S16_LE","-r","16000","-c","1","-t","raw","-d","1"],capture_output=True,timeout=4)
+            if result.returncode:raise RuntimeError(result.stderr.decode(errors="replace")[-180:])
+            values=array("h");values.frombytes(result.stdout[:len(result.stdout)//2*2])
+            if sys.byteorder!="little":values.byteswap()
+            if not values:raise RuntimeError("No microphone samples")
+            rms=math.sqrt(sum(v*v for v in values)/len(values))/32768
+            self.adaptive_last_level=round(rms,5)
+            # Conservative, intentionally coarse boost; no gain above 100%.
+            desired=0 if rms<0.02 else 5 if rms<0.05 else 10 if rms<0.10 else self.adaptive_max_boost
+            self.adaptive_boost=round(self.adaptive_boost*0.6+desired*0.4)
+            self.adaptive_last_error=None
+            log.info(f"[AUDIO AMBIENT] rms={rms:.4f} boost={self.adaptive_boost}%")
+        except Exception as error:
+            self.adaptive_last_error=str(error)
+            self.adaptive_boost=0
+            log.warn(f"[AUDIO AMBIENT] measurement unavailable: {error}")
+        return self.adaptive_status()
+
 
     def play(self,name):
         try:asset=get_asset("audio",name)
@@ -53,6 +98,9 @@ class Speaker:
                 cleanup_path=play_path
             except Exception as error:
                 log.warn(f"[SPEAKER] WAV volume scaling failed, playing original: {error}")
+        if extension==".wav":
+            try:self.last_audio_stats=self.analyze_wav(path if path.exists() else play_path)
+            except Exception as error:log.warn(f"[AUDIO DIAG] {error}")
         command=self._command(play_path,extension)
         with self.lock:
             self._stop_locked()
@@ -64,6 +112,21 @@ class Speaker:
         log.info(f"[SPEAKER] play {label} ({path.name}) volume={self.volume}%")
         threading.Thread(target=self._watch,args=(label,self.process,cleanup_path),daemon=True).start()
         return True
+
+    def analyze_wav(self,path):
+        with wave.open(str(path),"rb") as source:
+            if source.getsampwidth()!=2:return {"format":"not 16-bit PCM"}
+            frames=source.readframes(source.getnframes())
+            rate=source.getframerate()
+        values=array("h");values.frombytes(frames[:len(frames)//2*2])
+        if sys.byteorder!="little":values.byteswap()
+        if not values:return {"empty":True}
+        peak=max(abs(v) for v in values)/32768
+        clipped=sum(abs(v)>=32760 for v in values)/len(values)*100
+        rms=math.sqrt(sum(v*v for v in values)/len(values))/32768
+        result={"peak":round(peak,4),"rms":round(rms,4),"clipped_percent":round(clipped,3),"sample_rate":rate}
+        log.info(f"[AUDIO DIAG] peak={peak:.3f} rms={rms:.3f} clipped={clipped:.2f}% rate={rate}")
+        return result
 
     def _command(self,path,extension):
         if extension==".wav":return ["aplay","-q","-D",self.device,str(path)]
@@ -112,4 +175,4 @@ class Speaker:
         self.volume=max(0,min(100,int(volume)))
         log.info(f"[SPEAKER] volume {self.volume}%")
 
-    def status(self): return {"volume":self.volume,"reference_volume":self.reference_volume,"device":self.device}
+    def status(self): return {"volume":self.volume,"reference_volume":self.reference_volume,"device":self.device,"audio_stats":self.last_audio_stats,"adaptive":self.adaptive_status()}
