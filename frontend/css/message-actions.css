@@ -1,28 +1,16 @@
-/* Message editor: 75% text / 25% actions, fits above mobile keyboard. */
+/* V26 — Bulle: 1 / flexible / 3 button-unit columns. */
 .message-modal{align-items:flex-start!important;justify-content:center!important;padding:6px!important;overflow:hidden}
 .message-editor{box-sizing:border-box!important;width:min(96vw,680px)!important;max-height:min(40svh,calc(var(--spy-visible-height,100dvh) - 12px))!important;overflow:auto!important;padding:7px!important}
-.message-editor-main{display:grid!important;grid-template-columns:minmax(0,3fr) minmax(82px,1fr)!important;gap:5px!important;align-items:stretch!important}
-.message-editor-main textarea{box-sizing:border-box;width:100%!important;min-width:0!important;height:clamp(70px,18svh,125px)!important;min-height:0!important;resize:none!important;font-size:15px!important}
-.message-editor-side{min-width:0!important;display:flex!important;flex-direction:column!important;gap:5px!important}
-.message-icon-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px}
-.message-icon-actions button{width:100%!important;min-width:0!important;height:32px!important;padding:0!important;font-size:15px!important}
-.message-editor-side label{display:flex!important;flex-direction:row!important;align-items:center!important;gap:4px!important;font-size:10px!important}
-.message-editor-side label select{flex:1!important;width:50%!important;min-width:0!important;height:28px!important;font-size:11px!important}
+.message-editor-main{display:grid!important;grid-template-columns:minmax(32px,1fr) minmax(0,8fr) minmax(104px,3fr)!important;gap:5px!important;align-items:stretch!important}
+.message-editor-main textarea{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:clamp(115px,18svh,155px)!important;min-height:0!important;resize:none!important;font-size:15px!important}
+.message-compose-actions{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:5px!important;min-width:0!important}
+.message-compose-actions button,.message-icon-actions button{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:46px!important;min-height:46px!important;padding:0!important;font-size:17px!important}
+.message-editor-side{display:flex!important;flex-direction:column!important;gap:6px!important;min-width:0!important}
+.message-icon-actions{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}
+.message-language-buttons{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px!important;width:100%!important}
+.message-language-buttons button{box-sizing:border-box!important;width:100%!important;min-width:0!important;height:42px!important;padding:0!important}
+/* Internal language value is still used by speech.js; never render it as a dropdown. */
+#message-language,.message-editor-side select,.message-editor-side label{display:none!important;visibility:hidden!important;position:absolute!important;width:0!important;height:0!important;overflow:hidden!important}
 #message-status{min-height:0!important;max-height:38px!important;overflow:auto!important;overflow-wrap:anywhere;font-size:11px!important;margin-top:3px}
 .message-editor-actions{display:none!important}
-@media(max-width:420px){.message-editor{padding:6px!important}.message-editor-main{grid-template-columns:minmax(0,3fr) minmax(78px,1fr)!important}}
-
-.message-editor-main{grid-template-columns:minmax(30px,10fr) minmax(0,65fr) minmax(70px,25fr)!important;gap:4px!important}
-.message-compose-actions{display:flex;flex-direction:column;gap:4px;min-width:0}
-.message-compose-actions button{width:100%;min-width:0;padding:0;height:34px}
-.message-icon-actions{grid-template-columns:repeat(3,minmax(0,1fr))!important}
-.message-language-buttons{display:flex;gap:3px}.message-language-buttons button{flex:1;min-width:0}
-@media(max-width:420px){.message-editor-main{grid-template-columns:minmax(28px,10fr) minmax(0,65fr) minmax(65px,25fr)!important}}
-
-/* V25: matching action button sizes, hidden redundant dropdown */
-.message-editor-main{grid-template-columns:minmax(72px,1fr) minmax(0,7fr) minmax(72px,1fr)!important;gap:5px!important}
-.message-compose-actions{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:32px!important;gap:2px!important;align-content:start!important}
-.message-compose-actions button{height:32px!important;width:100%!important;min-width:0!important;font-size:15px!important;padding:0!important}
-.message-icon-actions button{height:32px!important}
-#message-language,.message-editor-side>select,.message-editor-side label select{display:none!important}
-@media(max-width:420px){.message-editor-main{grid-template-columns:minmax(66px,1fr) minmax(0,7fr) minmax(66px,1fr)!important}}
+@media(max-width:420px){.message-editor{padding:6px!important}.message-editor-main{grid-template-columns:minmax(30px,1fr) minmax(0,7fr) minmax(100px,3fr)!important;gap:4px!important}.message-icon-actions,.message-language-buttons,.message-compose-actions{gap:4px!important}.message-compose-actions button,.message-icon-actions button{height:40px!important;min-height:40px!important}.message-language-buttons button{height:38px!important}}
