@@ -130,6 +130,27 @@ class LEDController:
             center=(elapsed%period)/period*self.count
             color=self._color(animation.get("color",[0,120,255]))
             return [self._scale_color(color,max(0.0,1-abs(((i-center+self.count/2)%self.count)-self.count/2)/width)**1.4) for i in range(self.count)],brightness
+        if effect=="comet":
+            period=max(.05,float(animation.get("period",2.0)))
+            tail=max(1,int(animation.get("tail",10)))
+            head=(elapsed%period)/period*self.count
+            primary=self._color(animation.get("color",[255,120,0]))
+            secondary=self._color(animation.get("secondary",[0,255,180]))
+            frame=[]
+            for i in range(self.count):
+                distance=(head-i)%self.count
+                strength=max(0.0,1-distance/tail)**1.5 if distance<tail else 0.0
+                blend=min(1.0,distance/max(1,tail-1))
+                color=tuple(round(primary[c]*(1-blend)+secondary[c]*blend) for c in range(3))
+                frame.append(self._scale_color(color,strength))
+            return frame,brightness
+        if effect=="sparkle":
+            period=max(.04,float(animation.get("period",.12)))
+            tick=int(elapsed/period)
+            density=max(0.0,min(1.0,float(animation.get("density",.25))))
+            palette=[self._color(c) for c in animation.get("colors",[[255,255,255]])]
+            rng=random.Random(tick)
+            return [self._scale_color(rng.choice(palette),rng.uniform(.35,1.0)) if rng.random()<density else (0,0,0) for _ in range(self.count)],brightness
         if effect=="flash":
             period=max(0.02,float(animation.get("period",0.2)))
             color=self._color(animation.get("color",[255,255,255])) if (elapsed%period)<period/2 else (0,0,0)

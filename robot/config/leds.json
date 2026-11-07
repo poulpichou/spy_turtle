@@ -147,6 +147,10 @@
     "shy": {
       "label": "Shy",
       "animation": "shy"
+    },
+    "gassy": {
+      "label": "Gassy",
+      "animation": "fart_cloud"
     }
   },
   "animations": {
@@ -161,12 +165,12 @@
     "neutral": {
       "type": "breathing",
       "color": [
-        40,
-        120,
-        80
+        25,
+        160,
+        75
       ],
-      "period": 3.0,
-      "brightness": 0.5
+      "period": 3.6,
+      "brightness": 0.43
     },
     "happy": {
       "type": "rainbow",
@@ -194,24 +198,38 @@
       "brightness": 1.0
     },
     "sleepy": {
-      "type": "breathing",
+      "type": "comet",
       "color": [
-        35,
-        50,
-        150
+        155,
+        65,
+        185
       ],
-      "period": 4.0,
-      "brightness": 0.45
+      "secondary": [
+        255,
+        105,
+        140
+      ],
+      "period": 8.0,
+      "tail": 22,
+      "brightness": 0.23
     },
     "surprised": {
-      "type": "flash",
-      "color": [
-        255,
-        255,
-        255
-      ],
-      "period": 0.22,
-      "brightness": 1.0
+      "type": "sequence",
+      "loop": true,
+      "steps": [
+        {
+          "animation": "surprise_confetti",
+          "duration": 0.8
+        },
+        {
+          "animation": "surprise_orbit",
+          "duration": 1.0
+        },
+        {
+          "animation": "surprise_confetti",
+          "duration": 0.5
+        }
+      ]
     },
     "curious": {
       "type": "spinner",
@@ -306,26 +324,18 @@
       ]
     },
     "fire": {
-      "type": "fire",
-      "colors": [
-        [
-          255,
-          0,
-          0
-        ],
-        [
-          255,
-          70,
-          0
-        ],
-        [
-          255,
-          180,
-          0
-        ]
-      ],
-      "period": 0.12,
-      "brightness": 0.95
+      "type": "sequence",
+      "loop": true,
+      "steps": [
+        {
+          "animation": "rocket_ignition",
+          "duration": 1.4
+        },
+        {
+          "animation": "fire_embers",
+          "duration": 1.1
+        }
+      ]
     },
     "rocket_fire": {
       "type": "fire",
@@ -386,16 +396,20 @@
       "loop": true,
       "steps": [
         {
-          "animation": "rocket_fire",
-          "duration": 0.7
+          "animation": "rocket_ignition",
+          "duration": 1.2
         },
         {
-          "animation": "rocket_flash",
-          "duration": 0.08
+          "animation": "rocket_boost",
+          "duration": 2.1
         },
         {
-          "animation": "rocket_fire_fast",
-          "duration": 1.1
+          "animation": "rocket_stars",
+          "duration": 0.65
+        },
+        {
+          "animation": "rocket_boost",
+          "duration": 1.0
         }
       ]
     },
@@ -436,16 +450,16 @@
       "loop": true,
       "steps": [
         {
-          "animation": "fart_flash",
-          "duration": 0.45
+          "animation": "gassy_bubbles",
+          "duration": 0.65
         },
         {
-          "animation": "fart_green",
-          "duration": 1.4
+          "animation": "gassy_cloud",
+          "duration": 2.2
         },
         {
-          "animation": "fart_gray",
-          "duration": 2.0
+          "animation": "gassy_bubbles",
+          "duration": 1.0
         }
       ]
     },
@@ -542,25 +556,36 @@
       "brightness": 0.85
     },
     "sleeping": {
-      "type": "breathing",
+      "type": "comet",
       "color": [
-        12,
+        80,
         20,
-        70
+        115
       ],
-      "period": 7.0,
-      "brightness": 0.18
+      "secondary": [
+        20,
+        105,
+        65
+      ],
+      "period": 13.0,
+      "tail": 24,
+      "brightness": 0.13
     },
     "dizzy": {
-      "type": "spinner",
+      "type": "comet",
       "color": [
-        170,
-        50,
-        255
+        215,
+        35,
+        235
       ],
-      "tail": 6,
-      "period": 0.8,
-      "brightness": 0.8
+      "secondary": [
+        85,
+        255,
+        55
+      ],
+      "period": 0.75,
+      "tail": 13,
+      "brightness": 0.85
     },
     "thinking": {
       "type": "spinner",
@@ -579,37 +604,52 @@
       "end": 25
     },
     "neutral_wave": {
-      "type": "wave",
+      "type": "comet",
       "color": [
-        0,
-        120,
-        255
+        30,
+        150,
+        235
       ],
-      "tail": 10,
-      "period": 3.2,
-      "brightness": 0.6
+      "secondary": [
+        20,
+        225,
+        115
+      ],
+      "period": 4.5,
+      "tail": 12,
+      "brightness": 0.52
     },
     "neutral_dot": {
-      "type": "ola",
+      "type": "comet",
       "color": [
-        0,
-        160,
+        35,
+        195,
         255
       ],
-      "width": 2.0,
+      "secondary": [
+        85,
+        235,
+        135
+      ],
       "period": 4.0,
-      "brightness": 0.65
+      "tail": 4,
+      "brightness": 0.55
     },
     "neutral_ola": {
-      "type": "ola",
+      "type": "comet",
       "color": [
-        0,
-        120,
-        255
+        30,
+        145,
+        235
       ],
-      "width": 5.0,
+      "secondary": [
+        70,
+        210,
+        175
+      ],
       "period": 4.2,
-      "brightness": 0.65
+      "tail": 16,
+      "brightness": 0.53
     },
     "playful": {
       "type": "sequence",
@@ -640,55 +680,334 @@
       ]
     },
     "excited": {
-      "type": "pulse",
-      "color": [
-        0,
-        165,
-        255
-      ],
-      "period": 0.65,
-      "brightness": 0.95
+      "type": "sequence",
+      "loop": true,
+      "steps": [
+        {
+          "animation": "excited_comet",
+          "duration": 1.5
+        },
+        {
+          "animation": "excited_sparkle",
+          "duration": 0.9
+        }
+      ]
     },
     "detective": {
-      "type": "wave",
+      "type": "comet",
       "color": [
         20,
-        85,
-        180
+        165,
+        90
       ],
-      "tail": 12,
-      "period": 5.5,
-      "brightness": 0.45
+      "secondary": [
+        250,
+        190,
+        40
+      ],
+      "period": 5.2,
+      "tail": 11,
+      "brightness": 0.48
     },
     "dreamy": {
-      "type": "breathing",
+      "type": "comet",
       "color": [
-        85,
-        45,
-        180
+        150,
+        65,
+        200
       ],
-      "period": 7,
+      "secondary": [
+        50,
+        185,
+        140
+      ],
+      "period": 7.0,
+      "tail": 25,
       "brightness": 0.35
     },
     "proud": {
-      "type": "breathing",
-      "color": [
-        30,
-        140,
-        255
-      ],
-      "period": 3,
-      "brightness": 0.85
+      "type": "sequence",
+      "loop": true,
+      "steps": [
+        {
+          "animation": "proud_comet",
+          "duration": 2.7
+        },
+        {
+          "animation": "proud_glitter",
+          "duration": 1.0
+        }
+      ]
     },
     "shy": {
       "type": "breathing",
       "color": [
-        20,
-        55,
-        135
+        160,
+        65,
+        115
       ],
-      "period": 5.5,
-      "brightness": 0.28
+      "period": 5.8,
+      "brightness": 0.25
+    },
+    "surprise_confetti": {
+      "type": "sparkle",
+      "colors": [
+        [
+          255,
+          40,
+          170
+        ],
+        [
+          255,
+          210,
+          20
+        ],
+        [
+          20,
+          255,
+          180
+        ],
+        [
+          160,
+          50,
+          255
+        ]
+      ],
+      "period": 0.1,
+      "density": 0.4,
+      "brightness": 0.9
+    },
+    "surprise_orbit": {
+      "type": "comet",
+      "color": [
+        255,
+        30,
+        175
+      ],
+      "secondary": [
+        255,
+        230,
+        25
+      ],
+      "period": 0.85,
+      "tail": 10,
+      "brightness": 0.9
+    },
+    "excited_comet": {
+      "type": "comet",
+      "color": [
+        255,
+        50,
+        80
+      ],
+      "secondary": [
+        255,
+        230,
+        0
+      ],
+      "period": 0.65,
+      "tail": 14,
+      "brightness": 0.95
+    },
+    "excited_sparkle": {
+      "type": "sparkle",
+      "colors": [
+        [
+          255,
+          70,
+          0
+        ],
+        [
+          255,
+          220,
+          0
+        ],
+        [
+          0,
+          255,
+          150
+        ],
+        [
+          255,
+          30,
+          200
+        ]
+      ],
+      "period": 0.08,
+      "density": 0.45,
+      "brightness": 0.95
+    },
+    "proud_comet": {
+      "type": "comet",
+      "color": [
+        255,
+        185,
+        0
+      ],
+      "secondary": [
+        160,
+        35,
+        255
+      ],
+      "period": 2.2,
+      "tail": 18,
+      "brightness": 0.8
+    },
+    "proud_glitter": {
+      "type": "sparkle",
+      "colors": [
+        [
+          255,
+          210,
+          30
+        ],
+        [
+          255,
+          95,
+          20
+        ],
+        [
+          190,
+          55,
+          255
+        ]
+      ],
+      "period": 0.17,
+      "density": 0.22,
+      "brightness": 0.8
+    },
+    "rocket_ignition": {
+      "type": "fire",
+      "colors": [
+        [
+          255,
+          15,
+          0
+        ],
+        [
+          255,
+          85,
+          0
+        ],
+        [
+          255,
+          220,
+          35
+        ]
+      ],
+      "period": 0.08,
+      "brightness": 0.95
+    },
+    "rocket_boost": {
+      "type": "comet",
+      "color": [
+        255,
+        245,
+        90
+      ],
+      "secondary": [
+        255,
+        35,
+        0
+      ],
+      "period": 0.42,
+      "tail": 20,
+      "brightness": 1.0
+    },
+    "rocket_stars": {
+      "type": "sparkle",
+      "colors": [
+        [
+          255,
+          255,
+          255
+        ],
+        [
+          255,
+          220,
+          40
+        ],
+        [
+          80,
+          180,
+          255
+        ],
+        [
+          255,
+          50,
+          120
+        ]
+      ],
+      "period": 0.07,
+      "density": 0.4,
+      "brightness": 1.0
+    },
+    "fire_embers": {
+      "type": "sparkle",
+      "colors": [
+        [
+          255,
+          35,
+          0
+        ],
+        [
+          255,
+          120,
+          0
+        ],
+        [
+          255,
+          230,
+          35
+        ]
+      ],
+      "period": 0.1,
+      "density": 0.5,
+      "brightness": 0.9
+    },
+    "gassy_cloud": {
+      "type": "comet",
+      "color": [
+        55,
+        240,
+        40
+      ],
+      "secondary": [
+        175,
+        255,
+        30
+      ],
+      "period": 2.4,
+      "tail": 22,
+      "brightness": 0.9
+    },
+    "gassy_bubbles": {
+      "type": "sparkle",
+      "colors": [
+        [
+          35,
+          205,
+          35
+        ],
+        [
+          140,
+          255,
+          25
+        ],
+        [
+          220,
+          235,
+          50
+        ],
+        [
+          50,
+          145,
+          35
+        ]
+      ],
+      "period": 0.15,
+      "density": 0.34,
+      "brightness": 0.8
     }
   }
 }
