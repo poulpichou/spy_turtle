@@ -20,7 +20,7 @@
     let recognition=null;
     button.onclick=()=>{
         if(recognition){recognition.stop();return}
-        recognition=new Recognition();recognition.lang=(document.getElementById("message-language")?.value||"fr")==="en"?"en-US":"fr-FR";
+        recognition=new Recognition();recognition.lang=(document.querySelector('#message-language-buttons button[aria-pressed="true"]')?.dataset.lang||"fr")==="en"?"en-US":"fr-FR";
         recognition.continuous=false;recognition.interimResults=false;
         recognition.onresult=event=>{
             const spoken=Array.from(event.results).map(result=>result[0]?.transcript||"").join(" ").trim();
