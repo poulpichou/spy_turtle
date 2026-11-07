@@ -93,6 +93,18 @@ def set_adaptive(data:ToggleRequest):
     if not speaker:raise HTTPException(status_code=503,detail="Speaker unavailable")
     return {'ok':True,**speaker.set_adaptive(data.enabled)}
 
+class HeadlightIntensityRequest(BaseModel): intensity:int=Field(ge=0,le=100)
+@router.get('/leds/headlights/intensity')
+def get_headlight_intensity():
+    r=robot_or_503()
+    if not r.leds:raise HTTPException(status_code=503,detail="LEDs unavailable")
+    return {"ok":True,"intensity":r.leds.headlights_intensity}
+@router.post('/leds/headlights/intensity')
+def set_headlight_intensity(data:HeadlightIntensityRequest):
+    r=robot_or_503()
+    if not r.leds:raise HTTPException(status_code=503,detail="LEDs unavailable")
+    return {"ok":True,"intensity":r.leds.set_headlights_intensity(data.intensity)}
+
 class LedBrightnessRequest(BaseModel): brightness:int=Field(ge=0,le=100)
 @router.get('/leds/brightness')
 def get_led_brightness():

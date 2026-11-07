@@ -1,6 +1,6 @@
 (() => {
     const picker=document.getElementById("headlight-color-picker"),label=document.getElementById("headlight-color-value"),presets=document.getElementById("headlight-presets");
-    const setColor=value=>{picker.value=value;label.textContent=value.toUpperCase()};
+    const setColor=value=>{picker.value=value;label.textContent=""};
     async function saveColor(value){
         if(typeof transportMode!=="undefined"&&transportMode==="bluetooth")throw Error("Headlights color requires Wi-Fi");
         const response=await fetch("/admin/leds/headlights/color",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({color:value})});
@@ -12,6 +12,7 @@
         picker.addEventListener("change",()=>saveColor(picker.value).catch(e=>alert(e.message)));
         presets?.addEventListener("click",event=>{const b=event.target.closest("button[data-color]");if(b)saveColor(b.dataset.color).catch(e=>alert(e.message))});
     }
+    const reset=document.getElementById("message-reset");if(reset)reset.onclick=()=>{const m=document.getElementById("message");m.value="";m.dispatchEvent(new Event("input",{bubbles:true}));m.focus()};
     const button=document.getElementById("message-dictate"),message=document.getElementById("message"),status=document.getElementById("message-status");
     const Recognition=window.SpeechRecognition||window.webkitSpeechRecognition;
     if(!button||!message)return;

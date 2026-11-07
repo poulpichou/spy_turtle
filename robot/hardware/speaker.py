@@ -49,6 +49,11 @@ class Speaker:
     def sample_ambient(self):
         # One short PCM measurement; never stores or uploads microphone recordings.
         if not self.adaptive_enabled:return self.adaptive_status()
+        from robot.system.runtime import get_robot
+        robot=get_robot()
+        if robot and (not robot.power.data.get("automation_enabled",True) or robot.power.idle_mode):
+            self.adaptive_boost=0
+            return self.adaptive_status()
         with self.lock:
             if self.process and self.process.poll() is None:return self.adaptive_status()
         try:

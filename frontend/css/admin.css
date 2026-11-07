@@ -65,3 +65,15 @@
 #robot-status{top:0!important;height:100%!important;min-height:0!important;align-items:center!important}
 #robot-status #transport-toggle{align-self:center!important;display:flex!important;align-items:center!important;justify-content:center!important;transform:none!important}
 #robot-status::before{top:0!important;bottom:0!important}
+
+#headlight-color-control .headlight-color-row{display:flex;gap:4px;align-items:center;flex-wrap:nowrap;min-width:0}
+#headlight-color-picker{width:30px;height:30px;flex:0 0 30px;padding:0}
+#headlight-presets{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;flex:1;min-width:0}
+#headlight-presets button{height:28px;min-width:0;width:100%;padding:0;border:1px solid #888;border-radius:5px}
+#headlight-presets button[data-color="#ffffff"]{background:#ffffff}
+#headlight-presets button[data-color="#a020f0"]{background:#a020f0}
+#headlight-presets button[data-color="#0055ff"]{background:#0055ff}
+#headlight-presets button[data-color="#00ff55"]{background:#00ff55}
+#headlight-presets button[data-color="#ffff00"]{background:#ffff00}
+#headlight-presets button[data-color="#ff8000"]{background:#ff8000}
+#headlight-presets button[data-color="#ff0000"]{background:#ff0000}

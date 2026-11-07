@@ -11,3 +11,10 @@
 #message-status{min-height:0!important;max-height:38px!important;overflow:auto!important;overflow-wrap:anywhere;font-size:11px!important;margin-top:3px}
 .message-editor-actions{display:none!important}
 @media(max-width:420px){.message-editor{padding:6px!important}.message-editor-main{grid-template-columns:minmax(0,3fr) minmax(78px,1fr)!important}}
+
+.message-editor-main{grid-template-columns:minmax(30px,10fr) minmax(0,65fr) minmax(70px,25fr)!important;gap:4px!important}
+.message-compose-actions{display:flex;flex-direction:column;gap:4px;min-width:0}
+.message-compose-actions button{width:100%;min-width:0;padding:0;height:34px}
+.message-icon-actions{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.message-language-buttons{display:flex;gap:3px}.message-language-buttons button{flex:1;min-width:0}
+@media(max-width:420px){.message-editor-main{grid-template-columns:minmax(28px,10fr) minmax(0,65fr) minmax(65px,25fr)!important}}

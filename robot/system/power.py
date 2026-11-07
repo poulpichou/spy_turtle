@@ -45,6 +45,7 @@ class PowerManager:
 
     def set_automation(self,enabled):
         self.data["automation_enabled"]=bool(enabled);self._save()
+        if not enabled and self.robot.speaker and hasattr(self.robot.speaker,"adaptive_boost"):self.robot.speaker.adaptive_boost=0
         log.info(f"[AUTOMATION] master={'on' if enabled else 'off'}")
         return self.status()
 

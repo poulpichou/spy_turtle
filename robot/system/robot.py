@@ -57,7 +57,7 @@ class Robot:
             if hasattr(self.shell.screen,'update'):self.shell.screen.update()
 
     def _update_ambient_audio(self):
-        if not self.speaker or not getattr(self.speaker,"adaptive_enabled",False):return
+        if not self.speaker or not getattr(self.speaker,"adaptive_enabled",False) or not self.power.data.get("automation_enabled",True) or self.power.idle_mode:return
         now=time.monotonic()
         if self._ambient_sample_running or now-self._last_ambient_sample<30:return
         self._last_ambient_sample=now;self._ambient_sample_running=True
