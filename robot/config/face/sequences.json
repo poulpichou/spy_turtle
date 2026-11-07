@@ -19,32 +19,17 @@
     "led": null,
     "frames": [
       {
-        "duration": 45,
-        "left_eye": "blink_quarter",
-        "right_eye": "blink_quarter"
-      },
-      {
-        "duration": 55,
+        "duration": 65,
         "left_eye": "half",
         "right_eye": "half"
       },
       {
-        "duration": 40,
-        "left_eye": "blink_threequarter",
-        "right_eye": "blink_threequarter"
-      },
-      {
-        "duration": 75,
+        "duration": 85,
         "left_eye": "closed",
         "right_eye": "closed"
       },
       {
-        "duration": 45,
-        "left_eye": "blink_quarter",
-        "right_eye": "blink_quarter"
-      },
-      {
-        "duration": 55,
+        "duration": 65,
         "left_eye": "half",
         "right_eye": "half"
       },
@@ -62,19 +47,9 @@
     "led": null,
     "frames": [
       {
-        "duration": 45,
-        "left_eye": "blink_quarter",
-        "right_eye": "blink_quarter"
-      },
-      {
-        "duration": 55,
+        "duration": 65,
         "left_eye": "half",
         "right_eye": "half"
-      },
-      {
-        "duration": 40,
-        "left_eye": "blink_threequarter",
-        "right_eye": "blink_threequarter"
       },
       {
         "duration": 75,
@@ -82,52 +57,32 @@
         "right_eye": "closed"
       },
       {
-        "duration": 45,
-        "left_eye": "blink_quarter",
-        "right_eye": "blink_quarter"
+        "duration": 65,
+        "left_eye": "half",
+        "right_eye": "half"
+      },
+      {
+        "duration": 115,
+        "left_eye": "open",
+        "right_eye": "open"
+      },
+      {
+        "duration": 65,
+        "left_eye": "half",
+        "right_eye": "half"
       },
       {
         "duration": 75,
+        "left_eye": "closed",
+        "right_eye": "closed"
+      },
+      {
+        "duration": 65,
         "left_eye": "half",
         "right_eye": "half"
       },
       {
         "duration": 120,
-        "left_eye": "open",
-        "right_eye": "open"
-      },
-      {
-        "duration": 45,
-        "left_eye": "blink_quarter",
-        "right_eye": "blink_quarter"
-      },
-      {
-        "duration": 55,
-        "left_eye": "half",
-        "right_eye": "half"
-      },
-      {
-        "duration": 40,
-        "left_eye": "blink_threequarter",
-        "right_eye": "blink_threequarter"
-      },
-      {
-        "duration": 75,
-        "left_eye": "closed",
-        "right_eye": "closed"
-      },
-      {
-        "duration": 45,
-        "left_eye": "blink_quarter",
-        "right_eye": "blink_quarter"
-      },
-      {
-        "duration": 55,
-        "left_eye": "half",
-        "right_eye": "half"
-      },
-      {
-        "duration": 110,
         "left_eye": "open",
         "right_eye": "open"
       }
@@ -554,22 +509,22 @@
     "led": "dizzy",
     "frames": [
       {
-        "duration": 140,
+        "duration": 105,
         "left_eye": "dizzy_1",
         "right_eye": "dizzy_1"
       },
       {
-        "duration": 140,
+        "duration": 105,
         "left_eye": "dizzy_2",
         "right_eye": "dizzy_2"
       },
       {
-        "duration": 140,
+        "duration": 105,
         "left_eye": "dizzy_3",
         "right_eye": "dizzy_3"
       },
       {
-        "duration": 140,
+        "duration": 105,
         "left_eye": "dizzy_4",
         "right_eye": "dizzy_4"
       }
@@ -696,22 +651,22 @@
     "led": "playful",
     "frames": [
       {
-        "duration": 180,
+        "duration": 135,
         "left_eye": "playful_1",
         "right_eye": "playful_1"
       },
       {
-        "duration": 150,
+        "duration": 135,
         "left_eye": "playful_2",
         "right_eye": "playful_2"
       },
       {
-        "duration": 220,
+        "duration": 135,
         "left_eye": "playful_3",
         "right_eye": "playful_3"
       },
       {
-        "duration": 170,
+        "duration": 135,
         "left_eye": "playful_4",
         "right_eye": "playful_4"
       }
@@ -724,22 +679,22 @@
     "led": "excited",
     "frames": [
       {
-        "duration": 130,
+        "duration": 110,
         "left_eye": "excited_1",
         "right_eye": "excited_1"
       },
       {
-        "duration": 130,
+        "duration": 110,
         "left_eye": "excited_2",
         "right_eye": "excited_2"
       },
       {
-        "duration": 170,
+        "duration": 110,
         "left_eye": "excited_3",
         "right_eye": "excited_3"
       },
       {
-        "duration": 130,
+        "duration": 110,
         "left_eye": "excited_4",
         "right_eye": "excited_4"
       }
@@ -864,22 +819,22 @@
     "led": "rocket",
     "frames": [
       {
-        "duration": 120,
+        "duration": 100,
         "left_eye": "rocket_1",
         "right_eye": "rocket_1"
       },
       {
-        "duration": 140,
+        "duration": 100,
         "left_eye": "rocket_2",
         "right_eye": "rocket_2"
       },
       {
-        "duration": 120,
+        "duration": 100,
         "left_eye": "rocket_3",
         "right_eye": "rocket_3"
       },
       {
-        "duration": 140,
+        "duration": 100,
         "left_eye": "rocket_4",
         "right_eye": "rocket_4"
       }
