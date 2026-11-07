@@ -1,4 +1,6 @@
 import json
+import time
+from robot.utils.logger import log
 import math
 import shutil
 import wave
@@ -122,6 +124,7 @@ def say(text,language=None):
     model=voice_path(lang)
     if not model.is_file():raise RuntimeError(f"Piper voice missing: {model}")
     with SYNTHESIS_LOCK:
+        started=time.monotonic()
         with tempfile.NamedTemporaryFile(prefix="spyturtle_tts_",suffix=".wav",delete=False) as file:path=Path(file.name)
         try:
             effects=tuning();key=speech_cache.key(text,lang,model,effects)
@@ -132,6 +135,7 @@ def say(text,language=None):
                 if not path.is_file() or path.stat().st_size<44:raise RuntimeError("Piper produced no audio")
                 process_audio(path,effects["pitch"],effects["speed"])
                 speech_cache.store(key,path)
+            log.info(f"[TTS TIMING] preparation={time.monotonic()-started:.2f}s language={lang} cache_key={key[:8]}")
             if not robot.speaker.play_file(path,"tts",delete_after=True):raise RuntimeError("Speaker playback failed")
             return {"ok":True,"language":lang,"voice":selected_voice(lang),"text":text}
         except Exception:

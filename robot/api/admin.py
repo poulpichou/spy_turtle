@@ -91,6 +91,20 @@ def set_led_brightness(data:LedBrightnessRequest,request:Request):
     log.info(f'[ADMIN] LED intensity={value}% {source(request)}')
     return {'ok':True,'brightness':value,'message':f'LED intensity set to {value}%'}
 
+class HeadlightColorRequest(BaseModel): color:str=Field(pattern=r"^#[0-9a-fA-F]{6}$")
+@router.get('/leds/headlights/color')
+def get_headlight_color():
+    robot=robot_or_503()
+    if robot.leds is None:raise HTTPException(status_code=503,detail='LEDs unavailable')
+    return {'ok':True,'color':robot.leds.headlights_color}
+@router.post('/leds/headlights/color')
+def set_headlight_color(data:HeadlightColorRequest,request:Request):
+    robot=robot_or_503()
+    if robot.leds is None:raise HTTPException(status_code=503,detail='LEDs unavailable')
+    color=robot.leds.set_headlights_color(data.color)
+    log.info(f'[ADMIN] headlights color={color} {source(request)}')
+    return {'ok':True,'color':color}
+
 @router.get('/power')
 def get_power(): return {'ok':True,**robot_or_503().power.status()}
 @router.post('/power/component')

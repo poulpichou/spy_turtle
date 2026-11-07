@@ -21,6 +21,7 @@ class LEDController:
         self.modes=self.config["modes"]
         self.animations=self.config["animations"]
         self.links=self.config.get("links",{})
+        self.headlights_color=self._load_headlights_color()
         self.mode="off"
         self.animation_name=self.modes["off"]["animation"]
         self.started_at=time.monotonic()
@@ -30,6 +31,30 @@ class LEDController:
         self._configure_device()
         self._show([(0,0,0)]*self.count)
         log.info(f"[LED] ready device={self.device} count={self.count}")
+
+    @staticmethod
+    def _headlights_path(): return Path.home()/".config"/"spy_turtle"/"headlights.json"
+
+    def _load_headlights_color(self):
+        try:
+            value=json.loads(self._headlights_path().read_text(encoding="utf-8"))["color"]
+            if isinstance(value,str) and len(value)==7 and value[0]=="#":
+                int(value[1:],16)
+                return value.lower()
+        except (OSError,ValueError,KeyError,TypeError):pass
+        return "#ffffff"
+
+    def set_headlights_color(self,color):
+        if not isinstance(color,str) or len(color)!=7 or not color.startswith("#"):
+            raise ValueError("Color must be #RRGGBB")
+        try:int(color[1:],16)
+        except ValueError as error:raise ValueError("Color must be #RRGGBB") from error
+        self.headlights_color=color.lower()
+        path=self._headlights_path();path.parent.mkdir(parents=True,exist_ok=True)
+        temp=path.with_suffix(".tmp");temp.write_text(json.dumps({"color":self.headlights_color})+"\n",encoding="utf-8");temp.replace(path)
+        self.last_frame_at=0.0
+        log.info(f"[LIGHTS] headlights color={self.headlights_color}")
+        return self.headlights_color
 
     def _open_device(self):
         try:return os.open(self.device,os.O_WRONLY)
@@ -99,7 +124,8 @@ class LEDController:
         if effect=="sequence":return self._render_sequence(animation,elapsed)
         if effect=="headlights":
             start=int(animation.get("start",15));end=int(animation.get("end",26))
-            return [(255,255,255) if start<=i<=end else (0,0,0) for i in range(self.count)],1.0
+            color=tuple(bytes.fromhex(self.headlights_color[1:]))
+            return [color if start<=i<=end else (0,0,0) for i in range(self.count)],1.0
         if effect=="off":return [(0,0,0)]*self.count,brightness
         if effect=="solid":return [self._color(animation.get("color",[255,255,255]))]*self.count,brightness
         if effect=="rainbow":
