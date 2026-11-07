@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 async function turtleRequest(path,body=null){
     if(transportMode==="bluetooth"){
-        const actions={"/brain/moods":"mood_status","/brain/moods/list":"mood_list","/brain/moods/select":"mood_select","/brain/headlights":"headlights","/brain/head-movements":"head_movements","/sentinel/status":"sentinel_status","/sentinel/enable":"sentinel_enable"};
+        const actions={"/brain/moods":"mood_status","/brain/moods/list":"mood_list","/brain/moods/select":"mood_select","/brain/headlights":"headlights","/brain/head-movements":"head_movements","/sentinel/status":"sentinel_status","/sentinel/enable":"sentinel_enable","/automation/status":"automation_status","/automation/enable":"automation_enable","/automation/sounds":"automation_sounds"};
         const action=actions[path];if(!action)throw Error(`Unsupported Bluetooth feature: ${path}`);
         return bluetoothAdminRequest(action,body||{});
     }

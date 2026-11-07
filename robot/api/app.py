@@ -115,6 +115,26 @@ def uptime_seconds():
     if not path.exists():return None
     return round(float(path.read_text().split()[0]),1)
 
+class AutomationToggle(BaseModel): enabled:bool
+
+@app.get("/automation/status")
+def automation_status():
+    robot=get_robot()
+    if robot is None:raise HTTPException(status_code=503,detail="Robot unavailable")
+    return robot.power.status()
+
+@app.post("/automation/enable")
+def automation_enable(value:AutomationToggle):
+    robot=get_robot()
+    if robot is None:raise HTTPException(status_code=503,detail="Robot unavailable")
+    return robot.power.set_automation(value.enabled)
+
+@app.post("/automation/sounds")
+def automation_sounds(value:AutomationToggle):
+    robot=get_robot()
+    if robot is None:raise HTTPException(status_code=503,detail="Robot unavailable")
+    return robot.power.set_automation_sounds(value.enabled)
+
 class HeadMovements(BaseModel):
     enabled:bool
 

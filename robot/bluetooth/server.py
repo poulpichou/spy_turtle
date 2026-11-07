@@ -2,6 +2,8 @@ import asyncio
 import json
 import subprocess
 from pathlib import Path
+from datetime import datetime
+from robot.assets.assets import get_assets
 
 from robot.api import actions
 from robot.bluetooth.vision.streamer import VisionStreamer
@@ -87,6 +89,22 @@ def admin_dispatch(request):
     if action=="wifi_delete":
         wifi_manager.delete(str(data.get("ssid","")));return {"ok":True,"message":"Wi-Fi network deleted"}
     if robot is None:raise RuntimeError("Robot unavailable")
+    if action=="automation_status":return {"ok":True,"enabled":bool(robot.power.data.get("automation_enabled",True)),"sounds":bool(robot.power.data.get("automation_sounds",True))}
+    if action=="automation_enable":return {"ok":True,"enabled":bool(robot.power.set_automation(bool(data.get("enabled")))["automation_enabled"])}
+    if action=="automation_sounds":return {"ok":True,"sounds":bool(robot.power.set_automation_sounds(bool(data.get("enabled")))["automation_sounds"])}
+    if action=="asset_list":
+        section=str(data.get("section",""));offset=max(0,int(data.get("offset",0)))
+        if section not in ("faces","shell","leds","audio"):raise ValueError("Invalid asset section")
+        entries=[{"name":name,"label":str(asset.get("label",name))[:26]} for name,asset in get_assets(section).items()]
+        return {"ok":True,"items":entries[offset:offset+3],"total":len(entries)}
+    if action=="photo_capture":
+        source=str(data.get("source","camera"))
+        if source not in ("camera","thermal"):raise ValueError("Invalid photo source")
+        content=actions.thermal_frame() if source=="thermal" else actions.camera_frame()
+        folder=ROOT/"photos";folder.mkdir(exist_ok=True)
+        name=("thermal_" if source=="thermal" else "")+datetime.now().strftime("%Y%m%d_%H%M%S_%f")+".jpg"
+        (folder/name).write_bytes(content)
+        return {"ok":True,"name":name,"source":source}
     if action=="mood_status":
         return {"ok":True,**{k:v for k,v in robot.brain.moods.status().items() if k!="variants"}}
     if action=="mood_list":

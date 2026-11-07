@@ -78,8 +78,8 @@ document.getElementById("photo-previous").onclick=()=>{if(!photos.length)return;
 document.getElementById("photo-next").onclick=()=>{if(!photos.length)return;photoIndex=(photoIndex+1)%photos.length;showPhoto();};
 document.getElementById("photo-button").onclick=async()=>{
     try{
-        const response=await fetch("/photos/capture",{method:"POST"});
-        if(!response.ok)throw new Error(`HTTP ${response.status}`);
+        if(transportMode==="bluetooth")await bluetoothAdminRequest("photo_capture",{source:"camera"});
+        else{const response=await fetch("/photos/capture",{method:"POST"});if(!response.ok)throw new Error(`HTTP ${response.status}`)}
         if(activeView==="photos")await loadPhotos();
     }catch(error){showCommandError(error);}
 };

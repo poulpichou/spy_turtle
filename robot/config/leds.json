@@ -111,6 +111,18 @@
     "headlights": {
       "label": "Headlights",
       "animation": "headlights"
+    },
+    "neutral_wave": {
+      "label": "Blue Wave",
+      "animation": "neutral_wave"
+    },
+    "neutral_dot": {
+      "label": "Blue Dot",
+      "animation": "neutral_dot"
+    },
+    "neutral_ola": {
+      "label": "Blue Ola",
+      "animation": "neutral_ola"
     }
   },
   "animations": {
@@ -541,6 +553,39 @@
       "type": "headlights",
       "start": 14,
       "end": 25
+    },
+    "neutral_wave": {
+      "type": "wave",
+      "color": [
+        0,
+        120,
+        255
+      ],
+      "tail": 10,
+      "period": 3.2,
+      "brightness": 0.6
+    },
+    "neutral_dot": {
+      "type": "spinner",
+      "color": [
+        0,
+        160,
+        255
+      ],
+      "tail": 1,
+      "period": 4.0,
+      "brightness": 0.65
+    },
+    "neutral_ola": {
+      "type": "ola",
+      "color": [
+        0,
+        120,
+        255
+      ],
+      "width": 8,
+      "period": 4.2,
+      "brightness": 0.65
     }
   }
 }

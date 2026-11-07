@@ -1,4 +1,6 @@
 import time
+from threading import Thread
+from robot.vision.face_recognition import vision as face_vision
 from robot.system.state import TurtleState
 from robot.system.power import PowerManager
 from robot.brain.sentinel import Sentinel
@@ -22,6 +24,8 @@ class Robot:
         self.state=TurtleState()
         self.brain=None
         self._last_battery_update=0.0
+        self._last_background_vision=0.0
+        self._background_vision_running=False
         self.power=PowerManager(self)
         self.sentinel=Sentinel()
         self._update_battery(force=True)
@@ -37,6 +41,8 @@ class Robot:
             if self.shell and hasattr(self.shell,'update_touch_only'):self.shell.update_touch_only()
             return
         self._update_battery()
+        self._update_background_vision()
+        self.state.vision=face_vision.observations()
         self.sentinel.update(self)
         if self.brain:self.brain.update()
         if self.servo:self.servo.update()
@@ -46,6 +52,19 @@ class Robot:
         if self.shell:
             self.shell.update()
             if hasattr(self.shell.screen,'update'):self.shell.screen.update()
+
+    def _update_background_vision(self):
+        if not self.power.data.get("automation_enabled",True) or not self.sentinel.config.get("enabled",False) or not face_vision.enabled or not self.camera:return
+        now=time.monotonic()
+        if self._background_vision_running or now-self._last_background_vision<5.0:return
+        self._last_background_vision=now;self._background_vision_running=True
+        def capture():
+            try:face_vision.submit(self.camera.get_frame())
+            except Exception as error:
+                from robot.utils.logger import log
+                log.warn(f"[FACE BACKGROUND] {error}")
+            finally:self._background_vision_running=False
+        Thread(target=capture,daemon=True,name="face-background-capture").start()
 
     @staticmethod
     def _battery_status(level,charging):

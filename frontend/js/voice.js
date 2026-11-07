@@ -16,8 +16,8 @@ function currentCenterView(){return document.querySelector(".center-tab.active")
 document.getElementById("photo-button").onclick=async()=>{
     try{
         const source=currentCenterView()==="thermal"?"thermal":"camera";
-        const response=await fetch(`/photos/capture?source=${source}`,{method:"POST"});
-        if(!response.ok)throw new Error(`HTTP ${response.status}`);
+        if(transportMode==="bluetooth")await bluetoothAdminRequest("photo_capture",{source});
+        else{const response=await fetch(`/photos/capture?source=${source}`,{method:"POST"});if(!response.ok)throw new Error(`HTTP ${response.status}`)}
         if(currentCenterView()==="photos"&&typeof loadPhotos==="function")await loadPhotos();
     }catch(error){showCommandError(error)}
 };

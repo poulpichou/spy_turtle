@@ -14,6 +14,7 @@ class IdleBehaviour:
         if self.robot.state.sleeping_until:
             self.update_sleep()
             return
+        if not self.robot.power.data.get("automation_enabled",True):return
         if self.robot.state.emotion!="neutral":return
         now=time.monotonic()
         if now<self.next_action:return
@@ -60,7 +61,7 @@ class IdleBehaviour:
         log.info("[IDLE] yawn")
         self.robot.face.play("yawn")
     def sleep(self):
-        duration=random.uniform(10.0,20.0)
+        duration=random.uniform(*self.robot.brain.moods.variants["sleeping"]["duration_seconds"]) if self.robot.brain and "sleeping" in self.robot.brain.moods.variants else random.uniform(240.0,360.0)
         self.sleep_started_at=time.time()
         self.robot.state.sleeping_until=self.sleep_started_at+duration
         if self.robot.brain and hasattr(self.robot.brain,"moods"):self.robot.brain.moods.choose("sleeping")

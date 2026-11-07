@@ -14,7 +14,7 @@ class PowerManager:
         self._apply_all()
 
     def _load(self):
-        defaults={"idle_mode":False,"back_screen":True,"eyes":True,"shell_light":True,"microphone_sensitivity":60,"before_idle":{"back_screen":True,"eyes":True,"shell_light":True},"cpu_governors_before_idle":{}}
+        defaults={"idle_mode":False,"back_screen":True,"eyes":True,"shell_light":True,"microphone_sensitivity":60,"automation_enabled":True,"automation_sounds":True,"before_idle":{"back_screen":True,"eyes":True,"shell_light":True},"cpu_governors_before_idle":{}}
         try:
             with self.path.open(encoding="utf-8") as file:loaded=json.load(file)
             defaults.update({key:value for key,value in loaded.items() if key in defaults})
@@ -32,15 +32,25 @@ class PowerManager:
 
     def status(self):
         governors=self._current_cpu_governors()
-        return {"idle_mode":self.idle_mode,"back_screen":bool(self.data["back_screen"]),"eyes":bool(self.data["eyes"]),"shell_light":bool(self.data["shell_light"]),"microphone_sensitivity":int(self.data["microphone_sensitivity"]),"cpu_governors":governors}
+        return {"idle_mode":self.idle_mode,"back_screen":bool(self.data["back_screen"]),"eyes":bool(self.data["eyes"]),"shell_light":bool(self.data["shell_light"]),"microphone_sensitivity":int(self.data["microphone_sensitivity"]),"automation_enabled":bool(self.data["automation_enabled"]),"automation_sounds":bool(self.data["automation_sounds"]),"cpu_governors":governors}
 
     def set_component(self,name,enabled):
         if name not in self.COMPONENTS:raise ValueError(f"Unknown power component: {name}")
         if self.idle_mode:raise RuntimeError("Disable Idle mode before changing individual components")
         self.data[name]=bool(enabled)
-        self._apply_component(name,bool(enabled))
+        if not (name=="shell_light" and self.robot.brain and self.robot.brain.moods.headlights_enabled):self._apply_component(name,bool(enabled))
         self._save()
         log.info(f"[POWER] {name}={'on' if enabled else 'off'}")
+        return self.status()
+
+    def set_automation(self,enabled):
+        self.data["automation_enabled"]=bool(enabled);self._save()
+        log.info(f"[AUTOMATION] master={'on' if enabled else 'off'}")
+        return self.status()
+
+    def set_automation_sounds(self,enabled):
+        self.data["automation_sounds"]=bool(enabled);self._save()
+        log.info(f"[AUTOMATION] sounds={'on' if enabled else 'off'}")
         return self.status()
 
     def set_microphone_sensitivity(self,value):

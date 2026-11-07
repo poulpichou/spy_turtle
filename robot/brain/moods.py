@@ -53,7 +53,7 @@ class MoodEngine:
         if self.robot.face and not self.robot.face.is_user_locked():
             try:self.robot.face.play(entry['eyes'])
             except Exception as exc:log.warn(f'[MOOD] eyes {entry["eyes"]}: {exc}')
-        if self.robot.leds and not self.headlights_enabled:
+        if self.robot.leds and not self.headlights_enabled and self.robot.power.data.get("shell_light",True):
             try:self.robot.leds.set_mode(entry['leds']);state.led_mode=entry['leds']
             except Exception as exc:log.warn(f'[MOOD] leds {entry["leds"]}: {exc}')
         # shell=None intentionally leaves the existing status/user content untouched.
@@ -63,15 +63,17 @@ class MoodEngine:
     def set_headlights(self,enabled):
         enabled=bool(enabled)
         if enabled and self.robot.power.idle_mode:raise ValueError('Disable Idle mode before using headlights')
-        if enabled and not self.robot.power.data.get('shell_light',True):raise ValueError('Enable shell LEDs before using headlights')
         if not self.robot.leds:raise ValueError('LED controller unavailable')
         if enabled==self.headlights_enabled:return self.status()
         if enabled:
+            if hasattr(self.robot.leds,'set_enabled'):self.robot.leds.set_enabled(True)
             self.robot.leds.set_mode('headlights');self.robot.state.led_mode='headlights';self.headlights_enabled=True
         else:
             self.headlights_enabled=False
             mode=self.current['leds'] if self.current else 'neutral'
+            if not self.robot.power.data.get('shell_light',True):mode='off'
             self.robot.leds.set_mode(mode);self.robot.state.led_mode=mode
+            if not self.robot.power.data.get('shell_light',True) and hasattr(self.robot.leds,'set_enabled'):self.robot.leds.set_enabled(False)
         log.info(f'[LIGHTS] headlights={"on" if enabled else "off"}')
         return self.status()
 
@@ -79,7 +81,7 @@ class MoodEngine:
         self.manual_head_until=time.monotonic()+float(self.options.get('head_manual_cooldown_seconds',12));self.head_steps=[]
 
     def update(self):
-        if not self.options.get('enabled',True):return
+        if not self.options.get('enabled',True) or not self.robot.power.data.get('automation_enabled',True):return
         now=time.monotonic();state=self.robot.state
         if state.motion!='stop' or state.sleeping_until or now-self._interaction_monotonic()<float(self.options.get('pause_after_interaction_seconds',8)):return
         if now>=self.deadline and not (self.robot.face and self.robot.face.is_user_locked()):self.choose()
@@ -90,7 +92,7 @@ class MoodEngine:
         return time.monotonic()-max(0,time.time()-self.robot.state.last_interaction_at)
 
     def _update_head(self,now):
-        if not self.options.get('enable_head_movements') or not self.robot.servo or now<self.manual_head_until:return
+        if not self.robot.power.data.get('automation_enabled',True) or not self.options.get('enable_head_movements') or not self.robot.servo or now<self.manual_head_until:return
         if not hasattr(self.robot.servo,'pan') or now<self.next_head_at:return
         if not self.head_steps:
             h=self.current['head'];a=float(h.get('amplitude_degrees',0));pattern=h['pattern']

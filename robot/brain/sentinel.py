@@ -18,7 +18,7 @@ class Sentinel:
         self.seen.clear();return self.status()
     def update(self,robot):
         now=time.monotonic()
-        if not self.config["enabled"]:return
+        if not self.config["enabled"] or not robot.power.data.get("automation_enabled",True):return
         # Only greet newly added names in detected_recent, not every timestamp refresh.
         current={str(item.get("name","")).strip() for item in robot.state.vision.get("detected_recent",[])}
         current={name for name in current if name and name.lower()!="unknown"}
@@ -33,7 +33,7 @@ class Sentinel:
         if robot.face:
             try:robot.face.play("blink")
             except Exception as error:log.warn(f"[SENTINEL] blink: {error}")
-        Thread(target=self._speak,args=(phrase,lang),daemon=True).start()
+        if robot.power.data.get("automation_sounds",True):Thread(target=self._speak,args=(phrase,lang),daemon=True).start()
     @staticmethod
     def _speak(phrase,lang):
         try:tts.say(phrase,language=lang)

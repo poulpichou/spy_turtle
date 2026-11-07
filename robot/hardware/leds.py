@@ -124,6 +124,12 @@ class LEDController:
                 if effect=="wave":level*=level
                 frame.append(self._scale_color(color,level))
             return frame,brightness
+        if effect=="ola":
+            period=max(0.1,float(animation.get("period",4.0)))
+            width=max(1,int(animation.get("width",8)))
+            center=(elapsed%period)/period*self.count
+            color=self._color(animation.get("color",[0,120,255]))
+            return [self._scale_color(color,max(0.0,1-abs(((i-center+self.count/2)%self.count)-self.count/2)/width)) for i in range(self.count)],brightness
         if effect=="flash":
             period=max(0.02,float(animation.get("period",0.2)))
             color=self._color(animation.get("color",[255,255,255])) if (elapsed%period)<period/2 else (0,0,0)

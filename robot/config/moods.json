@@ -59,7 +59,7 @@
         85
       ],
       "eyes": "neutral",
-      "leds": "breathing",
+      "leds": "neutral_wave",
       "shell": null,
       "head": {
         "pattern": "none",
@@ -100,7 +100,7 @@
         85
       ],
       "eyes": "neutral",
-      "leds": "wave",
+      "leds": "neutral_ola",
       "shell": null,
       "head": {
         "pattern": "look",
@@ -141,7 +141,7 @@
         85
       ],
       "eyes": "neutral",
-      "leds": "cool",
+      "leds": "neutral_dot",
       "shell": null,
       "head": {
         "pattern": "none",
@@ -182,7 +182,7 @@
         85
       ],
       "eyes": "neutral",
-      "leds": "pulse",
+      "leds": "breathing",
       "shell": null,
       "head": {
         "pattern": "look",
@@ -342,8 +342,8 @@
       "mood": "sleepy",
       "weight": 5,
       "duration_seconds": [
-        20,
-        45
+        90,
+        180
       ],
       "eyes": "sleepy",
       "leds": "sleepy",
@@ -793,8 +793,8 @@
       "mood": "sleeping",
       "weight": 1,
       "duration_seconds": [
-        15,
-        25
+        240,
+        360
       ],
       "eyes": "sleeping",
       "leds": "sleeping",
