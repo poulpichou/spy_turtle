@@ -177,3 +177,5 @@ CHAT_CONTEXT_SIZE=2048
 CHAT_TIMEOUT=120
 CHAT_MAX_INPUT_CHARS=500
 CHAT_HISTORY_MESSAGES=8
+CHAT_STATIC_PROMPT_PRELOAD=True # Warm the stable system prefix on startup; requires CHAT_KEEP_LOADED
+CHAT_MOOD_CONTEXT_ENABLED=False # False: send only current mood; True: include imaginary mood context
