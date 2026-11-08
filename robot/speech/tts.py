@@ -5,10 +5,10 @@ import math
 import shutil
 import wave
 import subprocess
-import sys
 import tempfile
 from pathlib import Path
-from threading import RLock
+from threading import RLock,Thread
+from piper import PiperVoice
 from robot.speech import cache as speech_cache
 from robot.config import settings
 from robot.system.runtime import get_robot
@@ -17,6 +17,9 @@ ROOT=Path(__file__).resolve().parents[2]
 PREFERENCE_PATH=ROOT/"robot"/"config"/"speech_preferences.json"
 LOCK=RLock()
 SYNTHESIS_LOCK=RLock()
+VOICE_LOCK=RLock()
+_LOADED_VOICE=None
+_LOADED_MODEL=None
 LANGUAGES=("fr","en")
 VOICES={"en":{"bryce":"en_US-bryce","amy":"en_US-amy","alba":"en_GB-alba","northern_english_male":"en_GB-northern_english_male"},"fr":{"gilles":"fr_FR-gilles","tom":"fr_FR-tom","upmc":"fr_FR-upmc"}}
 DEFAULT_VOICES={"en":"bryce","fr":"upmc"}
@@ -113,6 +116,26 @@ def voice_path_for(lang,voice):
         if path.is_file():return path
     return folder/(prefix+"-medium.onnx")
 
+def _load_voice(model):
+    global _LOADED_VOICE,_LOADED_MODEL
+    with VOICE_LOCK:
+        if _LOADED_VOICE is not None and _LOADED_MODEL==model:return _LOADED_VOICE,0.0
+        if not model.is_file():raise RuntimeError(f"Piper voice missing: {model}")
+        started=time.monotonic()
+        voice=PiperVoice.load(str(model))
+        elapsed=time.monotonic()-started
+        _LOADED_VOICE=voice;_LOADED_MODEL=model
+        log.info(f"[PIPER] Loaded voice={model.name} load={elapsed:.2f}s")
+        return voice,elapsed
+
+def preload():
+    if not settings.TTS_ENABLED:return
+    try:_load_voice(voice_path(language()))
+    except Exception as error:log.warn(f"[PIPER] Preload failed: {error}")
+
+def preload_async():
+    if settings.TTS_ENABLED:Thread(target=preload,name="piper-preload",daemon=True).start()
+
 def say(text,language=None):
     text=str(text).strip();lang=language or globals()["language"]()
     if lang not in LANGUAGES:raise ValueError("Unsupported language")
@@ -128,14 +151,19 @@ def say(text,language=None):
         with tempfile.NamedTemporaryFile(prefix="spyturtle_tts_",suffix=".wav",delete=False) as file:path=Path(file.name)
         try:
             effects=tuning();key=speech_cache.key(text,lang,model,effects)
-            if not speech_cache.restore(key,path):
-                command=[sys.executable,"-m","piper","-m",str(model),"-f",str(path),"--",text]
-                result=subprocess.run(command,capture_output=True,text=True,timeout=settings.TTS_TIMEOUT)
-                if result.returncode:raise RuntimeError((result.stderr or "Piper failed").strip()[-400:])
-                if not path.is_file() or path.stat().st_size<44:raise RuntimeError("Piper produced no audio")
+            cached=speech_cache.restore(key,path)
+            load_time=0.0;synthesis_time=0.0;effects_time=0.0
+            if not cached:
+                voice,load_time=_load_voice(model)
+                step=time.monotonic()
+                with wave.open(str(path),"wb") as wav:voice.synthesize_wav(text,wav)
+                synthesis_time=time.monotonic()-step
+                if not speech_cache.valid(path):raise RuntimeError("Piper produced no audio")
+                step=time.monotonic()
                 process_audio(path,effects["pitch"],effects["speed"])
+                effects_time=time.monotonic()-step
                 speech_cache.store(key,path)
-            log.info(f"[TTS TIMING] preparation={time.monotonic()-started:.2f}s language={lang} cache_key={key[:8]}")
+            log.info(f"[TTS TIMING] preparation={time.monotonic()-started:.2f}s load={load_time:.2f}s piper={synthesis_time:.2f}s effects={effects_time:.2f}s cache={'hit' if cached else 'miss'} language={lang} cache_key={key[:8]}")
             if not robot.speaker.play_file(path,"tts",delete_after=True):raise RuntimeError("Speaker playback failed")
             return {"ok":True,"language":lang,"voice":selected_voice(lang),"text":text}
         except Exception:
