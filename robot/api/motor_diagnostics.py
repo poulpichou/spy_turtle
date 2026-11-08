@@ -1,4 +1,7 @@
+import time
+import lgpio
 from fastapi import APIRouter,HTTPException
+from gpiozero import PWMOutputDevice
 from robot.api import actions
 from robot.system.runtime import get_robot
 from robot.utils.logger import log
@@ -62,3 +65,61 @@ def reset_all_pwm():
     except Exception as error:
         log.error(f'[ACTUATOR DIAG] Combined reset error: {error}; completed={list(results)}')
         raise HTTPException(status_code=500,detail={'error':str(error),'completed':list(results)}) from error
+
+@router.post('/diagnose-direct-pwm')
+def diagnose_direct_pwm():
+    """Temporarily release PWMA and test raw lgpio in this same process, with motor standby disabled."""
+    robot=get_motors();motors=robot.motors
+    actions.disarm_motion()
+    with motors._lock:
+        driver=motors.driver
+        if driver._closed:raise HTTPException(status_code=503,detail='Motor driver closed')
+        try:
+            motors.stop()
+            robot.state.motion='stop'
+            driver.standby.off()
+            driver.ain1.off();driver.ain2.off();driver.bin1.off();driver.bin2.off()
+        except Exception as error:
+            raise HTTPException(status_code=500,detail=f'Cannot safely stop motors: {error}') from error
+        gpio=driver.pwma_pin
+        result={'gpio':gpio,'frequency_hz':1000,'duty_percent':50,'duration_seconds':1.5,
+                'standby_disabled':True,'high_samples':0,'low_samples':0,'tx_pwm_result':None,
+                'tx_busy':None,'gpiozero_restored':False}
+        chip=None;claimed=False;error=None
+        try:
+            driver.pwma.close()
+            driver.pwma=None
+            chip=lgpio.gpiochip_open(0)
+            lgpio.gpio_claim_output(chip,gpio,0);claimed=True
+            result['tx_pwm_result']=lgpio.tx_pwm(chip,gpio,1000,50)
+            result['tx_busy']=lgpio.tx_busy(chip,gpio,lgpio.TX_PWM)
+            end=time.monotonic()+1.5
+            while time.monotonic()<end:
+                value=lgpio.gpio_read(chip,gpio)
+                if value:result['high_samples']+=1
+                else:result['low_samples']+=1
+                time.sleep(0.0005)
+        except Exception as exc:
+            error=exc
+            result['error']=f'{type(exc).__name__}: {exc}'
+        finally:
+            if chip is not None:
+                if claimed:
+                    try:lgpio.tx_pwm(chip,gpio,0,0)
+                    except Exception as exc:result['stop_error']=str(exc)
+                    try:lgpio.gpio_free(chip,gpio)
+                    except Exception as exc:result['free_error']=str(exc)
+                try:lgpio.gpiochip_close(chip)
+                except Exception as exc:result['chip_close_error']=str(exc)
+            try:
+                driver.pwma=PWMOutputDevice(driver.pwma_pin,frequency=driver.pwm_frequency,initial_value=0)
+                driver.standby.on()
+                result['gpiozero_restored']=True
+            except Exception as exc:
+                result['restore_error']=f'{type(exc).__name__}: {exc}'
+                try:driver.standby.off()
+                except Exception:pass
+        result['observed_toggling']=result['high_samples']>0 and result['low_samples']>0
+        result['ok']=error is None and result['gpiozero_restored'] and not any(k.endswith('_error') for k in result)
+        log.info(f'[MOTOR DIAG] direct lgpio PWM result: {result}')
+        return result
