@@ -170,6 +170,7 @@ MOTOR_JOYSTICK_MAX_SPEED=MOTOR_DRIVE_SPEED*1.25
 # Local Ollama conversation
 CHAT_OLLAMA_URL="http://127.0.0.1:11434"
 CHAT_MODEL="qwen2.5:1.5b"
+CHAT_KEEP_LOADED=True # Preload Ollama and keep model in memory; False restores default expiry
 CHAT_MAX_TOKENS=80
 CHAT_TEMPERATURE=0.7
 CHAT_CONTEXT_SIZE=2048

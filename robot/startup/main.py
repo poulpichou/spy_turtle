@@ -34,6 +34,9 @@ def main():
     if settings.TTS_ENABLED and not settings.SIMULATION:
         from robot.speech import tts
         tts.preload_async()
+    if settings.CHAT_KEEP_LOADED and not settings.SIMULATION:
+        from robot.ai import chat
+        chat.preload_async()
     threading.Thread(target=start_api,daemon=True).start()
     if settings.BLUETOOTH_ENABLED and not settings.SIMULATION:threading.Thread(target=start_bluetooth,daemon=True).start()
     delay=1/settings.UPDATE_RATE
