@@ -1,4 +1,20 @@
+// [SHELL DIAG PATCH]
 const adminResult=document.getElementById("admin-result");
+(function(){
+    const restart=document.querySelector('[data-admin-action="restart"]');
+    if(!restart)return;
+    const reset=document.createElement("button");reset.type="button";reset.textContent="Reset Turtle";restart.before(reset);
+    reset.onclick=async()=>{
+        if(!confirm("Reset Turtle controls without restarting the connection?"))return;
+        reset.disabled=true;
+        try{
+            const response=await fetch("/admin/turtle/reset",{method:"POST"});
+            const data=await response.json();
+            adminResult.textContent=data.ok?"Turtle reset completed":"Reset partial: "+JSON.stringify(data.results);
+        }catch(error){adminResult.textContent="Reset failed: "+error.message}
+        finally{reset.disabled=false}
+    };
+})();
 const volumeSlider=document.getElementById("volume-slider"),volumeValue=document.getElementById("volume-value");
 const microSlider=document.getElementById("micro-slider"),microValue=document.getElementById("micro-value");const driveSpeedSlider=document.getElementById("drive-speed-slider"),driveSpeedValue=document.getElementById("drive-speed-value");const cameraFpsSlider=document.getElementById("camera-fps-slider"),cameraFpsValue=document.getElementById("camera-fps-value");
 const idleToggle=document.getElementById("idle-toggle");

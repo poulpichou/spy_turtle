@@ -28,10 +28,14 @@ class ShellController:
                 if self.touchscreen.available:self.touch_controller=TouchController(robot,self,self.touchscreen)
             except Exception as error:log.warn(f"[TOUCH] initialization failed: {error}")
 
+    # [SHELL DIAG PATCH]
     def set_view(self,view):
+        from robot.shell.diagnostics import trace
+        trace("command",old=type(self.view).__name__ if self.view else None,new=type(view).__name__,mode=self.active_mode,enabled=getattr(self,"enabled",None),idle=self.robot.power.idle_mode if self.robot else None)
         if self.view:self.view.close()
         self.view=view
         self.update()
+        trace("command_done",view=type(self.view).__name__,mode=self.active_mode,state=self.robot.state.shell_mode if self.robot else None)
 
     def show_status(self,reset_effects=True):
         self.expires_at=0.0
@@ -102,7 +106,10 @@ class ShellController:
             log.info(f"[SHELL] mode {self.active_mode} expired")
             self.show_status()
             return
-        if not self.screen or not self.robot:return
+        if not self.screen or not self.robot:
+            from robot.shell.diagnostics import trace
+            trace("blocked",reason="missing_screen_or_robot",screen=self.screen is not None,robot=self.robot is not None)
+            return
         data=self.view.get_data(self.robot)
         self.screen.show_view(self.view,data,self.robot.state)
 

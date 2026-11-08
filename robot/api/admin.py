@@ -32,6 +32,41 @@ def robot_or_503():
     if robot is None:raise HTTPException(status_code=503,detail='Robot unavailable')
     return robot
 
+# [SHELL DIAG PATCH]
+@router.get('/diagnostics/shell')
+def shell_diagnostics():
+    from robot.shell.diagnostics import snapshot
+    return snapshot(robot_or_503())
+
+@router.post('/turtle/reset')
+def reset_turtle(request:Request):
+    from robot.shell.diagnostics import trace,snapshot
+    from robot.api.actions import disarm_motion
+    r=robot_or_503()
+    before=snapshot(r)
+    trace("reset_requested",before=before["shell"],power=before["power"])
+    results={}
+    def attempt(name,fn):
+        try:fn();results[name]="ok"
+        except Exception as error:
+            results[name]=f"ERROR: {error}"
+            trace("errors",operation="reset_"+name,error=repr(error))
+    disarm_motion()
+    if r.motors:attempt("motors",lambda:r.motors.stop())
+    r.state.motion="stop"
+    if r.servo:attempt("servos",lambda:r.servo.center())
+    if r.power.idle_mode:attempt("exit_idle",lambda:r.power.set_idle(False))
+    for name in ("back_screen","eyes","shell_light"):
+        attempt(name,lambda name=name:r.power.set_component(name,True))
+    if r.shell:attempt("shell_status",lambda:r.shell.show_status())
+    if r.face:attempt("face",lambda:r.face.play("neutral",force=True))
+    if r.leds:attempt("leds",lambda:r.leds.set_mode("neutral"))
+    r.state.emotion="neutral";r.state.led_mode="neutral"
+    after=snapshot(r)
+    trace("reset_done",results=results,after=after["shell"])
+    log.info(f'[ADMIN] soft reset {source(request)} results={results}')
+    return {"ok":all(v=="ok" for v in results.values()),"message":"Soft reset completed; network and API unchanged","results":results,"before":before,"after":after}
+
 @router.post('/turtle/restart')
 def restart_turtle(request:Request):
     log.warn(f'[ADMIN] restart turtle {source(request)}');detached(['bash','-lc','sleep 1; ./scripts/stop_turtle.sh; sleep 1; ./scripts/start_turtle.sh']);return {'ok':True,'message':'Spy Turtle restart requested'}
