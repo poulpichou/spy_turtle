@@ -5,7 +5,7 @@ const adminResult=document.getElementById("admin-result");
     if(!restart)return;
     const reset=document.createElement("button");reset.type="button";reset.textContent="Reset Turtle";restart.before(reset);
     reset.onclick=async()=>{
-        if(!confirm("Reset Turtle controls without restarting the connection?"))return;
+        if(!confirm("Rebuild motors and servos, reset Turtle controls and reinitialize the back screen? Connection stays active."))return;
         reset.disabled=true;
         try{
             const response=await fetch("/admin/turtle/reset",{method:"POST"});

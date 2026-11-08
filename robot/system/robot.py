@@ -1,5 +1,5 @@
 import time
-from threading import Thread
+from threading import Thread,Lock,Event
 from robot.vision.face_recognition import vision as face_vision
 from robot.system.state import TurtleState
 from robot.system.power import PowerManager
@@ -23,6 +23,8 @@ class Robot:
         self.shell=shell
         self.state=TurtleState()
         self.brain=None
+        self._actuator_reset_lock=Lock()
+        self._actuator_reset_request=None
         self._last_battery_update=0.0
         self._last_background_vision=0.0
         self._last_ambient_sample=0.0
@@ -34,7 +36,54 @@ class Robot:
         if self.face:self.face.play('neutral')
         print('[Robot] initialized')
 
+    def request_actuator_reset(self,timeout=20):
+        with self._actuator_reset_lock:
+            if self._actuator_reset_request is not None:raise RuntimeError('Actuator reset already in progress')
+            request={'event':Event(),'result':None};self._actuator_reset_request=request
+        if not request['event'].wait(timeout):raise TimeoutError('Actuator reset timed out; check robot logs')
+        return dict(request['result'])
+
+    def _process_actuator_reset(self):
+        with self._actuator_reset_lock:request=self._actuator_reset_request
+        if request is None:return
+        from robot.api.actions import disarm_motion
+        from robot.hardware.motor import DifferentialDrive
+        from robot.hardware.servo import ServoController
+        from robot.config import settings
+        from robot.utils.logger import log
+        result={'motors':'not attempted','servos':'not attempted'}
+        try:
+            disarm_motion();self.state.motion='stop'
+            old_motors=self.motors;old_servo=self.servo
+            self.motors=None;self.servo=None
+            if old_motors:
+                try:old_motors.close();result['motors_close']='ok'
+                except Exception as error:result['motors_close']=str(error);log.error(f'[RESET] motors close: {error}')
+            if old_servo:
+                try:old_servo.close();result['servos_close']='ok'
+                except Exception as error:result['servos_close']=str(error);log.error(f'[RESET] servos close: {error}')
+            if settings.SIMULATION:
+                from robot.simulation.fake_motor import FakeMotor
+                from robot.simulation.fake_servo import FakeServo
+                self.motors=FakeMotor();self.servo=FakeServo()
+            else:
+                try:self.motors=DifferentialDrive();result['motors']='ok'
+                except Exception as error:result['motors']=f'ERROR: {error}';log.error(f'[RESET] motors create: {error}')
+                try:self.servo=ServoController();result['servos']='ok'
+                except Exception as error:result['servos']=f'ERROR: {error}';log.error(f'[RESET] servos create: {error}')
+            if settings.SIMULATION:result.update(motors='ok',servos='ok')
+            result['ok']=result['motors']=='ok' and result['servos']=='ok' and all(result.get(k)=='ok' for k in ('motors_close','servos_close') if k in result)
+            log.info(f'[RESET] actuator reconstruction completed: {result}')
+        except Exception as error:
+            result['ok']=False;result['error']=str(error);log.error(f'[RESET] actuator reconstruction failed: {error}')
+        finally:
+            with self._actuator_reset_lock:
+                request['result']=result
+                self._actuator_reset_request=None
+                request['event'].set()
+
     def update(self):
+        self._process_actuator_reset()
         from robot.api.actions import motion_watchdog
         motion_watchdog()
         if self.motors and hasattr(self.motors,'update'):self.motors.update()

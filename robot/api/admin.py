@@ -47,15 +47,18 @@ def reset_turtle(request:Request):
     trace("reset_requested",before=before["shell"],power=before["power"])
     results={}
     def attempt(name,fn):
-        try:fn();results[name]="ok"
+        try:
+            value=fn()
+            results[name]="ok" if not isinstance(value,dict) or value.get("ok",True) else f"ERROR: {value}"
         except Exception as error:
             results[name]=f"ERROR: {error}"
             trace("errors",operation="reset_"+name,error=repr(error))
     disarm_motion()
+    if r.power.idle_mode:attempt("exit_idle",lambda:r.power.set_idle(False))
+    attempt("actuators",lambda:r.request_actuator_reset())
     if r.motors:attempt("motors",lambda:r.motors.stop())
     r.state.motion="stop"
     if r.servo:attempt("servos",lambda:r.servo.center())
-    if r.power.idle_mode:attempt("exit_idle",lambda:r.power.set_idle(False))
     for name in ("back_screen","eyes","shell_light"):
         attempt(name,lambda name=name:r.power.set_component(name,True))
     if r.shell:attempt("shell_status",lambda:r.shell.show_status())
