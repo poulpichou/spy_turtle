@@ -12,6 +12,9 @@ HISTORY=[]
 LAST_LANGUAGE=None
 PERSONALITY=Path(__file__).resolve().parents[1]/"config"/"personality.json"
 
+MOOD_AND_HISTORY_RULES_FR='Règles de conversation : les faits de ton personnage sont prioritaires sur les improvisations et les réponses passées. Réponds directement à la question. Utilise l’historique uniquement pour suivre le contexte, sans recopier les tournures de tes anciennes réponses. Évite de répéter les mêmes débuts de phrase, plaisanteries ou descriptions. Ton humeur module subtilement ton ton, mais ne change pas tes goûts ni tes connaissances. Ne parle pas spontanément de ton humeur et ne commence pas chaque réponse par elle ; évoque-la surtout si on te le demande. Même endormie ou somnolente, réponds normalement aux questions. '
+MOOD_AND_HISTORY_RULES_EN='Conversation rules: character facts take priority over improvisation and previous answers. Answer the current question directly. Use history only to understand context, not to copy your earlier wording. Avoid repeating openings, jokes or descriptions. Mood subtly affects tone, not your preferences or knowledge. Do not mention mood in every answer or start answers with it; discuss it mainly when asked. Even when sleepy, answer questions normally. '
+
 def system_prompt(language):
     data=json.loads(PERSONALITY.read_text(encoding="utf-8"))
     facts=" ".join(data["facts"][language])
@@ -19,10 +22,10 @@ def system_prompt(language):
         "Réponds TOUJOURS en français correct et naturel, jamais en anglais, en une ou deux phrases simples. "
         "Tu peux être drôle mais reste claire. N'invente pas de perception en direct. "
         "Ne demande pas de données personnelles. En cas de danger, conseille de parler à un adulte. "
-        +data["rules"]["fr"]+" Informations sur ton personnage : "+facts)
+        +data["rules"]["fr"]+" "+MOOD_AND_HISTORY_RULES_FR+" Informations sur ton personnage : "+facts)
     return ("You are Spy Turtle, a kind spy turtle robot talking to children. "
         "Keep answers playful, simple and brief. Never invent live perceptions or request personal data. "
-        "For dangerous situations, recommend a trusted adult. "+data["rules"]["en"]+" Character facts: "+facts)
+        "For dangerous situations, recommend a trusted adult. "+data["rules"]["en"]+" "+MOOD_AND_HISTORY_RULES_EN+" Character facts: "+facts)
 
 def mood_prompt(language):
     robot=get_robot();state=robot.state if robot else None
