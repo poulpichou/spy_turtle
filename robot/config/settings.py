@@ -179,3 +179,5 @@ CHAT_MAX_INPUT_CHARS=500
 CHAT_HISTORY_MESSAGES=8
 CHAT_STATIC_PROMPT_PRELOAD=True # Warm the stable system prefix on startup; requires CHAT_KEEP_LOADED
 CHAT_MOOD_CONTEXT_ENABLED=False # False: send only current mood; True: include imaginary mood context
+CHAT_ROLLING_PRELOAD=False # Experimental background history warmup; enable for benchmark
+CHAT_DEBUG_PROMPT=False # Logs full user questions/history if True: use only for local debugging
