@@ -42,10 +42,23 @@ def main():
     delay=1/settings.UPDATE_RATE
     log.info("Main loop started")
     from robot.system.actuator_diagnostics import tick,record
+    from robot.system.robot_reset_manager import reset_manager,reconstruct
     while True:
+        request=reset_manager.pending()
+        if request is not None:
+            try:
+                robot,result=reconstruct(robot)
+                if result['ok']:health=HealthMonitor(robot)
+            except Exception as error:
+                from robot.system.runtime import set_robot
+                set_robot(None)
+                result={'ok':False,'phase':'reconstruct','error':f'{type(error).__name__}: {error}'}
+                log.error(f'[RESET] full robot reconstruction failed: {error}')
+            finally:reset_manager.finish(request,result)
         try:
-            robot.update()
-            health.update()
+            if robot is not None:
+                robot.update()
+                health.update()
         except Exception as error:
             record("LOOP",f"EXCEPTION {type(error).__name__}: {error}")
             raise
