@@ -123,7 +123,7 @@ MOTOR_MAX_SPEED=1.00
 
 # Optional single-channel motor encoders
 # Encoder wiring validated on GPIO 14/15 using pull-up inputs.
-MOTOR_ENCODERS_ENABLED=True
+MOTOR_ENCODERS_ENABLED=False
 MOTOR_LEFT_ENCODER_A_PIN=14
 MOTOR_LEFT_ENCODER_B_PIN=None
 MOTOR_RIGHT_ENCODER_A_PIN=15
@@ -135,7 +135,7 @@ MOTOR_ENCODER_PULSES_PER_REV=0
 
 # Closed-loop left/right wheel-speed balancing
 # Requires MOTOR_ENCODERS_ENABLED=True. Applies only to forward/backward; turns remain open-loop.
-MOTOR_ENCODER_CORRECTION_ENABLED=True
+MOTOR_ENCODER_CORRECTION_ENABLED=False
 MOTOR_ENCODER_CORRECTION_INTERVAL=0.10
 MOTOR_ENCODER_CORRECTION_KP=0.30
 MOTOR_ENCODER_CORRECTION_MAX=0.12
@@ -179,5 +179,5 @@ CHAT_MAX_INPUT_CHARS=500
 CHAT_HISTORY_MESSAGES=8
 CHAT_STATIC_PROMPT_PRELOAD=True # Warm the stable system prefix on startup; requires CHAT_KEEP_LOADED
 CHAT_MOOD_CONTEXT_ENABLED=False # False: send only current mood; True: include imaginary mood context
-CHAT_ROLLING_PRELOAD=False # Experimental background history warmup; enable for benchmark
+CHAT_ROLLING_PRELOAD=True # Experimental background history warmup; enable for benchmark
 CHAT_DEBUG_PROMPT=False # Logs full user questions/history if True: use only for local debugging

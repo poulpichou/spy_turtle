@@ -1,0 +1,9 @@
+{
+  "language": "fr",
+  "voices": {
+    "en": "bryce",
+    "fr": "upmc"
+  },
+  "pitch": 2.0,
+  "speed": 1.0
+}

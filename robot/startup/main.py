@@ -50,7 +50,6 @@ def main():
                 robot,result=reconstruct(robot)
                 if result['ok']:health=HealthMonitor(robot)
             except Exception as error:
-                from robot.system.runtime import set_robot
                 set_robot(None)
                 result={'ok':False,'phase':'reconstruct','error':f'{type(error).__name__}: {error}'}
                 log.error(f'[RESET] full robot reconstruction failed: {error}')

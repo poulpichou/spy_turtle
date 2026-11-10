@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -e
 cd "$(dirname "$0")/.."
-source .venv/bin/activate
-python -m scripts.preparecache
+export PYTHONPATH="$PWD${PYTHONPATH:+:$PYTHONPATH}"
+exec "$PWD/.venv/bin/python" scripts/preparecache.py "$@"
