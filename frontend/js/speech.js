@@ -7,6 +7,19 @@
     async function request(path,body){
         if(typeof transportMode!=="undefined"&&transportMode==="bluetooth"){
             if(path==="/speech/say")return bluetoothAdminRequest("speech_say",body||{});
+            if(path==="/conversation/ask"){
+                const started=await bluetoothAdminRequest("chat_ask",body||{});
+                const id=started.id,deadline=Date.now()+90000;
+                while(Date.now()<deadline){
+                    await new Promise(resolve=>setTimeout(resolve,1200));
+                    if(transportMode!=="bluetooth")throw Error("Bluetooth disconnected");
+                    const result=await bluetoothAdminRequest("chat_status");
+                    if(result.id!==id)throw Error("Conversation replaced");
+                    if(result.status==="error")throw Error(result.error||"Conversation failed");
+                    if(result.status==="speaking"||result.status==="done")return {ok:true,answer:result.answer,queued:result.status!=="done"};
+                }
+                throw Error("Conversation still processing; check the robot");
+            }
             throw Error("Speech settings require Wi-Fi");
         }
         const response=await fetch(path,{method:body?"POST":"GET",headers:{"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined,cache:"no-store"});
@@ -33,7 +46,12 @@
         const active=data.selected_voices?.[data.language];status.textContent=data.voice_available?`Ready: ${active}`:`Model missing: ${data.voice}`;
     }
     async function refresh(){try{render(await request("/speech/settings"))}catch(error){status.textContent=error.message}}
-    async function setLanguage(value){const data=await request("/speech/language",{language:value});render(data);document.dispatchEvent(new CustomEvent("turtlelanguagechange",{detail:{language:data.language}}));return data}
+    async function setLanguage(value){
+        if(transportMode==="bluetooth"){
+            selectedLanguage=value;updateFlags();document.dispatchEvent(new CustomEvent("turtlelanguagechange",{detail:{language:value}}));return {language:value};
+        }
+        const data=await request("/speech/language",{language:value});render(data);document.dispatchEvent(new CustomEvent("turtlelanguagechange",{detail:{language:data.language}}));return data;
+    }
     groups.language.onclick=async event=>{const button=event.target.closest("button[data-value]");if(!button)return;try{await setLanguage(button.dataset.value)}catch(error){status.textContent=error.message;await refresh()}};
     for(const lang of ["en","fr"])groups[lang].onclick=async event=>{const button=event.target.closest("button[data-value]");if(!button)return;try{render(await request("/speech/voice",{language:lang,voice:button.dataset.value}))}catch(error){status.textContent=error.message;await refresh()}};
     const flagButtons=document.querySelectorAll("#message-language-buttons button[data-lang]");
@@ -45,5 +63,5 @@
     const speak=document.getElementById("message-speak"),ask=document.getElementById("message-ask"),screen=document.getElementById("message-send-screen"),message=document.getElementById("message");
     async function submit(path){const value=message.value.trim();if(!value)return;const buttons=[speak,ask,screen].filter(Boolean);buttons.forEach(button=>button.disabled=true);try{await act(path,{text:value,language:selectedLanguage},modalStatus)}catch(error){modalStatus.textContent=error.message;console.error("[SPY MESSAGE]",error)}finally{buttons.forEach(button=>button.disabled=false)}}
     if(speak)speak.onclick=()=>submit("/speech/say");if(ask)ask.onclick=()=>submit("/conversation/ask");
-    document.addEventListener("transportchange",refresh);refresh();
+    document.addEventListener("transportchange",()=>{if(transportMode==="wifi")refresh();else status.textContent="Bluetooth: speech and conversation available"});refresh();
 })();

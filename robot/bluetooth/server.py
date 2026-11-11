@@ -16,6 +16,22 @@ from robot.utils.logger import log
 
 ROOT=Path(__file__).resolve().parents[2]
 _ble_speech_lock=Lock()
+_ble_chat_lock=Lock()
+_ble_chat_state_lock=Lock()
+_ble_chat_state={"id":0,"status":"idle","answer":"","error":""}
+def _ble_chat_worker(job_id,text,language):
+    try:
+        from robot.brain import conversation
+        from robot.speech import tts
+        result=conversation.ask(text,language)
+        answer=result["answer"]
+        with _ble_chat_state_lock:_ble_chat_state.update(status="speaking",answer=answer[:180],error="")
+        tts.say(answer,language=result["language"])
+        with _ble_chat_state_lock:_ble_chat_state.update(status="done")
+    except Exception as error:
+        log.error(f"[BLE CHAT] {error}")
+        with _ble_chat_state_lock:_ble_chat_state.update(status="error",error=str(error)[:150])
+    finally:_ble_chat_lock.release()
 def _ble_say(text,language):
     try:
         from robot.speech import tts
@@ -94,6 +110,21 @@ def admin_dispatch(request):
         # Keep GATT read replies small; the admin characteristic is not a streaming channel.
         lines=[line[:140] for line in log.tail(count=2,level=level)]
         return {"ok":True,"lines":lines}
+    if action=="chat_status":
+        with _ble_chat_state_lock:return {"ok":True,**_ble_chat_state}
+    if action=="chat_ask":
+        from robot.speech import tts
+        message=str(data.get("text","")).strip();language=str(data.get("language") or tts.language())
+        if not message or len(message)>250:raise ValueError("Question must contain 1..250 characters")
+        if language not in tts.LANGUAGES:raise ValueError("Unsupported language")
+        if not _ble_chat_lock.acquire(blocking=False):raise RuntimeError("Conversation already in progress")
+        try:
+            with _ble_chat_state_lock:
+                job_id=_ble_chat_state["id"]+1
+                _ble_chat_state.update(id=job_id,status="thinking",answer="",error="")
+            Thread(target=_ble_chat_worker,args=(job_id,message,language),daemon=True,name="ble-chat").start()
+        except Exception:_ble_chat_lock.release();raise
+        return {"ok":True,"id":job_id,"queued":True}
     if action=="speech_say":
         from robot.speech import tts
         message=str(data.get("text","")).strip();language=str(data.get("language") or tts.language())
