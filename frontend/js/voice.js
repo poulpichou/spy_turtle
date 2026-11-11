@@ -9,6 +9,8 @@ let listenAbortController=null;
 let listenAudioContext=null;
 let listenGainNode=null;
 let listenNextTime=0;
+let bleListenHandler=null;
+let bleListenResolve=null;
 const LISTEN_GAIN=3.0;
 
 function currentCenterView(){return document.querySelector(".center-tab.active")?.dataset.view||"camera"}
@@ -114,6 +116,21 @@ recordButton.onclick=async()=>{
     }
 };
 
+function decodeBleMuLaw(value){
+    value=(~value)&255;const exponent=(value>>4)&7;
+    let sample=(((value&15)<<3)+132);sample=(sample<<exponent)-132;
+    return (value&128?-sample:sample)/32768;
+}
+function playBleAudio(packet){
+    if(!listening||!listenAudioContext||packet.length<2||packet[0]!==68)return;
+    const samples=new Float32Array(packet.length-1);
+    for(let i=1;i<packet.length;i++)samples[i-1]=decodeBleMuLaw(packet[i]);
+    const buffer=listenAudioContext.createBuffer(1,samples.length,8000);buffer.copyToChannel(samples,0);
+    const source=listenAudioContext.createBufferSource();source.buffer=buffer;source.connect(listenGainNode);
+    const now=listenAudioContext.currentTime;if(listenNextTime<now+0.03)listenNextTime=now+0.03;
+    if(listenNextTime>now+1)listenNextTime=now+0.03;
+    source.start(listenNextTime);listenNextTime+=buffer.duration;
+}
 function playPcmChunk(bytes){
     if(!listenAudioContext||bytes.byteLength<2)return;
     const sampleCount=Math.floor(bytes.byteLength/2);
@@ -142,6 +159,14 @@ async function startListening(){
     listenNextTime=listenAudioContext.currentTime+0.08;
     let carry=null;
     try{
+        if(transportMode==="bluetooth"){
+            if(!bluetoothAudio||!bluetoothServer?.connected)throw Error("Bluetooth microphone unavailable");
+            bleListenHandler=event=>playBleAudio(new Uint8Array(event.target.value.buffer,event.target.value.byteOffset,event.target.value.byteLength));
+            bluetoothAudio.addEventListener("characteristicvaluechanged",bleListenHandler);
+            await queueGatt(()=>bluetoothAudio.startNotifications());
+            await queueGatt(()=>bluetoothAudio.writeValueWithResponse(new Uint8Array([76])));
+            await new Promise(resolve=>{bleListenResolve=resolve});return;
+        }
         const response=await fetch(`/audio/listen?t=${Date.now()}`,{signal:listenAbortController.signal,cache:"no-store"});
         if(!response.ok)throw new Error((await response.text())||`HTTP ${response.status}`);
         if(!response.body)throw new Error("Streaming response unavailable");
@@ -169,6 +194,14 @@ async function stopListening(){
     if(!listening&&!listenAudioContext)return;
     listening=false;listenButton.classList.remove("active");
     listenAbortController?.abort();listenAbortController=null;
+    if(bleListenResolve){bleListenResolve();bleListenResolve=null}
+    if(bleListenHandler){
+        bluetoothAudio?.removeEventListener("characteristicvaluechanged",bleListenHandler);bleListenHandler=null;
+        if(bluetoothAudio&&bluetoothServer?.connected){
+            queueGatt(()=>bluetoothAudio.writeValueWithResponse(new Uint8Array([81]))).catch(()=>{});
+            queueGatt(()=>bluetoothAudio.stopNotifications()).catch(()=>{});
+        }
+    }
     const context=listenAudioContext;listenAudioContext=null;listenGainNode=null;listenNextTime=0;
     if(context&&context.state!=="closed"){
         try{await context.close()}catch(error){console.debug("[LISTEN] close",error)}
@@ -176,3 +209,4 @@ async function stopListening(){
 }
 
 listenButton.onclick=()=>{if(listening)stopListening();else startListening()};
+document.addEventListener("transportchange",()=>{if(listening)stopListening()});

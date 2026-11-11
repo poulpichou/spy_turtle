@@ -3,6 +3,7 @@ import json
 import subprocess
 import tempfile
 import wave
+from robot.bluetooth.audio_listener import BleAudioListener
 from threading import Thread,Lock
 from pathlib import Path
 from datetime import datetime
@@ -257,6 +258,7 @@ async def serve():
     admin_response=bytearray(b'{"ok":true}')
     vision=None
     audio=BleAudioReceiver()
+    listener=BleAudioListener(server,settings.BLUETOOTH_SERVICE_UUID,BLE_AUDIO_UUID)
 
     def characteristic_uuid(characteristic): return str(getattr(characteristic,"uuid","")).lower()
 
@@ -270,7 +272,9 @@ async def serve():
         try:
             raw=bytes(value)
             if characteristic_uuid(characteristic)==BLE_AUDIO_UUID:
-                audio.write(raw);return
+                if raw in (b"L",b"Q"):listener.request(raw)
+                else:audio.write(raw)
+                return
             if characteristic_uuid(characteristic)==settings.BLUETOOTH_CAMERA_UUID.lower():
                 if vision is not None:vision.request(raw)
                 return
@@ -307,14 +311,16 @@ async def serve():
         GATTCharacteristicProperties.notify|GATTCharacteristicProperties.write,
         bytearray(b""),GATTAttributePermissions.writeable
     )
-    await server.add_new_characteristic(settings.BLUETOOTH_SERVICE_UUID,BLE_AUDIO_UUID,GATTCharacteristicProperties.write,None,GATTAttributePermissions.writeable)
+    await server.add_new_characteristic(settings.BLUETOOTH_SERVICE_UUID,BLE_AUDIO_UUID,GATTCharacteristicProperties.write|GATTCharacteristicProperties.notify,bytearray(),GATTAttributePermissions.writeable)
     vision=VisionStreamer(server,settings.BLUETOOTH_SERVICE_UUID,settings.BLUETOOTH_CAMERA_UUID,
         chunk=settings.BLUETOOTH_VISION_CHUNK,interval=settings.BLUETOOTH_VISION_INTERVAL) if settings.BLUETOOTH_VISION_ENABLED else None
     await server.start()
     log.info(f"[BLUETOOTH] ready name={settings.BLUETOOTH_NAME}")
     try:
         while True:await asyncio.sleep(3600)
-    finally:await server.stop()
+    finally:
+        listener.stop()
+        await server.stop()
 
 def run_bluetooth():
     try:asyncio.run(serve())
