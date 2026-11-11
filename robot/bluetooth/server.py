@@ -1,6 +1,7 @@
 import asyncio
 import json
 import subprocess
+from threading import Thread,Lock
 from pathlib import Path
 from datetime import datetime
 from robot.assets.assets import get_assets
@@ -14,6 +15,13 @@ from robot.system.wifi import wifi_manager
 from robot.utils.logger import log
 
 ROOT=Path(__file__).resolve().parents[2]
+_ble_speech_lock=Lock()
+def _ble_say(text,language):
+    try:
+        from robot.speech import tts
+        tts.say(text,language=language)
+    except Exception as error:log.error(f"[BLE SPEECH] {error}")
+    finally:_ble_speech_lock.release()
 
 def compact_state():
     robot=get_robot()
@@ -86,6 +94,15 @@ def admin_dispatch(request):
         # Keep GATT read replies small; the admin characteristic is not a streaming channel.
         lines=[line[:140] for line in log.tail(count=2,level=level)]
         return {"ok":True,"lines":lines}
+    if action=="speech_say":
+        from robot.speech import tts
+        message=str(data.get("text","")).strip();language=str(data.get("language") or tts.language())
+        if not message or len(message)>250:raise ValueError("Speech text must contain 1..250 characters")
+        if language not in tts.LANGUAGES:raise ValueError("Unsupported language")
+        if not _ble_speech_lock.acquire(blocking=False):raise RuntimeError("Speech already in progress")
+        try:Thread(target=_ble_say,args=(message,language),daemon=True,name="ble-speech").start()
+        except Exception:_ble_speech_lock.release();raise
+        return {"ok":True,"queued":True}
     if action=="wifi_status":return {"ok":True,**compact_wifi_status()}
     if action=="wifi_add":
         network=wifi_manager.add(str(data.get("nickname","")),str(data.get("ssid","")),str(data.get("password","")))

@@ -5,7 +5,10 @@
     if(!groups.language)return;
     let selectedLanguage=document.querySelector('#message-language-buttons button[aria-pressed="true"]')?.dataset.lang||'fr';
     async function request(path,body){
-        if(typeof transportMode!=="undefined"&&transportMode==="bluetooth")throw Error("Speech settings require Wi-Fi");
+        if(typeof transportMode!=="undefined"&&transportMode==="bluetooth"){
+            if(path==="/speech/say")return bluetoothAdminRequest("speech_say",body||{});
+            throw Error("Speech settings require Wi-Fi");
+        }
         const response=await fetch(path,{method:body?"POST":"GET",headers:{"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined,cache:"no-store"});
         const raw=await response.text();let data;
         try{data=JSON.parse(raw)}catch{throw Error(`HTTP ${response.status}: ${raw.slice(0,200)}`)}
@@ -38,7 +41,7 @@
     flagButtons.forEach(button=>button.addEventListener("click",async()=>{try{await setLanguage(button.dataset.lang);modalStatus.textContent="";updateFlags()}catch(error){modalStatus.textContent=error.message}}));
     document.addEventListener("turtlelanguagechange",updateFlags);updateFlags();
     if(modalLanguage)modalLanguage.onchange=async()=>{try{await setLanguage(modalLanguage.value);modalStatus.textContent=""}catch(error){modalStatus.textContent=error.message;await refresh()}};
-    async function act(path,content,target){target.textContent=path.includes("ask")?"Thinking...":"Generating speech...";const data=await request(path,content);target.textContent=data.answer?`Spy Turtle: ${data.answer}`:"Audio sent to speaker";return data}
+    async function act(path,content,target){target.textContent=path.includes("ask")?"Thinking...":"Generating speech...";const data=await request(path,content);target.textContent=data.answer?`Spy Turtle: ${data.answer}`:data.queued?"Speech queued on Spy Turtle":"Audio sent to speaker";return data}
     const speak=document.getElementById("message-speak"),ask=document.getElementById("message-ask"),screen=document.getElementById("message-send-screen"),message=document.getElementById("message");
     async function submit(path){const value=message.value.trim();if(!value)return;const buttons=[speak,ask,screen].filter(Boolean);buttons.forEach(button=>button.disabled=true);try{await act(path,{text:value,language:selectedLanguage},modalStatus)}catch(error){modalStatus.textContent=error.message;console.error("[SPY MESSAGE]",error)}finally{buttons.forEach(button=>button.disabled=false)}}
     if(speak)speak.onclick=()=>submit("/speech/say");if(ask)ask.onclick=()=>submit("/conversation/ask");
