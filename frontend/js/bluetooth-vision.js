@@ -1,5 +1,5 @@
 // Optional BLE Vision V2: one frame in flight, no backlog, no GATT reads.
-const bleVision={active:false,token:0,serial:null,size:0,offset:0,bytes:null,resolve:null,reject:null,url:null,errors:0};
+const bleVision={active:false,token:0,serial:null,size:0,offset:0,bytes:null,resolve:null,reject:null,url:null,errors:0,source:null};
 const bleVisionDelay=ms=>new Promise(r=>setTimeout(r,ms));
 function bleVisionPacket(event){
     const v=event.target.value,b=new Uint8Array(v.buffer,v.byteOffset,v.byteLength);
@@ -18,7 +18,7 @@ function bleVisionPacket(event){
         if(bleVision.offset===bleVision.size)bleVision.resolve(new Blob([bleVision.bytes],{type:"image/jpeg"}));
     }
 }
-async function bleVisionFrame(token){
+async function bleVisionFrame(token,source){
     const characteristic=bluetoothCamera;
     if(!characteristic)throw new Error("Bluetooth vision characteristic unavailable");
     return new Promise((resolve,reject)=>{
@@ -32,7 +32,7 @@ async function bleVisionFrame(token){
         bleVision.resolve=blob=>finish(null,blob);bleVision.reject=error=>finish(error);
         queueGatt(async()=>{
             if(token!==bleVision.token)throw new Error("BLE vision cancelled");
-            await characteristic.writeValueWithResponse(new Uint8Array([78]));
+            await characteristic.writeValueWithResponse(new Uint8Array([source==="thermal"?84:78]));
         }).catch(error=>finish(error));
     });
 }
@@ -43,19 +43,21 @@ async function bleVisionLoop(token){
         await queueGatt(()=>characteristic.startNotifications());
         characteristic.addEventListener("characteristicvaluechanged",bleVisionPacket);
         while(token===bleVision.token&&transportMode==="bluetooth"&&bluetoothServer?.connected){
-            if(!document.getElementById("camera-view").classList.contains("active")){await bleVisionDelay(250);continue}
+            const source=document.getElementById("thermal-view").classList.contains("active")?"thermal":document.getElementById("camera-view").classList.contains("active")?"camera":null;
+            if(!source){await bleVisionDelay(250);continue}
             try{
-                const start=performance.now(),blob=await bleVisionFrame(token);
+                const start=performance.now(),blob=await bleVisionFrame(token,source);
                 if(token!==bleVision.token)break;
                 const url=URL.createObjectURL(blob),previous=bleVision.url;
-                bleVision.url=url;camera.src=url;
+                bleVision.url=url;bleVision.source=source;
+                const target=document.getElementById(source==="thermal"?"thermal-stream":"camera-stream");target.src=url;
                 if(previous)URL.revokeObjectURL(previous);
                 bleVision.errors=0;
                 console.debug(`[BLE VISION] ${blob.size} bytes, ${Math.round(performance.now()-start)} ms`);
             }catch(error){
                 if(token!==bleVision.token)break;
                 console.warn("[BLE VISION]",error);bleVision.errors++;
-                if(bleVision.errors>=3){camera.removeAttribute("src");camera.alt="Bluetooth vision unavailable"}
+                if(bleVision.errors>=3){const target=document.getElementById(source==="thermal"?"thermal-stream":"camera-stream");target.removeAttribute("src");target.alt="Bluetooth vision unavailable"}
                 await bleVisionDelay(700);
             }
             await bleVisionDelay(30);
@@ -71,6 +73,6 @@ async function bleVisionLoop(token){
 document.addEventListener("transportchange",()=>{
     bleVision.token++;
     if(bleVision.reject)bleVision.reject(new Error("BLE vision transport changed"));
-    if(bleVision.url){URL.revokeObjectURL(bleVision.url);bleVision.url=null}
+    if(bleVision.url){URL.revokeObjectURL(bleVision.url);bleVision.url=null;bleVision.source=null}
     if(transportMode==="bluetooth")bleVisionLoop(bleVision.token);
 });

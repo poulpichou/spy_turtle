@@ -11,11 +11,9 @@ let healthTimer=null;
 let photos=[];
 let photoIndex=0;
 
-function stopThermal(){if(!thermalTimer)return;clearInterval(thermalTimer);thermalTimer=null;}
+function stopThermal(){if(thermalTimer){clearInterval(thermalTimer);thermalTimer=null;}if(transportMode==="bluetooth")document.getElementById("thermal-stream").removeAttribute("src");}
 function startThermal(){
-    if(transportMode==="bluetooth"){
-        const image=document.getElementById("thermal-stream");image.removeAttribute("src");image.alt="Live thermal requires Wi-Fi (BLE support coming later)";return;
-    }
+    if(transportMode==="bluetooth"){document.getElementById("thermal-stream").alt="Bluetooth thermal stream";return;}
     const refresh=()=>document.getElementById("thermal-stream").src=`/thermal/frame?t=${Date.now()}`;
     refresh();
     thermalTimer=setInterval(refresh,500);

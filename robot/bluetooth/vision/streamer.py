@@ -18,16 +18,21 @@ class VisionStreamer:
         if data==b"X":
             if self.task and not self.task.done():self.task.cancel()
             return
-        if data!=b"N":raise ValueError("Unknown BLE vision request")
+        if data not in (b"N",b"T"):raise ValueError("Unknown BLE vision request")
         if self.task and not self.task.done():return # No queue of old frames.
-        self.task=asyncio.create_task(self._stream())
+        self.task=asyncio.create_task(self._stream(thermal=data==b"T"))
     @staticmethod
-    def _capture():
+    def _capture(thermal=False):
         t0=perf_counter()
         robot=get_robot()
-        if robot is None or robot.camera is None:raise RuntimeError("Camera unavailable")
-        raw=robot.camera.get_frame()
-        vision.submit(raw) # Submit original JPEG before BLE downsampling.
+        if robot is None:raise RuntimeError("Robot unavailable")
+        if thermal:
+            if robot.thermal_camera is None:raise RuntimeError("Thermal camera unavailable")
+            raw=robot.thermal_camera.get_frame()
+        else:
+            if robot.camera is None:raise RuntimeError("Camera unavailable")
+            raw=robot.camera.get_frame()
+            vision.submit(raw) # Submit original camera JPEG before BLE downsampling.
         t1=perf_counter()
         with Image.open(BytesIO(raw)) as image:
             image.thumbnail((settings.BLUETOOTH_VISION_WIDTH,settings.BLUETOOTH_VISION_HEIGHT));buf=BytesIO()
@@ -41,10 +46,10 @@ class VisionStreamer:
         characteristic.value=bytearray(data)
         result=self.server.update_value(self.service_uuid,self.char_uuid)
         if asyncio.iscoroutine(result):await result
-    async def _stream(self):
+    async def _stream(self,thermal=False):
         start=perf_counter();stage="capture";chunks=0;notify_ms=0.0;sleep_ms=0.0
         try:
-            jpeg,capture_ms,encode_ms,raw_bytes=await asyncio.to_thread(self._capture)
+            jpeg,capture_ms,encode_ms,raw_bytes=await asyncio.to_thread(self._capture,thermal)
             prepared=perf_counter();stage="send"
             if len(jpeg)>65535:raise RuntimeError("BLE JPEG too large")
             self.serial=(self.serial+1)&65535;serial=self.serial.to_bytes(2,"little")
@@ -58,7 +63,7 @@ class VisionStreamer:
                 notify_ms+=(perf_counter()-t)*1000;chunks+=1
                 t=perf_counter();await asyncio.sleep(self.interval);sleep_ms+=(perf_counter()-t)*1000
             end=perf_counter()
-            log.info(f"[BLE VISION] frame={self.serial} bytes={len(jpeg)}")
+            log.info(f"[BLE VISION] source={'thermal' if thermal else 'camera'} frame={self.serial} bytes={len(jpeg)}")
             log.info(f"[BLE PERF] frame={self.serial} jpeg={len(jpeg)} raw={raw_bytes} chunks={chunks} chunk_size={self.chunk} interval_ms={self.interval*1000:.1f} capture_ms={capture_ms:.1f} encode_ms={encode_ms:.1f} prep_ms={(prepared-start)*1000:.1f} notify_ms={notify_ms:.1f} sleep_ms={sleep_ms:.1f} send_ms={(end-prepared)*1000:.1f} total_ms={(end-start)*1000:.1f}")
         except asyncio.CancelledError:
             log.info(f"[BLE PERF] cancelled stage={stage} chunks={chunks} elapsed_ms={(perf_counter()-start)*1000:.1f}")
