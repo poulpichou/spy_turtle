@@ -44,7 +44,15 @@ tabs.forEach(tab=>tab.addEventListener("click",event=>{
 }));
 
 async function refreshLogs(){
-    if(transportMode==="bluetooth"){logElement.textContent="Logs are not yet available over Bluetooth. Switch to Wi-Fi to view them.";return;}
+    if(transportMode==="bluetooth"){
+        try{
+            const level=localStorage.getItem("spy_log_level")||"INFO";
+            const result=await bluetoothAdminRequest("log_tail",{level});
+            logElement.textContent=(result.lines||[]).join("\n")||"No recent logs";
+            logElement.scrollTop=logElement.scrollHeight;
+        }catch(error){logElement.textContent=`Bluetooth logs unavailable: ${error.message}`;}
+        return;
+    }
     try{
         const response=await fetch(`/logs?count=80&level=${encodeURIComponent(localStorage.getItem("spy_log_level")||"INFO")}`,{cache:"no-store"});
         if(!response.ok)throw new Error(`HTTP ${response.status}`);
@@ -53,7 +61,7 @@ async function refreshLogs(){
         logElement.scrollTop=logElement.scrollHeight;
     }catch(error){logElement.textContent=`Unable to load logs: ${error.message}`;}
 }
-function startLogs(){refreshLogs();if(!logTimer)logTimer=setInterval(refreshLogs,1000);}
+function startLogs(){refreshLogs();if(!logTimer)logTimer=setInterval(refreshLogs,transportMode==="bluetooth"?2500:1000);}
 function stopLogs(){if(!logTimer)return;clearInterval(logTimer);logTimer=null;}
 
 async function loadPhotos(){

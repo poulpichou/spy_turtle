@@ -79,7 +79,13 @@ def admin_dispatch(request):
     action=str(request.get("action",""))
     data=request.get("data") or {}
     robot=get_robot()
-    log.info(f"[BLUETOOTH ADMIN] {action}")
+    if action!="log_tail":log.info(f"[BLUETOOTH ADMIN] {action}")
+    if action=="log_tail":
+        level=str(data.get("level","INFO")).upper()
+        if level not in ("DEBUG","INFO","WARN","WARNING","ERROR"):level="INFO"
+        # Keep GATT read replies small; the admin characteristic is not a streaming channel.
+        lines=[line[:140] for line in log.tail(count=2,level=level)]
+        return {"ok":True,"lines":lines}
     if action=="wifi_status":return {"ok":True,**compact_wifi_status()}
     if action=="wifi_add":
         network=wifi_manager.add(str(data.get("nickname","")),str(data.get("ssid","")),str(data.get("password","")))
