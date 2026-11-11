@@ -3,7 +3,7 @@ const BLE_COMMAND_UUID="6f2d0002-9b7e-4b2a-a1d3-53d9c4e8f210";
 const BLE_STATE_UUID="6f2d0003-9b7e-4b2a-a1d3-53d9c4e8f210";
 const BLE_ADMIN_UUID="6f2d0004-9b7e-4b2a-a1d3-53d9c4e8f210";
 const BLE_CAMERA_UUID="6f2d0005-9b7e-4b2a-a1d3-53d9c4e8f210";
-let transportMode="wifi";
+let transportMode="wifi"; // Offline shell can still launch; Bluetooth is selected by a user gesture.
 let bluetoothDevice=null,bluetoothServer=null,bluetoothCommand=null,bluetoothState=null,bluetoothAdmin=null,bluetoothCamera=null;
 let bluetoothQueue=Promise.resolve(),bluetoothPending=0,bluetoothEpoch=0;
 let bluetoothCachedState=null,bluetoothCachedAt=0;

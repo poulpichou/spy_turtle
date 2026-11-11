@@ -1,0 +1,128 @@
+diff --git a/robot/hardware/motor/tb6612.py b/robot/hardware/motor/tb6612.py
+--- a/robot/hardware/motor/tb6612.py
++++ b/robot/hardware/motor/tb6612.py
+@@ -1,7 +1,8 @@
+-from gpiozero import DigitalOutputDevice,PWMOutputDevice
++from gpiozero import Device,DigitalOutputDevice,PWMOutputDevice
+ from robot.utils.logger import log
+ class TB6612Driver:
+     def __init__(self,standby_pin,pwma_pin,ain1_pin,ain2_pin,pwmb_pin,bin1_pin,bin2_pin,pwm_frequency=1000):
++        self.pwma_pin=pwma_pin;self.pwmb_pin=pwmb_pin;self.pwm_frequency=pwm_frequency
+         self.standby=DigitalOutputDevice(standby_pin,initial_value=False)
+         self.ain1=DigitalOutputDevice(ain1_pin,initial_value=False)
+         self.ain2=DigitalOutputDevice(ain2_pin,initial_value=False)
+@@ -12,6 +13,7 @@
+         self._closed=False
+         self.standby.on()
+         log.info(f"[TB6612] ready STBY={standby_pin} A=({pwma_pin},{ain1_pin},{ain2_pin}) B=({pwmb_pin},{bin1_pin},{bin2_pin})")
++        log.info(f"[TB6612] GPIO factory={type(Device.pin_factory).__name__}")
+     def set_channel(self,channel,speed):
+         if self._closed:raise RuntimeError("TB6612 driver is closed")
+         speed=max(-1.0,min(1.0,float(speed)))
+@@ -35,10 +37,35 @@
+     def wake(self):
+         if self._closed:raise RuntimeError("TB6612 driver is closed")
+         self.standby.on()
++    def pwm_status(self):
++        return {"factory":type(Device.pin_factory).__name__,"frequency":self.pwm_frequency,
++                "pwma_pin":self.pwma_pin,"pwmb_pin":self.pwmb_pin,
++                "pwma_value":self.pwma.value if self.pwma else None,
++                "pwmb_value":self.pwmb.value if self.pwmb else None,
++                "standby":self.standby.value,"closed":self._closed}
++    def reset_pwm(self):
++        if self._closed:raise RuntimeError("TB6612 driver is closed")
++        log.info(f"[TB6612] PWM reset start: {self.pwm_status()}")
++        self.standby.off()
++        self.ain1.off();self.ain2.off();self.bin1.off();self.bin2.off()
++        try:
++            self.pwma.close();self.pwmb.close()
++            self.pwma=None;self.pwmb=None
++            self.pwma=PWMOutputDevice(self.pwma_pin,frequency=self.pwm_frequency,initial_value=0)
++            self.pwmb=PWMOutputDevice(self.pwmb_pin,frequency=self.pwm_frequency,initial_value=0)
++            self.standby.on()
++            result=self.pwm_status()
++            log.info(f"[TB6612] PWM reset successful: {result}")
++            return result
++        except Exception as error:
++            self.standby.off()
++            log.error(f"[TB6612] PWM reset failed: {error}")
++            raise
+     def close(self):
+         if self._closed:return
+-        self.sleep()
+-        self.pwma.close();self.pwmb.close()
++        self.standby.off()
++        if self.pwma:self.pwma.close()
++        if self.pwmb:self.pwmb.close()
+         self.ain1.close();self.ain2.close()
+         self.bin1.close();self.bin2.close()
+         self.standby.close();self._closed=True
+diff --git a/robot/hardware/motor/differential_drive.py b/robot/hardware/motor/differential_drive.py
+--- a/robot/hardware/motor/differential_drive.py
++++ b/robot/hardware/motor/differential_drive.py
+@@ -151,4 +151,11 @@
++    def reset_pwm(self):
++        with self._lock:
++            self.stop()
++            result=self.driver.reset_pwm()
++            self._reset_correction()
++            return result
++
+     def close(self):
+         with self._lock:
+             self.stop()
+             if self.left_encoder:self.left_encoder.close()
+diff --git a/robot/api/motor_diagnostics.py b/robot/api/motor_diagnostics.py
+new file mode 100644
+--- /dev/null
++++ b/robot/api/motor_diagnostics.py
+@@ -0,0 +1,30 @@
++from fastapi import APIRouter,HTTPException
++from robot.api import actions
++from robot.system.runtime import get_robot
++from robot.utils.logger import log
++
++router=APIRouter(prefix="/admin/motors",tags=["Motor diagnostics"])
++
++def get_motors():
++    robot=get_robot()
++    if robot is None or robot.motors is None:raise HTTPException(status_code=503,detail="Motors unavailable")
++    if not hasattr(robot.motors,"driver"):raise HTTPException(status_code=503,detail="Hardware motor driver unavailable")
++    return robot
++
++@router.get("/pwm")
++def pwm_status():
++    robot=get_motors()
++    return {"motors":robot.motors.status(),"pwm":robot.motors.driver.pwm_status()}
++
++@router.post("/reset-pwm")
++def reset_pwm():
++    robot=get_motors()
++    actions.disarm_motion()
++    robot.state.motion="stop"
++    try:
++        result=robot.motors.reset_pwm()
++        log.info("[MOTOR DIAG] PWM manually reset; motors stopped")
++        return {"ok":True,"motors_stopped":True,"pwm":result}
++    except Exception as error:
++        log.error(f"[MOTOR DIAG] PWM reset error: {error}")
++        raise HTTPException(status_code=500,detail=str(error)) from error
+diff --git a/robot/api/app.py b/robot/api/app.py
+--- a/robot/api/app.py
++++ b/robot/api/app.py
+@@ -9,6 +9,7 @@
+ from pydantic import BaseModel,Field
+ from robot.api import actions
+ from robot.api.admin import router as admin_router
++from robot.api.motor_diagnostics import router as motor_diagnostics_router
+ from robot.api.sentinel_api import router as sentinel_router
+ from robot.api.speech_api import router as speech_router
+ from robot.api.conversation_api import router as conversation_router
+@@ -20,6 +21,7 @@
+ 
+ app=FastAPI()
+ app.include_router(admin_router)
++app.include_router(motor_diagnostics_router)
+ app.include_router(sentinel_router)
+ app.include_router(speech_router)
+ app.include_router(conversation_router)
