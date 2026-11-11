@@ -1,5 +1,5 @@
 // Offline-ready PWA: preserve the app shell and leave API responses uncached.
-const SPY_PWA_VERSION="ble1-20261111";
+const SPY_PWA_VERSION="ble2-20261111";
 async function registerFrontendCache(){
     if(!("serviceWorker" in navigator))return;
     try{

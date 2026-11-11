@@ -13,6 +13,9 @@ let photoIndex=0;
 
 function stopThermal(){if(!thermalTimer)return;clearInterval(thermalTimer);thermalTimer=null;}
 function startThermal(){
+    if(transportMode==="bluetooth"){
+        const image=document.getElementById("thermal-stream");image.removeAttribute("src");image.alt="Live thermal requires Wi-Fi (BLE support coming later)";return;
+    }
     const refresh=()=>document.getElementById("thermal-stream").src=`/thermal/frame?t=${Date.now()}`;
     refresh();
     thermalTimer=setInterval(refresh,500);
@@ -43,6 +46,7 @@ tabs.forEach(tab=>tab.addEventListener("click",event=>{
 }));
 
 async function refreshLogs(){
+    if(transportMode==="bluetooth"){logElement.textContent="Logs are not yet available over Bluetooth. Switch to Wi-Fi to view them.";return;}
     try{
         const response=await fetch(`/logs?count=80&level=${encodeURIComponent(localStorage.getItem("spy_log_level")||"INFO")}`,{cache:"no-store"});
         if(!response.ok)throw new Error(`HTTP ${response.status}`);
@@ -55,6 +59,9 @@ function startLogs(){refreshLogs();if(!logTimer)logTimer=setInterval(refreshLogs
 function stopLogs(){if(!logTimer)return;clearInterval(logTimer);logTimer=null;}
 
 async function loadPhotos(){
+    if(transportMode==="bluetooth"){
+        photos=[];showPhoto();photoEmpty.textContent="Photo gallery requires Wi-Fi for now. Bluetooth photo capture still works.";return;
+    }
     try{
         const response=await fetch("/photos",{cache:"no-store"});
         if(!response.ok)throw new Error(`HTTP ${response.status}`);
@@ -99,6 +106,16 @@ async function fetchJson(url){
     return response.json();
 }
 async function refreshHealth(){
+    if(transportMode==="bluetooth"){
+        try{
+            const state=await readBluetoothState();
+            const env=state.sensors?.environment||{},dist=state.sensors?.distance||{},battery=state.battery||{};
+            const values={"health-object-distance":dist.distance_mm==null?"--":dist.out_of_range?"∞":`${dist.distance_mm} mm`,"health-environment-temperature":valueOrDash(env.temperature_c," °C"),"health-humidity":valueOrDash(env.humidity_percent," %"),"health-pressure":valueOrDash(env.pressure_hpa," hPa"),"health-pressure-atm":valueOrDash(env.pressure_atm," atm"),"health-gas":env.gas_ohms==null?"--":`${(env.gas_ohms/1000).toFixed(1)} kΩ`,"health-air-quality":valueOrDash(env.air_quality," / 10"),"health-level":valueOrDash(battery.level,"%"),"health-battery-status":battery.status||"unknown","health-charging":battery.charging==null?"--":battery.charging?"Yes":"No","health-mode":`${state.motion?.state||"stop"} / ${state.brain?.emotion||"neutral"}`,"health-pan":formatServo(state.servo?.pan),"health-tilt":formatServo(state.servo?.tilt),"health-connection":"Bluetooth"};
+            for(const [id,value] of Object.entries(values))document.getElementById(id).textContent=value;
+            for(const id of ["health-uptime","health-temperature","health-load","health-disk","health-voltage","health-current","health-power","health-cells","health-usb","health-battery-error","health-idle","health-detected-recent","health-ambient-sound","health-ambient-rms","health-adaptive-boost"])document.getElementById(id).textContent="--";
+        }catch(error){document.getElementById("health-connection").textContent="Bluetooth disconnected";}
+        return;
+    }
     try{
         const data=await fetchJson("/health");
         const robotState=await fetchJson("/state");
@@ -144,3 +161,10 @@ async function refreshHealth(){
 }
 function startHealth(){refreshHealth();if(!healthTimer)healthTimer=setInterval(refreshHealth,1000);}
 function stopHealth(){if(!healthTimer)return;clearInterval(healthTimer);healthTimer=null;}
+document.addEventListener("transportchange",()=>{
+    stopLogs();stopHealth();stopThermal();
+    if(activeView==="thermal")startThermal();
+    else if(activeView==="logs")startLogs();
+    else if(activeView==="photos")loadPhotos();
+    else if(activeView==="status")startHealth();
+});
