@@ -43,16 +43,49 @@ function encodeWav(buffer){
     return output;
 }
 
+function bleEncodeAudio(buffer){
+    const rate=8000,seconds=Math.min(3,buffer.duration),count=Math.floor(seconds*rate),output=new Uint8Array(count);
+    const channels=Array.from({length:buffer.numberOfChannels},(_,i)=>buffer.getChannelData(i));
+    for(let i=0;i<count;i++){
+        const position=i*buffer.sampleRate/rate,index=Math.floor(position),fraction=position-index;
+        let sample=0;
+        for(const channel of channels)sample+=(channel[index]||0)*(1-fraction)+(channel[index+1]||0)*fraction;
+        sample=Math.max(-1,Math.min(1,sample/channels.length));
+        const sign=sample<0?0x80:0,magnitude=Math.min(32635,Math.round(Math.abs(sample)*32767)+132);
+        let exponent=7;for(let mask=0x4000;exponent>0&&!(magnitude&mask);mask>>=1)exponent--;
+        const mantissa=(magnitude>>(exponent+3))&15;
+        output[i]=(~(sign|(exponent<<4)|mantissa))&255;
+    }
+    return output;
+}
+async function sendBleRecordedMessage(buffer){
+    if(!bluetoothAudio||!bluetoothServer?.connected)throw Error("Bluetooth audio unavailable; reconnect to Spy Turtle");
+    if(buffer.duration>3.2)throw Error("Bluetooth recordings are limited to 3 seconds");
+    const data=bleEncodeAudio(buffer),start=new Uint8Array(5);
+    start[0]=83;new DataView(start.buffer).setUint32(1,data.length,true);
+    recordStatus.textContent="Sending Bluetooth audio...";
+    await queueGatt(()=>bluetoothAudio.writeValueWithResponse(start));
+    try{
+        for(let i=0;i<data.length;i+=160){
+            const packet=new Uint8Array(1+Math.min(160,data.length-i));packet[0]=68;packet.set(data.subarray(i,i+160),1);
+            await queueGatt(()=>bluetoothAudio.writeValueWithResponse(packet));
+        }
+        await queueGatt(()=>bluetoothAudio.writeValueWithResponse(new Uint8Array([69])));
+    }catch(error){queueGatt(()=>bluetoothAudio.writeValueWithResponse(new Uint8Array([88]))).catch(()=>{});throw error;}
+}
 async function sendRecordedMessage(){
     recordStatus.textContent="Sending...";
     try{
         const blob=new Blob(recorderChunks,{type:recorder.mimeType});
         const context=new (window.AudioContext||window.webkitAudioContext)();
         const decoded=await context.decodeAudioData(await blob.arrayBuffer());
-        const wav=encodeWav(decoded);
+        if(transportMode==="bluetooth")await sendBleRecordedMessage(decoded);
+        else{
+            const wav=encodeWav(decoded);
+            const response=await fetch("/audio/message",{method:"POST",headers:{"Content-Type":"audio/wav"},body:wav});
+            if(!response.ok)throw new Error((await response.text())||`HTTP ${response.status}`);
+        }
         await context.close();
-        const response=await fetch("/audio/message",{method:"POST",headers:{"Content-Type":"audio/wav"},body:wav});
-        if(!response.ok)throw new Error((await response.text())||`HTTP ${response.status}`);
         recordStatus.textContent="Sent";
     }catch(error){
         console.error("[VOICE MESSAGE]",error);
@@ -74,6 +107,7 @@ recordButton.onclick=async()=>{
         recorderChunks=[];recorder=new MediaRecorder(recorderStream);
         recorder.ondataavailable=event=>{if(event.data.size)recorderChunks.push(event.data)};
         recorder.onstop=sendRecordedMessage;recorder.start();
+        if(transportMode==="bluetooth")setTimeout(()=>{if(recorder?.state==="recording"){recorder.stop();recordButton.classList.remove("recording");recordButton.textContent="🎙️";}},3000);
         recordButton.classList.add("recording");recordButton.textContent="■";recordStatus.textContent="Recording...";
     }catch(error){
         console.error("[VOICE RECORD]",error);recordStatus.textContent="Microphone denied";showCommandError(error);

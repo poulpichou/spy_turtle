@@ -1,6 +1,8 @@
 import asyncio
 import json
 import subprocess
+import tempfile
+import wave
 from threading import Thread,Lock
 from pathlib import Path
 from datetime import datetime
@@ -15,6 +17,46 @@ from robot.system.wifi import wifi_manager
 from robot.utils.logger import log
 
 ROOT=Path(__file__).resolve().parents[2]
+BLE_AUDIO_UUID="6f2d0006-9b7e-4b2a-a1d3-53d9c4e8f210"
+class BleAudioReceiver:
+    def __init__(self):self.data=bytearray();self.expected=0;self.active=False;self.busy=False
+    def write(self,raw):
+        if not raw:return
+        kind=raw[0]
+        if kind==83:
+            if self.busy:return
+            self.expected=int.from_bytes(raw[1:5],"little") if len(raw)==5 else 0
+            self.active=0<self.expected<=24000
+            self.data=bytearray()
+        elif kind==68 and self.active:
+            if len(self.data)+len(raw)-1>self.expected:self.active=False;self.data.clear();return
+            self.data.extend(raw[1:])
+        elif kind==69 and self.active:
+            self.active=False
+            if len(self.data)!=self.expected or self.busy:return
+            payload=bytes(self.data);self.data.clear();self.busy=True
+            Thread(target=self._play,args=(payload,),daemon=True,name="ble-audio").start()
+        elif kind==88:self.active=False;self.data.clear()
+    def _play(self,payload):
+        path=None
+        try:
+            def decode(value):
+                value=(~value)&255;exponent=(value>>4)&7
+                sample=((value&15)<<3)+132
+                sample=(sample<<exponent)-132
+                return -sample if value&128 else sample
+            pcm=b"".join(decode(value).to_bytes(2,"little",signed=True) for value in payload)
+            with tempfile.NamedTemporaryFile(prefix="spyturtle_ble_",suffix=".wav",delete=False) as temp:path=Path(temp.name)
+            with wave.open(str(path),"wb") as wav:wav.setnchannels(1);wav.setsampwidth(2);wav.setframerate(8000);wav.writeframes(pcm)
+            robot=get_robot()
+            if robot is None or robot.speaker is None:raise RuntimeError("Speaker unavailable")
+            if not robot.speaker.play_file(str(path),"ble_message",delete_after=True):raise RuntimeError("Audio playback failed")
+            path=None
+            log.info(f"[BLE AUDIO] received {len(payload)} bytes")
+        except Exception as error:log.error(f"[BLE AUDIO] {error}")
+        finally:
+            if path:path.unlink(missing_ok=True)
+            self.busy=False
 _ble_speech_lock=Lock()
 _ble_chat_lock=Lock()
 _ble_chat_state_lock=Lock()
@@ -214,11 +256,12 @@ async def serve():
     server=BlessServer(name=settings.BLUETOOTH_NAME,loop=loop)
     admin_response=bytearray(b'{"ok":true}')
     vision=None
+    audio=BleAudioReceiver()
 
     def characteristic_uuid(characteristic): return str(getattr(characteristic,"uuid","")).lower()
 
     def read_request(characteristic:BlessGATTCharacteristic,**kwargs):
-        if characteristic_uuid(characteristic)==settings.BLUETOOTH_CAMERA_UUID.lower():return bytearray()
+        if characteristic_uuid(characteristic) in (settings.BLUETOOTH_CAMERA_UUID.lower(),BLE_AUDIO_UUID):return bytearray()
         if characteristic_uuid(characteristic)==settings.BLUETOOTH_ADMIN_UUID.lower():return admin_response
         return bytearray(json.dumps(compact_state(),separators=(",",":")).encode())
 
@@ -226,6 +269,8 @@ async def serve():
         nonlocal admin_response
         try:
             raw=bytes(value)
+            if characteristic_uuid(characteristic)==BLE_AUDIO_UUID:
+                audio.write(raw);return
             if characteristic_uuid(characteristic)==settings.BLUETOOTH_CAMERA_UUID.lower():
                 if vision is not None:vision.request(raw)
                 return
@@ -262,6 +307,7 @@ async def serve():
         GATTCharacteristicProperties.notify|GATTCharacteristicProperties.write,
         bytearray(b""),GATTAttributePermissions.writeable
     )
+    await server.add_new_characteristic(settings.BLUETOOTH_SERVICE_UUID,BLE_AUDIO_UUID,GATTCharacteristicProperties.write,None,GATTAttributePermissions.writeable)
     vision=VisionStreamer(server,settings.BLUETOOTH_SERVICE_UUID,settings.BLUETOOTH_CAMERA_UUID,
         chunk=settings.BLUETOOTH_VISION_CHUNK,interval=settings.BLUETOOTH_VISION_INTERVAL) if settings.BLUETOOTH_VISION_ENABLED else None
     await server.start()

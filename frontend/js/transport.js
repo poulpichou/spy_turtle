@@ -3,8 +3,9 @@ const BLE_COMMAND_UUID="6f2d0002-9b7e-4b2a-a1d3-53d9c4e8f210";
 const BLE_STATE_UUID="6f2d0003-9b7e-4b2a-a1d3-53d9c4e8f210";
 const BLE_ADMIN_UUID="6f2d0004-9b7e-4b2a-a1d3-53d9c4e8f210";
 const BLE_CAMERA_UUID="6f2d0005-9b7e-4b2a-a1d3-53d9c4e8f210";
+const BLE_AUDIO_UUID="6f2d0006-9b7e-4b2a-a1d3-53d9c4e8f210";
 let transportMode="wifi"; // Offline shell can still launch; Bluetooth is selected by a user gesture.
-let bluetoothDevice=null,bluetoothServer=null,bluetoothCommand=null,bluetoothState=null,bluetoothAdmin=null,bluetoothCamera=null;
+let bluetoothDevice=null,bluetoothServer=null,bluetoothCommand=null,bluetoothState=null,bluetoothAdmin=null,bluetoothCamera=null,bluetoothAudio=null;
 let bluetoothQueue=Promise.resolve(),bluetoothPending=0,bluetoothEpoch=0;
 let bluetoothCachedState=null,bluetoothCachedAt=0;
 let bluetoothMoveEpoch=0;
@@ -40,7 +41,7 @@ async function connectBluetooth(){
     if(!navigator.bluetooth)throw new Error("Web Bluetooth is not supported by this browser");
     bluetoothDevice=await navigator.bluetooth.requestDevice({filters:[{services:[BLE_SERVICE_UUID]}]});
     bluetoothDevice.addEventListener("gattserverdisconnected",()=>{
-        invalidateBluetooth();bluetoothServer=null;bluetoothCommand=null;bluetoothState=null;bluetoothAdmin=null;bluetoothCamera=null;
+        invalidateBluetooth();bluetoothServer=null;bluetoothCommand=null;bluetoothState=null;bluetoothAdmin=null;bluetoothCamera=null;bluetoothAudio=null;
         updateTransportUI();if(typeof setConnection==="function")setConnection("disconnected");emitTransportChange();
     });
     bluetoothServer=await bluetoothDevice.gatt.connect();
@@ -49,6 +50,7 @@ async function connectBluetooth(){
     bluetoothState=await service.getCharacteristic(BLE_STATE_UUID);
     bluetoothAdmin=await service.getCharacteristic(BLE_ADMIN_UUID);
     try{bluetoothCamera=await service.getCharacteristic(BLE_CAMERA_UUID)}catch(error){bluetoothCamera=null;console.warn("[BLE VISION] optional camera unavailable",error)}
+    try{bluetoothAudio=await service.getCharacteristic(BLE_AUDIO_UUID)}catch(error){bluetoothAudio=null;console.warn("[BLE AUDIO] unavailable",error)}
     transportMode="bluetooth";
     updateTransportUI();emitTransportChange();
     if(typeof scheduleDashboard==="function")scheduleDashboard(0);
@@ -56,7 +58,7 @@ async function connectBluetooth(){
 function useWifi(){
     transportMode="wifi";
     if(bluetoothDevice?.gatt?.connected)bluetoothDevice.gatt.disconnect();
-    invalidateBluetooth();bluetoothServer=null;bluetoothCommand=null;bluetoothState=null;bluetoothAdmin=null;bluetoothCamera=null;
+    invalidateBluetooth();bluetoothServer=null;bluetoothCommand=null;bluetoothState=null;bluetoothAdmin=null;bluetoothCamera=null;bluetoothAudio=null;
     updateTransportUI();emitTransportChange();
     if(typeof scheduleDashboard==="function")scheduleDashboard(0);
 }
