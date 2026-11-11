@@ -24,6 +24,7 @@ class LEDController:
         self.headlights_color=self._load_headlights_color()
         self.headlights_intensity=self._load_headlights_intensity()
         self.mode="off"
+        self.headlights_locked=False
         self.animation_name=self.modes["off"]["animation"]
         self.started_at=time.monotonic()
         self.last_frame_at=0.0
@@ -83,6 +84,7 @@ class LEDController:
 
     def set_mode(self,name):
         if name not in self.modes:raise ValueError(f"Unknown LED mode: {name}")
+        if self.headlights_locked and name!="headlights":return False
         if self.mode==name:return False # Avoid duplicate log and animation reset.
         self.mode=name
         self.animation_name=self.modes[name]["animation"]

@@ -86,8 +86,10 @@ class MoodEngine:
         if enabled:
             if hasattr(self.robot.leds,'set_enabled'):self.robot.leds.set_enabled(True)
             self.robot.leds.set_mode('headlights');self.robot.state.led_mode='headlights';self.headlights_enabled=True
+            self.robot.leds.headlights_locked=True
         else:
             self.headlights_enabled=False
+            self.robot.leds.headlights_locked=False
             mode=self.current['leds'] if self.current else 'neutral'
             if not self.robot.power.data.get('shell_light',True):mode='off'
             self.robot.leds.set_mode(mode);self.robot.state.led_mode=mode

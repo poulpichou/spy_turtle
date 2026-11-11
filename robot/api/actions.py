@@ -83,6 +83,11 @@ def set_led(mode):
     instance=interact(f"led:{mode}")
     log.info(f"[API] led {mode}")
     if not instance.leds:raise RuntimeError("LED controller is unavailable")
+    moods=getattr(instance.brain,"moods",None) if instance.brain else None
+    if moods and mode=="headlights":return moods.set_headlights(True)
+    if moods and moods.headlights_enabled:
+        log.info(f"[LIGHTS] ignored LED mode {mode}: headlights active")
+        return
     instance.leds.set_mode(mode)
     instance.state.led_mode=mode
 
