@@ -1,6 +1,7 @@
 """Optional BLE vision streamer. One JPEG at a time; notifications are best-effort."""
 import asyncio
 from io import BytesIO
+from pathlib import Path
 from time import perf_counter
 from PIL import Image
 from robot.system.runtime import get_robot
@@ -18,15 +19,23 @@ class VisionStreamer:
         if data==b"X":
             if self.task and not self.task.done():self.task.cancel()
             return
-        if data not in (b"N",b"T"):raise ValueError("Unknown BLE vision request")
+        photo=None
+        if data.startswith(b"P"):
+            photo=data[1:].decode("utf-8")
+            if not photo or len(photo)>100 or Path(photo).name!=photo or not photo.lower().endswith((".jpg",".jpeg")):raise ValueError("Invalid photo name")
+        elif data not in (b"N",b"T"):raise ValueError("Unknown BLE vision request")
         if self.task and not self.task.done():return # No queue of old frames.
-        self.task=asyncio.create_task(self._stream(thermal=data==b"T"))
+        self.task=asyncio.create_task(self._stream(thermal=data==b"T",photo=photo))
     @staticmethod
-    def _capture(thermal=False):
+    def _capture(thermal=False,photo=None):
         t0=perf_counter()
         robot=get_robot()
         if robot is None:raise RuntimeError("Robot unavailable")
-        if thermal:
+        if photo:
+            path=Path(__file__).resolve().parents[3]/"photos"/photo
+            if not path.is_file():raise FileNotFoundError(photo)
+            raw=path.read_bytes()
+        elif thermal:
             if robot.thermal_camera is None:raise RuntimeError("Thermal camera unavailable")
             raw=robot.thermal_camera.get_frame()
         else:
@@ -46,10 +55,10 @@ class VisionStreamer:
         characteristic.value=bytearray(data)
         result=self.server.update_value(self.service_uuid,self.char_uuid)
         if asyncio.iscoroutine(result):await result
-    async def _stream(self,thermal=False):
+    async def _stream(self,thermal=False,photo=None):
         start=perf_counter();stage="capture";chunks=0;notify_ms=0.0;sleep_ms=0.0
         try:
-            jpeg,capture_ms,encode_ms,raw_bytes=await asyncio.to_thread(self._capture,thermal)
+            jpeg,capture_ms,encode_ms,raw_bytes=await asyncio.to_thread(self._capture,thermal,photo)
             prepared=perf_counter();stage="send"
             if len(jpeg)>65535:raise RuntimeError("BLE JPEG too large")
             self.serial=(self.serial+1)&65535;serial=self.serial.to_bytes(2,"little")

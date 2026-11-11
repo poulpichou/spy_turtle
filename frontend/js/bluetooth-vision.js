@@ -18,7 +18,7 @@ function bleVisionPacket(event){
         if(bleVision.offset===bleVision.size)bleVision.resolve(new Blob([bleVision.bytes],{type:"image/jpeg"}));
     }
 }
-async function bleVisionFrame(token,source){
+async function bleVisionFrame(token,source,photoName=null){
     const characteristic=bluetoothCamera;
     if(!characteristic)throw new Error("Bluetooth vision characteristic unavailable");
     return new Promise((resolve,reject)=>{
@@ -27,12 +27,13 @@ async function bleVisionFrame(token,source){
             if(done)return;done=true;clearTimeout(timer);bleVision.resolve=null;bleVision.reject=null;
             error?reject(error):resolve(blob);
         };
-        const timer=setTimeout(()=>finish(new Error("BLE vision timeout")),5000);
+        const timer=setTimeout(()=>finish(new Error("BLE vision timeout")),photoName?30000:5000);
         bleVision.serial=null;bleVision.bytes=null;
         bleVision.resolve=blob=>finish(null,blob);bleVision.reject=error=>finish(error);
         queueGatt(async()=>{
             if(token!==bleVision.token)throw new Error("BLE vision cancelled");
-            await characteristic.writeValueWithResponse(new Uint8Array([source==="thermal"?84:78]));
+            const payload=photoName?new Uint8Array([80,...new TextEncoder().encode(photoName)]):new Uint8Array([source==="thermal"?84:78]);
+            await characteristic.writeValueWithResponse(payload);
         }).catch(error=>finish(error));
     });
 }
@@ -42,6 +43,7 @@ async function bleVisionLoop(token){
     try{
         await queueGatt(()=>characteristic.startNotifications());
         characteristic.addEventListener("characteristicvaluechanged",bleVisionPacket);
+        bleVision.active=true;
         while(token===bleVision.token&&transportMode==="bluetooth"&&bluetoothServer?.connected){
             const source=document.getElementById("thermal-view").classList.contains("active")?"thermal":document.getElementById("camera-view").classList.contains("active")?"camera":null;
             if(!source){await bleVisionDelay(250);continue}
@@ -64,11 +66,18 @@ async function bleVisionLoop(token){
         }
     }catch(error){console.warn("[BLE VISION] notifications unavailable",error);camera.alt="Bluetooth vision unavailable"}
     finally{
+        bleVision.active=false;
         characteristic.removeEventListener("characteristicvaluechanged",bleVisionPacket);
         if(bleVision.reject)bleVision.reject(new Error("BLE vision stopped"));
         // Do not wait on stopNotifications during disconnect; it can reject on BlueZ.
         if(characteristic.service?.device?.gatt?.connected)queueGatt(()=>characteristic.stopNotifications()).catch(()=>{});
     }
+}
+async function blePhotoFetch(name){
+    if(transportMode!=="bluetooth"||!bluetoothServer?.connected)throw new Error("Bluetooth disconnected");
+    for(let i=0;i<20&&!bleVision.active;i++)await bleVisionDelay(100);
+    if(!bleVision.active)throw new Error("Bluetooth notifications unavailable");
+    return bleVisionFrame(bleVision.token,"photo",name);
 }
 document.addEventListener("transportchange",()=>{
     bleVision.token++;

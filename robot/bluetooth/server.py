@@ -103,6 +103,11 @@ def admin_dispatch(request):
         if section not in ("faces","shell","leds","audio"):raise ValueError("Invalid asset section")
         entries=[{"name":name,"label":str(asset.get("label",name))[:26]} for name,asset in get_assets(section).items()]
         return {"ok":True,"items":entries[offset:offset+3],"total":len(entries)}
+    if action=="photo_list":
+        offset=max(0,int(data.get("offset",0)))
+        folder=ROOT/"photos"
+        entries=sorted((p.name for p in folder.iterdir() if p.is_file() and p.suffix.lower() in (".jpg",".jpeg")),reverse=True) if folder.exists() else []
+        return {"ok":True,"items":[{"name":n} for n in entries[offset:offset+3]],"total":len(entries)}
     if action=="photo_capture":
         source=str(data.get("source","camera"))
         if source not in ("camera","thermal"):raise ValueError("Invalid photo source")

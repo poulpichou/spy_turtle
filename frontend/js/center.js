@@ -10,6 +10,7 @@ let logTimer=null;
 let healthTimer=null;
 let photos=[];
 let photoIndex=0;
+let photoToken=0,photoObjectUrl=null;
 
 function stopThermal(){if(thermalTimer){clearInterval(thermalTimer);thermalTimer=null;}if(transportMode==="bluetooth")document.getElementById("thermal-stream").removeAttribute("src");}
 function startThermal(){
@@ -22,6 +23,7 @@ function startThermal(){
 function setCenterView(name){
     if(name===activeView)return;
     activeView=name;
+    if(name!=="photos")photoToken++;
     tabs.forEach(tab=>tab.classList.toggle("active",tab.dataset.view===name));
     views.forEach(view=>view.classList.toggle("active",view.id===`${name}-view`));
     stopLogs();
@@ -66,7 +68,18 @@ function stopLogs(){if(!logTimer)return;clearInterval(logTimer);logTimer=null;}
 
 async function loadPhotos(){
     if(transportMode==="bluetooth"){
-        photos=[];showPhoto();photoEmpty.textContent="Photo gallery requires Wi-Fi for now. Bluetooth photo capture still works.";return;
+        try{
+            const entries=[];
+            for(let offset=0;offset<60;offset+=3){
+                const result=await bluetoothAdminRequest("photo_list",{offset});
+                entries.push(...(result.items||[]));
+                if(entries.length>=result.total||!(result.items||[]).length)break;
+            }
+            photos=entries.map(item=>({name:item.name}));
+            photoIndex=Math.min(photoIndex,Math.max(0,photos.length-1));
+            showPhoto();
+        }catch(error){photos=[];showPhoto();photoEmpty.textContent=`Bluetooth photos unavailable: ${error.message}`;}
+        return;
     }
     try{
         const response=await fetch("/photos",{cache:"no-store"});
@@ -80,12 +93,22 @@ async function loadPhotos(){
         photoEmpty.textContent=`Unable to load photos: ${error.message}`;
     }
 }
-function showPhoto(){
-    const photo=photos[photoIndex];
+async function showPhoto(){
+    const token=++photoToken,photo=photos[photoIndex];
+    if(photoObjectUrl){URL.revokeObjectURL(photoObjectUrl);photoObjectUrl=null;}
+    photoPreview.removeAttribute("src");
     photoPreview.style.display=photo?"block":"none";
     photoEmpty.style.display=photo?"none":"block";
     photoName.textContent=photo?`${photoIndex+1}/${photos.length} · ${photo.name}`:"";
-    if(photo)photoPreview.src=`${photo.url}?t=${Date.now()}`;
+    if(!photo)return;
+    if(transportMode!=="bluetooth"){photoPreview.src=`${photo.url}?t=${Date.now()}`;return;}
+    photoName.textContent+= " · Loading Bluetooth preview...";
+    try{
+        const blob=await blePhotoFetch(photo.name);
+        if(token!==photoToken||activeView!=="photos"||transportMode!=="bluetooth")return;
+        photoObjectUrl=URL.createObjectURL(blob);photoPreview.src=photoObjectUrl;
+        photoName.textContent=`${photoIndex+1}/${photos.length} · ${photo.name}`;
+    }catch(error){if(token===photoToken)photoName.textContent=`${photo.name} · ${error.message}`;}
 }
 document.getElementById("photo-previous").onclick=()=>{if(!photos.length)return;photoIndex=(photoIndex-1+photos.length)%photos.length;showPhoto();};
 document.getElementById("photo-next").onclick=()=>{if(!photos.length)return;photoIndex=(photoIndex+1)%photos.length;showPhoto();};
@@ -168,6 +191,7 @@ async function refreshHealth(){
 function startHealth(){refreshHealth();if(!healthTimer)healthTimer=setInterval(refreshHealth,1000);}
 function stopHealth(){if(!healthTimer)return;clearInterval(healthTimer);healthTimer=null;}
 document.addEventListener("transportchange",()=>{
+    photoToken++;if(photoObjectUrl){URL.revokeObjectURL(photoObjectUrl);photoObjectUrl=null;}
     stopLogs();stopHealth();stopThermal();
     if(activeView==="thermal")startThermal();
     else if(activeView==="logs")startLogs();
