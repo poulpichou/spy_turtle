@@ -2,6 +2,16 @@
     const grid=document.getElementById("commands-grid");if(!grid)return;
     const sections=[{name:"Moods",id:"moods",icon:"🐢"},{name:"Eyes",id:"faces",icon:"👀"},{name:"Shell LEDs",id:"leds",icon:"💡"},{name:"Back screen",id:"shell",icon:"🖥️"},{name:"Sounds",id:"audio",icon:"🔊"}];
     let version=0;
+    const moodStyles=[['gassy','💨','gassy'],['dreamy','💭','dreamy'],['neutral','😐','neutral'],['happy','😊','happy'],['angry','😠','angry'],['sleep','😴','sleepy'],['curious','🤔','curious'],['surpris','😮','curious'],['sad','😢','sleepy'],['love','🥰','happy'],['scared','😨','sleepy'],['excited','🤩','happy']];
+    const icons={status:'📊',log:'📜',rocket:'🚀',dance:'💃',smoke:'💨',fire:'🔥',sleep:'😴',leds:'💡',countdown:'⏳',loading:'⌛',glasses:'😎',glasses_large:'😎',happy:'😊',rocket_turtle:'🚀',walking:'🚶',off:'⚫',headlights:'🔦',neutral:'😐',rainbow:'🌈',breathing:'🫧',pulse:'💓',spinner:'🌀',wave:'🌊',police:'🚨',fart:'💨',cool:'😎',blink:'😉',surprised:'😮',angry:'😠',curious:'🤔',sad:'😢',yawn:'🥱'};
+    function buttonStyle(section,item){
+        const name=String(item.name||'').toLowerCase(),label=String(item.label||item.name||'');
+        if(section==='moods'){
+            const style=moodStyles.find(([key])=>name.includes(key));
+            return {label:style?`${style[1]} ${label}`:label,tone:style?.[2]||''};
+        }
+        const key=name.split('_')[0];return {label:icons[name]||icons[key]?`${icons[name]||icons[key]} ${label}`:label,tone:''};
+    }
     async function items(id){
         if(transportMode!=="bluetooth"){
             if(id==="moods"){const data=await turtleRequest("/brain/moods");return (data.variants||[]).map(x=>({name:x.id,label:x.id.replaceAll("_"," ")}))}
@@ -27,7 +37,7 @@
                 const entries=await items(section.id);if(request!==version)return;
                 if(section.id==="shell")entries.unshift({name:"status",label:"Status"},{name:"log",label:"Log"});
                 for(const item of entries){
-                    const button=document.createElement("button");button.textContent=item.label||item.name;button.title=item.label||item.name;
+                    const button=document.createElement("button");const style=buttonStyle(section.id,item);button.textContent=style.label;button.title=item.label||item.name;if(style.tone)button.dataset.moodTone=style.tone;
                     button.onclick=async()=>{button.disabled=true;try{if(section.id==="moods")await turtleRequest("/brain/moods/select",{variant:item.name});else await sendCommand({faces:"face",leds:"led",shell:"shell",audio:"sound"}[section.id],item.name)}catch(error){alert(error.message)}finally{button.disabled=false}};
                     buttons.append(button);
                 }

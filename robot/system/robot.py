@@ -147,21 +147,26 @@ class Robot:
         if not self.battery:
             self.state.battery={**self.state.battery,'error':'Battery component unavailable','updated_at':None}
             return
+        from robot.utils.logger import log
+        stage='level'
         try:
-            level=float(self.battery.get_level())
-            voltage=float(self.battery.get_voltage())
-            current=float(self.battery.get_current())
-            charging=bool(self.battery.is_charging())
+            level=float(self.battery.get_level());log.debug(f'[BATTERY] level={level:.1f}%')
+            stage='voltage';voltage=float(self.battery.get_voltage());log.debug(f'[BATTERY] voltage={voltage:.3f}V')
+            stage='current';current=float(self.battery.get_current());log.debug(f'[BATTERY] current={current:.3f}mA')
+            stage='charging';charging=bool(self.battery.is_charging());log.debug(f'[BATTERY] charging={charging}')
+            stage='cells';cells=list(self.battery.get_cells());log.debug(f'[BATTERY] cells_mv={cells}')
+            stage='remaining_capacity';remaining=self.battery.get_remaining_capacity();log.debug(f'[BATTERY] remaining_capacity={remaining}')
+            stage='usb_connected';usb=bool(self.battery.usb_connected());log.debug(f'[BATTERY] usb_connected={usb}')
             self.state.battery={
                 'level':round(level,1),'status':self._battery_status(level,charging),'voltage_v':round(voltage,3),
-                'current_a':round(current,3),'power_w':round(voltage*current,3),'cells_mv':list(self.battery.get_cells()),
-                'remaining_capacity':self.battery.get_remaining_capacity(),'charging':charging,
-                'usb_connected':bool(self.battery.usb_connected()),'updated_at':time.time(),'error':None
+                'current_a':round(current,3),'power_w':round(voltage*current,3),'cells_mv':cells,
+                'remaining_capacity':remaining,'charging':charging,
+                'usb_connected':usb,'updated_at':time.time(),'error':None
             }
         except Exception as error:
+            log.error(f"[BATTERY] {stage} read failed: {type(error).__name__}: {error}")
             self.state.battery={'level':None,'status':'unknown','voltage_v':None,'current_a':None,'power_w':None,'cells_mv':[],'remaining_capacity':None,'charging':None,'usb_connected':None,'updated_at':None,'error':str(error)}
-            from robot.utils.logger import log
-            log.error(f"[BATTERY] update failed: {error}")
+            log.debug(f"[BATTERY] update aborted at stage={stage}")
 
     def forward(self): self.motors.forward()
     def backward(self): self.motors.backward()

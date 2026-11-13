@@ -1,4 +1,5 @@
 from smbus2 import SMBus
+from robot.utils.logger import log
 
 class UPSHat:
     ADDRESS=0x2d
@@ -6,7 +7,14 @@ class UPSHat:
     def __init__(self):
         self.bus=SMBus(1)
 
-    def read(self,reg): return self.bus.read_byte_data(self.ADDRESS,reg)
+    def read(self,reg):
+        try:
+            value=self.bus.read_byte_data(self.ADDRESS,reg)
+            log.debug(f'[BATTERY I2C] addr=0x{self.ADDRESS:02X} reg=0x{reg:02X} value=0x{value:02X}')
+            return value
+        except OSError as error:
+            log.debug(f'[BATTERY I2C] addr=0x{self.ADDRESS:02X} reg=0x{reg:02X} failed: {error}')
+            raise
     def read16(self,reg): return self.read(reg)|(self.read(reg+1)<<8)
 
     def battery(self,index): return self.read16(0x30+index*2)
