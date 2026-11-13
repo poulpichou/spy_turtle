@@ -17,7 +17,74 @@
   },
   "audio": {
     "default": "bird_parakeet1",
-    "assets": {}
+    "assets": {
+      "bird_parakeet1": {
+        "label": "🦜 Parrot 1"
+      },
+      "bird_parakeet2": {
+        "label": "🦜 Parrot 2"
+      },
+      "bird_parakeet3": {
+        "label": "🦜 Parrot 3"
+      },
+      "bird_parrot": {
+        "label": "🦜 Parrot"
+      },
+      "cat_meow1": {
+        "label": "🐱 Meow 1"
+      },
+      "cat_meow2": {
+        "label": "🐱 Meow 2"
+      },
+      "dinosaur_growl1": {
+        "label": "🦖 Growl 1"
+      },
+      "dinosaur_growl2": {
+        "label": "🦖 Growl 2"
+      },
+      "dinosaur_growl3": {
+        "label": "🦖 Growl 3"
+      },
+      "dog_bark1": {
+        "label": "🐶 Bark 1"
+      },
+      "dog_bark2": {
+        "label": "🐶 Bark 2"
+      },
+      "dog_bark3": {
+        "label": "🐶 Bark 3"
+      },
+      "dog_bark4": {
+        "label": "🐶 Bark 4"
+      },
+      "fart1": {
+        "label": "💨 Fart 1"
+      },
+      "fart2": {
+        "label": "💨 Fart 2"
+      },
+      "fart3": {
+        "label": "💨 Fart 3"
+      },
+      "lion_growl1": {
+        "label": "🦁 Growl 1"
+      },
+      "lion_growl2": {
+        "label": "🦁 Growl 2"
+      },
+      "robot1": {
+        "label": "🤖 Robot 1"
+      },
+      "robot2": {
+        "label": "🤖 Robot 2"
+      },
+      "robot3": {
+        "label": "🤖 Robot 3"
+      },
+      "robot4": {
+        "label": "🤖 Robot 4"
+      }
+    }
   },
   "fonts": {
     "default": "roboto_regular",

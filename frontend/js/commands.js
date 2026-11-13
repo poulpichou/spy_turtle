@@ -37,7 +37,7 @@
                 const entries=await items(section.id);if(request!==version)return;
                 if(section.id==="shell")entries.unshift({name:"status",label:"Status"},{name:"log",label:"Log"});
                 for(const item of entries){
-                    const button=document.createElement("button");const style=buttonStyle(section.id,item);button.textContent=style.label;button.title=item.label||item.name;if(style.tone)button.dataset.moodTone=style.tone;
+                    const button=document.createElement("button");const style=buttonStyle(section.id,item);button.textContent=section.id==="audio"?(item.label||item.name):style.label;button.title=item.label||item.name;if(style.tone)button.dataset.moodTone=style.tone;
                     button.onclick=async()=>{button.disabled=true;try{if(section.id==="moods")await turtleRequest("/brain/moods/select",{variant:item.name});else await sendCommand({faces:"face",leds:"led",shell:"shell",audio:"sound"}[section.id],item.name)}catch(error){alert(error.message)}finally{button.disabled=false}};
                     buttons.append(button);
                 }
