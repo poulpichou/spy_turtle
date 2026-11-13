@@ -34,7 +34,8 @@ class Robot:
         self.sentinel=Sentinel()
         self._update_battery(force=True)
         if self.face:self.face.play('neutral')
-        print('[Robot] initialized')
+        from robot.utils.logger import log
+        log.info("[ROBOT] initialized")
 
     def request_actuator_reset(self,timeout=20):
         with self._actuator_reset_lock:
@@ -159,7 +160,8 @@ class Robot:
             }
         except Exception as error:
             self.state.battery={'level':None,'status':'unknown','voltage_v':None,'current_a':None,'power_w':None,'cells_mv':[],'remaining_capacity':None,'charging':None,'usb_connected':None,'updated_at':None,'error':str(error)}
-            print(f'[Battery] update failed: {error}')
+            from robot.utils.logger import log
+            log.error(f"[BATTERY] update failed: {error}")
 
     def forward(self): self.motors.forward()
     def backward(self): self.motors.backward()

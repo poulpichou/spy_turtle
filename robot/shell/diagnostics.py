@@ -14,7 +14,7 @@ def trace(stage,**data):
         _events.append(event)
         if stage in _counters:_counters[stage]+=1
         _last.update({"stage":stage,"at":event["at"],**data})
-    if stage not in ("render","spi") or _counters.get(stage,0)%100==0:log.debug(f"[SHELL DEBUG] {stage} {data}")
+    if stage not in ("render","spi") or _counters.get(stage,0)%100==0:log.debug(f"[SHELL] {stage} {data}")
 
 def snapshot(robot):
     shell=getattr(robot,"shell",None)
