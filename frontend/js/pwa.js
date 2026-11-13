@@ -1,5 +1,5 @@
 // Offline-ready PWA: preserve the app shell and leave API responses uncached.
-const SPY_PWA_VERSION="ble2-20261111";
+const SPY_PWA_VERSION="ble-offline-20261113";
 async function registerFrontendCache(){
     if(!("serviceWorker" in navigator))return;
     try{
@@ -19,8 +19,20 @@ function showBluetoothOfflineHint(){
 }
 window.addEventListener("load",()=>{
     registerFrontendCache();
-    if(!navigator.onLine&&typeof transportMode!=="undefined"&&transportMode!=="bluetooth")showBluetoothOfflineHint();
+    if(typeof transportMode!=="undefined"&&transportMode!=="bluetooth"){if(!navigator.onLine)showBluetoothOfflineHint();probeRobotWifi()}
 });
 window.addEventListener("offline",()=>{if(transportMode!=="bluetooth")showBluetoothOfflineHint()});
 window.addEventListener("online",()=>document.getElementById("bluetooth-offline-hint")?.remove());
 document.addEventListener("transportchange",()=>{if(transportMode==="bluetooth")document.getElementById("bluetooth-offline-hint")?.remove()});
+
+async function probeRobotWifi(){
+    if(typeof transportMode==="undefined"||transportMode==="bluetooth")return;
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),2500);
+    try{
+        const response=await fetch("/state",{cache:"no-store",signal:controller.signal});
+        if(!response.ok)throw Error("Robot unreachable");
+        document.getElementById("bluetooth-offline-hint")?.remove();
+    }catch(error){if(transportMode!=="bluetooth")showBluetoothOfflineHint()}
+    finally{clearTimeout(timer)}
+}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)probeRobotWifi()});
