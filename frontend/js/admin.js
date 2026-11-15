@@ -130,6 +130,23 @@ localFeatureButtons.animation.button.onclick=()=>toggleLocalFeature("animation")
 localFeatureButtons.sound.button.onclick=()=>toggleLocalFeature("sound");
 document.querySelectorAll(".center-tab").forEach(tab=>tab.addEventListener("click",()=>{if(runtimePower.idle_mode)setTimeout(()=>{stopCameraRefresh();stopThermal()},0)}));
 
+function setupNetworkProbe(){
+    const button=document.getElementById("network-probe-run"),result=document.getElementById("network-probe-result"),input=document.getElementById("network-probe-ip");
+    if(!button||!result||!input)return;
+    button.onclick=async()=>{
+        const ip=input.value.trim();if(!/^(?:\d{1,3}\.){3}\d{1,3}$/.test(ip)||ip.split(".").some(n=>Number(n)>255)){result.textContent="Invalid IPv4 address";return}
+        button.disabled=true;result.textContent=`App origin: ${location.origin}\nTesting https://${ip}/state ...`;
+        const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),6000);
+        try{
+            const response=await fetch(`https://${ip}/state`,{method:"GET",mode:"cors",cache:"no-store",signal:controller.signal});
+            if(!response.ok)throw Error(`HTTP ${response.status}`);
+            await response.json();result.textContent+=`\nSUCCESS: direct Wi-Fi request is allowed.`;
+        }catch(error){
+            result.textContent+=`\nFAILED: ${error.name}: ${error.message}\nPossible causes: CORS, Private Network Access, certificate, or unreachable IP. Browser does not expose which one. No settings were changed.`;
+        }finally{clearTimeout(timeout);button.disabled=false}
+    };
+}
+setupNetworkProbe();
 function setupWifiUI(){
     const row=document.querySelector(".wifi-row");if(!row)return;
     const nickname=document.createElement("input");nickname.id="wifi-nickname";nickname.placeholder="Wi-Fi nickname";row.prepend(nickname);
