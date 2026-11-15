@@ -41,6 +41,15 @@ def shell_diagnostics():
 @router.post('/turtle/reset')
 def reset_turtle(request:Request):
     from robot.system.robot_reset_manager import reset_manager
+    from robot.config import settings
+    if not settings.SIMULATION and getattr(settings,'GPIO_SERVER_ENABLED',False):
+        from robot.api.actions import disarm_motion
+        disarm_motion()
+        robot=get_robot()
+        if robot:robot.state.motion='stop'
+        log.warn(f'[ADMIN] isolated GPIO restart requested {source(request)}')
+        detached(['bash','-lc','./scripts/restart_gpio.sh >> logs/gpio-restart.log 2>&1'])
+        return {'ok':True,'message':'GPIO server restart requested; actuators will be temporarily unavailable'}
     log.warn(f'[ADMIN] full robot soft reset requested {source(request)}')
     try:return reset_manager.request(timeout=45)
     except RuntimeError as error:raise HTTPException(status_code=409,detail=str(error)) from error

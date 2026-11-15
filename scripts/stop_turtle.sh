@@ -12,6 +12,10 @@ pkill -f "libcamera" 2>/dev/null
 
 sleep 1
 
+# Stop GPIO after the main process has stopped sending commands.
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+bash "$ROOT/scripts/stop_gpio.sh" || echo 'WARNING: GPIO server did not stop cleanly'
+
 echo "Cleaning camera locks..."
 
 sudo fuser -k /dev/video0 2>/dev/null

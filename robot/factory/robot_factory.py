@@ -40,11 +40,15 @@ class RobotFactory:
         robot.brain=Brain(robot)
         return robot
     def create_hardware(self):
-        motors=DifferentialDrive();leds=LEDController();camera=Camera();thermal_camera=None
+        if getattr(settings,'GPIO_SERVER_ENABLED',False):
+            from robot.gpio_server.proxy import MotorProxy,ServoProxy
+            motors=MotorProxy()
+        else:motors=DifferentialDrive()
+        leds=LEDController();camera=Camera();thermal_camera=None
         if settings.THERMAL_CAMERA_ENABLED:
             try:thermal_camera=ThermalCamera()
             except Exception as error:log.error(f"[THERMAL] initialization failed, RGB fallback remains active: {error}")
-        speaker=Speaker();servo=ServoController();battery=Battery()
+        speaker=Speaker();servo=ServoProxy() if getattr(settings,'GPIO_SERVER_ENABLED',False) else ServoController();battery=Battery()
         distance_sensor=None;environment_sensor=None
         if settings.DISTANCE_SENSOR_ENABLED:
             try:distance_sensor=DistanceSensor()

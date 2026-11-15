@@ -186,3 +186,6 @@ CHAT_STATIC_PROMPT_PRELOAD=True # Warm the stable system prefix on startup; requ
 CHAT_MOOD_CONTEXT_ENABLED=False # False: send only current mood; True: include imaginary mood context
 CHAT_ROLLING_PRELOAD=True # Experimental background history warmup; enable for benchmark
 CHAT_DEBUG_PROMPT=False # Logs full user questions/history if True: use only for local debugging
+
+# GPIO process isolation; False restores direct drivers (restart required).
+GPIO_SERVER_ENABLED=True
