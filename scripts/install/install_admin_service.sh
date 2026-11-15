@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 USER_NAME="${SUDO_USER:-$USER}"
 
 sudo tee /etc/systemd/system/spy-turtle.service >/dev/null <<EOF

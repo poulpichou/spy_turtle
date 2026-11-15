@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 PYTHON="$ROOT/.venv/bin/python"
 if [ ! -x "$PYTHON" ]; then echo "Missing virtualenv Python: $PYTHON"; exit 1; fi
 echo "[Bluetooth] Installing BLE server dependency in project virtualenv..."

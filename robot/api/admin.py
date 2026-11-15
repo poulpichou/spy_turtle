@@ -48,7 +48,7 @@ def reset_turtle(request:Request):
         robot=get_robot()
         if robot:robot.state.motion='stop'
         log.warn(f'[ADMIN] isolated GPIO restart requested {source(request)}')
-        detached(['bash','-lc','./scripts/restart_gpio.sh >> logs/gpio-restart.log 2>&1'])
+        detached(['bash','-lc','./scripts/gpio_server/restart_gpio.sh >> logs/gpio-restart.log 2>&1'])
         return {'ok':True,'message':'GPIO server restart requested; actuators will be temporarily unavailable'}
     log.warn(f'[ADMIN] full robot soft reset requested {source(request)}')
     try:return reset_manager.request(timeout=45)

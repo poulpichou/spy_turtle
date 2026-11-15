@@ -1,5 +1,5 @@
 #!/bin/bash
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 PID_FILE="$ROOT/logs/gpio-server.pid"
 if [ -f "$PID_FILE" ]; then
     PID="$(cat "$PID_FILE")"

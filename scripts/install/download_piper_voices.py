@@ -2,7 +2,7 @@
 """Download 7 official Piper voices to models/voices (standard library only)."""
 import hashlib,json,sys,urllib.request
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[1] if Path(__file__).parent.name=='scripts' else Path.cwd()
+ROOT=Path(__file__).resolve().parents[2] if Path(__file__).parent.name=='scripts' else Path.cwd()
 DEST=ROOT/'models'/'voices'
 INDEX='https://huggingface.co/rhasspy/piper-voices/resolve/main/voices.json'
 BASE='https://huggingface.co/rhasspy/piper-voices/resolve/main/'

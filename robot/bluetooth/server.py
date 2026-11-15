@@ -337,5 +337,5 @@ async def serve():
 
 def run_bluetooth():
     try:asyncio.run(serve())
-    except ImportError:log.warn("[BLUETOOTH] bless is not installed; run scripts/configure_bluetooth.sh")
+    except ImportError:log.warn("[BLUETOOTH] bless is not installed; run scripts/install/configure_bluetooth.sh")
     except Exception as error:log.warn(f"[BLUETOOTH] unavailable: {error}")

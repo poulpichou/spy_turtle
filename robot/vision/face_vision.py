@@ -14,7 +14,7 @@ class FaceVision:
         import cv2
         detection=MODELS/'face_detection_yunet_2023mar.onnx'
         recognition=MODELS/'face_recognition_sface_2021dec.onnx'
-        if not detection.is_file() or not recognition.is_file():raise RuntimeError('Missing face models: run python scripts/install_face_models.py')
+        if not detection.is_file() or not recognition.is_file():raise RuntimeError('Missing face models: run python scripts/install/install_face_models.py')
         detector=cv2.FaceDetectorYN.create(str(detection),'',(320,320),score_threshold=0.8)
         recognizer=cv2.FaceRecognizerSF.create(str(recognition),'')
         known=[]

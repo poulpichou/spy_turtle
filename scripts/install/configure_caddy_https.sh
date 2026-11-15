@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-SOURCE="$(cd "$(dirname "$0")/.." && pwd)/deploy/caddy/Caddyfile"
+SOURCE="$(cd "$(dirname "$0")/../.." && pwd)/deploy/caddy/Caddyfile"
 TARGET="/etc/caddy/Caddyfile"
 BACKUP="/etc/caddy/Caddyfile.backup.$(date +%Y%m%d_%H%M%S)"
 

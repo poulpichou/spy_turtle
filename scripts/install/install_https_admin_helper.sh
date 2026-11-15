@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-sudo install -o root -g root -m 0755 "$ROOT/scripts/spyturtle-add-https-ip" /usr/local/sbin/spyturtle-add-https-ip
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+sudo install -o root -g root -m 0755 "$ROOT/scripts/install/spyturtle-add-https-ip" /usr/local/sbin/spyturtle-add-https-ip
 # Restrict privilege escalation to this one root-owned, argument-free helper.
 USER_NAME="$(id -un)"
 case "$USER_NAME" in *[!a-zA-Z0-9_-]*|'') echo "Invalid username"; exit 1;; esac

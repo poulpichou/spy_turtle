@@ -683,14 +683,14 @@ arecord -l
 The repository includes:
 
 ```text
-scripts/configure_led_gpio4.sh
+scripts/init/configure_led_gpio4.sh
 ```
 
 Run once on the Raspberry Pi after pulling the update:
 
 ```bash
-chmod +x scripts/configure_led_gpio4.sh
-sudo ./scripts/configure_led_gpio4.sh
+chmod +x scripts/init/configure_led_gpio4.sh
+sudo ./scripts/init/configure_led_gpio4.sh
 sudo reboot
 ```
 

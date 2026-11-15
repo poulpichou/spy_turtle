@@ -14,7 +14,7 @@ sleep 1
 
 # Stop GPIO after the main process has stopped sending commands.
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-bash "$ROOT/scripts/stop_gpio.sh" || echo 'WARNING: GPIO server did not stop cleanly'
+bash "$ROOT/scripts/gpio_server/stop_gpio.sh" || echo 'WARNING: GPIO server did not stop cleanly'
 
 echo "Cleaning camera locks..."
 

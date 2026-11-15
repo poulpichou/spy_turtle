@@ -71,7 +71,7 @@ ln -sfn "turtle.log.1" "$LOG_LINK"
 # The GPIO child owns motor/servo pins; launch it before the main process.
 if "$ROOT/.venv/bin/python" -c 'from robot.config import settings;raise SystemExit(not (settings.GPIO_SERVER_ENABLED and not settings.SIMULATION))'; then
     echo 'Starting isolated GPIO server...'
-    bash "$ROOT/scripts/start_gpio.sh"
+    bash "$ROOT/scripts/gpio_server/start_gpio.sh"
 fi
 
 echo "Starting Spy Turtle..."
