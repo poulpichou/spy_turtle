@@ -43,7 +43,7 @@ function transportLabel(){return transportMode==="bluetooth"?"Bluetooth":transpo
 function transportConnected(){return transportMode!=="bluetooth"||!!bluetoothServer?.connected}
 function updateTransportUI(){
     const button=document.getElementById("transport-toggle");
-    if(button){button.textContent=transportMode==="bluetooth"?"ᛒ Bluetooth ▾":transportMode==="remote"?"🌍 Remote ▾":"📶 Wi-Fi ▾";button.title="Connection: "+transportLabel();button.classList.toggle("bluetooth",transportMode==="bluetooth")}
+    if(button){button.textContent=transportMode==="bluetooth"?"ᛒ":transportMode==="remote"?"🌍":"📶";button.title="Connection: "+transportLabel();button.classList.toggle("bluetooth",transportMode==="bluetooth")}
     const name=document.getElementById("transport-name");
     if(name)name.textContent=transportMode==="bluetooth"?`ᛒ ${bluetoothDevice?.name||"SpyTurtle"}`:transportMode==="remote"?"🌍 Remote":`📶 ${currentWifiName}`;
 }
