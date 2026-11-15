@@ -12,9 +12,14 @@ from robot.utils.logger import log
 class VisionStreamer:
     def __init__(self,server,service_uuid,char_uuid,chunk=60,interval=0.018):
         self.server=server;self.service_uuid=service_uuid;self.char_uuid=char_uuid
-        self.chunk=int(chunk);self.interval=interval;self.task=None;self.serial=0
+        self.chunk=int(chunk);self.interval=interval;self.task=None;self.serial=0;self.degraded=False;self.last_frame=0;self.errors=0
         if not 1<=self.chunk<=240:raise ValueError("BLE vision chunk must be 1..240")
         log.info(f"[BLE VISION CONFIG] chunk={self.chunk} interval_ms={self.interval*1000:.1f} size={settings.BLUETOOTH_VISION_WIDTH}x{settings.BLUETOOTH_VISION_HEIGHT} quality={settings.BLUETOOTH_VISION_QUALITY}")
+    def profile(self):
+        return {"width":settings.BLUETOOTH_VISION_DEGRADED_WIDTH if self.degraded else settings.BLUETOOTH_VISION_WIDTH,"height":settings.BLUETOOTH_VISION_DEGRADED_HEIGHT if self.degraded else settings.BLUETOOTH_VISION_HEIGHT,"quality":settings.BLUETOOTH_VISION_DEGRADED_QUALITY if self.degraded else settings.BLUETOOTH_VISION_QUALITY,"interval":settings.BLUETOOTH_VISION_DEGRADED_INTERVAL if self.degraded else self.interval,"fps":settings.BLUETOOTH_VISION_DEGRADED_FPS if self.degraded else 0}
+    def status(self):return {"ok":True,"degraded":self.degraded,"profile":self.profile(),"errors":self.errors}
+    def set_degraded(self,enabled):
+        self.degraded=bool(enabled);log.info(f"[BLE VISION] profile={'degraded' if self.degraded else 'normal'} {self.profile()}");return self.status()
     def request(self,data):
         if data==b"X":
             if self.task and not self.task.done():self.task.cancel()
@@ -27,7 +32,7 @@ class VisionStreamer:
         if self.task and not self.task.done():return # No queue of old frames.
         self.task=asyncio.create_task(self._stream(thermal=data==b"T",photo=photo))
     @staticmethod
-    def _capture(thermal=False,photo=None):
+    def _capture(thermal=False,photo=None,profile=None):
         t0=perf_counter()
         robot=get_robot()
         if robot is None:raise RuntimeError("Robot unavailable")
@@ -43,9 +48,11 @@ class VisionStreamer:
             raw=robot.camera.get_frame()
             vision.submit(raw) # Submit original camera JPEG before BLE downsampling.
         t1=perf_counter()
+        profile=profile or {"width":settings.BLUETOOTH_VISION_WIDTH,"height":settings.BLUETOOTH_VISION_HEIGHT,"quality":settings.BLUETOOTH_VISION_QUALITY}
         with Image.open(BytesIO(raw)) as image:
-            image.thumbnail((settings.BLUETOOTH_VISION_WIDTH,settings.BLUETOOTH_VISION_HEIGHT));buf=BytesIO()
-            image.convert("RGB").save(buf,format="JPEG",quality=settings.BLUETOOTH_VISION_QUALITY,optimize=True)
+            image.thumbnail((profile["width"] if not photo else settings.BLUETOOTH_VISION_WIDTH,profile["height"] if not photo else settings.BLUETOOTH_VISION_HEIGHT))
+            buf=BytesIO()
+            image.convert("RGB").save(buf,format="JPEG",quality=profile["quality"] if not photo else settings.BLUETOOTH_VISION_QUALITY,optimize=True)
             jpeg=buf.getvalue()
         t2=perf_counter()
         return jpeg,(t1-t0)*1000,(t2-t1)*1000,len(raw)
@@ -58,23 +65,29 @@ class VisionStreamer:
     async def _stream(self,thermal=False,photo=None):
         start=perf_counter();stage="capture";chunks=0;notify_ms=0.0;sleep_ms=0.0
         try:
-            jpeg,capture_ms,encode_ms,raw_bytes=await asyncio.to_thread(self._capture,thermal,photo)
+            profile=self.profile();mode="degraded" if self.degraded else "normal"
+            if not photo and profile["fps"]:
+                wait=max(0,self.last_frame+1/profile["fps"]-perf_counter())
+                if wait:await asyncio.sleep(wait)
+            jpeg,capture_ms,encode_ms,raw_bytes=await asyncio.to_thread(self._capture,thermal,photo,profile)
             prepared=perf_counter();stage="send"
             if len(jpeg)>65535:raise RuntimeError("BLE JPEG too large")
             self.serial=(self.serial+1)&65535;serial=self.serial.to_bytes(2,"little")
             t=perf_counter()
             await self._notify(b"H"+serial+len(jpeg).to_bytes(4,"little"))
             notify_ms+=(perf_counter()-t)*1000
-            t=perf_counter();await asyncio.sleep(self.interval);sleep_ms+=(perf_counter()-t)*1000
+            t=perf_counter();await asyncio.sleep(profile["interval"]);sleep_ms+=(perf_counter()-t)*1000
             for offset in range(0,len(jpeg),self.chunk):
                 t=perf_counter()
                 await self._notify(b"D"+serial+offset.to_bytes(2,"little")+jpeg[offset:offset+self.chunk])
                 notify_ms+=(perf_counter()-t)*1000;chunks+=1
                 t=perf_counter();await asyncio.sleep(self.interval);sleep_ms+=(perf_counter()-t)*1000
-            end=perf_counter()
+            end=perf_counter();self.last_frame=end
             log.info(f"[BLE VISION] source={'thermal' if thermal else 'camera'} frame={self.serial} bytes={len(jpeg)}")
-            log.info(f"[BLE PERF] frame={self.serial} jpeg={len(jpeg)} raw={raw_bytes} chunks={chunks} chunk_size={self.chunk} interval_ms={self.interval*1000:.1f} capture_ms={capture_ms:.1f} encode_ms={encode_ms:.1f} prep_ms={(prepared-start)*1000:.1f} notify_ms={notify_ms:.1f} sleep_ms={sleep_ms:.1f} send_ms={(end-prepared)*1000:.1f} total_ms={(end-start)*1000:.1f}")
+            log.info(f"[BLE PERF] profile={mode} frame={self.serial} jpeg={len(jpeg)} raw={raw_bytes} chunks={chunks} chunk_size={self.chunk} interval_ms={self.interval*1000:.1f} capture_ms={capture_ms:.1f} encode_ms={encode_ms:.1f} prep_ms={(prepared-start)*1000:.1f} notify_ms={notify_ms:.1f} sleep_ms={sleep_ms:.1f} send_ms={(end-prepared)*1000:.1f} total_ms={(end-start)*1000:.1f}")
         except asyncio.CancelledError:
             log.info(f"[BLE PERF] cancelled stage={stage} chunks={chunks} elapsed_ms={(perf_counter()-start)*1000:.1f}")
             raise
-        except Exception as error:log.error(f"[BLE VISION ERROR] stage={stage} chunks={chunks} elapsed_ms={(perf_counter()-start)*1000:.1f} {error}")
+        except Exception as error:
+            self.errors+=1
+            log.error(f"[BLE VISION ERROR] stage={stage} chunks={chunks} elapsed_ms={(perf_counter()-start)*1000:.1f} {error}")

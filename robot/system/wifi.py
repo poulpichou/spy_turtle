@@ -51,6 +51,13 @@ class WifiManager:
         current=next((network for network in networks if network['active']),None)
         return {'networks':networks,'current':current}
 
+    def authorize_current(self):
+        current=self.status().get("current")
+        if not current:raise RuntimeError("No active Wi-Fi network")
+        ssid=current["ssid"];self.nicknames.setdefault(ssid,ssid);self._save()
+        log.info(f"[WIFI] authorized existing profile ssid={ssid}")
+        return {"message":f"Current Wi-Fi already saved: {ssid}","ssid":ssid}
+
     def add(self,nickname,ssid,password):
         nickname=nickname.strip() or ssid
         self.nicknames[ssid]=nickname

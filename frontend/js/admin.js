@@ -29,7 +29,7 @@ let wifiTimer=null;
 
 const bluetoothAdminActions={
     "/admin/turtle/restart":"restart","/admin/system/reboot":"reboot","/admin/system/shutdown":"shutdown",
-    "/admin/wifi":"wifi_add","/admin/wifi/connect":"wifi_connect","/admin/wifi/delete":"wifi_delete","/admin/https/local-ip":"https_add_current_ip",
+    "/admin/network/degraded":"ble_vision_degraded","/admin/wifi/authorize-current":"wifi_authorize_current","/admin/wifi":"wifi_add","/admin/wifi/connect":"wifi_connect","/admin/wifi/delete":"wifi_delete","/admin/https/local-ip":"https_add_current_ip",
     "/admin/audio/volume":"volume_set","/admin/power/component":"power_component","/admin/power/idle":"idle",
     "/admin/audio/microphone-sensitivity":"microphone_sensitivity","/admin/leds/brightness":"led_brightness_set",
     "/vision/enable":"vision_enable","/vision/interval":"vision_interval"
@@ -43,6 +43,7 @@ async function adminPost(path,body){
 }
 async function adminGet(path){
     if(transportMode==="bluetooth"){
+        if(path==="/admin/network/degraded")return bluetoothAdminRequest("ble_vision_status");
         if(path==="/admin/wifi")return bluetoothAdminRequest("wifi_status");
         if(path==="/admin/audio/volume")return bluetoothAdminRequest("volume_get");
         if(path==="/admin/power")return bluetoothAdminRequest("power_get");
@@ -152,6 +153,7 @@ function setupWifiUI(){
     const nickname=document.createElement("input");nickname.id="wifi-nickname";nickname.placeholder="Wi-Fi nickname";row.prepend(nickname);
     const list=document.createElement("div");list.id="wifi-networks";list.className="wifi-networks";row.before(list);
     document.getElementById("wifi-add").onclick=addWifi;
+    document.getElementById("wifi-authorize-current").onclick=async()=>{try{const data=await adminPost("/admin/wifi/authorize-current",{});adminResult.textContent=data.message;await loadWifi()}catch(error){adminResult.textContent=error.message}};
     const button=document.getElementById("https-add-ip");if(button)button.onclick=async()=>{
         if(transportMode!=="bluetooth"){adminResult.textContent="Connect Bluetooth before configuring local HTTPS.";return}
         if(!confirm("Add Spy Turtle's current Wi-Fi IP to the local HTTPS certificate?"))return;
@@ -215,3 +217,18 @@ faceInterval.addEventListener("change",syncFaceInterval);
 faceEnabled.addEventListener("change",()=>setTimeout(syncFaceInterval,0));
 logLevelChoices.forEach(input=>input.addEventListener("change",()=>{if(input.checked)localStorage.setItem("spy_log_level",input.value)}));
 syncLogChoices();syncFaceInterval();
+
+// Bluetooth video bandwidth profile, shared between Wi-Fi and BLE admin transports.
+const degradedToggle=document.getElementById("degraded-network-toggle"),degradedStatus=document.getElementById("degraded-network-status");
+async function loadDegradedNetwork(){
+    if(!degradedToggle)return;
+    try{const data=await adminGet("/admin/network/degraded");degradedToggle.checked=!!data.degraded;degradedStatus.textContent=data.degraded?"Degraded · 320×180 · JPEG 15 · max 1 fps":"Normal · 640×360 · JPEG 25"}
+    catch(error){degradedStatus.textContent="Profile unavailable: "+error.message}
+}
+if(degradedToggle)degradedToggle.onchange=async()=>{
+    degradedToggle.disabled=true;
+    try{const data=await adminPost("/admin/network/degraded",{enabled:degradedToggle.checked});degradedStatus.textContent=data.degraded?"Degraded · 320×180 · JPEG 15 · max 1 fps":"Normal · 640×360 · JPEG 25"}
+    catch(error){adminResult.textContent=error.message;await loadDegradedNetwork()}
+    finally{degradedToggle.disabled=false}
+};
+document.addEventListener("transportchange",loadDegradedNetwork);loadDegradedNetwork();

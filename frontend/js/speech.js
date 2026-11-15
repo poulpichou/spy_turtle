@@ -3,7 +3,7 @@
     const groups={language:document.getElementById("speech-language-options"),en:document.getElementById("speech-voice-en"),fr:document.getElementById("speech-voice-fr")};
     // The language dropdown was removed from Bulle; the flags are authoritative.
     if(!groups.language)return;
-    let selectedLanguage=document.querySelector('#message-language-buttons button[aria-pressed="true"]')?.dataset.lang||'fr';
+    let selectedLanguage="fr";
     async function request(path,body){
         if(typeof transportMode!=="undefined"&&transportMode==="bluetooth"){
             if(path==="/speech/say")return bluetoothAdminRequest("speech_say",body||{});
@@ -45,7 +45,7 @@
         selectedLanguage=data.language;if(modalLanguage)modalLanguage.value=data.language;updateFlags();select(groups.language,data.language);select(groups.en,data.selected_voices?.en,data.available_voices?.en);select(groups.fr,data.selected_voices?.fr,data.available_voices?.fr);
         const active=data.selected_voices?.[data.language];status.textContent=data.voice_available?`Ready: ${active}`:`Model missing: ${data.voice}`;
     }
-    async function refresh(){try{render(await request("/speech/settings"))}catch(error){status.textContent=error.message}}
+    async function refresh(){try{render(await request("/speech/settings"))}catch(error){select(groups.language,selectedLanguage);status.textContent=error.message}}
     async function setLanguage(value){
         if(transportMode==="bluetooth"){
             selectedLanguage=value;updateFlags();document.dispatchEvent(new CustomEvent("turtlelanguagechange",{detail:{language:value}}));return {language:value};

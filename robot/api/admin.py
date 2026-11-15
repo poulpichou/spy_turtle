@@ -56,6 +56,11 @@ def reboot(request:Request):
 def shutdown(request:Request):
     log.warn(f'[ADMIN] sudo shutdown now {source(request)}');detached(['sudo','-n','shutdown','now']);return {'ok':True,'message':'Shutdown requested'}
 
+@router.post('/wifi/authorize-current')
+def authorize_current_wifi():
+    try:return {'ok':True,**wifi_manager.authorize_current()}
+    except Exception as error:raise HTTPException(status_code=400,detail=str(error)) from error
+
 @router.get('/wifi')
 def get_wifi():
     try:return {'ok':True,**wifi_manager.status()}
@@ -78,6 +83,17 @@ def delete_wifi(data:WifiNetworkRequest,request:Request):
     try:wifi_manager.delete(data.ssid)
     except Exception as error:raise HTTPException(status_code=400,detail=str(error)) from error
     return {'ok':True,'message':'Wi-Fi network deleted'}
+
+@router.get('/network/degraded')
+def get_degraded_network():
+    from robot.bluetooth.server import _vision_streamer
+    if _vision_streamer is None:raise HTTPException(status_code=503,detail='Bluetooth vision unavailable')
+    return _vision_streamer.status()
+@router.post('/network/degraded')
+def set_degraded_network(data:ToggleRequest):
+    from robot.bluetooth.server import _vision_streamer
+    if _vision_streamer is None:raise HTTPException(status_code=503,detail='Bluetooth vision unavailable')
+    return _vision_streamer.set_degraded(data.enabled)
 
 @router.get('/audio/volume')
 def get_volume():

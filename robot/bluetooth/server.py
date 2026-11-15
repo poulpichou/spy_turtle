@@ -142,6 +142,7 @@ def dispatch(command):
     elif kind=="sound":actions.speak(value)
     else:raise ValueError(f"Unknown command type: {kind}")
 
+_vision_streamer=None
 def admin_dispatch(request):
     action=str(request.get("action",""))
     data=request.get("data") or {}
@@ -181,6 +182,12 @@ def admin_dispatch(request):
         result=subprocess.run(["sudo","-n","/usr/local/sbin/spyturtle-add-https-ip"],capture_output=True,text=True,timeout=25)
         if result.returncode:raise RuntimeError((result.stderr or result.stdout or "HTTPS configuration failed").strip()[:150])
         return {"ok":True,"message":result.stdout.strip()[:160]}
+    if action=="ble_vision_status":return _vision_streamer.status() if _vision_streamer else {"ok":False,"error":"BLE vision unavailable"}
+    if action=="ble_vision_degraded":
+        if not _vision_streamer:raise RuntimeError("BLE vision unavailable")
+        return _vision_streamer.set_degraded(bool(data.get("enabled")))
+    if action=="wifi_authorize_current":
+        return {"ok":True,**wifi_manager.authorize_current()}
     if action=="wifi_status":return {"ok":True,**compact_wifi_status()}
     if action=="wifi_add":
         network=wifi_manager.add(str(data.get("nickname","")),str(data.get("ssid","")),str(data.get("password","")))
@@ -256,6 +263,7 @@ def admin_dispatch(request):
     raise ValueError(f"Unknown admin action: {action}")
 
 async def serve():
+    global _vision_streamer
     from bless import BlessGATTCharacteristic,BlessServer,GATTAttributePermissions,GATTCharacteristicProperties
     loop=asyncio.get_running_loop()
     server=BlessServer(name=settings.BLUETOOTH_NAME,loop=loop)
@@ -318,6 +326,7 @@ async def serve():
     await server.add_new_characteristic(settings.BLUETOOTH_SERVICE_UUID,BLE_AUDIO_UUID,GATTCharacteristicProperties.write|GATTCharacteristicProperties.notify,bytearray(),GATTAttributePermissions.writeable)
     vision=VisionStreamer(server,settings.BLUETOOTH_SERVICE_UUID,settings.BLUETOOTH_CAMERA_UUID,
         chunk=settings.BLUETOOTH_VISION_CHUNK,interval=settings.BLUETOOTH_VISION_INTERVAL) if settings.BLUETOOTH_VISION_ENABLED else None
+    _vision_streamer=vision
     await server.start()
     log.info(f"[BLUETOOTH] ready name={settings.BLUETOOTH_NAME}")
     try:
