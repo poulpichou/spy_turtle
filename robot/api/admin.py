@@ -189,6 +189,23 @@ def set_microphone_sensitivity(data:SensitivityRequest,request:Request):
     log.info(f'[ADMIN] microphone sensitivity={data.sensitivity}% display-only {source(request)}')
     return {'ok':True,**state}
 
+@router.get('/motors/correction')
+def get_motor_correction():
+    motors=robot_or_503().motors
+    if motors is None:raise HTTPException(status_code=503,detail='Motors unavailable')
+    try:
+        state=motors.status().get('encoders',{})
+        return {'ok':True,'available':bool(state.get('enabled')),'enabled':bool(state.get('correction_enabled')),'left':state.get('left'),'right':state.get('right')}
+    except Exception as error:raise HTTPException(status_code=503,detail=str(error)) from error
+@router.post('/motors/correction')
+def set_motor_correction(data:ToggleRequest,request:Request):
+    motors=robot_or_503().motors
+    if motors is None or not hasattr(motors,'set_correction_enabled'):raise HTTPException(status_code=503,detail='Motor correction unavailable')
+    try:state=motors.set_correction_enabled(data.enabled)
+    except (ValueError,RuntimeError) as error:raise HTTPException(status_code=409,detail=str(error)) from error
+    log.info(f'[ADMIN] motor correction={state["correction_enabled"]} {source(request)}')
+    return {'ok':True,'available':bool(state['enabled']),'enabled':bool(state['correction_enabled'])}
+
 @router.get('/motors/speed')
 def get_motor_speed():
     robot=robot_or_503()

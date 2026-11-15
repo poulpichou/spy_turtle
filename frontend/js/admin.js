@@ -15,6 +15,29 @@ const adminResult=document.getElementById("admin-result");
         finally{reset.disabled=false}
     };
 })();
+const motorCorrectionToggle=document.getElementById('motor-correction-toggle'),motorCorrectionStatus=document.getElementById('motor-correction-status');
+async function loadMotorCorrection(){
+    if(!motorCorrectionToggle)return;
+    if(transportMode==='bluetooth'){
+        motorCorrectionToggle.disabled=true;motorCorrectionStatus.textContent='Available via Wi-Fi or Remote only';return;
+    }
+    try{
+        const state=await adminGet('/admin/motors/correction');
+        motorCorrectionToggle.checked=!!state.enabled;motorCorrectionToggle.disabled=!state.available;
+        motorCorrectionStatus.textContent=state.available?(state.enabled?'Correction ON':'Correction OFF · encoders ready'):'Encoders unavailable';
+    }catch(error){motorCorrectionToggle.disabled=true;motorCorrectionStatus.textContent='Correction unavailable: '+error.message}
+}
+if(motorCorrectionToggle)motorCorrectionToggle.onchange=async()=>{
+    motorCorrectionToggle.disabled=true;
+    try{
+        const state=await adminPost('/admin/motors/correction',{enabled:motorCorrectionToggle.checked});
+        motorCorrectionToggle.checked=!!state.enabled;adminResult.textContent='Trajectory correction '+(state.enabled?'enabled':'disabled');
+    }catch(error){adminResult.textContent='Motor correction: '+error.message}
+    finally{await loadMotorCorrection()}
+};
+document.addEventListener('transportchange',loadMotorCorrection);
+document.querySelector('[data-view="admin"]')?.addEventListener('click',loadMotorCorrection);
+loadMotorCorrection();
 const volumeSlider=document.getElementById("volume-slider"),volumeValue=document.getElementById("volume-value");
 const microSlider=document.getElementById("micro-slider"),microValue=document.getElementById("micro-value");const driveSpeedSlider=document.getElementById("drive-speed-slider"),driveSpeedValue=document.getElementById("drive-speed-value");const cameraFpsSlider=document.getElementById("camera-fps-slider"),cameraFpsValue=document.getElementById("camera-fps-value");
 const idleToggle=document.getElementById("idle-toggle");

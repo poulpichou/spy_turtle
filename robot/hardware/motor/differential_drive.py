@@ -18,6 +18,7 @@ class DifferentialDrive:
         self.left_speed=0.0;self.right_speed=0.0
         self.target_left_speed=0.0;self.target_right_speed=0.0
         self.motion="stop";self.speed_multiplier=1.0;self._correction=0.0
+        self.correction_enabled=bool(settings.MOTOR_ENCODER_CORRECTION_ENABLED)
         self._last_sample=time.monotonic();self._last_counts=(0,0);self._last_log=0.0
         if settings.MOTOR_ENCODERS_ENABLED:
             try:self._create_encoders()
@@ -33,7 +34,16 @@ class DifferentialDrive:
         self.right_encoder=MotorEncoder(settings.MOTOR_RIGHT_ENCODER_A_PIN,settings.MOTOR_RIGHT_ENCODER_B_PIN,"right",settings.MOTOR_RIGHT_ENCODER_INVERTED,settings.MOTOR_ENCODER_PULL_UP,settings.MOTOR_ENCODER_PULSES_PER_REV,settings.MOTOR_WHEEL_DIAMETER_MM)
 
     def _encoders_ready(self):return self.left_encoder is not None and self.right_encoder is not None
-    def _enabled(self):return self._encoders_ready() and settings.MOTOR_ENCODER_CORRECTION_ENABLED
+    def _enabled(self):return self._encoders_ready() and self.correction_enabled
+
+    def set_correction_enabled(self,enabled):
+        with self._lock:
+            if enabled and not self._encoders_ready():raise RuntimeError("Motor encoders are not available")
+            self.correction_enabled=bool(enabled)
+            self._reset_correction()
+            self._apply_speeds(self.target_left_speed,self.target_right_speed)
+            log.info(f"[MOTOR CTRL] correction enabled={self._enabled()}")
+            return self.status()["encoders"]
 
     @staticmethod
     def normalize_speed(speed,default):

@@ -8,7 +8,7 @@ from pathlib import Path
 from robot.gpio_server.client import SOCKET
 from robot.utils.logger import log
 
-MOTOR_METHODS={'forward','backward','left','right','turn_left','turn_right','stop','joystick','set_speeds','set_left_speed','set_right_speed','set_speed_percent','get_speed_percent','reset_encoders','reset_pwm','status'}
+MOTOR_METHODS={'forward','backward','left','right','turn_left','turn_right','stop','joystick','set_speeds','set_left_speed','set_right_speed','set_speed_percent','get_speed_percent','reset_encoders','reset_pwm','set_correction_enabled','status'}
 SERVO_METHODS={'look_left','look_right','look_up','look_down','center','detach','reset_gpio','status','diagnostic'}
 MOVING={'forward','backward','left','right','turn_left','turn_right','joystick','set_speeds','set_left_speed','set_right_speed'}
 

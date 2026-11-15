@@ -35,6 +35,7 @@ class MotorProxy(BaseProxy):
     def set_speed_percent(self,percent):return self._call('set_speed_percent',percent)
     def get_speed_percent(self):return self._call('get_speed_percent')
     def reset_encoders(self):return self._call('reset_encoders')
+    def set_correction_enabled(self,enabled):return self._call('set_correction_enabled',bool(enabled))
     def reset_pwm(self):return self._call('reset_pwm')
 
 class ServoProxy(BaseProxy):
