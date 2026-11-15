@@ -138,7 +138,7 @@ function showLocalRobotIp(){
 showLocalRobotIp();
 function setupWifiUI(){
     const row=document.querySelector(".wifi-row");if(!row)return;
-    const nickname=document.createElement("input");nickname.id="wifi-nickname";nickname.placeholder="Wi-Fi nickname";row.prepend(nickname);
+    const nickname=document.createElement("input");nickname.id="wifi-nickname";nickname.placeholder="Nickname";row.prepend(nickname);
     const list=document.createElement("div");list.id="wifi-networks";list.className="wifi-networks";row.before(list);
     document.getElementById("wifi-add").onclick=addWifi;
     document.getElementById("wifi-authorize-current").onclick=async()=>{try{const data=await adminPost("/admin/wifi/authorize-current",{});adminResult.textContent=data.message;await loadWifi()}catch(error){adminResult.textContent=error.message}};

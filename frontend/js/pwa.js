@@ -1,5 +1,5 @@
 // PWA updates: check on launch and when returning online; keep Bluetooth-capable offline shell.
-const SPY_PWA_VERSION="network-cleanup-v16";
+const SPY_PWA_VERSION="network-layout-compact-150549e6";
 window.addEventListener("load",async()=>{
     document.getElementById("bluetooth-offline-hint")?.remove();
     document.getElementById("remote-access-bar")?.remove();

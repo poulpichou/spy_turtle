@@ -77,3 +77,13 @@
 #headlight-presets button[data-color="#ffff00"]{background:#ffff00}
 #headlight-presets button[data-color="#ff8000"]{background:#ff8000}
 #headlight-presets button[data-color="#ff0000"]{background:#ff0000}
+
+/* Compact network editor: one row, no redundant Add Wi-Fi heading. */
+#admin-panel .wifi-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.15fr) auto;gap:4px;align-items:center;min-width:0;padding-top:0;border-top:0}
+#admin-panel .wifi-row::before{content:none;display:none}
+#admin-panel .wifi-row input{width:100%;min-width:0;height:32px;padding:5px 6px;font-size:.67rem}
+#admin-panel .wifi-row #wifi-add{width:auto;min-width:0;height:32px;padding:4px 7px;font-size:.64rem;white-space:nowrap}
+#admin-panel #network-probe-ip{min-width:0;width:100%;font-size:.61rem;padding:5px 4px;box-sizing:border-box}
+#admin-panel .admin-actions:has(#network-probe-ip){grid-template-columns:minmax(0,1fr) minmax(104px,1.4fr) minmax(0,2fr);align-items:center;gap:5px}
+#admin-panel .admin-actions:has(#network-probe-ip) label{font-size:.73rem;font-weight:600;color:#ddd;white-space:nowrap}
+@media(max-width:390px){#admin-panel .wifi-row{gap:3px}#admin-panel .wifi-row input{font-size:.6rem;padding:4px}#admin-panel .wifi-row #wifi-add{font-size:.58rem;padding:3px 5px}#admin-panel .admin-actions:has(#network-probe-ip){grid-template-columns:minmax(0,1fr) minmax(96px,1.45fr) minmax(0,1.7fr)}}
