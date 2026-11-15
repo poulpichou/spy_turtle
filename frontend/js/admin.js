@@ -131,37 +131,18 @@ localFeatureButtons.animation.button.onclick=()=>toggleLocalFeature("animation")
 localFeatureButtons.sound.button.onclick=()=>toggleLocalFeature("sound");
 document.querySelectorAll(".center-tab").forEach(tab=>tab.addEventListener("click",()=>{if(runtimePower.idle_mode)setTimeout(()=>{stopCameraRefresh();stopThermal()},0)}));
 
-function setupNetworkProbe(){
-    const button=document.getElementById("network-probe-run"),result=document.getElementById("network-probe-result"),input=document.getElementById("network-probe-ip");
-    if(!button||!result||!input)return;
-    button.onclick=async()=>{
-        const ip=input.value.trim();if(!/^(?:\d{1,3}\.){3}\d{1,3}$/.test(ip)||ip.split(".").some(n=>Number(n)>255)){result.textContent="Invalid IPv4 address";return}
-        button.disabled=true;result.textContent=`App origin: ${location.origin}\nTesting https://${ip}/state ...`;
-        const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),6000);
-        try{
-            const response=await fetch(`https://${ip}/state`,{method:"GET",mode:"cors",cache:"no-store",signal:controller.signal});
-            if(!response.ok)throw Error(`HTTP ${response.status}`);
-            await response.json();result.textContent+=`\nSUCCESS: direct Wi-Fi request is allowed.`;
-        }catch(error){
-            result.textContent+=`\nFAILED: ${error.name}: ${error.message}\nPossible causes: CORS, Private Network Access, certificate, or unreachable IP. Browser does not expose which one. No settings were changed.`;
-        }finally{clearTimeout(timeout);button.disabled=false}
-    };
+function showLocalRobotIp(){
+    const input=document.getElementById("network-probe-ip");if(!input)return;
+    try{input.value=new URL(spyLocalUrl).hostname}catch(error){console.warn("[NETWORK] Local IP",error)}
 }
-setupNetworkProbe();
+showLocalRobotIp();
 function setupWifiUI(){
     const row=document.querySelector(".wifi-row");if(!row)return;
     const nickname=document.createElement("input");nickname.id="wifi-nickname";nickname.placeholder="Wi-Fi nickname";row.prepend(nickname);
     const list=document.createElement("div");list.id="wifi-networks";list.className="wifi-networks";row.before(list);
     document.getElementById("wifi-add").onclick=addWifi;
     document.getElementById("wifi-authorize-current").onclick=async()=>{try{const data=await adminPost("/admin/wifi/authorize-current",{});adminResult.textContent=data.message;await loadWifi()}catch(error){adminResult.textContent=error.message}};
-    const button=document.getElementById("https-add-ip");if(button)button.onclick=async()=>{
-        if(transportMode!=="bluetooth"){adminResult.textContent="Connect Bluetooth before configuring local HTTPS.";return}
-        if(!confirm("Add Spy Turtle's current Wi-Fi IP to the local HTTPS certificate?"))return;
-        button.disabled=true;
-        try{const result=await adminPost("/admin/https/local-ip",{});adminResult.textContent=result.message||"HTTPS configured"}
-        catch(error){adminResult.textContent=`HTTPS: ${error.message}`}
-        finally{button.disabled=false}
-    };
+
 }
 async function addWifi(){
     const nickname=document.getElementById("wifi-nickname").value.trim(),ssid=document.getElementById("wifi-ssid").value.trim(),password=document.getElementById("wifi-password").value;
