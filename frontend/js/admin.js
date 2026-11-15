@@ -29,7 +29,7 @@ let wifiTimer=null;
 
 const bluetoothAdminActions={
     "/admin/turtle/restart":"restart","/admin/system/reboot":"reboot","/admin/system/shutdown":"shutdown",
-    "/admin/wifi":"wifi_add","/admin/wifi/connect":"wifi_connect","/admin/wifi/delete":"wifi_delete",
+    "/admin/wifi":"wifi_add","/admin/wifi/connect":"wifi_connect","/admin/wifi/delete":"wifi_delete","/admin/https/local-ip":"https_add_current_ip",
     "/admin/audio/volume":"volume_set","/admin/power/component":"power_component","/admin/power/idle":"idle",
     "/admin/audio/microphone-sensitivity":"microphone_sensitivity","/admin/leds/brightness":"led_brightness_set",
     "/vision/enable":"vision_enable","/vision/interval":"vision_interval"
@@ -135,6 +135,14 @@ function setupWifiUI(){
     const nickname=document.createElement("input");nickname.id="wifi-nickname";nickname.placeholder="Wi-Fi nickname";row.prepend(nickname);
     const list=document.createElement("div");list.id="wifi-networks";list.className="wifi-networks";row.before(list);
     document.getElementById("wifi-add").onclick=addWifi;
+    const button=document.getElementById("https-add-ip");if(button)button.onclick=async()=>{
+        if(transportMode!=="bluetooth"){adminResult.textContent="Connect Bluetooth before configuring local HTTPS.";return}
+        if(!confirm("Add Spy Turtle's current Wi-Fi IP to the local HTTPS certificate?"))return;
+        button.disabled=true;
+        try{const result=await adminPost("/admin/https/local-ip",{});adminResult.textContent=result.message||"HTTPS configured"}
+        catch(error){adminResult.textContent=`HTTPS: ${error.message}`}
+        finally{button.disabled=false}
+    };
 }
 async function addWifi(){
     const nickname=document.getElementById("wifi-nickname").value.trim(),ssid=document.getElementById("wifi-ssid").value.trim(),password=document.getElementById("wifi-password").value;

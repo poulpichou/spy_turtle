@@ -177,6 +177,10 @@ def admin_dispatch(request):
         try:Thread(target=_ble_say,args=(message,language),daemon=True,name="ble-speech").start()
         except Exception:_ble_speech_lock.release();raise
         return {"ok":True,"queued":True}
+    if action=="https_add_current_ip":
+        result=subprocess.run(["sudo","-n","/usr/local/sbin/spyturtle-add-https-ip"],capture_output=True,text=True,timeout=25)
+        if result.returncode:raise RuntimeError((result.stderr or result.stdout or "HTTPS configuration failed").strip()[:150])
+        return {"ok":True,"message":result.stdout.strip()[:160]}
     if action=="wifi_status":return {"ok":True,**compact_wifi_status()}
     if action=="wifi_add":
         network=wifi_manager.add(str(data.get("nickname","")),str(data.get("ssid","")),str(data.get("password","")))
