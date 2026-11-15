@@ -6,7 +6,8 @@
     }
 }
 
-spyturtle {
+spyturtle.local, spyturtle {
+    bind {$SPY_LOCAL_IP}
     tls {
         issuer internal {
             ca local

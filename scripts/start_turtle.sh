@@ -11,6 +11,13 @@ cd "$ROOT"
 mkdir -p "$LOG_DIR"
 
 echo "Starting HTTPS proxy..."
+LOCAL_IP="$(hostname -I | awk '{print $1}')"
+if [ -z "$LOCAL_IP" ]; then echo "Cannot determine LAN IPv4 address"; exit 1; fi
+echo "Local HTTPS bind: $LOCAL_IP"
+printf 'SPY_LOCAL_IP=%s\n' "$LOCAL_IP" | sudo tee /etc/default/spy-turtle-caddy >/dev/null
+sudo mkdir -p /etc/systemd/system/caddy.service.d
+printf '[Service]\nEnvironmentFile=/etc/default/spy-turtle-caddy\n' | sudo tee /etc/systemd/system/caddy.service.d/spy-turtle.conf >/dev/null
+sudo systemctl daemon-reload
 sudo systemctl restart caddy
 
 if ! systemctl is-active --quiet caddy; then
