@@ -1,6 +1,6 @@
 (() => {
     const grid=document.getElementById("commands-grid");if(!grid)return;
-    const sections=[{name:"Moods",id:"moods",icon:"🐢"},{name:"Eyes",id:"faces",icon:"👀"},{name:"Shell LEDs",id:"leds",icon:"💡"},{name:"Back screen",id:"shell",icon:"🖥️"},{name:"Sounds",id:"audio",icon:"🔊"}];
+    const sections=[{name:"Mood",id:"moods",icon:"🐢"},{name:"Sounds",id:"audio",icon:"🔊"},{name:"Back screens",id:"shell",icon:"🖥️"},{name:"LEDs",id:"leds",icon:"💡"},{name:"Eyes",id:"faces",icon:"👀"}];
     let version=0;
     const moodStyles=[['gassy','💨','gassy'],['dreamy','💭','dreamy'],['neutral','😐','neutral'],['happy','😊','happy'],['angry','😠','angry'],['sleep','😴','sleepy'],['curious','🤔','curious'],['surpris','😮','curious'],['sad','😢','sleepy'],['love','🥰','happy'],['scared','😨','sleepy'],['excited','🤩','happy']];
     const icons={status:'📊',log:'📜',rocket:'🚀',dance:'💃',smoke:'💨',fire:'🔥',sleep:'😴',leds:'💡',countdown:'⏳',loading:'⌛',glasses:'😎',glasses_large:'😎',happy:'😊',rocket_turtle:'🚀',walking:'🚶',off:'⚫',headlights:'🔦',neutral:'😐',rainbow:'🌈',breathing:'🫧',pulse:'💓',spinner:'🌀',wave:'🌊',police:'🚨',fart:'💨',cool:'😎',blink:'😉',surprised:'😮',angry:'😠',curious:'🤔',sad:'😢',yawn:'🥱'};
@@ -30,7 +30,7 @@
         const request=++version;grid.replaceChildren();
         for(const section of sections){
             if(request!==version)return;
-            const card=document.createElement("section");card.className="commands-category";
+            const card=document.createElement("section");card.className="commands-category admin-section";
             const title=document.createElement("h3");title.textContent=`${section.icon} ${section.name}`;
             const buttons=document.createElement("div");buttons.className="commands-buttons";card.append(title,buttons);grid.append(card);
             try{
