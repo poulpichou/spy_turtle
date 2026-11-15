@@ -34,17 +34,15 @@ PHOTOS=ROOT/"photos"
 PHOTOS.mkdir(exist_ok=True)
 STARTED_AT=datetime.now().isoformat()
 
-# Allow only the trusted Tailscale PWA origin to probe the local /state endpoint.
-# Do not grant cross-origin access to commands, admin, media or other API routes.
+# Trusted PWA origin: allow its local-network API calls (including PNA preflight).
 SPY_REMOTE_ORIGIN="https://spyturtle.taile25b0a.ts.net"
-
 @app.middleware("http")
 async def local_state_cors(request,call_next):
     origin=request.headers.get("origin","")
-    allowed=origin==SPY_REMOTE_ORIGIN and request.url.path=="/state"
+    allowed=origin==SPY_REMOTE_ORIGIN
     if allowed and request.method=="OPTIONS":
         response=Response(status_code=204)
-        response.headers["Access-Control-Allow-Methods"]="GET, OPTIONS"
+        response.headers["Access-Control-Allow-Methods"]="GET, POST, OPTIONS"
         response.headers["Access-Control-Allow-Headers"]="Content-Type"
         response.headers["Access-Control-Max-Age"]="600"
     else:response=await call_next(request)

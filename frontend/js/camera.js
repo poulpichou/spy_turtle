@@ -1,7 +1,7 @@
 const camera=document.getElementById("camera-stream");
 let cameraTimer=null;
 let cameraFps=Math.max(2,Math.min(10,Number(localStorage.getItem("spy_turtle_camera_fps"))||6));
-function updateCamera(){if(transportMode==="bluetooth"||!document.getElementById("camera-view").classList.contains("active"))return;camera.src="/camera/frame?t="+Date.now()}
+function updateCamera(){if(transportMode==="bluetooth"||!document.getElementById("camera-view").classList.contains("active"))return;camera.src=spyUrl("/camera/frame?t="+Date.now())}
 function startCameraRefresh(){if(transportMode==="bluetooth")return;if(cameraTimer)return;updateCamera();cameraTimer=setInterval(updateCamera,Math.round(1000/cameraFps))}
 function stopCameraRefresh(){if(!cameraTimer)return;clearInterval(cameraTimer);cameraTimer=null}
 function setCameraFps(fps){cameraFps=Math.max(2,Math.min(10,Number(fps)||6));localStorage.setItem("spy_turtle_camera_fps",String(cameraFps));const running=!!cameraTimer;if(running){stopCameraRefresh();startCameraRefresh()}return cameraFps}
@@ -11,5 +11,5 @@ startCameraRefresh();
 // Optional BLE Vision is implemented in bluetooth-vision.js, not here.
 document.addEventListener("transportchange",()=>{
     if(transportMode==="bluetooth"){stopCameraRefresh();camera.removeAttribute("src")}
-    else{camera.src="/camera/frame?t="+Date.now();startCameraRefresh()}
+    else{camera.src=spyUrl("/camera/frame?t="+Date.now());startCameraRefresh()}
 });

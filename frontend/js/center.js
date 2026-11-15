@@ -15,7 +15,7 @@ let photoToken=0,photoObjectUrl=null;
 function stopThermal(){if(thermalTimer){clearInterval(thermalTimer);thermalTimer=null;}if(transportMode==="bluetooth")document.getElementById("thermal-stream").removeAttribute("src");}
 function startThermal(){
     if(transportMode==="bluetooth"){document.getElementById("thermal-stream").alt="Bluetooth thermal stream";return;}
-    const refresh=()=>document.getElementById("thermal-stream").src=`/thermal/frame?t=${Date.now()}`;
+    const refresh=()=>document.getElementById("thermal-stream").src=spyUrl(`/thermal/frame?t=${Date.now()}`);
     refresh();
     thermalTimer=setInterval(refresh,500);
 }
@@ -101,7 +101,7 @@ async function showPhoto(){
     photoEmpty.style.display=photo?"none":"block";
     photoName.textContent=photo?`${photoIndex+1}/${photos.length} · ${photo.name}`:"";
     if(!photo)return;
-    if(transportMode!=="bluetooth"){photoPreview.src=`${photo.url}?t=${Date.now()}`;return;}
+    if(transportMode!=="bluetooth"){photoPreview.src=spyUrl(`${photo.url}?t=${Date.now()}`);return;}
     photoName.textContent+= " · Loading Bluetooth preview...";
     try{
         const blob=await blePhotoFetch(photo.name);

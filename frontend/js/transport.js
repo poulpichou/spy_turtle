@@ -4,7 +4,20 @@ const BLE_STATE_UUID="6f2d0003-9b7e-4b2a-a1d3-53d9c4e8f210";
 const BLE_ADMIN_UUID="6f2d0004-9b7e-4b2a-a1d3-53d9c4e8f210";
 const BLE_CAMERA_UUID="6f2d0005-9b7e-4b2a-a1d3-53d9c4e8f210";
 const BLE_AUDIO_UUID="6f2d0006-9b7e-4b2a-a1d3-53d9c4e8f210";
-let transportMode="wifi"; // Offline shell can still launch; Bluetooth is selected by a user gesture.
+let transportMode="wifi"; // Explicit selection; never auto-switch to Remote.
+const SPY_REMOTE_URL="https://spyturtle.taile25b0a.ts.net";
+const SPY_LOCAL_DEFAULT="https://192.168.0.26";
+let spyLocalUrl=localStorage.getItem("spy_turtle_local_url")||SPY_LOCAL_DEFAULT;
+function spyApiBase(){return transportMode==="remote"?SPY_REMOTE_URL:spyLocalUrl}
+function spyUrl(path){return new URL(path,spyApiBase()).href}
+// Redirect only API requests. Keep shell assets on the installed PWA origin for offline startup.
+const spyNativeFetch=window.fetch.bind(window);
+window.fetch=function(input,options){
+    if(transportMode==="bluetooth")return spyNativeFetch(input,options);
+    const value=typeof input==="string"?input:input instanceof URL?input.href:null;
+    if(value&&value.startsWith("/")&&!value.startsWith("//")&&!/^\/(js|css|icons|service-worker\.js|manifest\.webmanifest|index\.html)(\/|\?|$)/.test(value))return spyNativeFetch(spyUrl(value),options);
+    return spyNativeFetch(input,options);
+};
 let bluetoothDevice=null,bluetoothServer=null,bluetoothCommand=null,bluetoothState=null,bluetoothAdmin=null,bluetoothCamera=null,bluetoothAudio=null;
 let bluetoothQueue=Promise.resolve(),bluetoothPending=0,bluetoothEpoch=0;
 let bluetoothCachedState=null,bluetoothCachedAt=0;
@@ -26,13 +39,13 @@ function invalidateBluetooth(){bluetoothEpoch++;bluetoothMoveEpoch++;bluetoothCa
 
 let currentWifiName="--";
 
-function transportLabel(){return transportMode==="bluetooth"?"Bluetooth":"Wi-Fi"}
-function transportConnected(){return transportMode==="wifi"||!!bluetoothServer?.connected}
+function transportLabel(){return transportMode==="bluetooth"?"Bluetooth":transportMode==="remote"?"Remote":"Wi-Fi"}
+function transportConnected(){return transportMode!=="bluetooth"||!!bluetoothServer?.connected}
 function updateTransportUI(){
     const button=document.getElementById("transport-toggle");
-    if(button){button.textContent=transportMode==="bluetooth"?"ᛒ":"📶";button.classList.toggle("bluetooth",transportMode==="bluetooth")}
+    if(button){button.textContent=transportMode==="bluetooth"?"ᛒ Bluetooth ▾":transportMode==="remote"?"🌍 Remote ▾":"📶 Wi-Fi ▾";button.title="Connection: "+transportLabel();button.classList.toggle("bluetooth",transportMode==="bluetooth")}
     const name=document.getElementById("transport-name");
-    if(name)name.textContent=transportMode==="bluetooth"?`ᛒ ${bluetoothDevice?.name||"SpyTurtle"}`:`📶 ${currentWifiName}`;
+    if(name)name.textContent=transportMode==="bluetooth"?`ᛒ ${bluetoothDevice?.name||"SpyTurtle"}`:transportMode==="remote"?"🌍 Remote":`📶 ${currentWifiName}`;
 }
 function setWifiTransportName(name){currentWifiName=name||"Offline";updateTransportUI()}
 function emitTransportChange(){document.dispatchEvent(new CustomEvent("transportchange",{detail:{mode:transportMode}}))}
@@ -60,6 +73,19 @@ function useWifi(){
     if(bluetoothDevice?.gatt?.connected)bluetoothDevice.gatt.disconnect();
     invalidateBluetooth();bluetoothServer=null;bluetoothCommand=null;bluetoothState=null;bluetoothAdmin=null;bluetoothCamera=null;bluetoothAudio=null;
     updateTransportUI();emitTransportChange();
+    if(typeof scheduleDashboard==="function")scheduleDashboard(0);
+}
+function useRemote(){
+    useWifi();transportMode="remote";updateTransportUI();emitTransportChange();
+    if(typeof scheduleDashboard==="function")scheduleDashboard(0);
+}
+function setLocalAddress(){
+    const input=prompt("Local robot HTTPS URL",spyLocalUrl);
+    if(input===null)return;
+    let url;try{url=new URL(input.trim());if(url.protocol!=="https:"||url.username||url.password||url.pathname!=="/"||url.search||url.hash)throw Error();}
+    catch(error){alert("Enter an HTTPS origin, e.g. https://192.168.0.26");return;}
+    spyLocalUrl=url.origin;localStorage.setItem("spy_turtle_local_url",spyLocalUrl);
+    if(transportMode==="wifi")emitTransportChange();
     if(typeof scheduleDashboard==="function")scheduleDashboard(0);
 }
 async function writeBluetoothCommand(payload){
@@ -100,14 +126,17 @@ async function bluetoothAdminRequest(action,data={}){
 document.addEventListener("DOMContentLoaded",()=>{
     updateTransportUI();
     const button=document.getElementById("transport-toggle");if(!button)return;
-    button.onclick=async()=>{
-        button.disabled=true;
-        try{
-            if(transportMode==="bluetooth")useWifi();
-            else await connectBluetooth();
-        }catch(error){console.error("[BLUETOOTH]",error);alert(`Bluetooth: ${error.message}`)}
-        finally{button.disabled=false}
-    };
+    const menu=document.createElement("div");menu.id="spy-transport-menu";menu.hidden=true;
+    menu.style.cssText="position:fixed;z-index:99999;background:#20272e;color:white;border:1px solid #65717c;border-radius:10px;padding:6px;box-shadow:0 6px 24px #0009;min-width:160px";
+    for(const [label,action] of [["📶 Wi-Fi",()=>useWifi()],["🌍 Remote",()=>useRemote()],["ᛒ Bluetooth",()=>connectBluetooth()],["⚙ Wi-Fi address",()=>setLocalAddress()]]){
+        const item=document.createElement("button");item.type="button";item.textContent=label;
+        item.style.cssText="display:block;width:100%;text-align:left;padding:9px;background:transparent;color:inherit;border:0;font:inherit";
+        item.onclick=async()=>{menu.hidden=true;try{await action()}catch(error){console.error("[TRANSPORT]",error);alert(error.message)}};
+        menu.append(item);
+    }
+    document.body.append(menu);
+    button.onclick=()=>{const r=button.getBoundingClientRect();menu.style.top=`${Math.min(r.bottom+4,innerHeight-190)}px`;menu.style.left=`${Math.min(r.left,innerWidth-175)}px`;menu.hidden=!menu.hidden};
+    document.addEventListener("pointerdown",event=>{if(!menu.contains(event.target)&&event.target!==button)menu.hidden=true});
 });
 
 async function turtleRequest(path,body=null){
