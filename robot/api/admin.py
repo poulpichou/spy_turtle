@@ -1,4 +1,6 @@
 import subprocess
+import threading
+import time
 from pathlib import Path
 from fastapi import APIRouter,HTTPException,Request
 from pydantic import BaseModel,Field
@@ -27,6 +29,28 @@ def source(request):
     ip=forwarded.split(',')[0].strip() if forwarded else request.client.host if request.client else 'unknown'
     return f'ip={ip}'
 def detached(command): subprocess.Popen(command,cwd=ROOT,start_new_session=True,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+_gpio_restart_lock=threading.Lock()
+_gpio_restart={'state':'idle','error':None,'started_at':None,'finished_at':None}
+
+def _restart_gpio_worker():
+    try:
+        with (ROOT/'logs/gpio-restart.log').open('a',encoding='utf-8') as output:
+            output.write(f'\n==== GPIO restart {time.strftime("%Y-%m-%d %H:%M:%S")} ====\n');output.flush()
+            result=subprocess.run(['bash',str(ROOT/'scripts/gpio_server/restart_gpio.sh')],cwd=ROOT,stdout=output,stderr=subprocess.STDOUT,timeout=25)
+        if result.returncode:raise RuntimeError(f'restart script exit={result.returncode}; see logs/gpio-restart.log')
+        from robot.gpio_server.client import client
+        client.call('motors','status',timeout=1.5)
+        client.call('servo','status',timeout=1.5)
+        with _gpio_restart_lock:_gpio_restart.update(state='ready',error=None,finished_at=time.time())
+        log.info('[ADMIN] isolated GPIO restart completed')
+    except Exception as error:
+        with _gpio_restart_lock:_gpio_restart.update(state='failed',error=f'{type(error).__name__}: {error}',finished_at=time.time())
+        log.error(f'[ADMIN] isolated GPIO restart failed: {error}')
+
+@router.get('/turtle/reset/status')
+def gpio_reset_status():
+    with _gpio_restart_lock:return {'ok':_gpio_restart['state']!='failed',**_gpio_restart}
+
 def robot_or_503():
     robot=get_robot()
     if robot is None:raise HTTPException(status_code=503,detail='Robot unavailable')
@@ -48,8 +72,11 @@ def reset_turtle(request:Request):
         robot=get_robot()
         if robot:robot.state.motion='stop'
         log.warn(f'[ADMIN] isolated GPIO restart requested {source(request)}')
-        detached(['bash','-lc','./scripts/gpio_server/restart_gpio.sh >> logs/gpio-restart.log 2>&1'])
-        return {'ok':True,'message':'GPIO server restart requested; actuators will be temporarily unavailable'}
+        with _gpio_restart_lock:
+            if _gpio_restart['state']=='restarting':raise HTTPException(status_code=409,detail='GPIO restart already in progress')
+            _gpio_restart.update(state='restarting',error=None,started_at=time.time(),finished_at=None)
+            threading.Thread(target=_restart_gpio_worker,daemon=True,name='gpio-restart').start()
+        return {'ok':True,'state':'restarting','message':'GPIO server restart started'}
     log.warn(f'[ADMIN] full robot soft reset requested {source(request)}')
     try:return reset_manager.request(timeout=45)
     except RuntimeError as error:raise HTTPException(status_code=409,detail=str(error)) from error

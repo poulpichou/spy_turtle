@@ -59,8 +59,15 @@ def main():
                 robot.update()
                 health.update()
         except Exception as error:
-            record("LOOP",f"EXCEPTION {type(error).__name__}: {error}")
-            raise
+            from robot.gpio_server.client import GPIOUnavailable
+            if isinstance(error,GPIOUnavailable):
+                now=time.monotonic()
+                if now-getattr(main,'_gpio_warning_at',0.0)>2:
+                    log.warn(f'[GPIO] temporarily unavailable in main loop: {error}')
+                    main._gpio_warning_at=now
+            else:
+                record("LOOP",f"EXCEPTION {type(error).__name__}: {error}")
+                raise
         finally:tick()
         time.sleep(delay)
 

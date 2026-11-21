@@ -9,7 +9,20 @@ const adminResult=document.getElementById("admin-result");
         try{
             const response=await fetch("/admin/turtle/reset",{method:"POST"});
             const data=await response.json();
-            adminResult.textContent=data.ok?"Turtle reset completed":"Reset partial: "+JSON.stringify(data.results);
+            if(!response.ok)throw Error(data.detail||'HTTP '+response.status);
+            if(data.state==='restarting'){
+                adminResult.textContent='GPIO restarting...';
+                let finished=false;
+                for(let i=0;i<35;i++){
+                    await new Promise(resolve=>setTimeout(resolve,1000));
+                    const check=await fetch('/admin/turtle/reset/status');
+                    if(!check.ok)throw Error('GPIO restart status unavailable');
+                    const state=await check.json();
+                    if(state.state==='ready'){adminResult.textContent='GPIO server restarted successfully';finished=true;break}
+                    if(state.state==='failed')throw Error(state.error||'GPIO restart failed');
+                }
+                if(!finished)throw Error('GPIO restart status timed out');
+            }else adminResult.textContent=data.ok?'Turtle reset completed':'Reset failed: '+JSON.stringify(data);
         }catch(error){adminResult.textContent="Reset failed: "+error.message}
         finally{reset.disabled=false}
     };

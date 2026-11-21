@@ -29,7 +29,12 @@ class StatusView(BaseView):
     title='STATUS'
     def get_data(self,robot):
         disk=shutil.disk_usage(ROOT)
-        servo=robot.servo.status() if robot.servo and hasattr(robot.servo,'status') else {}
+        servo={}
+        if robot.servo and hasattr(robot.servo,'status'):
+            try:servo=robot.servo.status()
+            except Exception as error:
+                from robot.gpio_server.client import GPIOUnavailable
+                if not isinstance(error,GPIOUnavailable):raise
         battery=robot.state.battery
         temp_path=Path('/sys/class/thermal/thermal_zone0/temp')
         temperature=round(float(temp_path.read_text().strip())/1000,1) if temp_path.exists() else None
