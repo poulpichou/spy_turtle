@@ -2,12 +2,16 @@
     const picker=document.getElementById("headlight-color-picker"),label=document.getElementById("headlight-color-value"),presets=document.getElementById("headlight-presets");
     const setColor=value=>{picker.value=value;label.textContent=""};
     async function saveColor(value){
-        if(typeof transportMode!=="undefined"&&transportMode==="bluetooth")throw Error("Headlights color requires Wi-Fi");
+        if(typeof transportMode!=="undefined"&&transportMode==="bluetooth"){
+            const data=await bluetoothAdminRequest("headlight_color_set",{color:value});setColor(data.color);return;
+        }
         const response=await fetch("/admin/leds/headlights/color",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({color:value})});
         const data=await response.json();if(!response.ok)throw Error(data.detail||"Unable to save color");setColor(data.color);
     }
     if(picker){
-        fetch("/admin/leds/headlights/color",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(d=>{if(d?.color)setColor(d.color)}).catch(()=>{});
+        const loadColor=()=>transportMode==="bluetooth"?bluetoothAdminRequest("headlight_color_get"):fetch("/admin/leds/headlights/color",{cache:"no-store"}).then(r=>r.ok?r.json():null);
+        loadColor().then(d=>{if(d?.color)setColor(d.color)}).catch(()=>{});
+        document.addEventListener("transportchange",()=>loadColor().then(d=>{if(d?.color)setColor(d.color)}).catch(()=>{}));
         picker.addEventListener("input",()=>setColor(picker.value));
         picker.addEventListener("change",()=>saveColor(picker.value).catch(e=>alert(e.message)));
         presets?.addEventListener("click",event=>{const b=event.target.closest("button[data-color]");if(b)saveColor(b.dataset.color).catch(e=>alert(e.message))});

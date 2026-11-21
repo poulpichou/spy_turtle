@@ -20,7 +20,9 @@
                 }
                 throw Error("Conversation still processing; check the robot");
             }
-            throw Error("Speech settings require Wi-Fi");
+            const actions={"/speech/settings":"speech_settings","/speech/language":"speech_language","/speech/voice":"speech_voice","/speech/tuning":"speech_tuning"};
+            if(actions[path])return bluetoothAdminRequest(actions[path],body||{});
+            throw Error("Unsupported Bluetooth speech request: "+path);
         }
         const response=await fetch(path,{method:body?"POST":"GET",headers:{"Content-Type":"application/json"},body:body?JSON.stringify(body):undefined,cache:"no-store"});
         const raw=await response.text();let data;
@@ -47,9 +49,6 @@
     }
     async function refresh(){try{render(await request("/speech/settings"))}catch(error){select(groups.language,selectedLanguage);status.textContent=error.message}}
     async function setLanguage(value){
-        if(transportMode==="bluetooth"){
-            selectedLanguage=value;updateFlags();document.dispatchEvent(new CustomEvent("turtlelanguagechange",{detail:{language:value}}));return {language:value};
-        }
         const data=await request("/speech/language",{language:value});render(data);document.dispatchEvent(new CustomEvent("turtlelanguagechange",{detail:{language:data.language}}));return data;
     }
     groups.language.onclick=async event=>{const button=event.target.closest("button[data-value]");if(!button)return;try{await setLanguage(button.dataset.value)}catch(error){status.textContent=error.message;await refresh()}};
@@ -63,5 +62,5 @@
     const speak=document.getElementById("message-speak"),ask=document.getElementById("message-ask"),screen=document.getElementById("message-send-screen"),message=document.getElementById("message");
     async function submit(path){const value=message.value.trim();if(!value)return;const buttons=[speak,ask,screen].filter(Boolean);buttons.forEach(button=>button.disabled=true);try{await act(path,{text:value,language:selectedLanguage},modalStatus)}catch(error){modalStatus.textContent=error.message;console.error("[SPY MESSAGE]",error)}finally{buttons.forEach(button=>button.disabled=false)}}
     if(speak)speak.onclick=()=>submit("/speech/say");if(ask)ask.onclick=()=>submit("/conversation/ask");
-    document.addEventListener("transportchange",()=>{if(transportMode==="wifi")refresh();else status.textContent="Bluetooth: speech and conversation available"});refresh();
+    document.addEventListener("transportchange",refresh);refresh();
 })();

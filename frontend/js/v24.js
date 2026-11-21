@@ -1,6 +1,7 @@
 (() => {
  const slider=document.getElementById("headlight-intensity-slider"),label=document.getElementById("headlight-intensity-value");
  async function intensity(method,value){
+  if(transportMode==="bluetooth")return bluetoothAdminRequest(method==="POST"?"headlight_intensity_set":"headlight_intensity_get",method==="POST"?{intensity:value}:{});
   const r=await fetch("/admin/leds/headlights/intensity",{method,headers:{"Content-Type":"application/json"},body:method==="POST"?JSON.stringify({intensity:value}):undefined});
   const d=await r.json();if(!r.ok)throw Error(d.detail||r.status);return d;
  }
@@ -12,7 +13,9 @@
  async function status(){
   if(!document.getElementById("status-view")?.classList.contains("active"))return;
   try{
-   const r=await fetch("/admin/audio/adaptive",{cache:"no-store"});if(!r.ok)return;const d=await r.json();
+   let d;
+   if(transportMode==="bluetooth")d=await bluetoothAdminRequest("audio_adaptive_status");
+   else{const r=await fetch("/admin/audio/adaptive",{cache:"no-store"});if(!r.ok)return;d=await r.json()}
    for(const [id,value] of Object.entries({"health-ambient-sound":sound(d.ambient_rms),"health-ambient-rms":d.ambient_rms??"--","health-adaptive-boost":"+"+(master?.checked?d.boost||0:0)+"%"})){const e=document.getElementById(id);if(e)e.textContent=value}
   }catch(e){console.warn("[AUDIO STATUS]",e)}
  }

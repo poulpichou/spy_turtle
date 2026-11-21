@@ -7,17 +7,18 @@ const adminResult=document.getElementById("admin-result");
     reset.onclick=async()=>{
         reset.disabled=true;
         try{
-            const response=await fetch("/admin/turtle/reset",{method:"POST"});
-            const data=await response.json();
-            if(!response.ok)throw Error(data.detail||'HTTP '+response.status);
+            const data=transportMode==="bluetooth"?await bluetoothAdminRequest("turtle_reset"):await (async()=>{
+                const response=await fetch("/admin/turtle/reset",{method:"POST"});const data=await response.json();
+                if(!response.ok)throw Error(data.detail||'HTTP '+response.status);return data;
+            })();
             if(data.state==='restarting'){
                 adminResult.textContent='GPIO restarting...';
                 let finished=false;
                 for(let i=0;i<35;i++){
                     await new Promise(resolve=>setTimeout(resolve,1000));
-                    const check=await fetch('/admin/turtle/reset/status');
-                    if(!check.ok)throw Error('GPIO restart status unavailable');
-                    const state=await check.json();
+                    const state=transportMode==="bluetooth"?await bluetoothAdminRequest("turtle_reset_status"):await (async()=>{
+                        const check=await fetch('/admin/turtle/reset/status');if(!check.ok)throw Error('GPIO restart status unavailable');return check.json();
+                    })();
                     if(state.state==='ready'){adminResult.textContent='GPIO server restarted successfully';finished=true;break}
                     if(state.state==='failed')throw Error(state.error||'GPIO restart failed');
                 }
@@ -30,9 +31,6 @@ const adminResult=document.getElementById("admin-result");
 const motorCorrectionToggle=document.getElementById('motor-correction-toggle'),motorCorrectionStatus=document.getElementById('motor-correction-status');
 async function loadMotorCorrection(){
     if(!motorCorrectionToggle)return;
-    if(transportMode==='bluetooth'){
-        motorCorrectionToggle.disabled=true;motorCorrectionStatus.textContent='Available via Wi-Fi or Remote only';return;
-    }
     try{
         const state=await adminGet('/admin/motors/correction');
         motorCorrectionToggle.checked=!!state.enabled;motorCorrectionToggle.disabled=!state.available;
@@ -67,6 +65,7 @@ const bluetoothAdminActions={
     "/admin/network/degraded":"ble_vision_degraded","/admin/wifi/authorize-current":"wifi_authorize_current","/admin/wifi":"wifi_add","/admin/wifi/connect":"wifi_connect","/admin/wifi/delete":"wifi_delete","/admin/https/local-ip":"https_add_current_ip",
     "/admin/audio/volume":"volume_set","/admin/power/component":"power_component","/admin/power/idle":"idle",
     "/admin/audio/microphone-sensitivity":"microphone_sensitivity","/admin/leds/brightness":"led_brightness_set",
+    "/admin/motors/speed":"motor_speed_set","/admin/motors/correction":"motor_correction_set",
     "/vision/enable":"vision_enable","/vision/interval":"vision_interval"
 };
 async function adminPost(path,body){
@@ -83,6 +82,8 @@ async function adminGet(path){
         if(path==="/admin/audio/volume")return bluetoothAdminRequest("volume_get");
         if(path==="/admin/power")return bluetoothAdminRequest("power_get");
         if(path==="/admin/leds/brightness")return bluetoothAdminRequest("led_brightness_get");
+        if(path==="/admin/motors/speed")return bluetoothAdminRequest("motor_speed_get");
+        if(path==="/admin/motors/correction")return bluetoothAdminRequest("motor_correction_get");
         throw new Error(`Unsupported Bluetooth admin GET: ${path}`);
     }
     const response=await fetch(path,{cache:"no-store"});

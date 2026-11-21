@@ -143,6 +143,19 @@ def dispatch(command):
     else:raise ValueError(f"Unknown command type: {kind}")
 
 _vision_streamer=None
+_ble_reset_lock=Lock()
+_ble_reset_state={"state":"idle","error":None}
+def _ble_reset_worker():
+    try:
+        from robot.api.admin import reset_turtle,gpio_reset_status
+        from starlette.requests import Request
+        result=reset_turtle(Request({"type":"http","method":"POST","path":"/admin/turtle/reset","headers":[],"client":("bluetooth",0)}))
+        if result.get("state")=="restarting":
+            with _ble_reset_lock:_ble_reset_state.update(state="gpio",error=None)
+            return
+        with _ble_reset_lock:_ble_reset_state.update(state="ready" if result.get("ok") else "failed",error=None if result.get("ok") else str(result)[:120])
+    except Exception as error:
+        with _ble_reset_lock:_ble_reset_state.update(state="failed",error=str(error)[:120])
 def admin_dispatch(request):
     action=str(request.get("action",""))
     data=request.get("data") or {}
@@ -154,6 +167,61 @@ def admin_dispatch(request):
         # Keep GATT read replies small; the admin characteristic is not a streaming channel.
         lines=[line[:140] for line in log.tail(count=2,level=level)]
         return {"ok":True,"lines":lines}
+    if action=="turtle_reset":
+        with _ble_reset_lock:
+            if _ble_reset_state["state"]=="restarting":raise RuntimeError("Reset already in progress")
+            _ble_reset_state.update(state="restarting",error=None)
+        Thread(target=_ble_reset_worker,daemon=True,name="ble-turtle-reset").start()
+        return {"ok":True,"state":"restarting"}
+    if action=="turtle_reset_status":
+        from robot.api.admin import gpio_reset_status
+        with _ble_reset_lock:state=dict(_ble_reset_state)
+        if state["state"]=="gpio":
+            gpio=gpio_reset_status()
+            if gpio["state"] in ("ready","failed"):
+                with _ble_reset_lock:_ble_reset_state.update(state=gpio["state"],error=gpio.get("error"))
+                state=dict(_ble_reset_state)
+        return {"ok":True,**state}
+    if action=="motor_speed_get":
+        if robot is None or robot.motors is None:raise RuntimeError("Motors unavailable")
+        return {"ok":True,"speed":robot.motors.get_speed_percent()}
+    if action=="motor_speed_set":
+        speed=int(data.get("speed",0))
+        if not 100<=speed<=300:raise ValueError("Motor speed must be 100..300")
+        if robot is None or robot.motors is None:raise RuntimeError("Motors unavailable")
+        value=robot.motors.set_speed_percent(speed)
+        return {"ok":True,"speed":value,"message":f"Drive speed set to {value}%"}
+    if action in ("motor_correction_get","motor_correction_set"):
+        if robot is None or robot.motors is None:raise RuntimeError("Motors unavailable")
+        motors=robot.motors
+        if action=="motor_correction_set":
+            state=motors.set_correction_enabled(bool(data.get("enabled")))
+        else:state=motors.status().get("encoders",{})
+        return {"ok":True,"available":bool(state.get("enabled")),"enabled":bool(state.get("correction_enabled"))}
+    if action in ("headlight_color_get","headlight_color_set","headlight_intensity_get","headlight_intensity_set"):
+        if robot is None or robot.leds is None:raise RuntimeError("LEDs unavailable")
+        leds=robot.leds
+        if action=="headlight_color_set":
+            import re
+            color=str(data.get("color",""))
+            if not re.fullmatch(r"#[0-9a-fA-F]{6}",color):raise ValueError("Invalid headlight color")
+            return {"ok":True,"color":leds.set_headlights_color(color)}
+        if action=="headlight_color_get":return {"ok":True,"color":leds.headlights_color}
+        if action=="headlight_intensity_set":
+            intensity=int(data.get("intensity",-1))
+            if not 0<=intensity<=100:raise ValueError("Headlight intensity must be 0..100")
+            return {"ok":True,"intensity":leds.set_headlights_intensity(intensity)}
+        return {"ok":True,"intensity":leds.headlights_intensity}
+    if action in ("speech_settings","speech_language","speech_voice","speech_tuning"):
+        from robot.speech import tts
+        if action=="speech_language":tts.set_language(str(data.get("language","")))
+        elif action=="speech_voice":tts.set_voice(str(data.get("language","")),str(data.get("voice","")))
+        elif action=="speech_tuning":return {"ok":True,**tts.set_tuning(data.get("pitch"),data.get("speed"))}
+        return {"ok":True,**{k:v for k,v in tts.status().items() if k in ("language","voice_available","voice","selected_voices","available_voices","pitch","speed")}}
+    if action=="audio_adaptive_status":
+        if robot is None or robot.speaker is None:raise RuntimeError("Speaker unavailable")
+        status=robot.speaker.adaptive_status()
+        return {"ok":True,"ambient_rms":status.get("ambient_rms"),"boost":status.get("boost",0),"enabled":status.get("enabled")}
     if action=="chat_status":
         with _ble_chat_state_lock:return {"ok":True,**_ble_chat_state}
     if action=="chat_ask":
