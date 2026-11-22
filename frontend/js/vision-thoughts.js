@@ -1,4 +1,14 @@
-/* Editable person-to-thoughts catalog. Names must match face recognition labels (case-insensitive). */
+/* Spy Turtle vision thoughts V7. Edit emoji arrays here; no backend changes needed. */
 window.spyVisionThoughts={
- basile:['🏒','🥜','⚽'],oscar:['🍝','🌿','🏒','⚽'],felix:['⛏️','🥒'],maman:['🥧','🧴'],papa:['💻','🤓','🦷','🪵'],unknown:['🐢','🤖','❓','⭐']
+ people:{
+  basile:['🏒','🥜','⚽','🏆','🥇','🍪','🍩','⚾','🐼','🍔','🌭','🧩','🎲','🎮','💎','🏴‍☠️','✏️','🔫','🗿','🪙','🧸','🚴'],
+  oscar:['🍝','🌿','🏒','⚽','🪴','🏆','🥇','🐒','🐻','🍜','♟️','🎮','💎','✏️','🔫','🪙','🎨','🧩'],
+  felix:['⛏️','🥒','🦨','🫏','🦊','👶','👼','😇','🦝','🐿️','🍌','🌽','🍼','💎','🧻','🧸','🧮','🪙','🐣'],
+  maman:['🥧','🧴','🎂','🍫','👩‍🍳','🏀','🩰','🎨','🎀','❤️','❤️‍🔥','💓','💝','🌸','🍰'],
+  papa:['💻','🤓','🦷','🪵','🫕','🍸','🍿','🎬','🥋','🏋️','🔨','🪛','✏️','📐','🔧','🧑‍💻','🚴'],
+  unknown:['🐢','🤖','❓','⭐','🔍','🌈','✨']
+ },
+ moods:{
+  neutral:[],happy:['💕','💗','❤️','💖'],angry:[],curious:['❓','🤔','🔍'],excited:['✨','⭐','🌟','🎉'],sad:['💧','😢'],detective:['🔎','🕵️'],surprised:['❗','❓','😮'],rocket:['⚡','🌩️'],sick:['🤧','💧','🤒'],gassy:['💨','☁️'],shy:[],proud:[],sleepy:[],sleeping:[],dreamy:[]
+ }
 };

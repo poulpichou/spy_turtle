@@ -15,6 +15,27 @@ let lastFaces=[];
 let lastDetectedAt=0;
 let lastSuccessfulPoll=0;
 const HOLD_MS=3000;
+const FRAME_KEY='spy_face_frame_style_v1';
+const FRAME_STYLES={rect:'Green rectangle',circle:'Dotted circle',corners:'Corners only',thin:'Thin rectangle'};
+function frameStyle(){const value=localStorage.getItem(FRAME_KEY)||'rect';return FRAME_STYLES[value]?value:'rect'}
+function setFrameShape(shape,x,y,w,h){
+ const style=frameStyle(),rect=shape.rect,ellipse=shape.ellipse||(shape.ellipse=document.createElementNS(NS,'ellipse')),corners=shape.corners||(shape.corners=document.createElementNS(NS,'path'));
+ if(!ellipse.parentNode)shape.group.insertBefore(ellipse,shape.name);
+ if(!corners.parentNode)shape.group.insertBefore(corners,shape.name);
+ for(const item of [rect,ellipse,corners]){item.setAttribute('fill','none');item.setAttribute('stroke','#00ff66');item.setAttribute('vector-effect','non-scaling-stroke');item.setAttribute('stroke-width',style==='thin'?'1':'2');item.setAttribute('stroke-dasharray','none')}
+ rect.style.display=style==='rect'||style==='thin'?'':'none';ellipse.style.display=style==='circle'?'':'none';corners.style.display=style==='corners'?'':'none';
+ ellipse.setAttribute('cx',x+w/2);ellipse.setAttribute('cy',y+h/2);ellipse.setAttribute('rx',w*.65);ellipse.setAttribute('ry',h*.65);ellipse.setAttribute('stroke-dasharray','3 6');
+ const a=Math.min(w,h)*.22;corners.setAttribute('d',`M${x+a} ${y}H${x}V${y+a} M${x+w-a} ${y}H${x+w}V${y+a} M${x} ${y+h-a}V${y+h}H${x+a} M${x+w-a} ${y+h}H${x+w}V${y+h-a}`);
+}
+function setupFrameAdmin(){
+ if(document.getElementById('face-frame-style'))return;
+ const target=document.getElementById('face-enabled')?.closest('.admin-section');if(!target)return;
+ const line=document.createElement('div');line.className='admin-slider';const label=document.createElement('label');label.htmlFor='face-frame-style';label.textContent='Face detection frame (Turtle View OFF)';
+ const select=document.createElement('select');select.id='face-frame-style';select.style.width='100%';
+ for(const [value,name] of Object.entries(FRAME_STYLES)){const option=document.createElement('option');option.value=value;option.textContent=name;select.append(option)}
+ select.value=frameStyle();select.onchange=()=>{localStorage.setItem(FRAME_KEY,select.value);draw(lastFaces);drawThermal(lastFaces)};
+ line.append(label,select);target.append(line);
+}
 const shapes=[];
 const thermalShapes=[];
 function clear(){for(const group of [shapes,thermalShapes]){group.forEach(pair=>pair.group.remove());group.length=0}}
@@ -37,7 +58,7 @@ function draw(faces){
         }
         const face=faces[i],shape=shapes[i],x=face.x*width,y=face.y*height,w=face.w*width,h=face.h*height;
         shape.rect.setAttribute("x",x);shape.rect.setAttribute("y",y);
-        shape.rect.setAttribute("width",w);shape.rect.setAttribute("height",h);
+        shape.rect.setAttribute("width",w);shape.rect.setAttribute("height",h);setFrameShape(shape,x,y,w,h);
         shape.name.setAttribute("x",Math.max(2,x));
         shape.name.setAttribute("y",Math.min(height-4,y+h+16));
         shape.name.textContent=face.name||"unknown";
@@ -90,6 +111,6 @@ image.addEventListener("load",()=>draw(lastFaces));
 thermalImage?.addEventListener("load",()=>drawThermal(lastFaces));
 window.addEventListener("resize",()=>{draw(lastFaces);drawThermal(lastFaces)});
 document.addEventListener("visibilitychange",()=>{if(document.hidden)clear();else refresh()});
-setInterval(refresh,1000);
+setupFrameAdmin();setInterval(refresh,1000);
 refresh();
 })();
