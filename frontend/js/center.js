@@ -143,9 +143,20 @@ async function refreshHealth(){
         try{
             const state=await readBluetoothState();
             const env=state.sensors?.environment||{},dist=state.sensors?.distance||{},battery=state.battery||{};
-            const values={"health-object-distance":dist.distance_mm==null?"--":dist.out_of_range?"∞":`${dist.distance_mm} mm`,"health-environment-temperature":valueOrDash(env.temperature_c," °C"),"health-humidity":valueOrDash(env.humidity_percent," %"),"health-pressure":valueOrDash(env.pressure_hpa," hPa"),"health-pressure-atm":valueOrDash(env.pressure_atm," atm"),"health-gas":env.gas_ohms==null?"--":`${(env.gas_ohms/1000).toFixed(1)} kΩ`,"health-air-quality":valueOrDash(env.air_quality," / 10"),"health-level":valueOrDash(battery.level,"%"),"health-battery-status":battery.status||"unknown","health-charging":battery.charging==null?"--":battery.charging?"Yes":"No","health-mode":`${state.motion?.state||"stop"} / ${state.brain?.emotion||"neutral"}`,"health-pan":formatServo(state.servo?.pan),"health-tilt":formatServo(state.servo?.tilt),"health-connection":"Bluetooth"};
+            const values={"health-object-distance":dist.distance_mm==null?"--":dist.out_of_range?"∞":`${dist.distance_mm} mm`,"health-environment-temperature":valueOrDash(env.temperature_c," °C"),"health-humidity":valueOrDash(env.humidity_percent," %"),"health-pressure":valueOrDash(env.pressure_hpa," hPa"),"health-pressure-atm":valueOrDash(env.pressure_atm," atm"),"health-gas":env.gas_ohms==null?"--":`${(env.gas_ohms/1000).toFixed(1)} kΩ`,"health-air-quality":valueOrDash(env.air_quality," / 10"),"health-level":valueOrDash(battery.level,"%"),"health-battery-status":battery.status||"unknown","health-charging":battery.charging==null?"--":battery.charging?"Yes":"No","health-mode":`${state.motion?.state||"stop"} / ${state.brain?.emotion||"neutral"}`,"health-connection":"Bluetooth"};
             for(const [id,value] of Object.entries(values))document.getElementById(id).textContent=value;
-            for(const id of ["health-uptime","health-temperature","health-load","health-disk","health-voltage","health-current","health-power","health-cells","health-usb","health-battery-error","health-idle","health-detected-recent","health-ambient-sound","health-ambient-rms","health-adaptive-boost"])document.getElementById(id).textContent="--";
+            const groups={};
+            for(const group of ["system","battery","activity","audio"]){
+                if(activeView!=="status"||transportMode!=="bluetooth")return;
+                try{groups[group]=await bluetoothAdminRequest("health_status",{group})}catch(error){console.warn("[BLE STATUS]",group,error);groups[group]={}}
+            }
+            if(activeView!=="status"||transportMode!=="bluetooth")return;
+            const system=groups.system,b=groups.battery,activity=groups.activity,audio=groups.audio;
+            const recent=document.getElementById("health-detected-recent"),names=(activity.names||[]).join(", ")||"None";
+            recent.textContent=names.length>25?names.slice(0,22)+"...":names;recent.title=names;
+            const sound=v=>v==null?"--":v<.02?"Quiet":v<.05?"Slightly loud":v<.10?"Loud":"Very loud";
+            const details={"health-uptime":system.uptime==null?"--":formatDuration(system.uptime),"health-temperature":valueOrDash(system.cpu," °C"),"health-load":valueOrDash(system.load),"health-disk":valueOrDash(system.disk," GB"),"health-voltage":valueOrDash(b.voltage," V"),"health-current":valueOrDash(b.current," A"),"health-power":valueOrDash(b.power," W"),"health-cells":b.cells?.length?b.cells.map(v=>(v/1000).toFixed(3)).join(" / "):"--","health-usb":b.usb==null?"--":b.usb?"Connected":"No","health-battery-error":b.error||"None","health-idle":activity.idle==null?"--":formatDuration(activity.idle),"health-pan":formatServo(activity.pan||state.servo?.pan),"health-tilt":formatServo(activity.tilt||state.servo?.tilt),"health-ambient-sound":sound(audio.rms),"health-ambient-rms":valueOrDash(audio.rms),"health-adaptive-boost":audio.boost==null?"--":`+${audio.boost}%`};
+            for(const [id,value] of Object.entries(details))document.getElementById(id).textContent=value;
         }catch(error){document.getElementById("health-connection").textContent="Bluetooth disconnected";}
         return;
     }

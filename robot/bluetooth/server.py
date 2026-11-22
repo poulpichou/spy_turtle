@@ -156,12 +156,42 @@ def _ble_reset_worker():
         with _ble_reset_lock:_ble_reset_state.update(state="ready" if result.get("ok") else "failed",error=None if result.get("ok") else str(result)[:120])
     except Exception as error:
         with _ble_reset_lock:_ble_reset_state.update(state="failed",error=str(error)[:120])
+def ble_health_status(group):
+    import os,shutil,time
+    robot=get_robot()
+    if robot is None:raise RuntimeError("Robot unavailable")
+    state=robot.state.to_dict()
+    if group=="system":
+        try:
+            raw=Path("/sys/class/thermal/thermal_zone0/temp").read_text().strip()
+            cpu=round(int(raw)/1000,1)
+        except (OSError,ValueError):cpu=None
+        try:load=round(os.getloadavg()[0],2)
+        except OSError:load=None
+        try:disk=round(shutil.disk_usage(ROOT).free/1073741824,1)
+        except OSError:disk=None
+        return {"ok":True,"uptime":round(state["system"]["uptime_seconds"]),"cpu":cpu,"load":load,"disk":disk}
+    if group=="battery":
+        b=state["battery"]
+        return {"ok":True,"voltage":b.get("voltage_v"),"current":b.get("current_a"),"power":b.get("power_w"),"cells":b.get("cells_mv",[])[:4],"usb":b.get("usb_connected"),"error":str(b.get("error") or "")[:60]}
+    if group=="activity":
+        from robot.vision.face_recognition import vision
+        names=[str(p.get("name",""))[:22] for p in vision.status().get("detected_recent",[]) if p.get("name")]
+        servo=robot.servo.status() if robot.servo else {}
+        return {"ok":True,"idle":round(state["brain"]["idle_seconds"]),"names":names[:5],"pan":{k:(servo.get("pan") or {}).get(k) for k in ("current","target")},"tilt":{k:(servo.get("tilt") or {}).get(k) for k in ("current","target")}}
+    if group=="audio":
+        speaker=robot.speaker
+        data=speaker.adaptive_status() if speaker and hasattr(speaker,"adaptive_status") else {}
+        return {"ok":True,"rms":data.get("ambient_rms"),"boost":data.get("boost")}
+    raise ValueError("Unknown health group")
+
 def admin_dispatch(request):
     action=str(request.get("action",""))
     data=request.get("data") or {}
     robot=get_robot()
     if action not in ("log_tail","vision_status","ble_vision_status","power_get","volume_get","led_brightness_get","wifi_status","motor_speed_get","motor_correction_get","headlights_color_get","headlights_intensity_get","speech_settings","audio_adaptive_get","turtle_reset_status","chat_status","automation_status","sentinel_status","mood_status","asset_list","photo_list"):log.info(f"[BLUETOOTH ADMIN] {action}")
     elif action!="log_tail":log.debug(f"[BLUETOOTH ADMIN] {action}")
+    if action=="health_status":return ble_health_status(str(data.get("group","")))
     if action=="log_tail":
         level=str(data.get("level","INFO")).upper()
         if level not in ("DEBUG","INFO","WARN","WARNING","ERROR"):level="INFO"
