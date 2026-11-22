@@ -17,7 +17,7 @@ let lastSuccessfulPoll=0;
 const HOLD_MS=3000;
 const FRAME_KEY='spy_face_frame_style_v1';
 const FRAME_STYLES={rect:'Green rectangle',circle:'Dotted circle',corners:'Corners only',thin:'Thin rectangle'};
-function frameStyle(){const value=localStorage.getItem(FRAME_KEY)||'rect';return FRAME_STYLES[value]?value:'rect'}
+function frameStyle(){const value=localStorage.getItem(FRAME_KEY)||'thin';return FRAME_STYLES[value]?value:'rect'}
 function setFrameShape(shape,x,y,w,h){
  const style=frameStyle(),rect=shape.rect,ellipse=shape.ellipse||(shape.ellipse=document.createElementNS(NS,'ellipse')),corners=shape.corners||(shape.corners=document.createElementNS(NS,'path'));
  if(!ellipse.parentNode)shape.group.insertBefore(ellipse,shape.name);

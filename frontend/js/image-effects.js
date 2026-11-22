@@ -60,7 +60,7 @@ function render(){
   const symbols=sample(chosen,Math.min(4,chosen.length),seed+91);
   const spots=[[-.40,-.54],[1.40,-.58],[.20,-.99],[.86,-1.00]];
   for(let j=0;j<symbols.length;j++){
-   const [fx,fy]=spots[j],font=emojiBaseSize*(j<2?.29:.32)*3*viewPrefs.emojiScale,margin=font*.7;
+   const [fx,fy]=spots[j],font=emojiBaseSize*(j<2?.29:.32)*3*.5*viewPrefs.emojiScale,margin=font*.7;
    const px=Math.max(margin,Math.min(width-margin,x+w*fx)),py=Math.max(margin,Math.min(height-margin,y+size*fy));
    const e=put(symbols[j],px,py,font);e.style.animationDelay=`-${((i*4+j)*1.7)%9}s`;
   }
