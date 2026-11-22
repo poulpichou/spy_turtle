@@ -16,8 +16,8 @@ let lastDetectedAt=0;
 let lastSuccessfulPoll=0;
 const HOLD_MS=3000;
 const FRAME_KEY='spy_face_frame_style_v1';
-const FRAME_STYLES={rect:'Green rectangle',circle:'Dotted circle',corners:'Corners only',thin:'Thin rectangle'};
-function frameStyle(){const value=localStorage.getItem(FRAME_KEY)||'thin';return FRAME_STYLES[value]?value:'rect'}
+const FRAME_STYLES={thin:'Thin rectangle',corners:'Corners only',circle:'Dotted circle',rect:'Green rectangle'};
+function frameStyle(){const value=localStorage.getItem(FRAME_KEY)||'thin';return FRAME_STYLES[value]?value:'thin'}
 function setFrameShape(shape,x,y,w,h){
  const style=frameStyle(),rect=shape.rect,ellipse=shape.ellipse||(shape.ellipse=document.createElementNS(NS,'ellipse')),corners=shape.corners||(shape.corners=document.createElementNS(NS,'path'));
  if(!ellipse.parentNode)shape.group.insertBefore(ellipse,shape.name);
@@ -32,17 +32,21 @@ function setFrameShape(shape,x,y,w,h){
  for(const item of [rect,ellipse,corners]){item.setAttribute('fill','none');item.setAttribute('stroke','#00ff66');item.setAttribute('vector-effect','non-scaling-stroke');item.setAttribute('stroke-width',style==='rect'?'2':'1');item.style.setProperty('stroke-width',style==='rect'?'2px':'1px','important');item.setAttribute('stroke-dasharray','none')}
  rect.style.display=style==='rect'?'':'none';ellipse.style.display=style==='circle'?'':'none';corners.style.display=style==='corners'?'':'none';
  ellipse.setAttribute('cx',x+w/2);ellipse.setAttribute('cy',y+h/2);ellipse.setAttribute('rx',w*.845);ellipse.setAttribute('ry',h*.845);ellipse.setAttribute('stroke-dasharray','3 6');
- const a=Math.min(w,h)*.22;corners.setAttribute('d',`M${x+a} ${y}H${x}V${y+a} M${x+w-a} ${y}H${x+w}V${y+a} M${x} ${y+h-a}V${y+h}H${x+a} M${x+w-a} ${y+h}H${x+w}V${y+h-a}`);
+ const a=Math.min(w,h)*.29;corners.setAttribute('d',`M${x+a} ${y}H${x}V${y+a} M${x+w-a} ${y}H${x+w}V${y+a} M${x} ${y+h-a}V${y+h}H${x+a} M${x+w-a} ${y+h}H${x+w}V${y+h-a}`);
 }
 function setupFrameAdmin(){
  if(document.getElementById('face-frame-style'))return;
  const target=document.getElementById('face-enabled')?.closest('.admin-section');if(!target)return;
  const line=document.createElement('div');line.className='admin-slider';const label=document.createElement('label');label.htmlFor='face-frame-style';label.textContent='Face detection frame (Turtle View OFF)';
- const select=document.createElement('select');select.id='face-frame-style';select.style.width='100%';
- for(const [value,name] of Object.entries(FRAME_STYLES)){const option=document.createElement('option');option.value=value;option.textContent=name;select.append(option)}
- select.value=frameStyle();select.onchange=()=>{localStorage.setItem(FRAME_KEY,select.value);draw(lastFaces);drawThermal(lastFaces)};
- line.append(label,select);target.append(line);
+ const picker=document.createElement('div');picker.className='spy-frame-picker';const button=document.createElement('button');button.type='button';button.id='face-frame-style';button.className='spy-frame-picker-button';button.setAttribute('aria-haspopup','listbox');button.setAttribute('aria-expanded','false');
+ const menu=document.createElement('div');menu.className='spy-frame-picker-menu';menu.setAttribute('role','listbox');menu.hidden=true;
+ function close(){menu.hidden=true;button.setAttribute('aria-expanded','false')}
+ function refresh(){button.textContent=FRAME_STYLES[frameStyle()]+'  ▾';for(const option of menu.children){const selected=option.dataset.value===frameStyle();option.setAttribute('aria-selected',String(selected));option.classList.toggle('selected',selected)}}
+ for(const [value,name] of Object.entries(FRAME_STYLES)){const option=document.createElement('button');option.type='button';option.className='spy-frame-picker-option';option.dataset.value=value;option.textContent=name;option.setAttribute('role','option');option.onclick=()=>{localStorage.setItem(FRAME_KEY,value);refresh();close();draw(lastFaces);drawThermal(lastFaces)};menu.append(option)}
+ button.onclick=()=>{const opening=menu.hidden;menu.hidden=!opening;button.setAttribute('aria-expanded',String(opening))};button.onkeydown=e=>{if(e.key==='Escape')close()};menu.onkeydown=e=>{if(e.key==='Escape'){close();button.focus()}};
+ document.addEventListener('pointerdown',e=>{if(!picker.contains(e.target))close()});picker.append(button,menu);refresh();line.append(label,picker);target.append(line);
 }
+const frameCss=document.createElement('style');frameCss.textContent=`.spy-frame-picker{position:relative;flex:0 1 46%;min-width:130px}.spy-frame-picker-button{width:100%;font:inherit;font-size:12px;text-align:left;padding:8px 10px;border:1px solid rgba(130,160,175,.4);border-radius:9px;background:#19272f;color:#f4f8fb;cursor:pointer}.spy-frame-picker-menu{position:absolute;right:0;top:calc(100% + 4px);min-width:100%;width:max-content;max-width:230px;z-index:9999;padding:4px;background:#19272f;border:1px solid rgba(130,160,175,.5);border-radius:10px;box-shadow:0 8px 24px #0008}.spy-frame-picker-menu[hidden]{display:none!important}.spy-frame-picker-option{display:block;width:100%;padding:9px 12px;border:0;border-radius:7px;background:transparent;color:#f4f8fb;font:inherit;font-size:12px;text-align:left;cursor:pointer}.spy-frame-picker-option.selected,.spy-frame-picker-option:hover{background:#34536a}.spy-frame-picker-option.selected:before{content:'✓ ';color:#91e8c7}`;document.head.append(frameCss);
 const shapes=[];
 const thermalShapes=[];
 function clear(){for(const group of [shapes,thermalShapes]){group.forEach(pair=>pair.group.remove());group.length=0}}
