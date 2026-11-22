@@ -49,8 +49,12 @@ async function refreshLogs(){
     if(transportMode==="bluetooth"){
         try{
             const level=localStorage.getItem("spy_log_level")||"INFO";
-            const result=await bluetoothAdminRequest("log_tail",{level});
-            logElement.textContent=(result.lines||[]).join("\n")||"No recent logs";
+            const pages=[];
+            for(const offset of [12,8,4,0]){
+                const result=await bluetoothAdminRequest("log_tail",{level,count:4,offset});
+                pages.push(...(result.lines||[]));
+            }
+            logElement.textContent=pages.join("\n")||"No recent logs";
             logElement.scrollTop=logElement.scrollHeight;
         }catch(error){logElement.textContent=`Bluetooth logs unavailable: ${error.message}`;}
         return;

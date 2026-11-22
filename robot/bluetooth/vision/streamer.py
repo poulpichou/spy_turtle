@@ -83,10 +83,10 @@ class VisionStreamer:
                 notify_ms+=(perf_counter()-t)*1000;chunks+=1
                 t=perf_counter();await asyncio.sleep(self.interval);sleep_ms+=(perf_counter()-t)*1000
             end=perf_counter();self.last_frame=end
-            log.info(f"[BLE VISION] source={'thermal' if thermal else 'camera'} frame={self.serial} bytes={len(jpeg)}")
-            log.info(f"[BLE PERF] profile={mode} frame={self.serial} jpeg={len(jpeg)} raw={raw_bytes} chunks={chunks} chunk_size={self.chunk} interval_ms={self.interval*1000:.1f} capture_ms={capture_ms:.1f} encode_ms={encode_ms:.1f} prep_ms={(prepared-start)*1000:.1f} notify_ms={notify_ms:.1f} sleep_ms={sleep_ms:.1f} send_ms={(end-prepared)*1000:.1f} total_ms={(end-start)*1000:.1f}")
+            log.debug(f"[BLE VISION] source={'thermal' if thermal else 'camera'} frame={self.serial} bytes={len(jpeg)}")
+            log.debug(f"[BLE PERF] profile={mode} frame={self.serial} jpeg={len(jpeg)} raw={raw_bytes} chunks={chunks} chunk_size={self.chunk} interval_ms={self.interval*1000:.1f} capture_ms={capture_ms:.1f} encode_ms={encode_ms:.1f} prep_ms={(prepared-start)*1000:.1f} notify_ms={notify_ms:.1f} sleep_ms={sleep_ms:.1f} send_ms={(end-prepared)*1000:.1f} total_ms={(end-start)*1000:.1f}")
         except asyncio.CancelledError:
-            log.info(f"[BLE PERF] cancelled stage={stage} chunks={chunks} elapsed_ms={(perf_counter()-start)*1000:.1f}")
+            log.debug(f"[BLE PERF] cancelled stage={stage} chunks={chunks} elapsed_ms={(perf_counter()-start)*1000:.1f}")
             raise
         except Exception as error:
             self.errors+=1

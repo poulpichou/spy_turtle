@@ -117,7 +117,7 @@ def dispatch(command):
     kind=str(command.get("type",""))
     value=str(command.get("value",""))
     extra=command.get("extra") or {}
-    log.info(f"[BLUETOOTH] command {kind} {value}")
+    (log.debug if kind=="move" and value=="joystick" else log.info)(f"[BLUETOOTH] command {kind} {value}")
     if kind=="move":
         speed=extra.get("speed")
         if speed is not None:speed=float(speed)
@@ -160,12 +160,16 @@ def admin_dispatch(request):
     action=str(request.get("action",""))
     data=request.get("data") or {}
     robot=get_robot()
-    if action!="log_tail":log.info(f"[BLUETOOTH ADMIN] {action}")
+    if action not in ("log_tail","vision_status","ble_vision_status","power_get","volume_get","led_brightness_get","wifi_status","motor_speed_get","motor_correction_get","headlights_color_get","headlights_intensity_get","speech_settings","audio_adaptive_get","turtle_reset_status","chat_status","automation_status","sentinel_status","mood_status","asset_list","photo_list"):log.info(f"[BLUETOOTH ADMIN] {action}")
+    elif action!="log_tail":log.debug(f"[BLUETOOTH ADMIN] {action}")
     if action=="log_tail":
         level=str(data.get("level","INFO")).upper()
         if level not in ("DEBUG","INFO","WARN","WARNING","ERROR"):level="INFO"
         # Keep GATT read replies small; the admin characteristic is not a streaming channel.
-        lines=[line[:140] for line in log.tail(count=2,level=level)]
+        count=max(1,min(4,int(data.get("count",4))))
+        offset=max(0,min(60,int(data.get("offset",0))))
+        history=log.tail(count=count+offset,level=level)
+        lines=[line[:110] for line in (history[-(offset+count):-offset] if offset else history[-count:])]
         return {"ok":True,"lines":lines}
     if action=="turtle_reset":
         with _ble_reset_lock:
