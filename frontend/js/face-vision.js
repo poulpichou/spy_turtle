@@ -22,8 +22,15 @@ function setFrameShape(shape,x,y,w,h){
  const style=frameStyle(),rect=shape.rect,ellipse=shape.ellipse||(shape.ellipse=document.createElementNS(NS,'ellipse')),corners=shape.corners||(shape.corners=document.createElementNS(NS,'path'));
  if(!ellipse.parentNode)shape.group.insertBefore(ellipse,shape.name);
  if(!corners.parentNode)shape.group.insertBefore(corners,shape.name);
+ const thinPath=shape.thinPath||(shape.thinPath=document.createElementNS(NS,'path'));
+ if(!thinPath.parentNode)shape.group.insertBefore(thinPath,shape.name);
+ thinPath.setAttribute('d',`M${x} ${y}H${x+w}V${y+h}H${x}Z`);
+ thinPath.setAttribute('fill','none');thinPath.setAttribute('stroke','#00ff66');
+ thinPath.setAttribute('stroke-width','1');thinPath.setAttribute('vector-effect','non-scaling-stroke');
+ thinPath.style.setProperty('stroke-width','1px','important');
+ thinPath.style.display=style==='thin'?'':'none';
  for(const item of [rect,ellipse,corners]){item.setAttribute('fill','none');item.setAttribute('stroke','#00ff66');item.setAttribute('vector-effect','non-scaling-stroke');item.setAttribute('stroke-width',style==='rect'?'2':'1');item.style.setProperty('stroke-width',style==='rect'?'2px':'1px','important');item.setAttribute('stroke-dasharray','none')}
- rect.style.display=style==='rect'||style==='thin'?'':'none';ellipse.style.display=style==='circle'?'':'none';corners.style.display=style==='corners'?'':'none';
+ rect.style.display=style==='rect'?'':'none';ellipse.style.display=style==='circle'?'':'none';corners.style.display=style==='corners'?'':'none';
  ellipse.setAttribute('cx',x+w/2);ellipse.setAttribute('cy',y+h/2);ellipse.setAttribute('rx',w*.845);ellipse.setAttribute('ry',h*.845);ellipse.setAttribute('stroke-dasharray','3 6');
  const a=Math.min(w,h)*.22;corners.setAttribute('d',`M${x+a} ${y}H${x}V${y+a} M${x+w-a} ${y}H${x+w}V${y+a} M${x} ${y+h-a}V${y+h}H${x+a} M${x+w-a} ${y+h}H${x+w}V${y+h-a}`);
 }

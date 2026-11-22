@@ -8,6 +8,7 @@ const KEY='spy_turtle_image_effects_v1',defaults={enabled:false,manual:'auto'};l
 const save=()=>localStorage.setItem(KEY,JSON.stringify(config));
 const VIEW_PREF_KEY='spy_turtle_view_preferences_v8';let viewPrefs;
 try{viewPrefs={names:true,emojiScale:1,...JSON.parse(localStorage.getItem(VIEW_PREF_KEY)||'{}')}}catch(_){viewPrefs={names:true,emojiScale:1}}
+if(!localStorage.getItem('spy_turtle_emoji_scale_v11_initialized')){viewPrefs.emojiScale=1;localStorage.setItem('spy_turtle_emoji_scale_v11_initialized','1');localStorage.setItem(VIEW_PREF_KEY,JSON.stringify(viewPrefs))}
 viewPrefs.names=viewPrefs.names!==false;viewPrefs.emojiScale=Math.min(2,Math.max(.5,Number(viewPrefs.emojiScale)||1));
 const saveViewPrefs=()=>localStorage.setItem(VIEW_PREF_KEY,JSON.stringify(viewPrefs));
 const NS='http://www.w3.org/2000/svg',svg=document.createElementNS(NS,'svg');svg.id='image-effects-overlay';svg.setAttribute('aria-hidden','true');Object.assign(svg.style,{position:'absolute',pointerEvents:'none',zIndex:'4',overflow:'hidden'});view.append(svg);
@@ -31,7 +32,7 @@ function render(){
  const slot=Math.floor(Date.now()/10000);
  function sample(list,count,seed){const a=[...new Set(list||[])];for(let i=a.length-1;i>0;i--){seed=(seed*1664525+1013904223)>>>0;const j=seed%(i+1);[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,count)}
  for(let i=0;i<positions.length;i++){
-  const p=positions[i],{f,x,y,w,h}=p,cx=x+w/2,cy=y+h/2,size=Math.max(12,w),emojiBaseSize=Math.max(size,width*.10),g=element('g');svg.append(g);
+  const p=positions[i],{f,x,y,w,h}=p,cx=x+w/2,cy=y+h/2,size=Math.max(12,w),emojiBaseSize=Math.min(width*.28,Math.max(width*.14,size)),g=element('g');svg.append(g);
   const put=(value,px,py,scale,cls='spy-thought')=>emoji(g,value,px,py,scale,cls);
   if(viewPrefs.names&&f.name&&String(f.name).toLowerCase()!=='unknown'){
    const name=element('text',{x:Math.max(2,x),y:Math.min(height-4,y+h+16),fill:'#ffffff','font-size':14,'font-weight':'bold','font-family':'Arial, sans-serif','paint-order':'stroke',stroke:'#151515','stroke-width':2},String(f.name));g.append(name);
