@@ -45,27 +45,33 @@ tabs.forEach(tab=>tab.addEventListener("click",event=>{
     setCenterView(tab.dataset.view);
 }));
 
+let logsRefreshing=false;
+function showLogTail(lines,limit){
+    const atBottom=logElement.scrollHeight-logElement.scrollTop-logElement.clientHeight<22;
+    const next=(lines||[]).slice(-limit).join("\n")||"No recent logs";
+    if(logElement.textContent!==next)logElement.textContent=next;
+    if(atBottom)logElement.scrollTop=logElement.scrollHeight;
+}
 async function refreshLogs(){
-    if(transportMode==="bluetooth"){
-        try{
-            const level=localStorage.getItem("spy_log_level")||"INFO";
+    if(logsRefreshing||activeView!=="logs")return;
+    logsRefreshing=true;
+    try{
+        const level=localStorage.getItem("spy_log_level")||"INFO";
+        if(transportMode==="bluetooth"){
             const pages=[];
             for(const offset of [12,8,4,0]){
                 const result=await bluetoothAdminRequest("log_tail",{level,count:4,offset});
                 pages.push(...(result.lines||[]));
             }
-            logElement.textContent=pages.join("\n")||"No recent logs";
-            logElement.scrollTop=logElement.scrollHeight;
-        }catch(error){logElement.textContent=`Bluetooth logs unavailable: ${error.message}`;}
-        return;
-    }
-    try{
-        const response=await fetch(`/logs?count=80&level=${encodeURIComponent(localStorage.getItem("spy_log_level")||"INFO")}`,{cache:"no-store"});
-        if(!response.ok)throw new Error(`HTTP ${response.status}`);
-        const data=await response.json();
-        logElement.textContent=data.lines.join("\n")||"No logs yet";
-        logElement.scrollTop=logElement.scrollHeight;
+            showLogTail(pages,16);
+        }else{
+            const response=await fetch(`/logs?count=80&level=${encodeURIComponent(level)}`,{cache:"no-store"});
+            if(!response.ok)throw new Error(`HTTP ${response.status}`);
+            const data=await response.json();
+            showLogTail(data.lines,80);
+        }
     }catch(error){logElement.textContent=`Unable to load logs: ${error.message}`;}
+    finally{logsRefreshing=false;}
 }
 function startLogs(){refreshLogs();if(!logTimer)logTimer=setInterval(refreshLogs,transportMode==="bluetooth"?2500:1000);}
 function stopLogs(){if(!logTimer)return;clearInterval(logTimer);logTimer=null;}
