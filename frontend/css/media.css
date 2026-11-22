@@ -66,3 +66,16 @@
 #commands-grid .commands-category{background:#222;border:1px solid #363636;border-radius:10px;padding:12px;display:grid;gap:10px;min-width:0}
 #commands-grid .commands-category h3{margin:0;color:#bbb;font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
 @media(max-width:720px){#commands-grid .commands-category{padding:9px;gap:8px}}
+
+/* Compact visual picker for the five main robot controls. */
+.spy-picker-overlay[hidden]{display:none!important}
+.spy-picker-overlay{position:fixed;inset:0;z-index:7000;display:flex;align-items:center;justify-content:center;padding:8px;background:#000a}
+.spy-picker-panel{width:min(390px,96vw);max-height:min(76dvh,570px);display:flex;flex-direction:column;overflow:hidden;border:1px solid #555;border-radius:10px;background:#202020;box-shadow:0 12px 35px #000b}
+.spy-picker-head{display:flex;align-items:center;justify-content:space-between;min-height:30px;padding:3px 7px;border-bottom:1px solid #363636;color:#ddd;font-size:.7rem}
+.spy-picker-close{width:25px!important;height:23px!important;min-width:25px!important;padding:0!important;font-size:1.1rem!important;line-height:1;background:#333;border:1px solid #555;border-radius:5px}
+.spy-picker-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;overflow-y:auto;overscroll-behavior:contain;min-height:0;padding:5px;align-content:start}
+.spy-picker-choice{width:100%!important;height:25px!important;min-height:25px!important;padding:2px 3px!important;border:1px solid #484848!important;border-radius:5px!important;background:#303030!important;color:#ddd!important;font-size:.58rem!important;line-height:1.1!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.spy-picker-choice.selected{border-color:#8baac5!important;background:#344657!important}
+.spy-picker-choice[data-mood-tone="neutral"]{background:#273442!important}.spy-picker-choice[data-mood-tone="dreamy"]{background:#342b45!important}.spy-picker-choice[data-mood-tone="gassy"]{background:#293d2e!important}.spy-picker-choice[data-mood-tone="happy"]{background:#3b3528!important}.spy-picker-choice[data-mood-tone="angry"]{background:#402c30!important}.spy-picker-choice[data-mood-tone="sleepy"]{background:#2b3042!important}.spy-picker-choice[data-mood-tone="curious"]{background:#293b3e!important}
+.spy-picker-choice:active{filter:brightness(1.4)}
+@media(max-height:440px){.spy-picker-panel{max-height:88dvh}}
