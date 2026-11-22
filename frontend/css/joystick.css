@@ -23,6 +23,11 @@
 #drive-joystick::before{width:1px;top:12%;bottom:12%;left:50%}
 #drive-joystick::after{height:1px;left:12%;right:12%;top:50%}
 
+/* Small reset in the Head card */
+.head-control-card{position:relative}
+#head-reset{position:absolute;top:5px;right:5px;z-index:2;width:23px;min-width:23px;height:19px;padding:0;border:1px solid #555;border-radius:5px;background:#353535;color:#ddd;font-size:15px;line-height:17px;touch-action:manipulation!important;cursor:pointer}
+#head-reset:active{background:#555}
+#head-reset:disabled{opacity:.45;cursor:wait}
 /* V8: monochrome joystick only */
 #drive-mode-toggle[aria-pressed="true"]{background:#555;border-color:#aaa}
 #drive-joystick{background:radial-gradient(circle,#333 0%,#202020 70%);border-color:#777}

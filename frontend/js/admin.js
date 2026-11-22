@@ -4,8 +4,10 @@ const adminResult=document.getElementById("admin-result");
     const restart=document.querySelector('[data-admin-action="restart"]');
     if(!restart)return;
     const reset=document.createElement("button");reset.type="button";reset.textContent="Reset Turtle";restart.before(reset);
+    const headReset=document.getElementById("head-reset");
+    if(headReset)headReset.onclick=()=>{if(!reset.disabled)reset.click()};
     reset.onclick=async()=>{
-        reset.disabled=true;
+        reset.disabled=true;if(headReset)headReset.disabled=true;
         try{
             const data=transportMode==="bluetooth"?await bluetoothAdminRequest("turtle_reset"):await (async()=>{
                 const response=await fetch("/admin/turtle/reset",{method:"POST"});const data=await response.json();
@@ -25,7 +27,7 @@ const adminResult=document.getElementById("admin-result");
                 if(!finished)throw Error('GPIO restart status timed out');
             }else adminResult.textContent=data.ok?'Turtle reset completed':'Reset failed: '+JSON.stringify(data);
         }catch(error){adminResult.textContent="Reset failed: "+error.message}
-        finally{reset.disabled=false}
+        finally{reset.disabled=false;if(headReset)headReset.disabled=false}
     };
 })();
 const motorCorrectionToggle=document.getElementById('motor-correction-toggle'),motorCorrectionStatus=document.getElementById('motor-correction-status');
