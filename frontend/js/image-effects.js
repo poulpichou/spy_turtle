@@ -31,7 +31,7 @@ function render(){
  const slot=Math.floor(Date.now()/10000);
  function sample(list,count,seed){const a=[...new Set(list||[])];for(let i=a.length-1;i>0;i--){seed=(seed*1664525+1013904223)>>>0;const j=seed%(i+1);[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,count)}
  for(let i=0;i<positions.length;i++){
-  const p=positions[i],{f,x,y,w,h}=p,cx=x+w/2,cy=y+h/2,size=Math.max(12,w),g=element('g');svg.append(g);
+  const p=positions[i],{f,x,y,w,h}=p,cx=x+w/2,cy=y+h/2,size=Math.max(12,w),emojiBaseSize=Math.max(size,width*.10),g=element('g');svg.append(g);
   const put=(value,px,py,scale,cls='spy-thought')=>emoji(g,value,px,py,scale,cls);
   if(viewPrefs.names&&f.name&&String(f.name).toLowerCase()!=='unknown'){
    const name=element('text',{x:Math.max(2,x),y:Math.min(height-4,y+h+16),fill:'#ffffff','font-size':14,'font-weight':'bold','font-family':'Arial, sans-serif','paint-order':'stroke',stroke:'#151515','stroke-width':2},String(f.name));g.append(name);
@@ -59,7 +59,7 @@ function render(){
   const symbols=sample(chosen,Math.min(4,chosen.length),seed+91);
   const spots=[[-.40,-.54],[1.40,-.58],[.20,-.99],[.86,-1.00]];
   for(let j=0;j<symbols.length;j++){
-   const [fx,fy]=spots[j],font=size*(j<2?.29:.32)*3*viewPrefs.emojiScale,margin=font*.7;
+   const [fx,fy]=spots[j],font=emojiBaseSize*(j<2?.29:.32)*3*viewPrefs.emojiScale,margin=font*.7;
    const px=Math.max(margin,Math.min(width-margin,x+w*fx)),py=Math.max(margin,Math.min(height-margin,y+size*fy));
    const e=put(symbols[j],px,py,font);e.style.animationDelay=`-${((i*4+j)*1.7)%9}s`;
   }
