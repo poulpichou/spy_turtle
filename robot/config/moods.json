@@ -974,6 +974,48 @@
           "en": "My circuits await your next mission."
         }
       ]
+    },
+    {
+      "id": "sick",
+      "mood": "sick",
+      "weight": 3,
+      "duration_seconds": [
+        15,
+        30
+      ],
+      "eyes": "sleepy",
+      "leds": "breathing",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "contexts": [
+        {
+          "fr": "Atchoum ! Je crois que je suis enrhumée.",
+          "en": "Achoo! I think I have a cold."
+        },
+        {
+          "fr": "Mon petit nez de tortue me chatouille.",
+          "en": "My little turtle nose is tickling."
+        },
+        {
+          "fr": "Je vais me reposer dans ma carapace.",
+          "en": "I will rest inside my shell."
+        },
+        {
+          "fr": "Atchoum ! Quel gros éternuement !",
+          "en": "Achoo! What a big sneeze!"
+        },
+        {
+          "fr": "Une bonne soupe me ferait du bien.",
+          "en": "A warm soup would make me feel better."
+        }
+      ],
+      "image_effect": "sick"
     }
   ]
 }
