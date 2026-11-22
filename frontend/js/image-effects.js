@@ -1,43 +1,44 @@
-/* Spy Turtle Image Effects V2 - browser overlay, no extra packages or image assets. */
+/* Spy Turtle Image Effects V3 - browser overlay, no extra packages or image assets. */
 (()=>{
 'use strict';
 const image=document.getElementById('camera-stream'),view=document.getElementById('camera-view');if(!image||!view)return;
-const EFFECTS={none:'None',hearts:'Hearts',horns:'Devil horns',question:'Question marks',surprise:'Surprise !?',stars:'Stars',tear:'Tear',zzz:'Sleepy Zzz',sparkles:'Sparkles',animals:'Animal faces',salad:'Salad faces',flip:'Dizzy upside down',robots:'Robot faces',detective:'Detective',dream:'Dream',shy:'Shy',rocket:'Rocket',gassy:'Gassy'};
-const MOODS={happy:'hearts',angry:'horns',curious:'question',excited:'stars',sad:'tear',sleepy:'zzz',sleeping:'zzz',proud:'sparkles',playful:'animals',hungry:'salad',dizzy:'flip',robot:'robots',detective:'detective',dreamy:'dream',surprised:'surprise',shy:'shy',rocket:'rocket',gassy:'gassy'};
+const EFFECTS={none:'None',hearts:'Hearts',horns:'Devil horns',question:'Question marks',surprise:'Surprise !?',stars:'Stars',tear:'Tear',zzz:'Dream turtles',sparkles:'Sparkles',animals:'Animal faces',salad:'Salad faces',flip:'Dizzy upside down',robots:'Robot heads',detective:'Detective',dream:'Dream',shy:'Shy',rocket:'Rocket',gassy:'Gassy'};
+const MOODS={happy:'hearts',angry:'horns',curious:'question',excited:'stars',sad:'tear',sleepy:'zzz',sleeping:'zzz',proud:'none',playful:'animals',hungry:'salad',dizzy:'flip',robot:'robots',obedient:'robots',detective:'detective',dreamy:'dream',surprised:'surprise',shy:'none',rocket:'rocket',gassy:'gassy'};
 const KEY='spy_turtle_image_effects_v1',defaults={enabled:false,manual:'auto'};let config;try{config={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(_){config={...defaults}}
 const save=()=>localStorage.setItem(KEY,JSON.stringify(config));
 const NS='http://www.w3.org/2000/svg',svg=document.createElementNS(NS,'svg');svg.id='image-effects-overlay';svg.setAttribute('aria-hidden','true');Object.assign(svg.style,{position:'absolute',pointerEvents:'none',zIndex:'4',overflow:'hidden'});view.append(svg);
-let mood='neutral',faces=[],lastFacesAt=0,enabledVision=false;const tracks=new Map();let nextId=1;
+let mood='neutral',faces=[],lastFacesAt=0,enabledVision=false;const tracks=new Map();let nextId=1;let smokeSeed=0;
 const element=(tag,attrs={},value)=>{const e=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))e.setAttribute(k,String(v));if(value!==undefined)e.textContent=value;return e};
 function emoji(group,value,x,y,size,cls=''){const t=element('text',{x,y,'text-anchor':'middle','font-size':size,'dominant-baseline':'middle'},value);if(cls)t.setAttribute('class',cls);group.append(t);return t}
 function effectName(){return config.manual!=='auto'?(config.manual||'none'):(config.enabled?(MOODS[mood]||'none'):'none')}
 function assignTracks(incoming){const now=Date.now(),used=new Set();for(const f of incoming){const cx=f.x+f.w/2,cy=f.y+f.h/2;let best=null,bestDist=Infinity;for(const t of tracks.values()){if(used.has(t.id))continue;if(f.name&&f.name!=='unknown'&&t.name===f.name){best=t;break}const d=Math.hypot(cx-t.cx,cy-t.cy);if(d<bestDist&&d<Math.max(.12,f.w*.8)){best=t;bestDist=d}}if(!best){best={id:nextId++,animal:null,name:null,cx,cy,seen:now};tracks.set(best.id,best)}best.cx=cx;best.cy=cy;best.name=f.name&&f.name!=='unknown'?f.name:best.name;best.seen=now;used.add(best.id);f._track=best.id}for(const [id,t] of tracks)if(now-t.seen>12000)tracks.delete(id)}
 function animalFor(id){const pool=['🐼','🦊','🐻','🐱','🐯','🐸','🐨','🐵','🦁','🐰'];const track=tracks.get(id);if(!track)return pool[0];if(track.animal)return track.animal;const used=new Set([...tracks.values()].map(t=>t.animal));track.animal=pool.find(a=>!used.has(a))||pool[(id-1)%pool.length];return track.animal}
-function render(){svg.replaceChildren();const effect=effectName(),active=effect!=='none';view.classList.toggle('image-effects-active',active);if(!view.classList.contains('active')||!image.naturalWidth||!image.naturalHeight||!active||!enabledVision||Date.now()-lastFacesAt>4500)return;
+function render(){svg.replaceChildren();const effect=effectName(),active=effect!=='none';view.classList.toggle('image-effects-active',active);if(!view.classList.contains('active')||!image.naturalWidth||!image.naturalHeight||!active)return;if(effect!=='gassy'&&(!enabledVision||Date.now()-lastFacesAt>4500))return;
  const bounds=image.getBoundingClientRect(),parent=view.getBoundingClientRect(),ratio=Math.min(bounds.width/image.naturalWidth,bounds.height/image.naturalHeight),width=image.naturalWidth*ratio,height=image.naturalHeight*ratio;
  Object.assign(svg.style,{left:`${bounds.left-parent.left+(bounds.width-width)/2}px`,top:`${bounds.top-parent.top+(bounds.height-height)/2}px`,width:`${width}px`,height:`${height}px`});svg.setAttribute('viewBox',`0 0 ${width} ${height}`);
+ if(effect==='gassy'){const now=Date.now()/1000;for(let i=0;i<9;i++){const phase=(now*.19+i*.173)%1,x=(.08+((i*37)%83)/100)*width+Math.sin(now*.7+i*3)*width*.025,y=height*(1.12-phase*1.24);const g=element('g',{opacity:(Math.sin(Math.PI*phase)*.65).toFixed(2)});svg.append(g);emoji(g,i%3===0?'☁️':'💨',x,y,Math.max(16,width*.035)*(1+phase*.65),'spy-float')}return}
  for(const f of faces){const x=f.x*width,y=f.y*height,w=f.w*width,h=f.h*height,cx=x+w/2,cy=y+h/2,s=Math.max(12,w),g=element('g');svg.append(g);
- if(effect==='hearts'){emoji(g,'💕',x+w*.2,y-s*.14,s*.40,'spy-float');emoji(g,'💗',x+w*.85,y-s*.12,s*.28,'spy-float')}
- else if(effect==='horns'){emoji(g,'😈',cx,y-s*.16,s*.68,'spy-bob')}
- else if(effect==='question')emoji(g,'❓',x+w*.85,y-s*.2,s*.45,'spy-bob');
- else if(effect==='surprise'){emoji(g,'‼️',x+w*.15,y-s*.16,s*.42,'spy-bob');emoji(g,'⁉️',x+w*.9,y-s*.12,s*.38,'spy-bob')}
- else if(effect==='stars'){emoji(g,'✨',x+w*.1,y-s*.12,s*.40,'spy-twinkle');emoji(g,'⭐',x+w*.9,y-s*.15,s*.32,'spy-twinkle')}
+ if(effect==='hearts'){emoji(g,'💕',x+w*.2,y-s*.42,s*.40,'spy-float');emoji(g,'💗',x+w*.85,y-s*.38,s*.28,'spy-float')}
+ else if(effect==='horns'){const horn=element('path',{d:`M ${x+w*.12} ${y+h*.04} Q ${x-w*.04} ${y-h*.30} ${x+w*.18} ${y-h*.36} Q ${x+w*.27} ${y-h*.16} ${x+w*.34} ${y+h*.01} Z M ${x+w*.66} ${y+h*.01} Q ${x+w*.73} ${y-h*.16} ${x+w*.82} ${y-h*.36} Q ${x+w*1.04} ${y-h*.30} ${x+w*.88} ${y+h*.04} Z`,fill:'#d62828',stroke:'#8c1010','stroke-width':Math.max(1,w*.018),'stroke-linejoin':'round'});g.append(horn)}
+ else if(effect==='question')emoji(g,'❓',x+w*.85,y-s*.62,s*.45,'spy-bob');
+ else if(effect==='surprise'){emoji(g,'!',x+w*.18,y-s*.66,s*.54,'spy-bob');emoji(g,'?',x+w*.85,y-s*.60,s*.54,'spy-bob')}
+ else if(effect==='stars'){emoji(g,'✨',x+w*.1,y-s*.60,s*.40,'spy-twinkle');emoji(g,'⭐',x+w*.9,y-s*.54,s*.32,'spy-twinkle')}
  else if(effect==='tear')emoji(g,'💧',x+w*.22,y+h*.65,s*.26,'spy-float');
- else if(effect==='zzz')emoji(g,'💤',x+w*.9,y-s*.12,s*.45);
- else if(effect==='sparkles')emoji(g,'✨',cx,y-s*.15,s*.5,'spy-twinkle');
+ else if(effect==='zzz'){emoji(g,'🐢',x+w*.18,y-s*.52,s*.44);emoji(g,'🤖',x+w*.82,y-s*.59,s*.37)}
+ else if(effect==='sparkles')emoji(g,'✨',cx,y-s*.56,s*.5,'spy-twinkle');
  else if(effect==='animals')emoji(g,animalFor(f._track),cx,cy,s*1.2,'spy-bob');
  else if(effect==='salad')emoji(g,'🥗',cx,cy,s*1.25,'spy-bob');
- else if(effect==='robots')emoji(g,['🤖','👾','🦾'][((f._track||1)-1)%3],cx,cy,s*1.2,'spy-bob');
- else if(effect==='flip'){const t=element('g',{transform:`rotate(180 ${cx} ${cy})`});g.append(t);emoji(t,'🙃',cx,cy,s*1.05)}
- else if(effect==='detective')emoji(g,'🔎',x+w*.86,y+s*.08,s*.42,'spy-bob');
- else if(effect==='dream')emoji(g,'💭',x+w*.85,y-s*.16,s*.46,'spy-float');
- else if(effect==='shy')emoji(g,'🌸',x+w*.18,y+h*.75,s*.35,'spy-float');
- else if(effect==='rocket')emoji(g,'🚀',x+w*.8,y-s*.18,s*.46,'spy-float');
- else if(effect==='gassy')emoji(g,'💨',x+w*.85,y+h*.85,s*.45,'spy-float');
+ else if(effect==='robots')emoji(g,'🤖',cx,cy,s*1.2,'spy-bob');
+ else if(effect==='flip'){const defs=element('defs'),clip=element('clipPath',{id:`spy-face-clip-${f._track||Math.round(cx)}`});clip.append(element('rect',{x,y,width:w,height:h,rx:Math.max(2,w*.07)}));defs.append(clip);g.append(defs);const flipped=element('g',{'clip-path':`url(#${clip.id})`});const frame=element('image',{href:image.currentSrc||image.src,x:0,y:0,width,height,preserveAspectRatio:'none',transform:`rotate(180 ${cx} ${cy})`});flipped.append(frame);g.append(flipped)}
+ else if(effect==='detective')emoji(g,'🔎',x+w*.86,y-s*.54,s*.42,'spy-bob');
+ else if(effect==='dream'){emoji(g,'🐢',x+w*.16,y-s*.56,s*.42,'spy-float');emoji(g,'🤖',x+w*.84,y-s*.63,s*.40,'spy-float')}
+ else if(effect==='shy'){}
+ else if(effect==='rocket'){emoji(g,'⚡',x-w*.14,y+h*.12,s*.50,'spy-twinkle');emoji(g,'🔥',x+w*1.14,y+h*.48,s*.54,'spy-float');emoji(g,'⚡',x+w*.8,y-s*.50,s*.38,'spy-twinkle')}
+ 
  }
 }
 async function poll(){try{const [v,state]=await Promise.all([transportMode==='bluetooth'?bluetoothAdminRequest('vision_status'):fetch('/vision/status',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error(r.status);return r.json()}),transportMode==='bluetooth'?Promise.resolve(null):fetch('/state',{cache:'no-store'}).then(r=>r.ok?r.json():null)]);enabledVision=!!v.enabled;const incoming=Array.isArray(v.faces)?v.faces:[];if(incoming.length){faces=incoming.map(f=>({...f}));assignTracks(faces);lastFacesAt=Date.now()}else if(Date.now()-lastFacesAt>3000)faces=[];mood=state?.brain?.mood||mood}catch(e){if(Date.now()-lastFacesAt>4500)faces=[];console.debug('[IMAGE EFFECTS]',e.message)}render()}
 function setupAdmin(){const recognition=document.getElementById('face-enabled')?.closest('.admin-face-heading');if(!recognition)return;document.getElementById('image-effects-section')?.remove();const section=document.createElement('section');section.className='admin-section';section.id='image-effects-section';const title=document.createElement('h3');title.textContent='Image Effects';section.append(title);const line=document.createElement('div');line.className='admin-face-heading';const label=document.createElement('label');label.htmlFor='image-effects-enabled';label.textContent='Activated (linked to mood)';const toggle=document.createElement('input');toggle.type='checkbox';toggle.id='image-effects-enabled';toggle.className='admin-switch';toggle.setAttribute('role','switch');toggle.checked=!!config.enabled;toggle.onchange=()=>{config.enabled=toggle.checked;save();render()};line.append(label,toggle);section.append(line);const manualLine=document.createElement('div');manualLine.className='admin-slider';const manualLabel=document.createElement('label');manualLabel.htmlFor='image-effects-manual';manualLabel.textContent='Immediate modifier (priority)';const select=document.createElement('select');select.id='image-effects-manual';select.style.width='100%';for(const [value,name] of Object.entries({auto:'Auto (follow mood)',...EFFECTS})){const option=document.createElement('option');option.value=value;option.textContent=name;select.append(option)}select.value=(config.manual==='auto'||Object.hasOwn(EFFECTS,config.manual))?config.manual:'auto';select.onchange=()=>{config.manual=select.value;save();render()};manualLine.append(manualLabel,select);section.append(manualLine);recognition.closest('.admin-section')?.after(section)}
 const css=document.createElement('style');css.textContent=`#camera-view.image-effects-active #face-overlay{display:none!important}@keyframes spyFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes spyBob{0%,100%{opacity:1}50%{opacity:.75}}@keyframes spyTwinkle{0%,100%{opacity:1}50%{opacity:.45}}#image-effects-overlay .spy-float{animation:spyFloat 2.4s ease-in-out infinite}#image-effects-overlay .spy-bob{animation:spyBob 1.6s ease-in-out infinite}#image-effects-overlay .spy-twinkle{animation:spyTwinkle 1.2s ease-in-out infinite}`;document.head.append(css);
-setupAdmin();image.addEventListener('load',render);window.addEventListener('resize',render);document.addEventListener('visibilitychange',render);setInterval(poll,1000);poll();
+setupAdmin();image.addEventListener('load',render);window.addEventListener('resize',render);document.addEventListener('visibilitychange',render);setInterval(poll,1000);setInterval(()=>{if(effectName()==='gassy'&&view.classList.contains('active'))render()},220);poll();
 })();

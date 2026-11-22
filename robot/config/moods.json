@@ -595,7 +595,7 @@
           "en": "I can receive messages on my back, how cool is that!"
         }
       ],
-      "image_effect": "sparkles"
+      "image_effect": "none"
     },
     {
       "id": "shy",
@@ -637,7 +637,7 @@
           "en": "Sometimes a spy prefers to stay discreet."
         }
       ],
-      "image_effect": "shy"
+      "image_effect": "none"
     },
     {
       "id": "sad",
@@ -934,8 +934,8 @@
       ]
     },
     {
-      "id": "robot",
-      "mood": "robot",
+      "id": "obedient",
+      "mood": "obedient",
       "weight": 2,
       "duration_seconds": [
         20,
@@ -954,24 +954,24 @@
       "image_effect": "robots",
       "contexts": [
         {
-          "fr": "Bip boup, mode robot activé !",
-          "en": "Beep boop, robot mode activated!"
+          "fr": "Mission reçue, j’obéis avec plaisir !",
+          "en": "Mission received, happy to obey!"
         },
         {
-          "fr": "J’ai détecté des humains sympathiques.",
-          "en": "I have detected some friendly humans."
+          "fr": "À vos ordres, bip bip !",
+          "en": "At your service, beep beep!"
         },
         {
-          "fr": "Mes circuits sont prêts pour l’aventure.",
-          "en": "My circuits are ready for adventure."
+          "fr": "Je suis prête à suivre les instructions.",
+          "en": "I am ready to follow instructions."
         },
         {
-          "fr": "Je lance une danse de robot rigolote.",
-          "en": "Initiating a very silly robot dance."
+          "fr": "Commande acceptée, capitaine !",
+          "en": "Command accepted, captain!"
         },
         {
-          "fr": "Mission acceptée, bip bip !",
-          "en": "Mission accepted, beep beep!"
+          "fr": "Mes circuits attendent votre prochaine mission.",
+          "en": "My circuits await your next mission."
         }
       ]
     }
