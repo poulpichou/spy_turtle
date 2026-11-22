@@ -48,7 +48,8 @@
           "fr": "Une tortue doit parfois prendre son temps.",
           "en": "Sometimes a turtle needs to take its time."
         }
-      ]
+      ],
+      "image_effect": "none"
     },
     {
       "id": "neutral_2",
@@ -89,7 +90,8 @@
           "fr": "Je prends des forces pour une aventure.",
           "en": "I am saving energy for an adventure."
         }
-      ]
+      ],
+      "image_effect": "none"
     },
     {
       "id": "neutral_3",
@@ -130,7 +132,8 @@
           "fr": "Je cherche une bonne idée de jeu.",
           "en": "I am looking for a fun game idea."
         }
-      ]
+      ],
+      "image_effect": "none"
     },
     {
       "id": "neutral_4",
@@ -171,7 +174,8 @@
           "fr": "Je suis prête à recevoir un nouveau message.",
           "en": "I am ready for a new message."
         }
-      ]
+      ],
+      "image_effect": "none"
     },
     {
       "id": "neutral_5",
@@ -212,7 +216,8 @@
           "fr": "Je suis de bonne compagnie, même sans parler.",
           "en": "I am good company, even when I am quiet."
         }
-      ]
+      ],
+      "image_effect": "none"
     },
     {
       "id": "happy",
@@ -253,7 +258,8 @@
           "fr": "Aujourd'hui, ma carapace déborde de joie !",
           "en": "Today my shell is bursting with joy!"
         }
-      ]
+      ],
+      "image_effect": "hearts"
     },
     {
       "id": "curious",
@@ -294,7 +300,8 @@
           "fr": "Je me demande comment les tortues font pour retrouver leur chemin.",
           "en": "I wonder how turtles find their way home."
         }
-      ]
+      ],
+      "image_effect": "question"
     },
     {
       "id": "playful",
@@ -335,7 +342,8 @@
           "fr": "Je rêve d'un jeu où ma carapace devient un écran magique !",
           "en": "I dream of a game where my shell becomes a magic screen!"
         }
-      ]
+      ],
+      "image_effect": "animals"
     },
     {
       "id": "sleepy",
@@ -376,7 +384,8 @@
           "fr": "Mes paupières de robot deviennent toutes lourdes.",
           "en": "My robot eyelids are getting heavy."
         }
-      ]
+      ],
+      "image_effect": "zzz"
     },
     {
       "id": "excited",
@@ -417,7 +426,8 @@
           "fr": "J'ai une idée géniale de jeu avec Oscar !",
           "en": "I have a brilliant game idea with Oscar!"
         }
-      ]
+      ],
+      "image_effect": "stars"
     },
     {
       "id": "detective",
@@ -458,7 +468,8 @@
           "fr": "Je me demande qui a laissé des traces près de mon repaire.",
           "en": "I wonder who left tracks near my hideout."
         }
-      ]
+      ],
+      "image_effect": "detective"
     },
     {
       "id": "dreamy",
@@ -499,7 +510,8 @@
           "fr": "Je rêve d'une aventure avec Oscar, Basile et Félix.",
           "en": "I dream of an adventure with Oscar, Basile and Felix."
         }
-      ]
+      ],
+      "image_effect": "dream"
     },
     {
       "id": "surprised",
@@ -540,7 +552,8 @@
           "fr": "Je ne m'attendais pas à rêver d'une fusée-tortue !",
           "en": "I did not expect to dream about a turtle rocket!"
         }
-      ]
+      ],
+      "image_effect": "surprise"
     },
     {
       "id": "proud",
@@ -581,7 +594,8 @@
           "fr": "Je sais recevoir des messages sur mon dos, c'est génial !",
           "en": "I can receive messages on my back, how cool is that!"
         }
-      ]
+      ],
+      "image_effect": "sparkles"
     },
     {
       "id": "shy",
@@ -622,7 +636,8 @@
           "fr": "Parfois, une espionne préfère rester discrète.",
           "en": "Sometimes a spy prefers to stay discreet."
         }
-      ]
+      ],
+      "image_effect": "shy"
     },
     {
       "id": "sad",
@@ -663,7 +678,8 @@
           "fr": "Mes lumières ont l'air un peu mélancoliques aujourd'hui.",
           "en": "My lights seem a little melancholy today."
         }
-      ]
+      ],
+      "image_effect": "tear"
     },
     {
       "id": "angry",
@@ -704,7 +720,8 @@
           "fr": "Mon équipe imaginaire a raté un but, grrr !",
           "en": "My imaginary team missed a goal, grrr!"
         }
-      ]
+      ],
+      "image_effect": "horns"
     },
     {
       "id": "rocket",
@@ -745,7 +762,8 @@
           "fr": "Oscar serait mon copilote dans l'espace !",
           "en": "Oscar would be my copilot in space!"
         }
-      ]
+      ],
+      "image_effect": "rocket"
     },
     {
       "id": "gassy",
@@ -786,7 +804,8 @@
           "fr": "Promis, ce n'était pas une fusée, juste un petit prout !",
           "en": "I promise that was not a rocket, just a tiny toot!"
         }
-      ]
+      ],
+      "image_effect": "gassy"
     },
     {
       "id": "sleeping",
@@ -826,6 +845,133 @@
         {
           "fr": "Je rêve d'une mission secrète sous les étoiles.",
           "en": "I dream of a secret mission under the stars."
+        }
+      ],
+      "image_effect": "zzz"
+    },
+    {
+      "id": "hungry",
+      "mood": "hungry",
+      "weight": 2,
+      "duration_seconds": [
+        20,
+        45
+      ],
+      "eyes": "neutral",
+      "leds": "curious",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "image_effect": "salad",
+      "contexts": [
+        {
+          "fr": "Je pourrais manger une montagne de laitue !",
+          "en": "I could eat a whole mountain of lettuce!"
+        },
+        {
+          "fr": "Quelqu’un cache-t-il une délicieuse salade ?",
+          "en": "Is anyone hiding a delicious salad?"
+        },
+        {
+          "fr": "Mon ventre gronde comme un petit moteur.",
+          "en": "My tummy is rumbling like a tiny engine."
+        },
+        {
+          "fr": "Je rêve de feuilles vertes bien croquantes.",
+          "en": "I am dreaming of crunchy green leaves."
+        },
+        {
+          "fr": "Le déjeuner est ma mission secrète préférée !",
+          "en": "Lunchtime is my favorite secret mission!"
+        }
+      ]
+    },
+    {
+      "id": "dizzy",
+      "mood": "dizzy",
+      "weight": 2,
+      "duration_seconds": [
+        20,
+        45
+      ],
+      "eyes": "surprised",
+      "leds": "surprised",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "image_effect": "flip",
+      "contexts": [
+        {
+          "fr": "Oh là, le monde entier tourne !",
+          "en": "Whoa, the whole world is spinning!"
+        },
+        {
+          "fr": "Je crois que ma carapace vient de faire une pirouette.",
+          "en": "I think my shell just did a somersault."
+        },
+        {
+          "fr": "Où est le haut ?",
+          "en": "Which way is up?"
+        },
+        {
+          "fr": "Il me faut un instant pour retrouver mon équilibre.",
+          "en": "I need a moment to find my balance."
+        },
+        {
+          "fr": "Aujourd’hui, tout est à l’envers !",
+          "en": "Everything looks upside down today!"
+        }
+      ]
+    },
+    {
+      "id": "robot",
+      "mood": "robot",
+      "weight": 2,
+      "duration_seconds": [
+        20,
+        45
+      ],
+      "eyes": "neutral",
+      "leds": "cool",
+      "shell": null,
+      "head": {
+        "pattern": "none",
+        "amplitude_degrees": 0,
+        "repetitions": 1,
+        "step_interval_seconds": 1.2
+      },
+      "sound": null,
+      "image_effect": "robots",
+      "contexts": [
+        {
+          "fr": "Bip boup, mode robot activé !",
+          "en": "Beep boop, robot mode activated!"
+        },
+        {
+          "fr": "J’ai détecté des humains sympathiques.",
+          "en": "I have detected some friendly humans."
+        },
+        {
+          "fr": "Mes circuits sont prêts pour l’aventure.",
+          "en": "My circuits are ready for adventure."
+        },
+        {
+          "fr": "Je lance une danse de robot rigolote.",
+          "en": "Initiating a very silly robot dance."
+        },
+        {
+          "fr": "Mission acceptée, bip bip !",
+          "en": "Mission accepted, beep beep!"
         }
       ]
     }
