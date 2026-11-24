@@ -133,8 +133,9 @@ function applyPowerState(state){
     runtimePower={...runtimePower,...state};
     idleToggle.classList.toggle("active",runtimePower.idle_mode);
     idleToggle.querySelector("span").textContent="Idle";
-    document.dispatchEvent(new CustomEvent("turtlepowerchange",{detail:{...runtimePower}}));
+
     for(const [name,button] of Object.entries(powerButtons))applyPowerFeature(name,button);
+    document.dispatchEvent(new CustomEvent("turtlepowerchange",{detail:{...runtimePower}}));
     idleDirectionalIds.forEach(id=>{const button=document.getElementById(id);if(button)button.disabled=runtimePower.idle_mode});
     idleControlIds.forEach(id=>{const element=document.getElementById(id);if(element)element.disabled=runtimePower.idle_mode});
     applyLocalFeature("animation");applyLocalFeature("sound");

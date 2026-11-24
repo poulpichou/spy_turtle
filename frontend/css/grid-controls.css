@@ -83,3 +83,17 @@
 .spy-control-grid .spy-vision-segment button.selected{filter:grayscale(.5) saturate(.55)}
 .spy-control-grid .spy-tile-arrow,.spy-control-grid .spy-tile-picker .compact-select-button::after{color:#a5a5a5!important}
 .spy-control-grid .spy-tile.selected:not(:has(#headlights-toggle)){border-color:#666!important}
+
+/* V6: true monochrome glyphs, independent of legacy feature-icon styles. */
+#spy-left-grid .spy-tile-main,#spy-right-grid .spy-tile-main,
+#spy-left-grid .spy-vision-segment button,#spy-right-grid .spy-tile-picker{filter:grayscale(1)!important}
+#spy-left-grid #idle-toggle:not(.active){filter:grayscale(1)!important;color:#ddd!important}
+#spy-left-grid #idle-toggle.active{filter:none!important;color:#fff3ad!important}
+#spy-right-grid #headlights-toggle.active{filter:none!important;color:#ffe17b!important}
+#spy-right-grid .spy-hardware-glyph{display:inline-block;filter:grayscale(1)!important;opacity:1!important;transition:opacity .15s ease}
+#spy-right-grid .spy-tile[data-power-state="off"] .spy-hardware-glyph,
+#spy-right-grid .spy-tile .spy-tile-main[data-hardware-enabled="false"] .spy-hardware-glyph{opacity:.16!important}
+#spy-right-grid .spy-tile[data-power-state="on"] .spy-hardware-glyph,
+#spy-right-grid .spy-tile .spy-tile-main[data-hardware-enabled="true"] .spy-hardware-glyph{opacity:1!important}
+#spy-right-grid .spy-tile[data-power-state="off"] .spy-tile-main{opacity:1!important}
+#spy-right-grid .spy-tile[data-power-state="on"] .spy-tile-main{opacity:1!important}
