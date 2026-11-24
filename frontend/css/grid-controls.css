@@ -72,3 +72,14 @@
 #spy-right-grid .spy-tile:has(#shell-light-toggle.off) #shell-light-toggle,
 #spy-right-grid .spy-tile[data-power-state="off"] .feature-icon{filter:grayscale(1)!important;opacity:.25!important}
 #spy-right-grid .spy-tile[data-power-state="on"] .feature-icon{filter:none!important;opacity:1!important}
+
+/* V5: restrained UI palette; keep idle moon and active headlights as meaningful accents. */
+#spy-left-grid .spy-tile-main:not(#idle-toggle):not(#headlights-toggle),
+#spy-right-grid .spy-tile-main:not(#headlights-toggle){filter:grayscale(.78) saturate(.35)!important}
+#spy-right-grid .spy-tile[data-power-state="off"] .spy-tile-main,
+#spy-right-grid .spy-tile .spy-tile-main[data-hardware-enabled="false"]{filter:grayscale(1)!important;opacity:.22!important}
+#spy-right-grid .spy-tile .spy-tile-main[data-hardware-enabled="true"]{filter:grayscale(.78) saturate(.35)!important;opacity:1!important}
+.spy-control-grid .spy-vision-segment button{filter:grayscale(.8) saturate(.3)}
+.spy-control-grid .spy-vision-segment button.selected{filter:grayscale(.5) saturate(.55)}
+.spy-control-grid .spy-tile-arrow,.spy-control-grid .spy-tile-picker .compact-select-button::after{color:#a5a5a5!important}
+.spy-control-grid .spy-tile.selected:not(:has(#headlights-toggle)){border-color:#666!important}

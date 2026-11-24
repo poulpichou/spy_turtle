@@ -72,7 +72,7 @@ function syncVision(){
  for(const [mode,b] of Object.entries(visionButtons)){b.classList.toggle('selected',mode===vision);b.setAttribute('aria-pressed',String(mode===vision))}
 }
 leftGrid.append(visionTile);
-relocateButton('automation-master',leftGrid,'⏱️');
+relocateButton('automation-master',leftGrid,'🦾');
 let chatbot=false;
 const chat=tile('Chatbot','🗣️',()=>{chatbot=!chatbot;syncChat()}, {menu:event=>popup('Chatbot language',[
  {label:'🇫🇷',run:()=>setLanguage('fr')},{label:'🇬🇧',run:()=>setLanguage('en')}
@@ -111,9 +111,23 @@ document.addEventListener('click',event=>{if(event.target===originalView||event.
 const observer=new MutationObserver(()=>{syncIdle();syncVision()});
 observer.observe(idle,{attributes:true,attributeFilter:['class','aria-pressed']});
 if(originalView)observer.observe(originalView,{attributes:true,attributeFilter:['class','aria-pressed']});
+// Hardware power state is provided by Admin, not inferred from legacy CSS classes.
+function applyHardwarePower(state){
+ for(const [key,id] of [['shell_light','shell-light-toggle'],['back_screen','back-screen-toggle'],['eyes','eyes-toggle']]){
+  if(typeof state[key]!=='boolean')continue;
+  const button=$(id),tile=button?.closest('.spy-tile');if(!button||!tile)continue;
+  const on=state[key]&&!state.idle_mode;
+  tile.dataset.powerState=on?'on':'off';
+  tile.classList.toggle('spy-off',!on);tile.classList.toggle('spy-on',on);
+  button.dataset.hardwareEnabled=on?'true':'false';
+  button.style.setProperty('opacity',on?'1':'0.22','important');
+  button.style.setProperty('filter',on?'grayscale(.7)':'grayscale(1)','important');
+ }
+}
+document.addEventListener('turtlepowerchange',event=>applyHardwarePower(event.detail||{}));
 const stateButtons=['animation-toggle','sound-toggle','eyes-toggle','back-screen-toggle','shell-light-toggle','headlights-toggle','automation-master'];
 for(const id of stateButtons){const button=$(id);if(!button)continue;const tile=button.closest('.spy-tile');
- const sync=()=>{const on=button.classList.contains('active')&&!button.classList.contains('off');tile?.classList.toggle('spy-off',!on);tile?.classList.toggle('spy-on',on);if(tile)tile.dataset.powerState=on?'on':'off';
+ const sync=()=>{const on=button.dataset.hardwareEnabled?button.dataset.hardwareEnabled==='true':button.classList.contains('active')&&!button.classList.contains('off');tile?.classList.toggle('spy-off',!on);tile?.classList.toggle('spy-on',on);if(tile)tile.dataset.powerState=on?'on':'off';
   if(['eyes-toggle','back-screen-toggle','shell-light-toggle'].includes(id)){
    button.style.setProperty('filter',on?'none':'grayscale(1)','important');
    button.style.setProperty('opacity',on?'1':'0.25','important');
