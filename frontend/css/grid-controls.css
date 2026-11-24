@@ -66,51 +66,13 @@
 .spy-grid-popover:has(button) {min-width:0;width:max-content;max-width:160px}
 .spy-grid-popover:has(button) button{min-width:44px;text-align:center}
 
-/* V4: explicit hardware power state, overriding inherited feature-icon and card styling. */
-#spy-right-grid .spy-tile:has(#eyes-toggle.off) #eyes-toggle,
-#spy-right-grid .spy-tile:has(#back-screen-toggle.off) #back-screen-toggle,
-#spy-right-grid .spy-tile:has(#shell-light-toggle.off) #shell-light-toggle,
-#spy-right-grid .spy-tile[data-power-state="off"] .feature-icon{filter:grayscale(1)!important;opacity:.25!important}
-#spy-right-grid .spy-tile[data-power-state="on"] .feature-icon{filter:none!important;opacity:1!important}
-
-/* V5: restrained UI palette; keep idle moon and active headlights as meaningful accents. */
-#spy-left-grid .spy-tile-main:not(#idle-toggle):not(#headlights-toggle),
-#spy-right-grid .spy-tile-main:not(#headlights-toggle){filter:grayscale(.78) saturate(.35)!important}
-#spy-right-grid .spy-tile[data-power-state="off"] .spy-tile-main,
-#spy-right-grid .spy-tile .spy-tile-main[data-hardware-enabled="false"]{filter:grayscale(1)!important;opacity:.22!important}
-#spy-right-grid .spy-tile .spy-tile-main[data-hardware-enabled="true"]{filter:grayscale(.78) saturate(.35)!important;opacity:1!important}
-.spy-control-grid .spy-vision-segment button{filter:grayscale(.8) saturate(.3)}
-.spy-control-grid .spy-vision-segment button.selected{filter:grayscale(.5) saturate(.55)}
-.spy-control-grid .spy-tile-arrow,.spy-control-grid .spy-tile-picker .compact-select-button::after{color:#a5a5a5!important}
-.spy-control-grid .spy-tile.selected:not(:has(#headlights-toggle)){border-color:#666!important}
-
-/* V6: true monochrome glyphs, independent of legacy feature-icon styles. */
-#spy-left-grid .spy-tile-main,#spy-right-grid .spy-tile-main,
-#spy-left-grid .spy-vision-segment button,#spy-right-grid .spy-tile-picker{filter:grayscale(1)!important}
-#spy-left-grid #idle-toggle:not(.active){filter:grayscale(1)!important;color:#ddd!important}
-#spy-left-grid #idle-toggle.active{filter:none!important;color:#fff3ad!important}
-#spy-right-grid #headlights-toggle.active{filter:none!important;color:#ffe17b!important}
-#spy-right-grid .spy-hardware-glyph{display:inline-block;filter:grayscale(1)!important;opacity:1!important;transition:opacity .15s ease}
-#spy-right-grid .spy-tile[data-power-state="off"] .spy-hardware-glyph,
-#spy-right-grid .spy-tile .spy-tile-main[data-hardware-enabled="false"] .spy-hardware-glyph{opacity:.16!important}
-#spy-right-grid .spy-tile[data-power-state="on"] .spy-hardware-glyph,
-#spy-right-grid .spy-tile .spy-tile-main[data-hardware-enabled="true"] .spy-hardware-glyph{opacity:1!important}
-#spy-right-grid .spy-tile[data-power-state="off"] .spy-tile-main{opacity:1!important}
-#spy-right-grid .spy-tile[data-power-state="on"] .spy-tile-main{opacity:1!important}
-
-/* V7: source of truth = Admin's own .active/.off, exactly as Sound. */
-#spy-right-grid .spy-tile .feature-icon.off,
-#spy-right-grid .spy-tile .feature-icon:not(.active){filter:grayscale(1)!important;opacity:.20!important}
-#spy-right-grid .spy-tile .feature-icon.active:not(.off){filter:grayscale(1)!important;opacity:1!important}
-#spy-right-grid .spy-tile .feature-icon.off .spy-hardware-glyph,
-#spy-right-grid .spy-tile .feature-icon:not(.active) .spy-hardware-glyph{opacity:1!important}
-/* Monochrome by default, only active Idle and Light retain their accents. */
+/* V8: one monochrome visual state, driven directly by Admin's .active/.off. */
 #spy-left-grid #idle-toggle:not(.active){filter:grayscale(1)!important;opacity:1!important;color:#ddd!important}
 #spy-left-grid #idle-toggle.active{filter:none!important;opacity:1!important;color:#f0e5a6!important}
-#spy-right-grid #headlights-toggle.active{filter:none!important;opacity:1!important}
-#spy-right-grid #eyes-toggle.off,#spy-right-grid #eyes-toggle:not(.active){opacity:.20!important;filter:grayscale(1)!important}
-#spy-right-grid #eyes-toggle.active:not(.off){opacity:1!important;filter:grayscale(1)!important}
-#spy-right-grid #back-screen-toggle.off,#spy-right-grid #back-screen-toggle:not(.active){opacity:.20!important;filter:grayscale(1)!important}
-#spy-right-grid #back-screen-toggle.active:not(.off){opacity:1!important;filter:grayscale(1)!important}
-#spy-right-grid #shell-light-toggle.off,#spy-right-grid #shell-light-toggle:not(.active){opacity:.20!important;filter:grayscale(1)!important}
-#spy-right-grid #shell-light-toggle.active:not(.off){opacity:1!important;filter:grayscale(1)!important}
+#spy-right-grid #headlights-toggle:not(.active){filter:grayscale(1)!important}
+#spy-right-grid #headlights-toggle.active{filter:none!important;color:#ffe17b!important}
+#spy-right-grid .feature-icon{filter:grayscale(1)!important}
+#spy-right-grid .feature-icon.off,#spy-right-grid .feature-icon:not(.active){opacity:.18!important}
+#spy-right-grid .feature-icon.active:not(.off){opacity:1!important}
+#spy-left-grid .spy-vision-segment button{filter:grayscale(1)!important}
+#spy-control-grid .spy-tile-arrow{color:#aaa!important}

@@ -111,15 +111,23 @@ document.addEventListener('click',event=>{if(event.target===originalView||event.
 const observer=new MutationObserver(()=>{syncIdle();syncVision()});
 observer.observe(idle,{attributes:true,attributeFilter:['class','aria-pressed']});
 if(originalView)observer.observe(originalView,{attributes:true,attributeFilter:['class','aria-pressed']});
-// Same ON/OFF source as Sound: the Admin button's native active/off classes.
-// No duplicate power state, event-driven flags or hardware observers.
-for(const id of ['eyes-toggle','back-screen-toggle','shell-light-toggle']){
+// Single display-state function for all right-side feature icons (same rule as Sound).
+// Read Admin's own .active/.off; never infer hardware state from CSS or stale data attributes.
+for(const id of ['sound-toggle','animation-toggle','eyes-toggle','back-screen-toggle','shell-light-toggle']){
  const button=$(id);if(!button)continue;
  const glyph=button.querySelector('.spy-hardware-glyph');
  if(glyph)button.replaceChildren(document.createTextNode(glyph.textContent));
  button.removeAttribute('data-hardware-enabled');
  const tile=button.closest('.spy-tile');
  if(tile){tile.removeAttribute('data-power-state');tile.classList.remove('spy-on','spy-off')}
+ const update=()=>{
+  const on=button.classList.contains('active')&&!button.classList.contains('off');
+  button.style.setProperty('opacity',on?'1':'0.18','important');
+  button.style.setProperty('filter','grayscale(1)','important');
+  button.dataset.gridVisualState=on?'on':'off';
+ };
+ new MutationObserver(update).observe(button,{attributes:true,attributeFilter:['class']});
+ update();
 }
 syncIdle();syncVision();
 })();
