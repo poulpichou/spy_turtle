@@ -1,0 +1,26 @@
+/* Spy Turtle compact control grids V1: landscape-first, preserves original handlers. */
+#left-panel,#right-panel{gap:clamp(3px,.7vh,8px)!important}
+.spy-control-grid{width:100%;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:5px;flex:0 0 auto}
+.spy-control-grid .spy-tile{width:100%!important;min-width:0!important;max-width:none!important;min-height:0!important;height:clamp(34px,8.4vh,60px)!important;display:flex!important;flex-direction:row!important;align-items:stretch!important;justify-content:stretch!important;gap:0!important;padding:2px!important;margin:0!important;border:1px solid #444!important;border-radius:10px!important;background:#252525!important;position:relative}
+.spy-control-grid .spy-tile-line{display:flex!important;flex:1;min-width:0;gap:0!important;height:100%}
+.spy-control-grid .spy-tile-main{flex:1 1 auto!important;width:auto!important;min-width:0!important;max-width:none!important;height:100%!important;min-height:0!important;padding:0!important;margin:0!important;border:0!important;background:transparent!important;font-size:clamp(17px,2.5vw,26px)!important;border-radius:7px!important;display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important}
+.spy-control-grid .spy-tile-arrow,.spy-control-grid .spy-tile-picker{flex:0 0 25%!important;width:25%!important;min-width:0!important;height:100%!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;margin:0!important}
+.spy-control-grid .spy-tile-arrow{background:transparent!important;border:0!important;color:#a6e4cc!important;font-size:22px!important;line-height:1!important}
+.spy-control-grid .spy-tile-picker .compact-select-button{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;height:100%!important;min-height:0!important;border:0!important;padding:0!important;margin:0!important;background:transparent!important;color:transparent!important;font-size:0!important;overflow:hidden!important}
+.spy-control-grid .spy-tile-picker .compact-select-button::after{content:'⌄'!important;position:static!important;display:block!important;color:#a6e4cc!important;font-size:22px!important;line-height:1!important}
+.spy-control-grid .spy-tile-picker .compact-select-native{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+.spy-control-grid .spy-tile .feature-icon:not(.active),.spy-control-grid .spy-tile .side-idle-button:not(.active),.spy-control-grid .spy-tile .spy-tile-main[aria-pressed="false"]{filter:grayscale(1);opacity:.48}
+.spy-control-grid .spy-tile.selected{border-color:#68e6a7!important}
+.spy-control-grid #idle-toggle.active{filter:none!important;opacity:1!important;color:#90f0b5!important}
+.spy-control-grid #headlights-toggle.active{filter:none!important;opacity:1!important}
+.spy-control-grid .spy-tile:has(#headlights-toggle.active){border-color:#ffd54a!important;box-shadow:inset 0 0 0 1px #ffd54a!important}
+.spy-control-grid #headlights-toggle:not(.active){filter:grayscale(1);opacity:.48}
+.spy-legacy-hidden{display:none!important}
+.spy-grid-idle .spy-control-grid .spy-tile:not(:has(#idle-toggle)){opacity:.42;filter:grayscale(1)}
+.spy-grid-idle .spy-control-grid .spy-tile:not(:has(#idle-toggle)) button{pointer-events:none}
+.spy-grid-popover{position:fixed;z-index:99999;width:max-content;min-width:140px;max-width:min(260px,90vw);max-height:55vh;overflow:auto;background:#222;border:1px solid #555;border-radius:10px;padding:6px;box-shadow:0 8px 30px #000b;display:flex;flex-direction:column;gap:3px}
+.spy-grid-popover strong{font-size:12px;color:#ddd;padding:5px 7px}
+.spy-grid-popover button{display:block;width:100%;height:auto;min-height:34px;padding:8px 12px;border-radius:7px;background:#333;text-align:left;font-size:12px}
+.spy-grid-popover button:active{background:#466b58}
+@media(max-width:720px){.spy-control-grid{gap:3px}.spy-control-grid .spy-tile{height:clamp(31px,8vh,46px)!important;border-radius:7px!important}.spy-control-grid .spy-tile-main{font-size:clamp(15px,3vw,22px)!important}.spy-control-grid .spy-tile-arrow,.spy-control-grid .spy-tile-picker .compact-select-button::after{font-size:17px!important}}
+@media(max-height:410px){.spy-control-grid .spy-tile{height:clamp(27px,7.4vh,38px)!important}.spy-control-grid{gap:2px}}
