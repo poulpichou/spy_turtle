@@ -111,31 +111,15 @@ document.addEventListener('click',event=>{if(event.target===originalView||event.
 const observer=new MutationObserver(()=>{syncIdle();syncVision()});
 observer.observe(idle,{attributes:true,attributeFilter:['class','aria-pressed']});
 if(originalView)observer.observe(originalView,{attributes:true,attributeFilter:['class','aria-pressed']});
-// Hardware state: authoritative Admin payload. Dim the actual emoji in its own span.
-const hardwareIds={shell_light:'shell-light-toggle',back_screen:'back-screen-toggle',eyes:'eyes-toggle'};
-for(const id of Object.values(hardwareIds)){
+// Same ON/OFF source as Sound: the Admin button's native active/off classes.
+// No duplicate power state, event-driven flags or hardware observers.
+for(const id of ['eyes-toggle','back-screen-toggle','shell-light-toggle']){
  const button=$(id);if(!button)continue;
- if(!button.querySelector('.spy-hardware-glyph')){
-  const glyph=document.createElement('span');glyph.className='spy-hardware-glyph';glyph.textContent=button.textContent;
-  button.replaceChildren(glyph);
- }
-}
-function applyHardwarePower(state){
- for(const [key,id] of Object.entries(hardwareIds)){
-  if(typeof state[key]!=='boolean')continue;
-  const button=$(id),tile=button?.closest('.spy-tile');if(!button||!tile)continue;
-  const on=state[key]&&!state.idle_mode;
-  button.dataset.hardwareEnabled=on?'true':'false';
-  tile.dataset.powerState=on?'on':'off';
-  tile.classList.toggle('spy-off',!on);tile.classList.toggle('spy-on',on);
- }
-}
-document.addEventListener('turtlepowerchange',event=>applyHardwarePower(event.detail||{}));
-const stateButtons=['animation-toggle','sound-toggle','eyes-toggle','back-screen-toggle','shell-light-toggle','headlights-toggle','automation-master'];
-for(const id of stateButtons){const button=$(id);if(!button)continue;const tile=button.closest('.spy-tile');
- const sync=()=>{const on=button.dataset.hardwareEnabled?button.dataset.hardwareEnabled==='true':button.classList.contains('active')&&!button.classList.contains('off');tile?.classList.toggle('spy-off',!on);tile?.classList.toggle('spy-on',on);if(tile)tile.dataset.powerState=on?'on':'off';
- };
- new MutationObserver(sync).observe(button,{attributes:true,attributeFilter:['class','disabled','aria-pressed']});sync();
+ const glyph=button.querySelector('.spy-hardware-glyph');
+ if(glyph)button.replaceChildren(document.createTextNode(glyph.textContent));
+ button.removeAttribute('data-hardware-enabled');
+ const tile=button.closest('.spy-tile');
+ if(tile){tile.removeAttribute('data-power-state');tile.classList.remove('spy-on','spy-off')}
 }
 syncIdle();syncVision();
 })();
