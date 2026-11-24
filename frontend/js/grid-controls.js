@@ -40,12 +40,12 @@ function popup(title,items,anchor){
 }
 function choose(name,items){return event=>popup(name,items,event.currentTarget)}
 function clickAdmin(action){const button=document.querySelector(`[data-admin-action="${action}"]`);if(button)button.click()}
-const power=tile('Power','🔌',event=>popup('System actions',[
+const power=tile('Power','🛠️',event=>popup('System actions',[
  {label:'🔄 Restart Turtle',run:()=>clickAdmin('restart')},{label:'🔁 Reboot Pi',run:()=>clickAdmin('reboot')},{label:'⏻ Shutdown Pi',run:()=>clickAdmin('shutdown')}
 ],event.currentTarget),{menu:event=>popup('System actions',[
  {label:'🔄 Restart Turtle',run:()=>clickAdmin('restart')},{label:'🔁 Reboot Pi',run:()=>clickAdmin('reboot')},{label:'⏻ Shutdown Pi',run:()=>clickAdmin('shutdown')}
 ],event.currentTarget)});
-relocateButton('idle-toggle',leftGrid,'🌙');leftGrid.append(power.box);
+relocateButton('idle-toggle',leftGrid,'🌙');power.box.classList.add('spy-system-tile');leftGrid.append(power.box);
 const originalView=$('turtle-view-toggle');
 if(originalView){originalView.classList.add('spy-legacy-hidden');originalView.parentElement?.classList.add('spy-legacy-row')}
 let vision=localStorage.getItem('spy_grid_vision_mode')||'robot';
@@ -72,9 +72,9 @@ function syncVision(){
  for(const [mode,b] of Object.entries(visionButtons)){b.classList.toggle('selected',mode===vision);b.setAttribute('aria-pressed',String(mode===vision))}
 }
 leftGrid.append(visionTile);
-relocateButton('automation-master',leftGrid,'🛰️');
+relocateButton('automation-master',leftGrid,'🔁');
 let chatbot=false;
-const chat=tile('Chatbot','🧠',()=>{chatbot=!chatbot;syncChat()}, {menu:event=>popup('Chatbot language',[
+const chat=tile('Chatbot','🗣️',()=>{chatbot=!chatbot;syncChat()}, {menu:event=>popup('Chatbot language',[
  {label:'🇫🇷',run:()=>setLanguage('fr')},{label:'🇬🇧',run:()=>setLanguage('en')}
 ],event.currentTarget)});
 function syncChat(){chat.box.classList.toggle('selected',chatbot);chat.main.setAttribute('aria-pressed',String(chatbot));chat.main.title=chatbot?'Chatbot ON (UI placeholder)':'Chatbot OFF (UI placeholder)'}
@@ -84,7 +84,7 @@ function setLanguage(lang){
  localStorage.setItem('spy_grid_language',lang);
  chat.box.dataset.lang=lang;chat.box.querySelector('.spy-tile-arrow').title=lang==='en'?'Chatbot language: English':'Chatbot language: French';
 }
-syncChat();leftGrid.append(chat.box);
+chat.box.classList.add('spy-chat-tile');syncChat();leftGrid.append(chat.box);
 setLanguage(document.querySelector('#speech-language-options .selected')?.dataset.value||localStorage.getItem('spy_grid_language')||'fr');
 relocate('animation-toggle',rightGrid,'🎭');
 const light=relocateButton('headlights-toggle',rightGrid,'💡');
@@ -113,7 +113,7 @@ observer.observe(idle,{attributes:true,attributeFilter:['class','aria-pressed']}
 if(originalView)observer.observe(originalView,{attributes:true,attributeFilter:['class','aria-pressed']});
 const stateButtons=['animation-toggle','sound-toggle','eyes-toggle','back-screen-toggle','shell-light-toggle','headlights-toggle','automation-master'];
 for(const id of stateButtons){const button=$(id);if(!button)continue;const tile=button.closest('.spy-tile');
- const sync=()=>{tile?.classList.toggle('spy-off',!button.classList.contains('active'));tile?.classList.toggle('spy-on',button.classList.contains('active'))};
+ const sync=()=>{tile?.classList.toggle('spy-off',!button.classList.contains('active'));tile?.classList.toggle('spy-on',button.classList.contains('active'));if(tile)tile.dataset.powerState=button.classList.contains('active')?'on':'off'};
  new MutationObserver(sync).observe(button,{attributes:true,attributeFilter:['class','disabled','aria-pressed']});sync();
 }
 syncIdle();syncVision();
