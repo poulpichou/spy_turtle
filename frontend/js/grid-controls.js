@@ -41,9 +41,9 @@ function popup(title,items,anchor){
 function choose(name,items){return event=>popup(name,items,event.currentTarget)}
 function clickAdmin(action){const button=document.querySelector(`[data-admin-action="${action}"]`);if(button)button.click()}
 const power=tile('Power','🛠️',event=>popup('System actions',[
- {label:'🔄 Restart Turtle',run:()=>clickAdmin('restart')},{label:'🔁 Reboot Pi',run:()=>clickAdmin('reboot')},{label:'⏻ Shutdown Pi',run:()=>clickAdmin('shutdown')}
+ {label:'🔄 Restart Turtle',run:()=>clickAdmin('restart')},{label:'🔁 Reboot Pi',run:()=>clickAdmin('reboot')},{label:'🛑 Shutdown Pi',run:()=>clickAdmin('shutdown')}
 ],event.currentTarget),{menu:event=>popup('System actions',[
- {label:'🔄 Restart Turtle',run:()=>clickAdmin('restart')},{label:'🔁 Reboot Pi',run:()=>clickAdmin('reboot')},{label:'⏻ Shutdown Pi',run:()=>clickAdmin('shutdown')}
+ {label:'🔄 Restart Turtle',run:()=>clickAdmin('restart')},{label:'🔁 Reboot Pi',run:()=>clickAdmin('reboot')},{label:'🛑 Shutdown Pi',run:()=>clickAdmin('shutdown')}
 ],event.currentTarget)});
 relocateButton('idle-toggle',leftGrid,'🌙');power.box.classList.add('spy-system-tile');leftGrid.append(power.box);
 const originalView=$('turtle-view-toggle');
@@ -72,7 +72,7 @@ function syncVision(){
  for(const [mode,b] of Object.entries(visionButtons)){b.classList.toggle('selected',mode===vision);b.setAttribute('aria-pressed',String(mode===vision))}
 }
 leftGrid.append(visionTile);
-relocateButton('automation-master',leftGrid,'🔁');
+relocateButton('automation-master',leftGrid,'⏱️');
 let chatbot=false;
 const chat=tile('Chatbot','🗣️',()=>{chatbot=!chatbot;syncChat()}, {menu:event=>popup('Chatbot language',[
  {label:'🇫🇷',run:()=>setLanguage('fr')},{label:'🇬🇧',run:()=>setLanguage('en')}
@@ -113,7 +113,12 @@ observer.observe(idle,{attributes:true,attributeFilter:['class','aria-pressed']}
 if(originalView)observer.observe(originalView,{attributes:true,attributeFilter:['class','aria-pressed']});
 const stateButtons=['animation-toggle','sound-toggle','eyes-toggle','back-screen-toggle','shell-light-toggle','headlights-toggle','automation-master'];
 for(const id of stateButtons){const button=$(id);if(!button)continue;const tile=button.closest('.spy-tile');
- const sync=()=>{tile?.classList.toggle('spy-off',!button.classList.contains('active'));tile?.classList.toggle('spy-on',button.classList.contains('active'));if(tile)tile.dataset.powerState=button.classList.contains('active')?'on':'off'};
+ const sync=()=>{const on=button.classList.contains('active')&&!button.classList.contains('off');tile?.classList.toggle('spy-off',!on);tile?.classList.toggle('spy-on',on);if(tile)tile.dataset.powerState=on?'on':'off';
+  if(['eyes-toggle','back-screen-toggle','shell-light-toggle'].includes(id)){
+   button.style.setProperty('filter',on?'none':'grayscale(1)','important');
+   button.style.setProperty('opacity',on?'1':'0.25','important');
+  }
+ };
  new MutationObserver(sync).observe(button,{attributes:true,attributeFilter:['class','disabled','aria-pressed']});sync();
 }
 syncIdle();syncVision();

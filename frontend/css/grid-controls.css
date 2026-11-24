@@ -65,3 +65,10 @@
 .spy-control-grid .spy-chat-tile .spy-tile-arrow{flex:0 0 40%!important;width:40%!important}
 .spy-grid-popover:has(button) {min-width:0;width:max-content;max-width:160px}
 .spy-grid-popover:has(button) button{min-width:44px;text-align:center}
+
+/* V4: explicit hardware power state, overriding inherited feature-icon and card styling. */
+#spy-right-grid .spy-tile:has(#eyes-toggle.off) #eyes-toggle,
+#spy-right-grid .spy-tile:has(#back-screen-toggle.off) #back-screen-toggle,
+#spy-right-grid .spy-tile:has(#shell-light-toggle.off) #shell-light-toggle,
+#spy-right-grid .spy-tile[data-power-state="off"] .feature-icon{filter:grayscale(1)!important;opacity:.25!important}
+#spy-right-grid .spy-tile[data-power-state="on"] .feature-icon{filter:none!important;opacity:1!important}
