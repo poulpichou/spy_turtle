@@ -325,6 +325,7 @@ def command(cmd:Command):
             elif cmd.value=="up":actions.look_up()
             elif cmd.value=="down":actions.look_down()
             elif cmd.value=="center":actions.camera_center()
+            elif cmd.value=="road":actions.camera_road()
             else:raise ValueError(f"Unknown head command: {cmd.value}")
         elif cmd.type=="sound":actions.speak(cmd.value)
         else:raise ValueError(f"Unknown command type: {cmd.type}")

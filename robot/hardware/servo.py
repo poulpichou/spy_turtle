@@ -128,6 +128,10 @@ class ServoController:
         with self._lock:log.info(f'[SERVO] tilt target {self.tilt.move(self.tilt.step):.1f}deg')
     def center(self):
         with self._lock:self.pan.center();self.tilt.center();log.info('[SERVO] center')
+    def set_position(self,pan,tilt):
+        with self._lock:
+            self.pan.set_target(pan);self.tilt.set_target(tilt)
+            log.info(f'[SERVO] position pan={self.pan.target:.1f} tilt={self.tilt.target:.1f}')
     def detach(self):
         with self._lock:self.pan.detach();self.tilt.detach()
 

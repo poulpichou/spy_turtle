@@ -32,6 +32,7 @@ document.addEventListener("visibilitychange",()=>{if(document.hidden&&heldDirect
 document.addEventListener("transportchange",()=>{if(heldDirection)releaseMovement()});
 function setupHeadButton(id,direction){document.getElementById(id).onclick=()=>sendCommand("head",direction).catch(showCommandError)}
 setupHeadButton("head-left","left");setupHeadButton("head-right","right");setupHeadButton("head-up","up");setupHeadButton("head-down","down");setupHeadButton("head-center","center");
+document.getElementById("head-road").onclick=()=>sendCommand("head","road").catch(showCommandError);
 
 const assetSelects={faces:document.getElementById("face-select"),shell:document.getElementById("shell-select"),leds:document.getElementById("led-select"),audio:document.getElementById("sound-select")};
 assetSelects.faces.onchange=event=>sendCommand("face",event.target.value).catch(showCommandError);
