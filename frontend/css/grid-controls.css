@@ -102,7 +102,7 @@
 #spy-right-grid.spy-control-grid #shell-light-toggle.off{filter:grayscale(1)!important}
 
 /* V11 palette: adjustable 40% accent saturation; headlights remain bright when OFF. */
-:root{--spy-accent-saturation:40%}
+:root{--spy-accent-saturation:60%}
 /* Idle moon joins the custom saturation shortlist, both OFF and ON. */
 #spy-left-grid.spy-control-grid #idle-toggle,
 #spy-left-grid.spy-control-grid #idle-toggle:not(.active),
