@@ -252,3 +252,27 @@ if(degradedToggle)degradedToggle.onchange=async()=>{
     finally{degradedToggle.disabled=false}
 };
 document.addEventListener("transportchange",loadDegradedNetwork);loadDegradedNetwork();
+
+const panOffsetSlider=document.getElementById('pan-center-slider'),panOffsetLabel=document.getElementById('pan-center-value'),panOffsetZero=document.getElementById('pan-center-zero');
+function panOffsetShow(v){panOffsetLabel.textContent=(Number(v)>0?'+':'')+Number(v)+'°'}
+async function panOffsetLoad(){
+ if(transportMode==='bluetooth'){panOffsetSlider.disabled=true;panOffsetZero.disabled=true;return}
+ try{
+  const r=await fetch('/admin/servos/pan-center'),d=await r.json();if(!r.ok)throw Error(d.detail||r.status);
+  panOffsetSlider.value=d.offset;panOffsetShow(d.offset);panOffsetSlider.disabled=false;panOffsetZero.disabled=false
+ }catch(e){panOffsetSlider.disabled=true;panOffsetZero.disabled=true;console.warn('[PAN OFFSET]',e)}
+}
+async function panOffsetSave(v){
+ panOffsetSlider.disabled=true;panOffsetZero.disabled=true;
+ try{
+  const r=await fetch('/admin/servos/pan-center',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({offset:Number(v)})}),d=await r.json();
+  if(!r.ok)throw Error(d.detail||r.status);panOffsetSlider.value=d.offset;panOffsetShow(d.offset)
+ }catch(e){alert('Pan offset: '+e.message)}
+ finally{panOffsetLoad()}
+}
+panOffsetSlider.oninput=()=>panOffsetShow(panOffsetSlider.value);
+panOffsetSlider.onchange=()=>panOffsetSave(panOffsetSlider.value);
+panOffsetZero.onclick=()=>panOffsetSave(0);
+document.addEventListener('transportchange',panOffsetLoad);
+document.querySelector('[data-view="admin"]')?.addEventListener('click',panOffsetLoad);
+panOffsetLoad();

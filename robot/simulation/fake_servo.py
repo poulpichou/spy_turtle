@@ -30,7 +30,7 @@ class FakeServo:
         print(f"[FakeServo] tilt:{self.tilt}")
 
     def center(self):
-        self.pan=0.0
+        self.pan=getattr(self,"pan_center_offset",0.0)
         self.tilt=0.0
         print("[FakeServo] center")
 
@@ -39,5 +39,10 @@ class FakeServo:
         self.tilt=max(-60.0,min(60.0,float(tilt)))
         print(f'[FakeServo] position pan:{self.pan} tilt:{self.tilt}')
 
+    def road(self):self.pan=getattr(self,'pan_center_offset',0.0);self.tilt=30.0
+    def get_pan_center_offset(self):return getattr(self,'pan_center_offset',0.0)
+    def set_pan_center_offset(self,value):
+        self.pan_center_offset=max(-20.0,min(20.0,float(value)));self.pan=self.pan_center_offset
+        return self.pan_center_offset
     def detach(self): pass
     def close(self): pass

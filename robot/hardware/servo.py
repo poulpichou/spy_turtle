@@ -1,4 +1,5 @@
 import json
+import os
 import time
 from collections import deque
 from pathlib import Path
@@ -104,6 +105,12 @@ class ServoController:
         safe_min=config.get('safe_pulse_min_us',1000);safe_max=config.get('safe_pulse_max_us',2000)
         self.pan=ServoAxis(self.chip,'pan',settings.SERVO_PAN_PIN,config['pan'],detach_after,safe_min,safe_max)
         self.tilt=ServoAxis(self.chip,'tilt',settings.SERVO_TILT_PIN,config['tilt'],detach_after,safe_min,safe_max)
+        self.calibration_path=path.with_name('servo_calibration.json')
+        self.pan_center_offset=0.0
+        if self.calibration_path.exists():
+            offset=float(json.loads(self.calibration_path.read_text(encoding='utf-8')).get('pan_center_offset_deg',0))
+            if not -20<=offset<=20:raise ValueError('Stored pan offset out of range')
+            self.pan_center_offset=offset
         self.closed=False;self.update_count=0;self.last_controller_update=None;self.reset_count=0
 
     def update(self):
@@ -127,7 +134,27 @@ class ServoController:
     def look_down(self):
         with self._lock:log.info(f'[SERVO] tilt target {self.tilt.move(self.tilt.step):.1f}deg')
     def center(self):
-        with self._lock:self.pan.center();self.tilt.center();log.info('[SERVO] center')
+        with self._lock:
+            self.pan.set_target(self.pan.center_angle+self.pan_center_offset);self.tilt.center()
+            log.info(f'[SERVO] center offset={self.pan_center_offset}')
+    def road(self):
+        with self._lock:
+            self.pan.set_target(self.pan.center_angle+self.pan_center_offset);self.tilt.set_target(30)
+            log.info(f'[SERVO] road tilt=+30 pan offset={self.pan_center_offset}')
+    def get_pan_center_offset(self):
+        with self._lock:return self.pan_center_offset
+    def set_pan_center_offset(self,value):
+        value=float(value)
+        if not -20<=value<=20:raise ValueError('Pan offset out of range')
+        with self._lock:
+            tmp=self.calibration_path.with_suffix('.json.tmp')
+            try:
+                tmp.write_text(json.dumps({'pan_center_offset_deg':value})+'\n',encoding='utf-8')
+                os.replace(tmp,self.calibration_path)
+            finally:tmp.unlink(missing_ok=True)
+            self.pan_center_offset=value
+            self.pan.set_target(self.pan.center_angle+value)
+            return value
     def set_position(self,pan,tilt):
         with self._lock:
             self.pan.set_target(pan);self.tilt.set_target(tilt)

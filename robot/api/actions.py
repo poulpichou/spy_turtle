@@ -127,9 +127,9 @@ def camera_center():
     instance.servo.center();trace_actuator("SERVO","center")
 
 def camera_road():
-    log.info("[API] camera road pan=0 tilt=-30");instance=interact("head_road")
+    log.info("[API] camera road tilt=+30 calibrated pan");instance=interact("head_road")
     if instance.brain:instance.brain.moods.manual_head_override()
-    instance.servo.set_position(0,-30);trace_actuator("SERVO","road")
+    instance.servo.road();trace_actuator("SERVO","road")
 
 def shell_show(value):
     instance=interact(f"shell:{value}")

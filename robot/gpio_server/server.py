@@ -9,7 +9,7 @@ from robot.gpio_server.client import SOCKET
 from robot.utils.logger import log
 
 MOTOR_METHODS={'forward','backward','left','right','turn_left','turn_right','stop','joystick','set_speeds','set_left_speed','set_right_speed','set_speed_percent','get_speed_percent','reset_encoders','reset_pwm','set_correction_enabled','status'}
-SERVO_METHODS={'look_left','look_right','look_up','look_down','center','set_position','detach','reset_gpio','status','diagnostic'}
+SERVO_METHODS={'look_left','look_right','look_up','look_down','center','road','set_position','get_pan_center_offset','set_pan_center_offset','detach','reset_gpio','status','diagnostic'}
 MOVING={'forward','backward','left','right','turn_left','turn_right','joystick','set_speeds','set_left_speed','set_right_speed'}
 
 class Handler(socketserver.StreamRequestHandler):

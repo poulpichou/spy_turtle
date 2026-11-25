@@ -23,6 +23,15 @@ class ComponentRequest(BaseModel):
     enabled:bool
 class SensitivityRequest(BaseModel): sensitivity:int=Field(ge=0,le=100)
 class MotorSpeedRequest(BaseModel): speed:int=Field(ge=100,le=300)
+class PanOffsetRequest(BaseModel): offset:float=Field(ge=-20,le=20)
+
+@router.get('/servos/pan-center')
+def get_pan_center():
+    return {'offset':robot_or_503().servo.get_pan_center_offset()}
+@router.post('/servos/pan-center')
+def set_pan_center(data:PanOffsetRequest):
+    try:return {'offset':robot_or_503().servo.set_pan_center_offset(data.offset)}
+    except (OSError,ValueError,RuntimeError) as error:raise HTTPException(status_code=400,detail=str(error)) from error
 
 def source(request):
     forwarded=request.headers.get('x-forwarded-for')
