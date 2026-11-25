@@ -34,5 +34,10 @@ class FakeServo:
         self.tilt=0.0
         print("[FakeServo] center")
 
+    def set_position(self,pan,tilt):
+        self.pan=max(-90.0,min(90.0,float(pan)))
+        self.tilt=max(-60.0,min(60.0,float(tilt)))
+        print(f'[FakeServo] position pan:{self.pan} tilt:{self.tilt}')
+
     def detach(self): pass
     def close(self): pass

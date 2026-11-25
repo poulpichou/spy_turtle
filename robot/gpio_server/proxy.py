@@ -45,5 +45,6 @@ class ServoProxy(BaseProxy):
     def look_up(self):return self._call('look_up')
     def look_down(self):return self._call('look_down')
     def center(self):return self._call('center')
+    def set_position(self,pan,tilt):return self._call('set_position',float(pan),float(tilt))
     def detach(self):return self._call('detach')
     def reset_gpio(self):return self._call('reset_gpio')
