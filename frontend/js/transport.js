@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     const button=document.getElementById("transport-toggle");if(!button)return;
     const menu=document.createElement("div");menu.id="spy-transport-menu";menu.hidden=true;
     menu.style.cssText="position:fixed;z-index:99999;background:#20272e;color:white;border:1px solid #65717c;border-radius:10px;padding:6px;box-shadow:0 6px 24px #0009;min-width:160px";
-    for(const [label,action] of [["📶 Wi-Fi",()=>useWifi()],["🌍 Remote",()=>useRemote()],["ᛒ Bluetooth",()=>connectBluetooth()],["⚙ Wi-Fi address",()=>setLocalAddress()]]){
+    for(const [label,action] of [["📶 Wi-Fi",()=>useWifi()],["🌍 Remote",()=>useRemote()],["ᛒ Bluetooth",()=>connectBluetooth()]]){
         const item=document.createElement("button");item.type="button";item.textContent=label;
         item.style.cssText="display:block;width:100%;text-align:left;padding:9px;background:transparent;color:inherit;border:0;font:inherit";
         item.onclick=async()=>{menu.hidden=true;try{await action()}catch(error){console.error("[TRANSPORT]",error);alert(error.message)}};

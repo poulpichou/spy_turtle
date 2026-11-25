@@ -45,7 +45,7 @@ async function bleVisionLoop(token){
         characteristic.addEventListener("characteristicvaluechanged",bleVisionPacket);
         bleVision.active=true;
         while(token===bleVision.token&&transportMode==="bluetooth"&&bluetoothServer?.connected){
-            const source=document.getElementById("thermal-view").classList.contains("active")?"thermal":document.getElementById("camera-view").classList.contains("active")?"camera":null;
+            const source=document.getElementById("camera-view").classList.contains("active")?(window.spyIsThermalVision?.()?"thermal":"camera"):null;
             if(!source){await bleVisionDelay(250);continue}
             try{
                 const start=performance.now(),blob=await bleVisionFrame(token,source);

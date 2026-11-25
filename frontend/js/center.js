@@ -21,6 +21,7 @@ function startThermal(){
 }
 
 function setCenterView(name){
+    if(name==="thermal")name="camera";
     if(name===activeView)return;
     activeView=name;
     if(name!=="photos")photoToken++;
@@ -29,7 +30,7 @@ function setCenterView(name){
     stopLogs();
     stopHealth();
     stopThermal();
-    if(name==="camera")startCameraRefresh();
+    if(name==="camera"){if(window.spyIsThermalVision?.())startThermal();else startCameraRefresh()}
     else{
         stopCameraRefresh();
         if(name==="thermal")startThermal();

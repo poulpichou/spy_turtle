@@ -62,8 +62,9 @@ function setVision(mode){
   document.querySelector('[data-view="camera"]')?.click();
  }else{
   if(window.spyTurtleImageEffects?.isEnabled())originalView?.click();
-  document.querySelector('[data-view="thermal"]')?.click();
+  document.querySelector('[data-view="camera"]')?.click();
  }
+ window.spySetThermalVision?.(mode==='thermal');
  syncVision();
 }
 function syncVision(){

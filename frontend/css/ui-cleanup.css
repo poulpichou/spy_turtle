@@ -1,0 +1,12 @@
+
+#camera-view{position:relative}
+#camera-view #thermal-stream{width:100%;height:100%;object-fit:contain;background:#080808}
+#camera-view #thermal-stream[hidden],#camera-view #camera-stream[hidden]{display:none!important}
+.spy-missile-stage{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:30;display:none}
+.spy-missile-stage.active{display:block}
+.spy-missile-target,.spy-missile-projectile,.spy-missile-hit{position:absolute;transform:translate(-50%,-50%);font-size:clamp(16px,4vw,28px);filter:drop-shadow(0 2px 3px #000b)}
+.spy-missile-projectile{font-size:clamp(20px,5vw,34px)}
+.spy-missile-hit{font-size:clamp(25px,7vw,50px);animation:spy-hit .6s ease-out both}
+.spy-confetti{position:absolute;width:7px;height:10px;border-radius:2px;animation:spy-confetti 1s ease-out forwards}
+@keyframes spy-hit{from{opacity:0;transform:translate(-50%,-50%) scale(.4)}40%{opacity:1;transform:translate(-50%,-50%) scale(1.5)}to{opacity:0;transform:translate(-50%,-50%) scale(.8)}}
+@keyframes spy-confetti{from{opacity:1;transform:translate(-50%,-50%) rotate(0)}to{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--spin))}}

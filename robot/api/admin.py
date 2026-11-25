@@ -50,6 +50,7 @@ def _restart_gpio_worker():
         from robot.gpio_server.client import client
         client.call('motors','status',timeout=1.5)
         client.call('servo','status',timeout=1.5)
+        client.call('servo','center',timeout=1.5) # Uses persisted pan offset
         with _gpio_restart_lock:_gpio_restart.update(state='ready',error=None,finished_at=time.time())
         log.info('[ADMIN] isolated GPIO restart completed')
     except Exception as error:
