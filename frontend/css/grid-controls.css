@@ -100,3 +100,16 @@
 #spy-right-grid.spy-control-grid #animation-toggle.off,
 #spy-right-grid.spy-control-grid #sound-toggle.off,
 #spy-right-grid.spy-control-grid #shell-light-toggle.off{filter:grayscale(1)!important}
+
+/* V11 palette: adjustable 40% accent saturation; headlights remain bright when OFF. */
+:root{--spy-accent-saturation:40%}
+/* Idle moon joins the custom saturation shortlist, both OFF and ON. */
+#spy-left-grid.spy-control-grid #idle-toggle,
+#spy-left-grid.spy-control-grid #idle-toggle:not(.active),
+#spy-left-grid.spy-control-grid #idle-toggle.active{filter:grayscale(calc(100% - var(--spy-accent-saturation)))!important}
+/* Headlights: normal emoji even when OFF; ON highlights the tile with yellow border. */
+#spy-right-grid.spy-control-grid .spy-tile:has(#headlights-toggle) #headlights-toggle,
+#spy-right-grid.spy-control-grid .spy-tile:has(#headlights-toggle) #headlights-toggle:not(.active),
+#spy-right-grid.spy-control-grid .spy-tile:has(#headlights-toggle) #headlights-toggle.active{filter:none!important;opacity:1!important;color:inherit!important}
+#spy-right-grid.spy-control-grid .spy-tile:has(#headlights-toggle)[data-grid-visual-state="off"]{border-color:#444!important}
+#spy-right-grid.spy-control-grid .spy-tile:has(#headlights-toggle)[data-grid-visual-state="on"]{border-color:#ffd54a!important;box-shadow:inset 0 0 0 1px #ffd54a!important}
