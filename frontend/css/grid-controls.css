@@ -78,3 +78,25 @@
 .spy-control-grid #headlights-toggle.active{filter:none!important;color:#ffe17b!important}
 .spy-control-grid .spy-tile[data-grid-visual-state="off"] .feature-icon{opacity:var(--spy-emoji-off-opacity)!important}
 .spy-control-grid .spy-tile[data-grid-visual-state="on"] .feature-icon{opacity:1!important}
+
+/* V10 palette: saturation is adjustable per group. */
+:root{--spy-emoji-saturation:0%;--spy-accent-saturation:20%;--spy-emoji-off-opacity:.20}
+/* Idle must be monochrome OFF even against the legacy :has(#idle-toggle) rule. */
+#spy-left-grid.spy-control-grid .spy-tile:has(#idle-toggle:not(.active)) #idle-toggle{filter:grayscale(1)!important;color:#ddd!important;opacity:1!important}
+#spy-left-grid.spy-control-grid .spy-tile:has(#idle-toggle.active) #idle-toggle{filter:none!important;color:#f0e5a6!important}
+/* Automation uses the same disabled tile treatment as Mood and Chatbot. */
+#spy-left-grid.spy-control-grid .spy-tile:has(#automation-master)[data-grid-visual-state="off"],
+#spy-left-grid.spy-control-grid .spy-chat-tile[data-grid-visual-state="off"],
+#spy-right-grid.spy-control-grid .spy-tile:has(#animation-toggle)[data-grid-visual-state="off"]{background:#1c1c1c!important;border-color:#444!important}
+#spy-left-grid.spy-control-grid .spy-tile:has(#automation-master)[data-grid-visual-state="on"],
+#spy-left-grid.spy-control-grid .spy-chat-tile[data-grid-visual-state="on"],
+#spy-right-grid.spy-control-grid .spy-tile:has(#animation-toggle)[data-grid-visual-state="on"]{background:#252525!important;border-color:#666!important}
+/* Subtle tint only for Vision, Mood, Sound and LEDs, when enabled. */
+#spy-left-grid.spy-control-grid .spy-vision-segment button,
+#spy-right-grid.spy-control-grid #animation-toggle.active:not(.off),
+#spy-right-grid.spy-control-grid #sound-toggle.active:not(.off),
+#spy-right-grid.spy-control-grid #shell-light-toggle.active:not(.off){filter:grayscale(calc(100% - var(--spy-accent-saturation)))!important}
+/* Disabled controls remain fully grey, regardless of their group. */
+#spy-right-grid.spy-control-grid #animation-toggle.off,
+#spy-right-grid.spy-control-grid #sound-toggle.off,
+#spy-right-grid.spy-control-grid #shell-light-toggle.off{filter:grayscale(1)!important}
