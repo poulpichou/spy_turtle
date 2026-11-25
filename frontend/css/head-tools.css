@@ -1,0 +1,8 @@
+
+/* V23: head card corner shortcuts, independent of D-pad geometry. */
+.head-control-card{position:relative}
+.head-control-card #head-reset{position:absolute;top:5px;right:5px;width:24px;height:24px;min-width:24px;min-height:24px;padding:0;border-radius:6px;font-size:16px;line-height:1;z-index:2}
+.head-control-card #head-missile{position:absolute;bottom:5px;right:5px;width:24px;height:24px;min-width:24px;min-height:24px;padding:0;border-radius:6px;font-size:14px;line-height:1;z-index:2}
+.spy-head-calibration-modal .admin-slider{width:100%;display:flex;flex-direction:column;gap:9px}
+.spy-head-calibration-modal .admin-slider input[type=range]{width:100%;accent-color:#e0b94f}
+.spy-head-calibration-modal #pan-center-zero{width:auto;height:32px;align-self:flex-start}
