@@ -1,0 +1,9 @@
+#camera-view #face-overlay{position:absolute;pointer-events:none;z-index:3}
+#camera-view.image-effects-active #face-overlay{display:none!important}
+.spy-missile-stage{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:30;display:none}.spy-missile-stage.active{display:block}
+.spy-missile-projectile,.spy-missile-hit,.spy-missile-lost,.spy-missile-lock{position:absolute;transform:translate(-50%,-50%);filter:drop-shadow(0 2px 3px #000b)}
+.spy-missile-projectile{font-size:clamp(20px,5vw,34px)}.spy-missile-hit{font-size:clamp(25px,7vw,50px);animation:spy-hit .6s ease-out both}
+.spy-missile-lock{border:2px dashed #ff4545;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:30px;color:#ff4545;text-shadow:0 0 8px #f33;animation:spy-lock .5s ease-in-out infinite alternate}
+.spy-missile-lost{width:max-content;max-width:95%;font:700 clamp(13px,2.8vw,24px)/1.2 monospace;letter-spacing:2px;color:#ff5050;text-shadow:0 0 9px #f22;background:#080808a8;padding:7px 12px;border:1px solid #f55;animation:spy-lost .28s steps(2,end) infinite}.spy-missile-lost.final{animation-duration:.14s}
+.spy-confetti{position:absolute;width:7px;height:10px;border-radius:2px;animation:spy-confetti 1s ease-out forwards}
+@keyframes spy-lock{to{box-shadow:0 0 15px #f55;opacity:.65}}@keyframes spy-lost{50%{opacity:.15}}@keyframes spy-hit{from{opacity:0;transform:translate(-50%,-50%) scale(.4)}40%{opacity:1;transform:translate(-50%,-50%) scale(1.5)}to{opacity:0;transform:translate(-50%,-50%) scale(.8)}}@keyframes spy-confetti{from{opacity:1;transform:translate(-50%,-50%) rotate(0)}to{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) rotate(var(--spin))}}
