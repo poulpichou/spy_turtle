@@ -113,3 +113,13 @@
 #spy-right-grid.spy-control-grid .spy-tile:has(#headlights-toggle) #headlights-toggle.active{filter:none!important;opacity:1!important;color:inherit!important}
 #spy-right-grid.spy-control-grid .spy-tile:has(#headlights-toggle)[data-grid-visual-state="off"]{border-color:#444!important}
 #spy-right-grid.spy-control-grid .spy-tile:has(#headlights-toggle)[data-grid-visual-state="on"]{border-color:#ffd54a!important;box-shadow:inset 0 0 0 1px #ffd54a!important}
+
+/* V12: match the V10 high-specificity :has() rules for Idle. */
+#spy-left-grid.spy-control-grid .spy-tile:has(#idle-toggle:not(.active)) #idle-toggle,
+#spy-left-grid.spy-control-grid .spy-tile:has(#idle-toggle.active) #idle-toggle{filter:grayscale(calc(100% - var(--spy-accent-saturation)))!important;opacity:1!important}
+/* Bulb: shared saturation, full opacity ON/OFF; yellow ON frame unchanged. */
+#spy-right-grid.spy-control-grid .spy-tile:has(#headlights-toggle) #headlights-toggle,
+#spy-right-grid.spy-control-grid .spy-tile:has(#headlights-toggle) #headlights-toggle:not(.active),
+#spy-right-grid.spy-control-grid .spy-tile:has(#headlights-toggle) #headlights-toggle.active{filter:grayscale(calc(100% - var(--spy-accent-saturation)))!important;opacity:1!important}
+/* Chatbot language flags retain full color. */
+.spy-grid-popover button[data-spy-language="true"]{filter:none!important}
