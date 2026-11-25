@@ -129,3 +129,6 @@
 
 /* V14: show Restart, Reboot and Shutdown menu emoji in their original colors. */
 .spy-grid-popover button[data-spy-system-action="true"]{filter:none!important;opacity:1!important}
+
+/* V15 chatbot original emoji colors; preserve ON/OFF opacity. */
+#spy-left-grid.spy-control-grid .spy-chat-tile .spy-tile-main{filter:none!important}
