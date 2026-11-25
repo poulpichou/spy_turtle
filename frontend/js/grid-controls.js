@@ -42,9 +42,7 @@ function popup(title,items,anchor){
 }
 function choose(name,items){return event=>popup(name,items,event.currentTarget)}
 function clickAdmin(action){const button=document.querySelector(`[data-admin-action="${action}"]`);if(button)button.click()}
-const power=tile('Power','🛠️',event=>popup('System actions',[
- {label:'🔄 Restart Turtle',run:()=>clickAdmin('restart')},{label:'🔁 Reboot Pi',run:()=>clickAdmin('reboot')},{label:'🛑 Shutdown Pi',run:()=>clickAdmin('shutdown')}
-],event.currentTarget),{menu:event=>popup('System actions',[
+const power=tile('Power','🛠️',()=>document.getElementById('head-reset')?.click(),{menu:event=>popup('System actions',[
  {label:'🔄 Restart Turtle',run:()=>clickAdmin('restart')},{label:'🔁 Reboot Pi',run:()=>clickAdmin('reboot')},{label:'🛑 Shutdown Pi',run:()=>clickAdmin('shutdown')}
 ],event.currentTarget)});
 relocateButton('idle-toggle',leftGrid,'🌙');power.box.classList.add('spy-system-tile');leftGrid.append(power.box);
