@@ -3,9 +3,9 @@ const adminResult=document.getElementById("admin-result");
 (function(){
     const restart=document.querySelector('[data-admin-action="restart"]');
     if(!restart)return;
-    const reset=document.createElement("button");reset.type="button";reset.textContent="Reset Turtle";restart.before(reset);
+    const reset=document.createElement("button");reset.type="button";reset.textContent="Reset Turtle";reset.dataset.adminAction="reset";restart.before(reset);
     const headReset=document.getElementById("head-reset");
-    if(headReset)headReset.onclick=()=>{if(!reset.disabled)reset.click()};
+    if(headReset)headReset.onclick=()=>document.getElementById("head-center")?.click();
     reset.onclick=async()=>{
         reset.disabled=true;if(headReset)headReset.disabled=true;
         try{
