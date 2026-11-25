@@ -24,7 +24,9 @@ function relocate(id,grid,icon){
 function relocateButton(id,grid,icon){
  const button=$(id);if(!button)return;
  const box=document.createElement('div');box.className='spy-tile spy-toggle-tile';box.dataset.name=id;
- button.classList.add('spy-tile-main');if(icon)button.textContent=icon;box.append(button);grid.append(box);return box;
+ button.classList.add('spy-tile-main');
+ if(icon){const label=button.querySelector('span');if(label){for(const node of [...button.childNodes])if(node!==label)node.remove();button.insertBefore(document.createTextNode(icon+' '),label)}else button.textContent=icon}
+ box.append(button);grid.append(box);return box;
 }
 function popup(title,items,anchor){
  document.querySelector('.spy-grid-popover')?.remove();
@@ -111,23 +113,22 @@ document.addEventListener('click',event=>{if(event.target===originalView||event.
 const observer=new MutationObserver(()=>{syncIdle();syncVision()});
 observer.observe(idle,{attributes:true,attributeFilter:['class','aria-pressed']});
 if(originalView)observer.observe(originalView,{attributes:true,attributeFilter:['class','aria-pressed']});
-// Single display-state function for all right-side feature icons (same rule as Sound).
-// Read Admin's own .active/.off; never infer hardware state from CSS or stale data attributes.
-for(const id of ['sound-toggle','animation-toggle','eyes-toggle','back-screen-toggle','shell-light-toggle']){
- const button=$(id);if(!button)continue;
- const glyph=button.querySelector('.spy-hardware-glyph');
- if(glyph)button.replaceChildren(document.createTextNode(glyph.textContent));
- button.removeAttribute('data-hardware-enabled');
- const tile=button.closest('.spy-tile');
- if(tile){tile.removeAttribute('data-power-state');tile.classList.remove('spy-on','spy-off')}
- const update=()=>{
-  const on=button.classList.contains('active')&&!button.classList.contains('off');
-  button.style.setProperty('opacity',on?'1':'0.18','important');
-  button.style.setProperty('filter','grayscale(1)','important');
-  button.dataset.gridVisualState=on?'on':'off';
- };
- new MutationObserver(update).observe(button,{attributes:true,attributeFilter:['class']});
- update();
+// Shared visual state for all toggles, including left-side Automation and Idle.
+function setGridVisual(button,on){
+ if(!button)return;
+ button.dataset.gridVisualState=on?'on':'off';
+ const tile=button.closest('.spy-tile');if(tile)tile.dataset.gridVisualState=on?'on':'off';
 }
+for(const id of ['animation-toggle','sound-toggle','eyes-toggle','back-screen-toggle','shell-light-toggle','automation-master','headlights-toggle','idle-toggle']){
+ const button=$(id);if(!button)continue;
+ const glyph=button.querySelector('.spy-hardware-glyph');if(glyph)button.replaceChildren(document.createTextNode(glyph.textContent));
+ button.removeAttribute('data-hardware-enabled');const tile=button.closest('.spy-tile');
+ if(tile){tile.removeAttribute('data-power-state');tile.classList.remove('spy-on','spy-off')}
+ const sync=()=>setGridVisual(button,button.classList.contains('active')&&!button.classList.contains('off')&&!button.disabled);
+ new MutationObserver(sync).observe(button,{attributes:true,attributeFilter:['class','disabled']});sync();
+}
+const previousSyncChat=syncChat;
+syncChat=function(){previousSyncChat();setGridVisual(chat.main,chatbot)};
+setGridVisual(chat.main,chatbot);
 syncIdle();syncVision();
 })();

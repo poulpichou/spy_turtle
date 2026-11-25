@@ -132,7 +132,7 @@ function applyPowerFeature(name,button){
 function applyPowerState(state){
     runtimePower={...runtimePower,...state};
     idleToggle.classList.toggle("active",runtimePower.idle_mode);
-    idleToggle.querySelector("span").textContent="Idle";
+    const idleLabel=idleToggle.querySelector("span");if(idleLabel)idleLabel.textContent="Idle";
 
     for(const [name,button] of Object.entries(powerButtons))applyPowerFeature(name,button);
     document.dispatchEvent(new CustomEvent("turtlepowerchange",{detail:{...runtimePower}}));

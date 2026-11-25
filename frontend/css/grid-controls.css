@@ -66,13 +66,15 @@
 .spy-grid-popover:has(button) {min-width:0;width:max-content;max-width:160px}
 .spy-grid-popover:has(button) button{min-width:44px;text-align:center}
 
-/* V8: one monochrome visual state, driven directly by Admin's .active/.off. */
-#spy-left-grid #idle-toggle:not(.active){filter:grayscale(1)!important;opacity:1!important;color:#ddd!important}
-#spy-left-grid #idle-toggle.active{filter:none!important;opacity:1!important;color:#f0e5a6!important}
-#spy-right-grid #headlights-toggle:not(.active){filter:grayscale(1)!important}
-#spy-right-grid #headlights-toggle.active{filter:none!important;color:#ffe17b!important}
-#spy-right-grid .feature-icon{filter:grayscale(1)!important}
-#spy-right-grid .feature-icon.off,#spy-right-grid .feature-icon:not(.active){opacity:.18!important}
-#spy-right-grid .feature-icon.active:not(.off){opacity:1!important}
-#spy-left-grid .spy-vision-segment button{filter:grayscale(1)!important}
-#spy-control-grid .spy-tile-arrow{color:#aaa!important}
+/* V9 unified control palette. Set --spy-emoji-saturation to 10% for a subtle tint. */
+:root{--spy-emoji-saturation:0%;--spy-emoji-off-opacity:.20}
+.spy-control-grid .spy-tile-main,.spy-control-grid .spy-vision-segment button,.spy-control-grid .spy-tile-arrow,.spy-grid-popover button,.spy-grid-modal button{filter:grayscale(calc(100% - var(--spy-emoji-saturation)))!important}
+.spy-control-grid .spy-tile[data-grid-visual-state="off"] .spy-tile-main{opacity:var(--spy-emoji-off-opacity)!important}
+.spy-control-grid .spy-tile[data-grid-visual-state="on"] .spy-tile-main{opacity:1!important}
+.spy-control-grid .spy-tile[data-grid-visual-state="off"]{border-color:#444!important}
+.spy-control-grid .spy-tile[data-grid-visual-state="on"]{border-color:#666!important}
+.spy-control-grid #idle-toggle:not(.active){filter:grayscale(1)!important;color:#ddd!important}
+.spy-control-grid #idle-toggle.active{filter:none!important;color:#f0e5a6!important}
+.spy-control-grid #headlights-toggle.active{filter:none!important;color:#ffe17b!important}
+.spy-control-grid .spy-tile[data-grid-visual-state="off"] .feature-icon{opacity:var(--spy-emoji-off-opacity)!important}
+.spy-control-grid .spy-tile[data-grid-visual-state="on"] .feature-icon{opacity:1!important}
