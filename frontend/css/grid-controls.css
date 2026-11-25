@@ -126,3 +126,6 @@
 
 /* V13: headlight color picker swatches must show their true colors. */
 .spy-grid-modal .spy-grid-colors,.spy-grid-modal .spy-grid-colors button{filter:none!important;opacity:1!important}
+
+/* V14: show Restart, Reboot and Shutdown menu emoji in their original colors. */
+.spy-grid-popover button[data-spy-system-action="true"]{filter:none!important;opacity:1!important}
