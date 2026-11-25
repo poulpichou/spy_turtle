@@ -32,7 +32,7 @@ function popup(title,items,anchor){
  document.querySelector('.spy-grid-popover')?.remove();
  const panel=document.createElement('div');panel.className='spy-grid-popover';panel.setAttribute('role','dialog');panel.setAttribute('aria-label',title);
  const heading=document.createElement('strong');heading.textContent=title;panel.append(heading);
- for(const item of items){const b=document.createElement('button');b.type='button';b.textContent=item.label;if(title==='Chatbot language')b.dataset.spyLanguage='true';b.onclick=()=>{panel.remove();item.run()};panel.append(b)}
+ for(const item of items){const b=document.createElement('button');b.type='button';b.textContent=item.label;if(title==='Language')b.dataset.spyLanguage='true';b.onclick=()=>{panel.remove();item.run()};panel.append(b)}
  document.body.append(panel);
  const rect=anchor.getBoundingClientRect(),pw=panel.getBoundingClientRect().width,ph=panel.getBoundingClientRect().height;
  panel.style.left=Math.max(5,Math.min(innerWidth-pw-5,rect.left))+'px';
@@ -76,7 +76,7 @@ function syncVision(){
 leftGrid.append(visionTile);
 relocateButton('automation-master',leftGrid,'🦾');
 let chatbot=false;
-const chat=tile('Chatbot','🗣️',()=>{chatbot=!chatbot;syncChat()}, {menu:event=>popup('Chatbot language',[
+const chat=tile('Chatbot','🗣️',()=>{chatbot=!chatbot;syncChat()}, {menu:event=>popup('Language',[
  {label:'🇫🇷',run:()=>setLanguage('fr')},{label:'🇬🇧',run:()=>setLanguage('en')}
 ],event.currentTarget)});
 function syncChat(){chat.box.classList.toggle('selected',chatbot);chat.main.setAttribute('aria-pressed',String(chatbot));chat.main.title=chatbot?'Chatbot ON (UI placeholder)':'Chatbot OFF (UI placeholder)'}

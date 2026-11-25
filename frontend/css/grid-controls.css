@@ -123,3 +123,6 @@
 #spy-right-grid.spy-control-grid .spy-tile:has(#headlights-toggle) #headlights-toggle.active{filter:grayscale(calc(100% - var(--spy-accent-saturation)))!important;opacity:1!important}
 /* Chatbot language flags retain full color. */
 .spy-grid-popover button[data-spy-language="true"]{filter:none!important}
+
+/* V13: headlight color picker swatches must show their true colors. */
+.spy-grid-modal .spy-grid-colors,.spy-grid-modal .spy-grid-colors button{filter:none!important;opacity:1!important}
