@@ -87,17 +87,24 @@ function setLanguage(lang){
 chat.box.classList.add('spy-chat-tile');syncChat();leftGrid.append(chat.box);
 setLanguage(document.querySelector('#speech-language-options .selected')?.dataset.value||localStorage.getItem('spy_grid_language')||'fr');
 relocate('animation-toggle',rightGrid,'🎭');
+const headlightStash=document.createElement('div');headlightStash.id='spy-headlight-stash';headlightStash.hidden=true;document.body.append(headlightStash);
+for(const id of ['headlight-color-control','headlight-intensity-slider']){
+ const el=$(id),wrapper=id==='headlight-intensity-slider'?el?.closest('.admin-slider'):el;
+ if(wrapper)headlightStash.append(wrapper);
+}
 const light=relocateButton('headlights-toggle',rightGrid,'💡');
 if(light){
  const arrow=document.createElement('button');arrow.type='button';arrow.className='spy-tile-arrow';arrow.textContent='⌄';arrow.title='Headlight colors';arrow.onclick=()=>{
   const presets=$('headlight-presets'),picker=$('headlight-color-picker'),items=[...presets?.querySelectorAll('[data-color]')||[]];
   const overlay=document.createElement('div');overlay.className='spy-grid-modal';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');
   const panel=document.createElement('div');panel.className='spy-grid-modal-panel';const heading=document.createElement('div');heading.className='spy-grid-modal-heading';heading.textContent='💡 Headlight color';
-  const close=document.createElement('button');close.type='button';close.textContent='×';close.onclick=()=>overlay.remove();heading.append(close);panel.append(heading);
+  const intensityRow=$('headlight-intensity-slider')?.closest('.admin-slider');
+  const dismiss=()=>{if(intensityRow)headlightStash.append(intensityRow);overlay.remove()};
+  const close=document.createElement('button');close.type='button';close.textContent='×';close.onclick=dismiss;heading.append(close);panel.append(heading);
   const colors=document.createElement('div');colors.className='spy-grid-colors';
-  for(const item of items){const b=document.createElement('button');b.type='button';b.title=item.title||item.dataset.color;b.style.background=item.dataset.color;b.setAttribute('aria-label',b.title);b.onclick=()=>{item.click();overlay.remove()};colors.append(b)}
-  const custom=document.createElement('button');custom.type='button';custom.textContent='🎨 Custom';custom.onclick=()=>{picker?.click();overlay.remove()};
-  panel.append(colors,custom);overlay.append(panel);overlay.onclick=e=>{if(e.target===overlay)overlay.remove()};document.body.append(overlay);
+  for(const item of items){const b=document.createElement('button');b.type='button';b.title=item.title||item.dataset.color;b.style.background=item.dataset.color;b.setAttribute('aria-label',b.title);b.onclick=()=>{item.click();dismiss()};colors.append(b)}
+  const custom=document.createElement('button');custom.type='button';custom.textContent='🎨 Custom';custom.onclick=()=>picker?.click();
+  panel.append(colors,custom);if(intensityRow)panel.append(intensityRow);overlay.append(panel);overlay.onclick=e=>{if(e.target===overlay)dismiss()};document.body.append(overlay);
  };light.append(arrow);
 }
 relocate('sound-toggle',rightGrid,'🔊');

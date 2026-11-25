@@ -151,7 +151,7 @@ function applyPowerState(state){
 async function loadPower(){try{applyPowerState(await adminGet("/admin/power"))}catch(error){console.error("[POWER]",error)}}
 async function loadVolume(){try{const data=await adminGet("/admin/audio/volume");volumeSlider.value=data.volume;showVolume(data.volume)}catch(error){console.error("[VOLUME]",error)}}async function loadDriveSpeed(){try{const data=await adminGet("/admin/motors/speed");driveSpeedSlider.value=data.speed;showDriveSpeed(data.speed)}catch(error){console.error("[MOTOR SPEED]",error)}}function loadCameraFps(){const fps=getCameraFps();cameraFpsSlider.value=fps;showCameraFps(fps)}
 
-document.querySelectorAll("[data-admin-action]").forEach(button=>button.onclick=async()=>{
+document.querySelectorAll('[data-admin-action="restart"],[data-admin-action="reboot"],[data-admin-action="shutdown"]').forEach(button=>button.onclick=async()=>{
     const action=button.dataset.adminAction,labels={restart:"restart Spy Turtle",reboot:"reboot the Raspberry Pi",shutdown:"shut down the Raspberry Pi"};
     if(!confirm(`Really ${labels[action]}?`))return;
     try{adminResult.textContent=(await adminPost(action==="restart"?"/admin/turtle/restart":`/admin/system/${action}`)).message}
