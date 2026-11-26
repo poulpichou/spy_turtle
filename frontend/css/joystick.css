@@ -44,3 +44,8 @@
 #drive-card #drive-mode-toggle,#drive-card #drive-turbo{position:static;flex:none;box-sizing:border-box;width:24px;height:24px;min-width:24px;min-height:24px;margin:0;padding:0;border-radius:6px;line-height:1;touch-action:manipulation}
 #drive-card #drive-mode-toggle{font-size:14px}
 #drive-card #drive-turbo{font-size:21px}
+
+/* V30: subtle, neutral Movement buttons */
+#drive-card #drive-turbo.active{background:#555;border-color:#888;color:#fff;box-shadow:none}
+#drive-card #drive-mode-toggle,
+#drive-card #drive-mode-toggle[aria-pressed="true"]{background:#353535;border-color:#666;color:#eee;box-shadow:none}
