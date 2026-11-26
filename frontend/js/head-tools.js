@@ -20,7 +20,7 @@
  };
  const missile=document.createElement('button');missile.id='head-missile';missile.type='button';missile.textContent='🚀';missile.title='Play a random robot sound';missile.setAttribute('aria-label','Play a random robot sound');
  missile.onclick=async()=>{
-  if(missile.disabled)return;
+  if(missile.disabled||localStorage.getItem('spy_grid_vision_mode')==='turtle'||localStorage.getItem('spy_grid_vision_mode')==='thermal')return;
   const sounds=['robot1','robot2','robot3','robot4'];
   missile.disabled=true;
   try{await sendCommand('sound',sounds[Math.floor(Math.random()*sounds.length)])}
