@@ -13,19 +13,23 @@ const bez=(a,b,c,t)=>{const u=1-t;return u*u*a+2*u*t*b+t*t*c};
 const curve=(a,b,c,d,t)=>{const u=1-t;return u*u*u*a+3*u*u*t*b+3*u*t*t*c+t*t*t*d};
 const animate=(ms,frame,done)=>{const start=performance.now();function tick(now){const t=Math.min(1,(now-start)/ms);frame(t);if(t<1)requestAnimationFrame(tick);else done()}requestAnimationFrame(tick)};
 function finish(delay){setTimeout(()=>{stage.replaceChildren();stage.classList.remove('active');busy=false;sync()},delay)}
-function lost(w,h){return put('spy-missile-lost','[ TARGET LOST ]',w*.5,h*.18)}
+function lost(w,h,bottom=false){return put('spy-missile-lost','[ TARGET LOST ]',w*.5,bottom?h*.82:h*.18)}
 function lock(target){const mark=put('spy-missile-lock','⊕',target.px,target.py);mark.style.width=Math.max(28,target.width)+'px';mark.style.height=Math.max(28,target.height)+'px'}
 function fragments(x,y,color,count=25,spread=100,cls='spy-weapon-fragment'){
  for(let i=0;i<count;i++){const e=put(cls,'',x,y),a=Math.random()*Math.PI*2,r=spread*(.25+Math.random()*.75);e.style.background=color;e.style.setProperty('--dx',Math.cos(a)*r+'px');e.style.setProperty('--dy',Math.sin(a)*r+'px');e.style.setProperty('--spin',(Math.random()*900-450)+'deg')}
 }
-function missile(target,w,h){if(target)lock(target);const rocket=put('spy-missile-projectile','🚀',w*.1,h*.88),message=target?null:lost(w,h);
- const x0=w*.1,y0=h*.88,tx=target?target.px:w*1.2,ty=target?target.py:-h*.3,cx=target?w*.4:w*.83,cy=target?h*.02:h*.95;
+/* V33 launch positions */
+const launchSites=[[.08,.08],[.5,.08],[.92,.08],[.92,.5],[.92,.92],[.5,.92],[.08,.92],[.08,.5]];
+let lastLaunch=-1;
+function launchPoint(w,h){let i=Math.floor(Math.random()*(launchSites.length-1));if(i>=lastLaunch)i++;lastLaunch=i;return [w*launchSites[i][0],h*launchSites[i][1]]}
+function missile(target,w,h){if(target)lock(target);const [x0,y0]=launchPoint(w,h),rocket=put('spy-missile-projectile','🚀',x0,y0),message=target?null:lost(w,h);
+ const tx=target?target.px:x0+(x0<w*.5?w:-w)*1.25,ty=target?target.py:y0+(y0<h*.5?h:-h)*.65,cx=(x0+tx)*.5,cy=(y0+ty)*.5-h*.42;
  const position=t=>{let x=bez(x0,cx,tx,t),y=bez(y0,cy,ty,t);if(!target){x+=Math.sin(t*22)*w*.10*(1-t*.35);y+=Math.sin(t*31)*h*.12*(1-t*.3)}return [x,y]};
  animate(target?2000:2600,t=>{const [x,y]=position(t),[nx,ny]=position(Math.min(1,t+.005));move(rocket,x,y,Math.atan2(ny-y,nx-x)*180/Math.PI+45)},()=>{rocket.remove();if(target){put('spy-missile-hit','💥',tx,ty);const colors=['#ffd166','#ef476f','#06d6a0','#118ab2','#fff','#f78c36'];for(let i=0;i<32;i++)fragments(tx,ty,colors[i%colors.length],1,Math.min(w,h)*.3,'spy-confetti')}else message?.classList.add('final');finish(target?1100:1400)})}
-function vegetable(target,w,h){const [emoji,color]=produce[Math.floor(Math.random()*produce.length)],veg=put('spy-vegetable',emoji,w*.12,h*.9);veg.style.setProperty('--veg-color',color);if(target)lock(target);
- const x0=w*.12,y0=h*.90,tx=target?target.px:w*.66,ty=target?target.py:h*.87;
- if(target){animate(1600,t=>{const x=x0+(tx-x0)*t,y=y0+(ty-y0)*t-h*.55*4*t*(1-t);move(veg,x,y,t*800)},()=>{veg.remove();const splash=makeSplash(tx,ty,color,w,h);fragments(tx,ty,color,15,Math.min(w,h)*.24);finish(2400)})}
- else{let bounce=0;const floor=h*.86;animate(2600,t=>{let x,y;if(t<.52){const p=t/.52;x=x0+(w*.57-x0)*p;y=y0+(floor-y0)*p-h*.6*4*p*(1-p)}else{const p=(t-.52)/.48;x=w*.57+(w*.62)*p;y=floor-h*.30*4*p*(1-p)+h*.22*p}if(t>=.52&&!bounce){bounce=1;const e=put('spy-vegetable-bounce','✴',w*.57,floor);e.style.color=color}move(veg,x,y,t*1100)},()=>{veg.remove();finish(350)})}}
+function vegetable(target,w,h){const [emoji,color]=produce[Math.floor(Math.random()*produce.length)],[x0,y0]=launchPoint(w,h),veg=put('spy-vegetable',emoji,x0,y0);veg.style.setProperty('--veg-color',color);if(target)lock(target);
+ const tx=target?target.px:w-x0,ty=target?target.py:h-y0;
+ if(target){animate(1600,t=>{const x=x0+(tx-x0)*t,y=y0+(ty-y0)*t-h*.35*4*t*(1-t);move(veg,x,y,t*800)},()=>{veg.remove();const splash=makeSplash(tx,ty,color,w,h);fragments(tx,ty,color,15,Math.min(w,h)*.24);finish(2400)})}
+ else{let bounce=0;const floor=h*.86,midX=w*.5,exitX=x0<w*.5?w*1.2:-w*.2;animate(2600,t=>{let x,y;if(t<.52){const p=t/.52;x=x0+(midX-x0)*p;y=y0+(floor-y0)*p-h*.35*4*p*(1-p)}else{const p=(t-.52)/.48;x=midX+(exitX-midX)*p;y=floor-h*.30*4*p*(1-p)+h*.22*p}if(t>=.52&&!bounce){bounce=1;const e=put('spy-vegetable-bounce','✴',midX,floor);e.style.color=color}move(veg,x,y,t*1100)},()=>{veg.remove();finish(350)})}}
 /* V27 splash and laser tuning */
 function makeSplash(x,y,color,w,h){
  const NS='http://www.w3.org/2000/svg',svg=document.createElementNS(NS,'svg');svg.classList.add('spy-vegetable-splash','spy-splash-v27');svg.setAttribute('viewBox','0 0 220 220');svg.setAttribute('aria-hidden','true');svg.style.left=x+'px';svg.style.top=y+'px';svg.style.setProperty('--splash',color);
@@ -45,11 +49,11 @@ function makeSplash(x,y,color,w,h){
 }
 function laser(target,w,h){
  if(target)lock(target);
- const x0=w*.1,y0=h*.88,tx=target?target.px:w*1.25,ty=target?target.py:-h*.25;
- const beam=put('spy-laser-beam','',x0,y0),tip=put('spy-laser-tip','✦',x0,y0),message=target?null:lost(w,h);
+ const x0=w*(.25+Math.random()*.5),y0=-h*.06,tx=target?target.px:w*(.2+Math.random()*.6),ty=target?target.py:h*1.25;
+ const beam=put('spy-laser-beam','',x0,y0),tip=put('spy-laser-tip','✦',x0,y0),message=target?null:lost(w,h,true);
  function position(t){
   if(target){const sway=Math.sin(t*Math.PI*5.5)*Math.sin(Math.PI*t)*Math.min(w,h)*.085;const dx=tx-x0,dy=ty-y0,len=Math.hypot(dx,dy)||1;return [x0+dx*t-dy/len*sway,y0+dy*t+dx/len*sway]}
-  return [curve(x0,w*.35,w*.8,tx,t)+Math.sin(t*19)*w*.06,curve(y0,h*.15,h*.92,ty,t)+Math.sin(t*24)*h*.06]
+  return [curve(x0,w*.35,w*.65,tx,t)+Math.sin(t*19)*w*.06,curve(y0,h*.15,h*.85,ty,t)+Math.sin(t*24)*h*.06]
  }
  function beamTo(x,y){const dx=x-x0,dy=y-y0;beam.style.left=x0+'px';beam.style.top=y0+'px';beam.style.width=Math.hypot(dx,dy)+'px';beam.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;move(tip,x,y)}
  animate(target?1150:1550,t=>{const [x,y]=position(t);beamTo(x,y)},()=>{
