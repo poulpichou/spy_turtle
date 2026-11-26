@@ -8,3 +8,11 @@
 .spy-laser-impact{font-size:clamp(30px,7vw,64px);color:#ff3535;text-shadow:0 0 14px #ff1010;animation:spy-hit .7s ease-out both}
 .spy-laser-spark{width:4px;height:8px;background:#ff3030;box-shadow:0 0 6px #f33}
 @keyframes spy-veg-splash{0%{opacity:.95;transform:translate(-50%,-50%) scale(.1)}40%{opacity:.9;transform:translate(-50%,-50%) scale(1.25) rotate(12deg)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.45) rotate(22deg)}}
+
+/* V27 irregular fruit splash, falling drips and slower thermal impact */
+.spy-splash-v27{width:clamp(130px,34vw,310px);height:clamp(130px,34vw,310px);background:none!important;border-radius:0!important;filter:drop-shadow(0 0 8px var(--splash));transform:translate(-50%,-50%) scale(.08);transform-origin:center;animation:spy-splash-v27 2.1s ease-out forwards;overflow:visible;pointer-events:none}
+.spy-splash-drip{position:absolute;border-radius:45% 45% 55% 55%;transform:translateX(-50%);pointer-events:none;animation:spy-drip-v27 1.5s ease-in forwards;opacity:0}
+.spy-laser-impact-v27{animation:spy-laser-impact-v27 1.15s ease-out forwards!important;transform-origin:center}
+@keyframes spy-splash-v27{0%{opacity:0;transform:translate(-50%,-50%) scale(.08) rotate(-15deg)}20%{opacity:.97;transform:translate(-50%,-50%) scale(.93) rotate(3deg)}45%{opacity:.96;transform:translate(-50%,-50%) scale(1.12) rotate(0)}65%{opacity:.92;transform:translate(-50%,-48%) scale(1.1)}100%{opacity:0;transform:translate(-50%,120%) scale(1.12,1.35)}}
+@keyframes spy-drip-v27{0%{opacity:0;transform:translateX(-50%) scaleY(.3)}12%{opacity:.9}75%{opacity:.9}100%{opacity:0;transform:translate(-50%,var(--drip-distance)) scaleY(1.6)}}
+@keyframes spy-laser-impact-v27{0%{opacity:.15;transform:translate(-50%,-50%) scale(.12)}30%{opacity:1;transform:translate(-50%,-50%) scale(.55)}65%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5)}}
