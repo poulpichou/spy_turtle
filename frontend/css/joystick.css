@@ -49,3 +49,6 @@
 #drive-card #drive-turbo.active{background:#555;border-color:#888;color:#fff;box-shadow:none}
 #drive-card #drive-mode-toggle,
 #drive-card #drive-mode-toggle[aria-pressed="true"]{background:#353535;border-color:#666;color:#eee;box-shadow:none}
+
+/* V31: clearer Turbo active state */
+#drive-card #drive-turbo.active{background:#707070;border-color:#aaa;color:#fff;box-shadow:none}
