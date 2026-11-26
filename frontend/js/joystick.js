@@ -7,10 +7,9 @@
     const JOYSTICK_MIN_OUTPUT=0.67; // 0.67 * 0.30 = 0.20 PWM at first movement
     let active=false,pointer=null,timer=null,x=0,y=0,busy=false,turbo=false;
     const card=document.getElementById("drive-card"),boost=document.createElement("button");
-    boost.id="drive-turbo";boost.type="button";boost.textContent="»";boost.title="Turbo ×2 (hold)";boost.setAttribute("aria-label","Hold for double speed");boost.setAttribute("aria-pressed","false");card.append(boost);
+    boost.id="drive-turbo";boost.type="button";boost.textContent="»";boost.title="Turbo ×2 (toggle)";boost.setAttribute("aria-label","Toggle double speed");boost.setAttribute("aria-pressed","false");const heading=card.querySelector(".drive-heading");heading.insertBefore(toggle,heading.firstChild);heading.append(boost);
     const setTurbo=on=>{turbo=!!on;boost.classList.toggle("active",turbo);boost.setAttribute("aria-pressed",String(turbo))};
-    boost.addEventListener("pointerdown",e=>{e.preventDefault();e.stopPropagation();boost.setPointerCapture(e.pointerId);setTurbo(true)});
-    for(const name of ["pointerup","pointercancel","lostpointercapture"])boost.addEventListener(name,()=>setTurbo(false));
+    boost.addEventListener("click",()=>setTurbo(!turbo));
     boost.addEventListener("contextmenu",e=>e.preventDefault());
     const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
     function render(){knob.style.transform=`translate(calc(-50% + ${x*100}%),calc(-50% + ${-y*100}%))`;knob.style.left=`${50+x*34}%`;knob.style.top=`${50-y*34}%`;knob.style.transform="translate(-50%,-50%)"}
@@ -62,8 +61,8 @@
         const enabled=pad.hidden;pad.hidden=!enabled;dpad.hidden=enabled;
         toggle.textContent=enabled?"✥":"🎮";toggle.setAttribute("aria-pressed",String(enabled));toggle.setAttribute("aria-label",enabled?"Switch to D-pad":"Switch to joystick");toggle.title=enabled?"Switch to D-pad":"Switch to joystick";
     });
-    window.addEventListener("blur",()=>{setTurbo(false);release()});
-    document.addEventListener("visibilitychange",()=>{if(document.hidden){setTurbo(false);release()}});
+    window.addEventListener("blur",release);
+    document.addEventListener("visibilitychange",()=>{if(document.hidden)release()});
     document.addEventListener("transportchange",()=>{setTurbo(false);release()});
     render();
 })();
