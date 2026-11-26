@@ -19,9 +19,9 @@ function fragments(x,y,color,count=25,spread=100,cls='spy-weapon-fragment'){
  for(let i=0;i<count;i++){const e=put(cls,'',x,y),a=Math.random()*Math.PI*2,r=spread*(.25+Math.random()*.75);e.style.background=color;e.style.setProperty('--dx',Math.cos(a)*r+'px');e.style.setProperty('--dy',Math.sin(a)*r+'px');e.style.setProperty('--spin',(Math.random()*900-450)+'deg')}
 }
 /* V33 launch positions */
-const launchSites=[['left',.55],['left',.67],['left',.79],['left',.91],['right',.55],['right',.67],['right',.79],['right',.91]];
+const launchSites=[['left',.51],['left',.69],['left',.87],['right',.51],['right',.69],['right',.87],['bottom',1/12],['bottom',3/12],['bottom',5/12],['bottom',7/12],['bottom',9/12],['bottom',11/12]];
 let lastLaunch=-1;
-function launchPoint(w,h){let i=Math.floor(Math.random()*(launchSites.length-1));if(i>=lastLaunch)i++;lastLaunch=i;const [side,y]=launchSites[i];return [side==='left'?-Math.max(40,w*.12):w+Math.max(40,w*.12),h*y]}
+function launchPoint(w,h){let i=Math.floor(Math.random()*(launchSites.length-1));if(i>=lastLaunch)i++;lastLaunch=i;const [side,p]=launchSites[i],margin=Math.max(44,Math.min(w,h)*.16);return side==='bottom'?[w*p,h+margin]:[side==='left'?-margin:w+margin,h*p]}
 function missile(target,w,h){if(target)lock(target);const [x0,y0]=launchPoint(w,h),rocket=put('spy-missile-projectile','🚀',x0,y0),message=target?null:lost(w,h);
  const tx=target?target.px:x0+(x0<w*.5?w:-w)*1.25,ty=target?target.py:y0+(y0<h*.5?h:-h)*.65,cx=(x0+tx)*.5,cy=(y0+ty)*.5-h*.42;
  const position=t=>{let x=bez(x0,cx,tx,t),y=bez(y0,cy,ty,t);if(!target){x+=Math.sin(t*22)*w*.10*(1-t*.35);y+=Math.sin(t*31)*h*.12*(1-t*.3)}return [x,y]};
