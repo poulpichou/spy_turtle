@@ -5,7 +5,13 @@
     const STRAIGHT_CONE_DEGREES=5; // Steering dead cone around forward/backward axes
     const JOYSTICK_DEADZONE=0.12; // no movement within 12% of radius
     const JOYSTICK_MIN_OUTPUT=0.67; // 0.67 * 0.30 = 0.20 PWM at first movement
-    let active=false,pointer=null,timer=null,x=0,y=0,busy=false;
+    let active=false,pointer=null,timer=null,x=0,y=0,busy=false,turbo=false;
+    const card=document.getElementById("drive-card"),boost=document.createElement("button");
+    boost.id="drive-turbo";boost.type="button";boost.textContent="»";boost.title="Turbo ×2 (hold)";boost.setAttribute("aria-label","Hold for double speed");boost.setAttribute("aria-pressed","false");card.append(boost);
+    const setTurbo=on=>{turbo=!!on;boost.classList.toggle("active",turbo);boost.setAttribute("aria-pressed",String(turbo))};
+    boost.addEventListener("pointerdown",e=>{e.preventDefault();e.stopPropagation();boost.setPointerCapture(e.pointerId);setTurbo(true)});
+    for(const name of ["pointerup","pointercancel","lostpointercapture"])boost.addEventListener(name,()=>setTurbo(false));
+    boost.addEventListener("contextmenu",e=>e.preventDefault());
     const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
     function render(){knob.style.transform=`translate(calc(-50% + ${x*100}%),calc(-50% + ${-y*100}%))`;knob.style.left=`${50+x*34}%`;knob.style.top=`${50-y*34}%`;knob.style.transform="translate(-50%,-50%)"}
     function speeds(){
@@ -19,7 +25,7 @@
         const steering=Math.sign(x)*side*TURN_SENSITIVITY;
         const forward=Math.sign(y)*scale*Math.min(1,Math.abs(y)/Math.max(JOYSTICK_DEADZONE,magnitude));
         const turn=steering*(0.25/(0.30*TURN_SENSITIVITY)); // cap pure turning at D-pad 0.25 PWM
-        return [forward+turn,forward-turn].map(v=>Math.round(clamp(v,-1,1)*1000)/1000);
+        return [forward+turn,forward-turn].map(v=>Math.round(clamp(v*(turbo?2:1),-1,1)*1000)/1000);
     }
     async function tick(){
         if(!active||busy)return;
@@ -56,8 +62,8 @@
         const enabled=pad.hidden;pad.hidden=!enabled;dpad.hidden=enabled;
         toggle.textContent=enabled?"✥":"🎮";toggle.setAttribute("aria-pressed",String(enabled));toggle.setAttribute("aria-label",enabled?"Switch to D-pad":"Switch to joystick");toggle.title=enabled?"Switch to D-pad":"Switch to joystick";
     });
-    window.addEventListener("blur",release);
-    document.addEventListener("visibilitychange",()=>{if(document.hidden)release()});
-    document.addEventListener("transportchange",release);
+    window.addEventListener("blur",()=>{setTurbo(false);release()});
+    document.addEventListener("visibilitychange",()=>{if(document.hidden){setTurbo(false);release()}});
+    document.addEventListener("transportchange",()=>{setTurbo(false);release()});
     render();
 })();

@@ -33,3 +33,7 @@
 #drive-joystick{background:radial-gradient(circle,#333 0%,#202020 70%);border-color:#777}
 #drive-joystick::before,#drive-joystick::after{background:#999}
 #drive-knob{background:#aaa;border-color:#e5e5e5}
+
+#drive-card{position:relative}
+#drive-turbo{position:absolute;bottom:5px;left:5px;z-index:3;width:24px;height:24px;min-width:24px;min-height:24px;padding:0;border:1px solid #666;border-radius:6px;background:#353535;color:#eee;font-size:21px;font-weight:bold;line-height:1;touch-action:none;user-select:none;cursor:pointer}
+#drive-turbo.active{background:#c57a16;border-color:#ffce63;color:white;box-shadow:0 0 9px #ffb13d99}
