@@ -19,7 +19,7 @@ function fragments(x,y,color,count=25,spread=100,cls='spy-weapon-fragment'){
  for(let i=0;i<count;i++){const e=put(cls,'',x,y),a=Math.random()*Math.PI*2,r=spread*(.25+Math.random()*.75);e.style.background=color;e.style.setProperty('--dx',Math.cos(a)*r+'px');e.style.setProperty('--dy',Math.sin(a)*r+'px');e.style.setProperty('--spin',(Math.random()*900-450)+'deg')}
 }
 /* V33 launch positions */
-const launchSites=[[.08,.08],[.5,.08],[.92,.08],[.92,.5],[.92,.92],[.5,.92],[.08,.92],[.08,.5]];
+const launchSites=[[.08,.56],[.5,.56],[.92,.56],[.92,.74],[.92,.92],[.5,.92],[.08,.92],[.08,.74]];
 let lastLaunch=-1;
 function launchPoint(w,h){let i=Math.floor(Math.random()*(launchSites.length-1));if(i>=lastLaunch)i++;lastLaunch=i;return [w*launchSites[i][0],h*launchSites[i][1]]}
 function missile(target,w,h){if(target)lock(target);const [x0,y0]=launchPoint(w,h),rocket=put('spy-missile-projectile','🚀',x0,y0),message=target?null:lost(w,h);
@@ -28,8 +28,8 @@ function missile(target,w,h){if(target)lock(target);const [x0,y0]=launchPoint(w,
  animate(target?2000:2600,t=>{const [x,y]=position(t),[nx,ny]=position(Math.min(1,t+.005));move(rocket,x,y,Math.atan2(ny-y,nx-x)*180/Math.PI+45)},()=>{rocket.remove();if(target){put('spy-missile-hit','💥',tx,ty);const colors=['#ffd166','#ef476f','#06d6a0','#118ab2','#fff','#f78c36'];for(let i=0;i<32;i++)fragments(tx,ty,colors[i%colors.length],1,Math.min(w,h)*.3,'spy-confetti')}else message?.classList.add('final');finish(target?1100:1400)})}
 function vegetable(target,w,h){const [emoji,color]=produce[Math.floor(Math.random()*produce.length)],[x0,y0]=launchPoint(w,h),veg=put('spy-vegetable',emoji,x0,y0);veg.style.setProperty('--veg-color',color);if(target)lock(target);
  const tx=target?target.px:w-x0,ty=target?target.py:h-y0;
- if(target){animate(1600,t=>{const x=x0+(tx-x0)*t,y=y0+(ty-y0)*t-h*.35*4*t*(1-t);move(veg,x,y,t*800)},()=>{veg.remove();const splash=makeSplash(tx,ty,color,w,h);fragments(tx,ty,color,15,Math.min(w,h)*.24);finish(2400)})}
- else{let bounce=0;const floor=h*.86,midX=w*.5,exitX=x0<w*.5?w*1.2:-w*.2;animate(2600,t=>{let x,y;if(t<.52){const p=t/.52;x=x0+(midX-x0)*p;y=y0+(floor-y0)*p-h*.35*4*p*(1-p)}else{const p=(t-.52)/.48;x=midX+(exitX-midX)*p;y=floor-h*.30*4*p*(1-p)+h*.22*p}if(t>=.52&&!bounce){bounce=1;const e=put('spy-vegetable-bounce','✴',midX,floor);e.style.color=color}move(veg,x,y,t*1100)},()=>{veg.remove();finish(350)})}}
+ if(target){animate(1600,t=>{const x=x0+(tx-x0)*t,y=y0+(ty-y0)*t-Math.min(h*.22,Math.max(0,Math.min(y0,ty)-h*.12))*4*t*(1-t);move(veg,x,y,t*800)},()=>{veg.remove();const splash=makeSplash(tx,ty,color,w,h);fragments(tx,ty,color,15,Math.min(w,h)*.24);finish(2400)})}
+ else{let bounce=0;const floor=h*.86,midX=w*.5,exitX=x0<w*.5?w*1.2:-w*.2;animate(2600,t=>{let x,y;if(t<.52){const p=t/.52;x=x0+(midX-x0)*p;y=y0+(floor-y0)*p-h*.22*4*p*(1-p)}else{const p=(t-.52)/.48;x=midX+(exitX-midX)*p;y=floor-h*.30*4*p*(1-p)+h*.22*p}if(t>=.52&&!bounce){bounce=1;const e=put('spy-vegetable-bounce','✴',midX,floor);e.style.color=color}move(veg,x,y,t*1100)},()=>{veg.remove();finish(350)})}}
 /* V27 splash and laser tuning */
 function makeSplash(x,y,color,w,h){
  const NS='http://www.w3.org/2000/svg',svg=document.createElementNS(NS,'svg');svg.classList.add('spy-vegetable-splash','spy-splash-v27');svg.setAttribute('viewBox','0 0 220 220');svg.setAttribute('aria-hidden','true');svg.style.left=x+'px';svg.style.top=y+'px';svg.style.setProperty('--splash',color);
