@@ -35,7 +35,7 @@
 #drive-knob{background:#aaa;border-color:#e5e5e5}
 
 #drive-card{position:relative}
-#drive-turbo{position:absolute;bottom:5px;left:5px;z-index:3;width:24px;height:24px;min-width:24px;min-height:24px;padding:0;border:1px solid #666;border-radius:6px;background:#353535;color:#eee;font-size:21px;font-weight:bold;line-height:1;touch-action:none;user-select:none;cursor:pointer}
+#drive-turbo{position:absolute;bottom:5px;left:5px;z-index:3;width:24px;height:24px;min-width:24px;min-height:24px;padding:0;border:1px solid #666;border-radius:6px;background:#353535;color:#eee;font-size:9px;font-weight:bold;line-height:1;touch-action:none;user-select:none;cursor:pointer}
 #drive-turbo.active{background:#c57a16;border-color:#ffce63;color:white;box-shadow:0 0 9px #ffb13d99}
 
 /* V29: aligned top-row toggles */
@@ -43,7 +43,7 @@
 #drive-card .drive-heading h2{flex:1;min-width:0;text-align:center;margin:0}
 #drive-card #drive-mode-toggle,#drive-card #drive-turbo{position:static;flex:none;box-sizing:border-box;width:24px;height:24px;min-width:24px;min-height:24px;margin:0;padding:0;border-radius:6px;line-height:1;touch-action:manipulation}
 #drive-card #drive-mode-toggle{font-size:14px}
-#drive-card #drive-turbo{font-size:10px}
+#drive-card #drive-turbo{font-size:9px!important}
 
 /* V30: subtle, neutral Movement buttons */
 #drive-card #drive-turbo.active{background:#555;border-color:#888;color:#fff;box-shadow:none}
