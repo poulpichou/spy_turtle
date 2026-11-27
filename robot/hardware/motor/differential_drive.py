@@ -126,9 +126,7 @@ class DifferentialDrive:
     def turn_right(self,speed=None):self.right(speed)
 
     def stop(self):
-        with self._lock:
-            self._set_motion("stop",0,0)
-            self.speed_multiplier=1.0
+        with self._lock:self._set_motion("stop",0,0) # Stop motion, retain user's speed setting.
 
     def update(self):
         if not self._enabled():return

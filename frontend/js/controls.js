@@ -12,7 +12,7 @@ function startMove(direction){
     const tick=()=>{
         if(heldDirection!==direction)return;
         if(transportMode==="bluetooth"&&bluetoothPending>1)return;
-        sendCommand("move",direction).catch(error=>{console.warn("[SAFETY] Movement failed",error);releaseMovement()});
+        sendCommand("move",direction,{turbo:!!window.spyDriveTurbo}).catch(error=>{console.warn("[SAFETY] Movement failed",error);releaseMovement()});
     };
     tick();heldTimer=setInterval(tick,350);
 }

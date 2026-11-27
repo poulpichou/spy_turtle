@@ -8,7 +8,8 @@
     let active=false,pointer=null,timer=null,x=0,y=0,busy=false,turbo=false;
     const card=document.getElementById("drive-card"),boost=document.createElement("button");
     boost.id="drive-turbo";boost.type="button";boost.textContent="»";boost.title="Turbo ×2 (toggle)";boost.setAttribute("aria-label","Toggle double speed");boost.setAttribute("aria-pressed","false");const heading=card.querySelector(".drive-heading");heading.insertBefore(toggle,heading.firstChild);heading.append(boost);
-    const setTurbo=on=>{turbo=!!on;boost.classList.toggle("active",turbo);boost.setAttribute("aria-pressed",String(turbo))};
+    const setTurbo=on=>{turbo=!!on;window.spyDriveTurbo=turbo;boost.classList.toggle("active",turbo);boost.setAttribute("aria-pressed",String(turbo))};
+    window.spyDriveTurbo=false;
     boost.addEventListener("click",()=>setTurbo(!turbo));
     boost.addEventListener("contextmenu",e=>e.preventDefault());
     const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));

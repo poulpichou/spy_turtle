@@ -68,8 +68,10 @@ def move_joystick(left,right):
     if abs(left)<0.01 and abs(right)<0.01:
         disarm_motion();instance.motors.stop();instance.state.motion="stop";return
     arm_motion()
-    scale=float(getattr(settings,"MOTOR_JOYSTICK_MAX_SPEED",0.65))
-    instance.motors.joystick(left*scale,right*scale)
+    # Same persistent Admin speed multiplier as the directional drive commands.
+    multiplier=instance.motors.get_speed_percent()/100.0
+    scale=float(getattr(settings,"MOTOR_JOYSTICK_MAX_SPEED",0.65))*multiplier
+    instance.motors.joystick(max(-1.0,min(1.0,left*scale)),max(-1.0,min(1.0,right*scale)))
     instance.state.motion="joystick"
 
 def set_emotion(emotion):

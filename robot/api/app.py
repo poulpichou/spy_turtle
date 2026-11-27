@@ -308,6 +308,11 @@ def command(cmd:Command):
         if cmd.type=="move":
             speed=cmd.extra.get("speed")
             if speed is not None:speed=float(speed)
+            if cmd.extra.get("turbo") and cmd.value in ("forward","backward","left","right"):
+                # Explicit speed bypasses DifferentialDrive's normal multiplier; apply it here once.
+                motor=get_robot().motors
+                base=settings.MOTOR_TURN_SPEED if cmd.value in ("left","right") else settings.MOTOR_DRIVE_SPEED
+                speed=min(settings.MOTOR_MAX_SPEED,base*2*motor.get_speed_percent()/100.0)
             if cmd.value=="joystick":actions.move_joystick(cmd.extra["left"],cmd.extra["right"])
             elif cmd.value=="forward":actions.move_forward(speed)
             elif cmd.value=="backward":actions.move_backward(speed)
