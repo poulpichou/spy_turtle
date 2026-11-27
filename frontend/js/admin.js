@@ -36,7 +36,7 @@ async function loadMotorCorrection(){
     try{
         const state=await adminGet('/admin/motors/correction');
         motorCorrectionToggle.checked=!!state.enabled;motorCorrectionToggle.disabled=!state.available;
-        motorCorrectionStatus.textContent=state.available?(state.enabled?'Correction ON':'Correction OFF · encoders ready'):'Encoders unavailable';
+        motorCorrectionStatus.textContent=state.available?(state.enabled?'Correction ON':'Correction OFF · encoders ready'):(state.reason||'Encoders unavailable · check GPIO wiring and settings');
     }catch(error){motorCorrectionToggle.disabled=true;motorCorrectionStatus.textContent='Correction unavailable: '+error.message}
 }
 if(motorCorrectionToggle)motorCorrectionToggle.onchange=async()=>{
@@ -101,7 +101,7 @@ if(ledBrightnessSlider){
     ledBrightnessSlider.onchange=async()=>{try{const data=await adminPost("/admin/leds/brightness",{brightness:Number(ledBrightnessSlider.value)});showLedBrightness(data.brightness);adminResult.textContent=`LED intensity: ${data.brightness}%`}catch(error){adminResult.textContent=error.message}};
 }
 function showVolume(value){volumeValue.textContent=`${value}%`}
-function showMicro(value){microValue.textContent=`${value}%`}function showDriveSpeed(value){driveSpeedValue.textContent=`${value}%`}function showCameraFps(value){cameraFpsValue.textContent=`${value} fps`}
+function showMicro(value){microValue.textContent=`${value}%`}function showDriveSpeed(value){driveSpeedValue.textContent=`${value}%`;window.spySyncDriveSpeed?.(value)}function showCameraFps(value){cameraFpsValue.textContent=`${value} fps`}
 function setSelectDisabled(id,disabled){
     const select=document.getElementById(id);if(!select)return;
     select.disabled=disabled;

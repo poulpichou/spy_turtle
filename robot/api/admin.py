@@ -4,6 +4,7 @@ import time
 from pathlib import Path
 from fastapi import APIRouter,HTTPException,Request
 from pydantic import BaseModel,Field
+from robot.config import settings
 from robot.system.runtime import get_robot
 from robot.system.wifi import wifi_manager
 from robot.utils.logger import log
@@ -232,7 +233,7 @@ def get_motor_correction():
     if motors is None:raise HTTPException(status_code=503,detail='Motors unavailable')
     try:
         state=motors.status().get('encoders',{})
-        return {'ok':True,'available':bool(state.get('enabled')),'enabled':bool(state.get('correction_enabled')),'left':state.get('left'),'right':state.get('right')}
+        return {'ok':True,'available':bool(state.get('enabled')),'enabled':bool(state.get('correction_enabled')),'left':state.get('left'),'right':state.get('right'),'reason':None if state.get('enabled') else ('Encoders disabled in settings (MOTOR_ENCODERS_ENABLED=False)' if not settings.MOTOR_ENCODERS_ENABLED else 'Encoder initialization failed; check wiring and GPIO logs')}
     except Exception as error:raise HTTPException(status_code=503,detail=str(error)) from error
 @router.post('/motors/correction')
 def set_motor_correction(data:ToggleRequest,request:Request):
