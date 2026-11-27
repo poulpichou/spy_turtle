@@ -4,6 +4,8 @@ const view=document.getElementById('camera-view'),button=document.getElementById
 const stage=document.createElement('div');stage.className='spy-missile-stage spy-weapon-stage';stage.setAttribute('aria-hidden','true');view.append(stage);
 const vegetables=[['🥕','#f58a27'],['🥦','#4d9b37'],['🥬','#7fc957'],['🥒','#71a83c'],['🌶️','#e33a32'],['🫑','#50a83e'],['🌽','#efc849'],['🍆','#783ca1'],['🥔','#b99466'],['🧅','#d6b88a'],['🧄','#e6e0ce'],['🍅','#ec4136'],['🫛','#68ad49'],['🍄','#d94b40']];
 const produce=[...vegetables,...[['🍌','#f4d343'],['🍎','#d62d30'],['🍏','#87c43b'],['🍐','#a6c43b'],['🍊','#ff962b'],['🍋','#f5d948'],['🍋‍🟩','#91bd43'],['🍉','#e94d60'],['🍇','#8151b3'],['🍓','#e93448'],['🫐','#5363ba'],['🍒','#c82a42'],['🍑','#f39a74'],['🥭','#f3a832'],['🍍','#e9c33d'],['🥥','#c7b18f'],['🥝','#8fba48'],['🍈','#b4d479']]];
+const laserSounds=['laser_1','laser_2','laser_3'],splatSounds=['spat_1','spat_2','spat_3','splat_4'];
+function weaponSound(names){const name=names[Math.floor(Math.random()*names.length)];Promise.resolve().then(()=>sendCommand('sound',name)).catch(error=>console.warn('[WEAPON AUDIO]',name,error))}
 let busy=false;const mode=()=>{const m=localStorage.getItem('spy_grid_vision_mode');return m==='turtle'||m==='thermal'?m:'robot'};
 function sync(){const m=mode();button.textContent=m==='turtle'?'🍌':m==='thermal'?'🔫':'🚀';button.title=m==='turtle'?'Launch a random fruit or vegetable':m==='thermal'?'Fire thermal laser':'Launch missile';button.setAttribute('aria-label',button.title)}
 sync();document.addEventListener('click',e=>{if(e.target.closest?.('.spy-vision-segment'))queueMicrotask(sync)});window.addEventListener('storage',sync);
@@ -28,8 +30,8 @@ function missile(target,w,h){if(target)lock(target);const [x0,y0]=launchPoint(w,
  animate(target?2000:2600,t=>{const [x,y]=position(t),[nx,ny]=position(Math.min(1,t+.005));move(rocket,x,y,Math.atan2(ny-y,nx-x)*180/Math.PI+45)},()=>{rocket.remove();if(target){put('spy-missile-hit','💥',tx,ty);const colors=['#ffd166','#ef476f','#06d6a0','#118ab2','#fff','#f78c36'];for(let i=0;i<32;i++)fragments(tx,ty,colors[i%colors.length],1,Math.min(w,h)*.3,'spy-confetti')}else message?.classList.add('final');finish(target?1100:1400)})}
 function vegetable(target,w,h){const [emoji,color]=produce[Math.floor(Math.random()*produce.length)],[x0,y0]=launchPoint(w,h),veg=put('spy-vegetable',emoji,x0,y0);veg.style.setProperty('--veg-color',color);if(target)lock(target);
  const tx=target?target.px:w-x0,ty=target?target.py:h-y0;
- if(target){animate(1600,t=>{const x=x0+(tx-x0)*t,y=y0+(ty-y0)*t-Math.min(h*.22,Math.max(0,Math.min(y0,ty)-h*.12))*4*t*(1-t);move(veg,x,y,t*800)},()=>{veg.remove();const splash=makeSplash(tx,ty,color,w,h);fragments(tx,ty,color,15,Math.min(w,h)*.24);finish(2400)})}
- else{let bounce=0;const floor=h*.86,midX=w*.5,exitX=x0<w*.5?w*1.2:-w*.2;animate(2600,t=>{let x,y;if(t<.52){const p=t/.52;x=x0+(midX-x0)*p;y=y0+(floor-y0)*p-h*.22*4*p*(1-p)}else{const p=(t-.52)/.48;x=midX+(exitX-midX)*p;y=floor-h*.30*4*p*(1-p)+h*.22*p}if(t>=.52&&!bounce){bounce=1;const e=put('spy-vegetable-bounce','✴',midX,floor);e.style.color=color}move(veg,x,y,t*1100)},()=>{veg.remove();finish(350)})}}
+ if(target){animate(1600,t=>{const x=x0+(tx-x0)*t,y=y0+(ty-y0)*t-Math.min(h*.22,Math.max(0,Math.min(y0,ty)-h*.12))*4*t*(1-t);move(veg,x,y,t*800)},()=>{veg.remove();weaponSound(splatSounds);const splash=makeSplash(tx,ty,color,w,h);fragments(tx,ty,color,15,Math.min(w,h)*.24);finish(2400)})}
+ else{let bounce=0;const floor=h*.86,midX=w*.5,exitX=x0<w*.5?w*1.2:-w*.2;animate(2600,t=>{let x,y;if(t<.52){const p=t/.52;x=x0+(midX-x0)*p;y=y0+(floor-y0)*p-h*.22*4*p*(1-p)}else{const p=(t-.52)/.48;x=midX+(exitX-midX)*p;y=floor-h*.30*4*p*(1-p)+h*.22*p}if(t>=.52&&!bounce){bounce=1;weaponSound(splatSounds);const e=put('spy-vegetable-bounce','✴',midX,floor);e.style.color=color}move(veg,x,y,t*1100)},()=>{veg.remove();finish(350)})}}
 /* V27 splash and laser tuning */
 function makeSplash(x,y,color,w,h){
  const NS='http://www.w3.org/2000/svg',svg=document.createElementNS(NS,'svg');svg.classList.add('spy-vegetable-splash','spy-splash-v27');svg.setAttribute('viewBox','0 0 220 220');svg.setAttribute('aria-hidden','true');svg.style.left=x+'px';svg.style.top=y+'px';svg.style.setProperty('--splash',color);
@@ -48,7 +50,7 @@ function makeSplash(x,y,color,w,h){
  return svg;
 }
 function laser(target,w,h){
- if(target)lock(target);
+ weaponSound(laserSounds);if(target)lock(target);
  const x0=w*(.25+Math.random()*.5),y0=-h*.06,tx=target?target.px:w*(.2+Math.random()*.6),ty=target?target.py:h*1.25;
  const beam=put('spy-laser-beam','',x0,y0),tip=put('spy-laser-tip','✦',x0,y0),message=target?null:lost(w,h,true);
  function position(t){

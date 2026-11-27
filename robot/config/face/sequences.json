@@ -895,5 +895,43 @@
         "right_eye": "confused_4"
       }
     ]
+  },
+  "sick": {
+    "loop": true,
+    "interruptible": true,
+    "next": null,
+    "led": "sick",
+    "frames": [
+      {
+        "duration": 1300,
+        "left_eye": "half",
+        "right_eye": "half"
+      },
+      {
+        "duration": 160,
+        "left_eye": "closed",
+        "right_eye": "closed"
+      },
+      {
+        "duration": 240,
+        "left_eye": "half",
+        "right_eye": "half"
+      },
+      {
+        "duration": 1700,
+        "left_eye": "half",
+        "right_eye": "half"
+      },
+      {
+        "duration": 180,
+        "left_eye": "closed",
+        "right_eye": "closed"
+      },
+      {
+        "duration": 320,
+        "left_eye": "half",
+        "right_eye": "half"
+      }
+    ]
   }
 }

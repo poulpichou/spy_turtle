@@ -83,6 +83,30 @@
       },
       "robot4": {
         "label": "🤖 Robot 4"
+      },
+      "laser_1": {
+        "label": "🔫 Laser 1"
+      },
+      "laser_2": {
+        "label": "🔫 Laser 2"
+      },
+      "laser_3": {
+        "label": "🔫 Laser 3"
+      },
+      "spat_1": {
+        "label": "🍅 Splat 1"
+      },
+      "spat_2": {
+        "label": "🍅 Splat 2"
+      },
+      "spat_3": {
+        "label": "🍅 Splat 3"
+      },
+      "splat_4": {
+        "label": "🍅 Splat 4"
+      },
+      "sneezing": {
+        "label": "🤧 Sneezing"
       }
     }
   },

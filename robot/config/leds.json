@@ -151,6 +151,10 @@
     "gassy": {
       "label": "Gassy",
       "animation": "fart_cloud"
+    },
+    "sick": {
+      "label": "Sick",
+      "animation": "sick"
     }
   },
   "animations": {
@@ -1008,6 +1012,16 @@
       "period": 0.15,
       "density": 0.34,
       "brightness": 0.8
+    },
+    "sick": {
+      "type": "breathing",
+      "color": [
+        155,
+        190,
+        35
+      ],
+      "period": 5.0,
+      "brightness": 0.32
     }
   }
 }
