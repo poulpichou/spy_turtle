@@ -992,7 +992,7 @@
         "repetitions": 1,
         "step_interval_seconds": 1.2
       },
-      "sound": null,
+      "sound": "sneezing",
       "contexts": [
         {
           "fr": "Atchoum ! Je crois que je suis enrhumée.",
