@@ -1014,14 +1014,27 @@
       "brightness": 0.8
     },
     "sick": {
-      "type": "breathing",
-      "color": [
-        155,
-        190,
-        35
+      "type": "sick_tricolor",
+      "colors": [
+        [
+          105,
+          255,
+          0
+        ],
+        [
+          0,
+          105,
+          25
+        ],
+        [
+          255,
+          205,
+          0
+        ]
       ],
-      "period": 5.0,
-      "brightness": 0.32
+      "period": 5.4,
+      "minimum": 0.1,
+      "brightness": 0.95
     }
   }
 }

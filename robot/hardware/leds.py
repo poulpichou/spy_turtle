@@ -140,6 +140,14 @@ class LEDController:
             start=int(animation.get("start",15));end=int(animation.get("end",26))
             color=tuple(bytes.fromhex(self.headlights_color[1:]))
             return [color if start<=i<=end else (0,0,0) for i in range(self.count)],1.0
+        if effect=="sick_tricolor":
+            period=max(0.5,float(animation.get("period",5.4)))
+            colors=[self._color(color) for color in animation.get("colors",[[105,255,0],[0,105,25],[255,205,0]])]
+            if len(colors)!=3:raise ValueError("sick_tricolor requires exactly three colors")
+            phase=2*math.pi*(elapsed%period)/period
+            minimum=max(0.0,min(1.0,float(animation.get("minimum",0.10))))
+            levels=[minimum+(1-minimum)*(0.5+0.5*math.cos(phase-2*math.pi*g/3))**2 for g in range(3)]
+            return [self._scale_color(colors[i%3],levels[i%3]) for i in range(self.count)],brightness
         if effect=="off":return [(0,0,0)]*self.count,brightness
         if effect=="solid":return [self._color(animation.get("color",[255,255,255]))]*self.count,brightness
         if effect=="rainbow":
