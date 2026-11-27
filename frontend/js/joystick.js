@@ -7,7 +7,7 @@
     const JOYSTICK_MIN_OUTPUT=0.67; // 0.67 * 0.30 = 0.20 PWM at first movement
     let active=false,pointer=null,timer=null,x=0,y=0,busy=false;
     const card=document.getElementById("drive-card"),boost=document.createElement("button");
-    boost.id="drive-turbo";boost.type="button";boost.textContent="×1";boost.title="Motor speed multiplier";boost.setAttribute("aria-label","Motor speed multiplier ×1");const heading=card.querySelector(".drive-heading");heading.insertBefore(toggle,heading.firstChild);heading.append(boost);
+    boost.id="drive-turbo";boost.type="button";boost.textContent="×1";boost.style.fontSize="12px";boost.style.letterSpacing="-0.4px";boost.title="Motor speed multiplier";boost.setAttribute("aria-label","Motor speed multiplier ×1");const heading=card.querySelector(".drive-heading");heading.insertBefore(toggle,heading.firstChild);heading.append(boost);
     const levels=[100,150,200,300];let current=100,pending=false;
     function syncSpeed(value){
         const speed=Number(value);if(!Number.isFinite(speed))return;

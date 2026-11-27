@@ -128,7 +128,7 @@ MOTOR_MAX_SPEED=1.00
 
 # Optional single-channel motor encoders
 # Encoder wiring validated on GPIO 14/15 using pull-up inputs.
-MOTOR_ENCODERS_ENABLED=False
+MOTOR_ENCODERS_ENABLED=True
 MOTOR_LEFT_ENCODER_A_PIN=14
 MOTOR_LEFT_ENCODER_B_PIN=None
 MOTOR_RIGHT_ENCODER_A_PIN=15
